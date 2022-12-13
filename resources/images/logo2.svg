@@ -1,17 +1,21 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 22.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 672 723" style="enable-background:new 0 0 672 723;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#1d5df3;}
-	.st1{fill:#e3982b;}
-</style>
-<g>
-	<path class="st0" d="M213.9,584.4c-47.4-25.5-84.7-60.8-111.8-106.1C75,433.1,61.4,382,61.4,324.9c0-57,13.6-108.1,40.7-153.3
-		S166.5,91,213.9,65.5s100.7-38.2,159.9-38.2c49.9,0,95,8.8,135.3,26.3s74.1,42.8,101.5,75.7l-85.5,78.9
-		c-38.9-44.9-87.2-67.4-144.7-67.4c-35.6,0-67.4,7.8-95.4,23.4s-49.7,37.4-65.4,65.4c-15.6,28-23.4,59.8-23.4,95.4
-		s7.8,67.4,23.4,95.4s37.4,49.7,65.4,65.4c28,15.6,59.7,23.4,95.4,23.4c57.6,0,105.8-22.7,144.7-68.2l85.5,78.9
-		c-27.4,33.4-61.4,58.9-102,76.5c-40.6,17.5-85.8,26.3-135.7,26.3C314.3,622.7,261.3,809.9,213.9,584.4z"/>
-</g>
-<circle class="st1" cx="375.4" cy="322.9" r="100"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 278.77 274.18">
+  <defs>
+    <radialGradient id="Gradiente_sem_nome_3" data-name="Gradiente sem nome 3" cx="141.68" cy="139.09" fx="141.68" fy="139.09" r="137.09" gradientTransform="translate(0 276.18) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4eaecb"/>
+      <stop offset="1" stop-color="#0b4a7f"/>
+    </radialGradient>
+    <radialGradient id="Gradiente_sem_nome_6" data-name="Gradiente sem nome 6" cx="68.13" cy="158.1" fx="68.13" fy="158.1" r="26.52" gradientTransform="translate(0 276.18) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f19634"/>
+      <stop offset="1" stop-color="#fcda15"/>
+    </radialGradient>
+    <radialGradient id="Gradiente_sem_nome_6-2" data-name="Gradiente sem nome 6" cx="126.17" cy="217.64" fx="126.17" fy="217.64" r="22.02" gradientTransform="translate(-108.87 -31.14) rotate(80.78) scale(1 -1)" xlink:href="#Gradiente_sem_nome_6"/>
+    <radialGradient id="Gradiente_sem_nome_6-3" data-name="Gradiente sem nome 6" cx="200.44" cy="217.43" fx="200.44" fy="217.43" r="18.3" xlink:href="#Gradiente_sem_nome_6"/>
+    <radialGradient id="Gradiente_sem_nome_6-4" data-name="Gradiente sem nome 6" cx="78.8" cy="121.19" fx="78.8" fy="121.19" r="98.59" gradientTransform="translate(.29 276.04) scale(1 -1)" xlink:href="#Gradiente_sem_nome_6"/>
+  </defs>
+  <circle cx="141.68" cy="137.09" r="137.09" style="fill: url(#Gradiente_sem_nome_3);"/>
+  <circle cx="68.13" cy="118.08" r="26.52" style="fill: url(#Gradiente_sem_nome_6);"/>
+  <circle cx="126.17" cy="58.54" r="22.02" transform="translate(48.18 173.7) rotate(-80.78)" style="fill: url(#Gradiente_sem_nome_6-2);"/>
+  <circle cx="200.44" cy="58.75" r="18.3" style="fill: url(#Gradiente_sem_nome_6-3);"/>
+  <path d="M60.13,179.61s-17.62-10.02-30.52-55.54c-13.51-47.53-11.5-84.06-11.5-84.06,0,0-37.54,83.06-4.5,153.61,31.94,68.23,98.09,76.05,98.09,76.05l.7-13.13c2.14-38.03,13.6-74.96,33.37-107.52l12.42-20.44s-27.92-7.82-60.04,11.98c-23.5,14.52-38.01,39.04-38.01,39.04Z" style="fill: url(#Gradiente_sem_nome_6-4);"/>
 </svg>

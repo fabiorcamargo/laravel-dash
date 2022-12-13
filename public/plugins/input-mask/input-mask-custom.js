@@ -65,7 +65,7 @@ $(document).ready(function(){
     // Phone Number
     $(".ph-number").inputmask({mask:"(99) 9 9999-9999"});
 
-    // Phone Number
+    // CPF Number
     $(".cpf-number").inputmask({mask:"999.999.999-99"});
 
     // Currency

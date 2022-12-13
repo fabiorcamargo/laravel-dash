@@ -29,7 +29,7 @@ class UsersSeeder extends Seeder
             'secretary' => 'TB',
             'document' => '05348908908',
             'seller' => 'Fábio Divulgador',
-            'courses' => '02 - BANCÁRIO + 10 CURSOS'
+            'courses' => '02 - BANCÁRIO + 10 CURSOS',
         ]);
     }
 }

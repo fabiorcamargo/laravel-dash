@@ -63,7 +63,10 @@ $(document).ready(function(){
     $("#ip-add").inputmask({mask:"999.999.999.999"});
 
     // Phone Number
-    $("#ph-number").inputmask({mask:"(999) 999-9999"});
+    $(".ph-number").inputmask({mask:"(99) 9 9999-9999"});
+    
+    // CPF Number
+    $(".cpf-number").inputmask({mask:"999.999.999-99"});
 
     // Currency
     $("#currency").inputmask({mask:"$999,9999,999.99"});

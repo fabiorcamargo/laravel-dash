@@ -53,7 +53,7 @@ window.addEventListener("load", function(){
             }
         },
         series: [{
-            data: [21, 9, 36, 12, 44, 25, 59, 41, 66, 25]
+            data: [50, 9, 36, 12, 44, 25, 59, 41, 66, 25]
         }],
         stroke: {
           curve: 'smooth',
@@ -545,7 +545,7 @@ window.addEventListener("load", function(){
             }
         },
         series: [{
-            data: [21, 9, 36, 12, 44, 25, 59, 41, 66, 25]
+            data: [50, 9, 36, 12, 44, 25, 59, 41, 66, 25]
         }],
         stroke: {
           curve: 'smooth',

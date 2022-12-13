@@ -3,22 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateUserFormRequest;
+use App\Models\City;
+use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+
 
 class UserController extends Controller
 {
     protected $model;
 
-    public function __construct(User $user)
+    public function __construct(User $user, State $state, City $cities)
     {
-        $this->model = $user;
+        $this->user = $user;
+        $this->state = $state;
+        $this->cities = $cities;
     }
 
     public function index(Request $request)
     {
-        $users = $this->model
+        $users = $this->user
                         ->getUsers(
                             search: $request->search ?? ''
                         );
@@ -29,15 +34,10 @@ class UserController extends Controller
     public function show($id)
     {
         // $user = $this->model->where('id', $id)->first();
-        if (!$user = $this->model->find($id))
+        if (!$user = $this->user->find($id))
             return redirect()->route('users.index');
 
         return view('users.show', compact('user'));
-    }
-
-    public function create()
-    {
-        return view('users.create');
     }
 
     public function store(StoreUpdateUserFormRequest $request)
@@ -73,7 +73,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (!$user = $this->model->find($id))
+        if (!$user = $this->user->find($id))
             return redirect()->route('users.index');
 
         return view('users.edit', compact('user'));
@@ -81,7 +81,7 @@ class UserController extends Controller
 
     public function update(StoreUpdateUserFormRequest $request, $id)
     {
-        if (!$user = $this->model->find($id))
+        if (!$user = $this->user->find($id))
             return redirect()->route('users.index');
 
         $data = $request->only('name', 'email');
@@ -103,7 +103,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        if (!$user = $this->model->find($id))
+        if (!$user = $this->user->find($id))
             return redirect()->route('users.index');
 
         $user->delete();
@@ -115,4 +115,41 @@ class UserController extends Controller
         $students = User::get()->toJson(JSON_PRETTY_PRINT);
         return response($students, 200);
       }
+
+    public function list(Request $request)
+    {
+        $users = $this->user
+                        ->getUsers(
+                            search: $request->search ?? ''
+                        );
+
+        return view('pages.app.user.list', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+    }
+
+    public function resp(Request $request)
+    {
+        $users = $this->user
+                        ->getUsers(
+                            search: $request->search ?? ''
+                        );
+
+        return view('pages.app.user.list', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+    }
+
+    public function create(Request $request)
+    {
+
+        
+        return view('pages.app.user.create', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
+    public function lote(Request $request)
+    {
+
+        
+        return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
 }
+
+
