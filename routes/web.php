@@ -1017,7 +1017,8 @@ Route::prefix('rtl')->group(function () {
 
 
 Route::get('/', function () {
-    return view('welcome', ['title' => 'This is Title', 'breadcrumb' => 'This Breadcrumb']);
+    return view('auth.register');
 });
 
+require __DIR__.'/auth.php';
 
