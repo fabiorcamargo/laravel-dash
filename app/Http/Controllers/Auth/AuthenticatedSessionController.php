@@ -32,7 +32,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        if ((Auth::user()->role) == 7)
+        {
+        $home = '/modern-dark-menu/dashboard/sales';
+        }
+        else if ((Auth::user()->role) == 1)
+        {
+        $home = '/modern-dark-menu/dashboard/my';    
+        }
+        
+        return redirect()->intended($home);
     }
 
     /**

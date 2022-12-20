@@ -6,6 +6,8 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth'])->group(function () {
+
+Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
     Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
 
@@ -79,6 +82,9 @@ foreach ($prefixRouters as $prefixRouter) {
             Route::get('/sales', function () {
                 return view('pages.dashboard.sales', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
             })->name('sales');
+            Route::get('/my', function () {
+                return view('pages.dashboard.my', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+            })->name('my');
             
         });
         
