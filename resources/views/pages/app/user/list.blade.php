@@ -31,6 +31,8 @@
     <div class="seperator-header layout-top-spacing">
         <h4 class="">Style 1</h4>
     </div>
+
+    
     
     <div class="row layout-spacing">
         <div class="col-lg-12">

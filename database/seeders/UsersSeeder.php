@@ -15,12 +15,12 @@ class UsersSeeder extends Seeder
      */
     public function run()
     {
-        User::create([
+        User::insert([
+            [
             'username' => 'fabiotb',
             'name' => 'Fábio Camargo',
             'email' => 'fabiorcamargo@gmail.com',
             'password' => bcrypt('277888'),
-            'role' => 1,
             'cellphone' => '42991622889',
             'city' => 'Telêmaco Borba',
             'uf' => 'PR',
@@ -31,6 +31,24 @@ class UsersSeeder extends Seeder
             'document' => '05348908908',
             'seller' => 'Fábio Divulgador',
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
-        ]);
+        ],[
+            'username' => '61001',
+            'name' => 'Fábio Aluno',
+            'email' => 'fabio.xina@gmail.com',
+            'password' => bcrypt('277888'),
+            'cellphone' => '42991622889',
+            'city' => 'Telêmaco Borba',
+            'uf' => 'PR',
+            'payment' => 'CARTÃO',
+            'role' => 1,
+            '10courses' => true,
+            'secretary' => 'TB',
+            'document' => '05348908908',
+            'seller' => 'Fábio Divulgador',
+            'courses' => '02 - BANCÁRIO + 10 CURSOS',
+        ],
+        ]
+    
+    );
     }
 }
