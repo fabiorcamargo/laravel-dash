@@ -118,7 +118,7 @@
             
             @if ( (Auth::user()->role) == 7 )
             <x-menu.vertical-menu/>
-            @else
+            @elseif ( (Auth::user()->role) == 1 )
             <x-menu.student-menu/>
             @endif
             

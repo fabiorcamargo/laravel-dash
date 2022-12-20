@@ -1,7 +1,7 @@
 <x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
-        {{$title}} 
+        Erro
     </x-slot>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
@@ -27,26 +27,32 @@
         </style>
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
-
+    <div>
     <div class="container-fluid">
-        <div class="row">
+        <div class="row mt-4">
             <div class="col-md-4 mr-auto mt-5 text-md-left text-center">
-                <a href="/dashboard/analytics" class="ml-md-5">
-                    <img alt="image-404" src="{{Vite::asset('resources/images/logo.svg')}}" class="dark-element theme-logo">
-                    <img alt="image-404" src="{{Vite::asset('resources/images/logo2.svg')}}" class="light-element theme-logo">
-                </a>
+                <div class="d-flex flex-row">
+                    <div class="p-2">
+                        <a href="/dashboard/analytics" class="ml-md-5">
+                            <img alt="image-404" src="{{Vite::asset('resources/images/logo.svg')}}" class="dark-element theme-logo">
+                            <img alt="image-404" src="{{Vite::asset('resources/images/logo2.svg')}}" class="light-element theme-logo">
+                        </a>            
+                    </div>
+                    <h1 class="p-2 d-flex align-items-center">Code:404</h1>
+                </div>
             </div>
         </div>
     </div>
     <div class="container-fluid error-content">
         <div class="">
-            <h1 class="error-number">404</h1>
-            <p class="mini-text">Ooops!</p>
-            <p class="error-text mb-5 mt-1">The page you requested was not found!</p>
+            <h3 class="error-number mt-4">Oooops!</h3>
+            <p class="error-text mb-5 mt-1">Parece que essa página não existe, caso esteja tentando acessar uma página necessária relate para o nosso suporte!</p>
             <img src="{{Vite::asset('resources/images/error.svg')}}" alt="cork-admin-404" class="error-img">
-            <a href="{{getRouterValue();}}/dashboard/analytics" class="btn btn-dark mt-5">Go Back</a>
+            
         </div>
-    </div>   
+        <a href="{{getRouterValue();}}/dashboard/analytics" class="btn btn-dark mt-5">Voltar</a>
+    </div>  
+</div>
 
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
