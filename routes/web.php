@@ -53,11 +53,9 @@ use Illuminate\Support\Facades\Route;
                             return view('pages.aluno.my', ['title' => 'Início', 'breadcrumb' => 'Início']);
                         })->name('inicio');
                         Route::get('/pagamento', function () {
-                            return view('pages.dashboard.sales', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                            return view('pages.aluno.payment', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
                         })->name('pagamento');
-                        Route::get('/config', function () {
-                            return view('pages.dashboard.my', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-                        })->name('config');
+                        Route::get('/config', [UserController::class, 'username'])->name('config');
                         
                     });
 

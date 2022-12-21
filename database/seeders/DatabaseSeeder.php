@@ -19,7 +19,9 @@ class DatabaseSeeder extends Seeder
             StatesTableSeeder::class,
             CitiesTableSeeder::class,
             TypePaymentsSeeder::class,
-            CademisSeeder::class
+            CademisSeeder::class,
+            CustomersSeeder::class,
+            PaymentsSeeder::class,
         ]);
     }
 }

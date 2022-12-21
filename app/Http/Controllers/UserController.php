@@ -7,6 +7,7 @@ use App\Models\City;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 
@@ -148,6 +149,14 @@ class UserController extends Controller
 
         
         return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
+    public function username()
+    {
+        $field = [['name'=> Auth::user()->name],
+        ['email'=> Auth::user()->email]
+    ];
+        return compact($field);
     }
 
 }
