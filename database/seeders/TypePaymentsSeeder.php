@@ -16,7 +16,8 @@ class TypePaymentsSeeder extends Seeder
     public function run()
     {
         
-        TypePayment::create([
+        TypePayment::create(
+            [
             'name' => 'CARTÃO',
         ]);
     }

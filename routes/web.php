@@ -18,8 +18,58 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
-Route::middleware(['auth'])->group(function () {
+
+
+        /**
+         * ==============================
+         *       @Router -  Aberta
+         * ==============================
+         */
+    Route::middleware(['auth'])->group(function () {
+
+        Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
+    
+    
+     
+    
+        $prefixRouters = [
+            'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+        ];
+    
+    
+    
+        foreach ($prefixRouters as $prefixRouter) {
+            Route::prefix($prefixRouter)->group(function () {
+            /**
+             * ==============================
+             *       @Router -  Student
+             * ==============================
+             */
+
+                    Route::prefix('aluno')->group(function () {
+                        Route::get('/inicio', function () {
+                            return view('pages.aluno.my', ['title' => 'Início', 'breadcrumb' => 'Início']);
+                        })->name('inicio');
+                        Route::get('/pagamento', function () {
+                            return view('pages.aluno.payment', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                        })->name('pagamento');
+                        Route::get('/config', [UserController::class, 'username'])->name('config');
+                        
+                    });
+
+            });
+        };
+    });
+
+        /**
+         * ==============================
+         *       @Router -  Super_Admin
+         * ==============================
+         */
+
+Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
     Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
 
@@ -39,7 +89,7 @@ $prefixRouters = [
 foreach ($prefixRouters as $prefixRouter) {
     Route::prefix($prefixRouter)->group(function () {
 
-
+           
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
         Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');
         Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
@@ -66,6 +116,9 @@ foreach ($prefixRouters as $prefixRouter) {
             return view('welcome', ['title' => 'this is ome ', 'breadcrumb' => 'This Breadcrumb']);
         });
 
+        
+
+
         /**
          * ==============================
          *       @Router -  Dashboard
@@ -79,6 +132,9 @@ foreach ($prefixRouters as $prefixRouter) {
             Route::get('/sales', function () {
                 return view('pages.dashboard.sales', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
             })->name('sales');
+            Route::get('/my', function () {
+                return view('pages.dashboard.my', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+            })->name('my');
             
         });
         
@@ -1017,7 +1073,7 @@ Route::prefix('rtl')->group(function () {
 
 
 Route::get('/', function () {
-    return view('auth.register');
+    return view('welcome', ['title' => 'This is Title', 'breadcrumb' => 'This Breadcrumb']);
 });
 
 require __DIR__.'/auth.php';
