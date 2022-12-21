@@ -16,9 +16,9 @@ services:
   app:
     image: node:latest
     container_name: my-app
-    working_dir: /application
+    working_dir: /var/www/
     volumes:
-      - .:/application
+      - ./:/var/www
     links:
       - mysql
       - redis
