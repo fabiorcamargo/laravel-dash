@@ -12,23 +12,23 @@ services:
     links:
       - app
     env_file: ./.env
+    networks: 
+            - laravel-9
 
   app:
-    image: node:latest
-    container_name: my-app
-    working_dir: /var/www/
-    volumes:
-      - ./:/var/www
-    links:
-      - mysql
-      - redis
-      - mailhog
-    ports:
-      - "9000"
-    entrypoint: /application/start_application.sh
-    env_file: ./.env
-    environment:
-      "NODE_ENV": "development"
+        container_name: especializati-laravel-9
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: especializati/laravel9-app
+        restart: unless-stopped
+        working_dir: /var/www/
+        volumes:
+            - ./:/var/www
+        depends_on: 
+            - redis
+        networks: 
+            - laravel-9
 
   mysql:
     env_file: ./.env
@@ -42,15 +42,39 @@ services:
     environment:
       "MYSQL_DATABASE": "${DB_DATABASE}"
       "MYSQL_ROOT_PASSWORD": "${DB_PASSWORD}"
+    networks: 
+            - laravel-9
 
   redis:
     image: redis:alpine
     container_name: redis
     ports:
       - "6379:6379"
+    networks: 
+            - laravel-9
 
   mailhog:
     image: mailhog/mailhog:latest
     container_name: mailhog
     ports:
       - "8025:8025"
+    networks: 
+            - laravel-9
+      
+      services:
+  node:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./:/home/node/app
+    expose:
+      - "8081"
+    command: "npm start"
+    networks: 
+            - laravel-9
+networks: 
+    laravel-9:
+        driver: bridge
