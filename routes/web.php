@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\{
     CademiController,
+    FilepondController,
+    FileUploadController,
+    TemporaryFileController,
     UserController
 };
 use App\Http\Controllers\Admin\CommentController;
@@ -20,7 +23,10 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
-
+    Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
+    Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+    Route::get('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
+    Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
 
         /**
          * ==============================
@@ -30,6 +36,7 @@ use Illuminate\Support\Facades\Route;
     Route::middleware(['auth'])->group(function () {
 
         Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
+        
     
     
      

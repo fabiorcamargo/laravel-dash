@@ -40,35 +40,37 @@
     <div class="row layout-top-spacing">
 
         
-
-        <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
-            <div class="statbox widget box box-shadow">
-                <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Multiple File</h4>
-                        </div>      
+        <form action="{{ route('store') }}" method="post" enctype="multipart/form-data">
+                
+            @csrf
+            <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                <h4>Multiple File</h4>
+                            </div>      
+                        </div>
                     </div>
-                </div>
-                <div class="widget-content widget-content-area">
-                    <div class="row">
-                        <div class="col-md-6 mx-auto">
-                            <div class="multiple-file-upload">
-                                <input type="file" 
-                                    class="file-upload-multiple"
-                                    name="filepond" 
-                                    multiple 
-                                    data-allow-reorder="true"
-                                    data-max-file-size="3MB"
-                                    data-max-files="3">
+                    <input name="verifica" value= "">
+                    <div class="widget-content widget-content-area">
+                        <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <div class="multiple-file-upload">
+                                    <input type="file" id="image" name="image" class="file-upload-multiple">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <button type="submit" class="w-full shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                Enviar
+            </button>
+        </form>
 
     </div>
+    
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
@@ -82,8 +84,27 @@
         <script src="{{asset('plugins/filepond/filepondPluginFileValidateSize.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/custom-filepond.js')}}"></script>
         <script>
-            singleFile.addFiles("{{Vite::asset('resources/images/drag-1.jpeg')}}");
-            multifiles.addFiles("{{Vite::asset('resources/images/list-blog-style-2.jpeg')}}");
+            
+        </script>
+        <script>
+
+            const inputElement = document.querySelector('input[type="file"]');
+
+            const pond = FilePond.create(inputElement);
+                        
+            FilePond.setOptions({
+            server: {
+                process: '/tmp-upload',
+                revert: '/tmp-delete',
+                         
+                headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+            });
+
+
+
         </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
