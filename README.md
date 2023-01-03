@@ -3,7 +3,7 @@
 [Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
 
 ### Passo a passo
-Clone Repositório
+Clone Repositório 
 ```sh
 git clone https://github.com/fabiorcamargo/laravel-dash.git app
 ```
