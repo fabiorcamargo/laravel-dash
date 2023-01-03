@@ -23,11 +23,9 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
-    Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
-    Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
-    Route::get('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
-    Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
 
+
+    
         /**
          * ==============================
          *       @Router -  Aberta
@@ -54,6 +52,7 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
+            
 
                     Route::prefix('aluno')->group(function () {
                         Route::get('/inicio', function () {
@@ -95,7 +94,11 @@ $prefixRouters = [
 
 foreach ($prefixRouters as $prefixRouter) {
     Route::prefix($prefixRouter)->group(function () {
-
+        
+        Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
+        Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+        Route::get('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
+        Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
            
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
         Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');

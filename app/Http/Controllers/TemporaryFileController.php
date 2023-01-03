@@ -42,7 +42,7 @@ class TemporaryFileController extends Controller
         $file = "/tmp/" . $data->folder . "/" . $data->file;
         TemporaryFileController::openCsv($file);
         
-        return redirect()->route('user-lote');  
+        return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
 
     }
     public function tmpUpload(Request $request)
@@ -98,10 +98,15 @@ class TemporaryFileController extends Controller
     public function openCsv($file){
         
         {
-            Excel::import(new UsersImport, "$file");
-            
-            return redirect('/')->with('success', 'All good!');
+            $import = new UsersImport;
+            Excel::import($import, "$file");
+
+           
+
+            //return redirect('/')->with('success', 'All good!');
         }
+
+        
     
     }
 }

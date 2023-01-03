@@ -40,7 +40,9 @@
     <div class="row layout-top-spacing">
 
         
-        <form action="{{ route('store') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ getRouterValue(); }}/store"  method="post" enctype="multipart/form-data">
+
+            
                 
             @csrf
             <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
@@ -94,8 +96,8 @@
                         
             FilePond.setOptions({
             server: {
-                process: '/tmp-upload',
-                revert: '/tmp-delete',
+                process: '{{ getRouterValue(); }}/tmp-upload',
+                revert: '{{ getRouterValue(); }}/tmp-delete',
                          
                 headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
