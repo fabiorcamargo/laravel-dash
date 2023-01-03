@@ -38,7 +38,13 @@
     </div>
 
     <div class="row layout-top-spacing">
-
+        @if (\Session::has('success'))
+        <div class="alert alert-success">
+            <ul>
+                <li>{!! \Session::get('success') !!}</li>
+            </ul>
+        </div>
+    @endif
         
         <form action="{{ getRouterValue(); }}/store"  method="post" enctype="multipart/form-data">
 

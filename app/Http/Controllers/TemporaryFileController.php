@@ -98,10 +98,10 @@ class TemporaryFileController extends Controller
     public function openCsv($file){
         
         {
-            $import = new UsersImport;
-            Excel::import($import, "$file");
 
-           
+            $response = Excel::toArray(new UsersImport, "$file");
+
+           dd($response);
 
             //return redirect('/')->with('success', 'All good!');
         }
