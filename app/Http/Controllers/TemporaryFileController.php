@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Storage;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class TemporaryFileController extends Controller
 {
 
-    public function __construct(TemporaryFile $file)
+    public function __construct(TemporaryFile $file, User $user)
     {
         $this->file = $file;
+        $this->user = $user;
     }
     
 
@@ -40,9 +42,22 @@ class TemporaryFileController extends Controller
 
         
         $file = "/tmp/" . $data->folder . "/" . $data->file;
-        TemporaryFileController::openCsv($file);
+        $users = Excel::toArray(new UsersImport, "$file");
+        //$users = $response[0];
+
+        foreach ($users[0] as &$user)
+        {
+            $username = $user["username"];
+            if ( (User::where('username', $username)->first())){
+            $user["exist"] = 1;
+            }else{
+            $user["exist"] = 0;
+            }
+        }
+
         
-        return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+
+       return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file'));
 
     }
     public function tmpUpload(Request $request)
@@ -95,16 +110,15 @@ class TemporaryFileController extends Controller
         return '';
     }
 
-    public function openCsv($file){
+    public function openCsv(Request $request){
         
-        {
+        
+            $file = $request->file;
+            $users = Excel::import(new UsersImport, "$file");
+            dd($users);
 
-            $response = Excel::toArray(new UsersImport, "$file");
-
-           dd($response);
-
-            //return redirect('/')->with('success', 'All good!');
-        }
+           // return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file'));
+        
 
         
     

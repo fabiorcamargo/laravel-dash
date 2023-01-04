@@ -1,4 +1,4 @@
-<x-base-layout :scrollspy="true">
+<x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
         {{$title}} 
@@ -19,49 +19,113 @@
         data-bs-spy="scroll" data-bs-target="#navSection" data-bs-offset="100"
     </x-slot>
     
+
     <!-- BREADCRUMB -->
     <div class="page-meta">
-        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+        <nav class="breadcrumb-style-four  mb-3" aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Form</a></li>
-                <li class="breadcrumb-item active" aria-current="page">File Upload</li>
+            <li class="breadcrumb-item"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text">Home</span></a></li>
+            <li class="breadcrumb-item"><a href="#">Library</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Data</li>
             </ol>
-        </nav>
+            </nav>
     </div>
     <!-- /BREADCRUMB -->
 
-    <div id="navSection" data-bs-spy="affix" class="nav  sidenav">
-        <div class="sidenav-content">
-            <a href="#fuSingleFile" class="active nav-link">Single File</a>
-            <a href="#fuMultipleFile" class="nav-link">Multiple File</a>
-        </div>
-    </div>
 
-    <div class="row layout-top-spacing">
-        @if (\Session::has('success'))
-        <div class="alert alert-success">
-            <ul>
-                <li>{!! \Session::get('success') !!}</li>
-            </ul>
-        </div>
-    @endif
-        
-        <form action="{{ getRouterValue(); }}/store"  method="post" enctype="multipart/form-data">
+        @if (@isset($users))
 
-            
-                
-            @csrf
-            <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
+        <div class="row layout-top-spacing">
+
+            <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header">
                         <div class="row">
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4>Multiple File</h4>
-                            </div>      
+                                <h4>Lista de Usuários</h4>
+                            </div>
                         </div>
                     </div>
-                    <input name="verifica" value= "">
                     <div class="widget-content widget-content-area">
+    
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                            
+                                        <th>UserID</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Telefone</th>
+                                        <th class="text-center">Status</th>
+                                        <th class="text-center dt-no-sorting">Existe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($users[0] as $user)
+
+
+                                    
+
+
+                                    <tr>
+                                        
+                                        <td>{{ $user["username"] }}</td>
+                                        <td>{{ $user["name"]}}</td>
+                                        <td>{{ $user["email"] }}</td>
+                                        <td>{{ $user["cellphone"] }}</td>
+
+                                        @if ($user["payment"] == "CARTÃO")
+                                        <td class="text-center"><span class="shadow-none badge badge-success">Cartão</span></td>
+                                        @elseif ($user["payment"] == "BOLETO")
+                                        <td class="text-center"><span class="shadow-none badge badge-primary">Boleto</span></td>
+                                        @else
+                                        <td class="text-center"><span class="shadow-none badge badge-dark">Vazio</span></td>
+                                        @endif
+                                        <td>{{ $user["exist"] }}</td>
+                                        
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+    
+    
+    
+                    </div>
+                </div>
+            </div>
+            <form action="{{ getRouterValue(); }}/csv"  method="post" enctype="multipart/form-data">
+                @csrf
+            <input type="text" name="file" value="{{ $file }}">
+            <div class="d-flex justify-content-end">
+                <p>Total de Usuários da lista:  {{ count($users[0]) }} <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button></p>
+            </div>
+            </form>
+
+        </div>
+
+
+        
+
+    @endif
+        
+    @if (@empty($users))
+    <div class="row layout-top-spacing">
+
+        <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+            <div class="statbox widget box box-shadow">
+                <div class="widget-header">
+                    <div class="row">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                            <h4>Lista de Usuários</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="widget-content widget-content-area">
+
+        <form action="{{ getRouterValue(); }}/store"  method="post" enctype="multipart/form-data">
+            @csrf
+            <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
                         <div class="row">
                             <div class="col-md-6 mx-auto">
                                 <div class="multiple-file-upload">
@@ -69,15 +133,16 @@
                                 </div>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button>
                     </div>
                 </div>
             </div>
-            <button type="submit" class="w-full shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                Enviar
-            </button>
         </form>
-
+        </div>
     </div>
+    
+
+    @endif
     
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
@@ -99,7 +164,7 @@
             const inputElement = document.querySelector('input[type="file"]');
 
             const pond = FilePond.create(inputElement);
-                        
+                    
             FilePond.setOptions({
             server: {
                 process: '{{ getRouterValue(); }}/tmp-upload',
@@ -108,7 +173,9 @@
                 headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
+                
             }
+            
             });
 
 

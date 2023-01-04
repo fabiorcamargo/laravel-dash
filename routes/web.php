@@ -97,7 +97,7 @@ foreach ($prefixRouters as $prefixRouter) {
         
         Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
         Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
-        Route::get('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
+        Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
         Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
            
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');

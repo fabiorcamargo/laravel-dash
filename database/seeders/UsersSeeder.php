@@ -31,6 +31,8 @@ class UsersSeeder extends Seeder
             'document' => '05348908908',
             'seller' => 'Fábio Divulgador',
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
+            'active' => true,
+            'first' => true,
         ],[
             'username' => '61001',
             'name' => 'Fábio Aluno',
@@ -46,6 +48,8 @@ class UsersSeeder extends Seeder
             'document' => '05348908908',
             'seller' => 'Fábio Divulgador',
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
+            'active' => true,
+            'first' => true,
         ],
         ]
     

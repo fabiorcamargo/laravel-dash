@@ -30,6 +30,8 @@ return new class extends Migration
             $table->string('document',11);
             $table->string('seller');
             $table->string('courses');
+            $table->boolean('active');
+            $table->boolean('first')->nullable();
             $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
