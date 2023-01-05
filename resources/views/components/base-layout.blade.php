@@ -100,9 +100,10 @@
             !Request::routeIs('login')
         )
 
-        @if (!Request::routeIs('blank'))  
+        @if (!Request::routeIs('blank', 'first'))  
         <!--  BEGIN NAVBAR  -->
         <x-navbar.style-vertical-menu classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        
         <!--  END NAVBAR  -->
         @endif
 
@@ -113,14 +114,15 @@
             <x-layout-overlay/>
             <!--  END LOADER  -->
 
-            @if (!Request::routeIs('blank')) 
+            @if (!Request::routeIs('blank', 'first')) 
             <!--  BEGIN SIDEBAR  -->
             
-            @if ( (Auth::user()->role) == 7 )
-            <x-menu.vertical-menu/>
-            @elseif ( (Auth::user()->role) == 1 )
-            <x-menu.student-menu/>
-            @endif
+            
+                @if ( (Auth::user()->role) == 7 )
+                <x-menu.vertical-menu/>
+                @elseif ( (Auth::user()->role) == 1 )
+                <x-menu.student-menu/>
+                @endif
             
             
             <!--  END SIDEBAR  -->   

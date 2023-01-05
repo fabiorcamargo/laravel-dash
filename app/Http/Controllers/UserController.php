@@ -159,6 +159,13 @@ class UserController extends Controller
         return compact($field);
     }
 
+    public function post(Request $request)
+    {
+        dd($request);
+        
+        //return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
 }
 
 

@@ -55,6 +55,10 @@ use Illuminate\Support\Facades\Route;
             
 
                     Route::prefix('aluno')->group(function () {
+                        Route::get('/first', function () {
+                            return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início']);
+                        })->name('first');
+                        Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
                         Route::get('/inicio', function () {
                             return view('pages.aluno.my', ['title' => 'Início', 'breadcrumb' => 'Início']);
                         })->name('inicio');
