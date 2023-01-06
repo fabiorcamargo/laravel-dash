@@ -83,8 +83,11 @@
                                 <a href="{{getRouterValue();}}/app/user/create"> Novo </a>
                             </li>
                             <li class="{{ Request::routeIs('user-lote') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/user/lote"> Em Lote </a>
-                            </li>                            
+                                <a href="{{getRouterValue();}}/app/user/lote"> Atualizar </a>
+                            </li>         
+                            <li class="{{ Request::routeIs('user-lot') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/user/lot"> Carregar </a>
+                            </li>                       
                         </ul>
                     </li>
 

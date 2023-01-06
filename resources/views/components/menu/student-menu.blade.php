@@ -45,8 +45,8 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled {{ Request::is('*/aluno/*') ? "show" : "" }}" id="aluno" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('inicio') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/aluno/inicio"> Início </a>
+                            <li class="{{ Request::routeIs('my') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/aluno/my"> Início </a>
                             </li>
                             <li class="{{ Request::routeIs('pagamento') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/aluno/pagamento"> Pagamento </a>

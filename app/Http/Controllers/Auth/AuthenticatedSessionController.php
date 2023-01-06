@@ -17,7 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        return view('auth.login2', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
     }
 
     /**
@@ -32,14 +32,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        if(empty(Auth::user()->first)){
+        $home = '/modern-dark-menu/aluno/first';
+        }else{    
+
         if ((Auth::user()->role) == 7)
         {
         $home = '/modern-dark-menu/dashboard/sales';
         }
         else if ((Auth::user()->role) == 1)
         {
-        $home = '/modern-dark-menu/dashboard/my';    
+        $home = '/modern-dark-menu/aluno/inicio';    
         }
+        
+    }
         
         return redirect()->intended($home);
     }

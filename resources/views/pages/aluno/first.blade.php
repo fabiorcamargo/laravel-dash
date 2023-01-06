@@ -15,6 +15,11 @@
         @vite(['resources/scss/dark/assets/pages/knowledge_base.scss'])
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+        <link rel="stylesheet" href="{{asset('plugins/filepond/filepond.min.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/filepond/FilePondPluginImagePreview.min.css')}}">
+        @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
+        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
         
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
@@ -24,9 +29,9 @@
         data-bs-spy="scroll" data-bs-target="#navSection" data-bs-offset="100"
     </x-slot>
     
-   
 
     
+
         <div id="wizard_Default" class="col-lg-12 layout-spacing">
             <div class="statbox widget box box-shadow">
                 <div class="widget-content widget-content-area">
@@ -106,21 +111,21 @@
 
                                     <div class="form-group mb-4">
                                         <label for="name">Primeiro Nome</label>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória">
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="on">
                                     </div>
                                     <div class="form-group mb-4">
-                                        <label for="lastname">Nome do Meio e Sobrenome</label>
-                                        <input type="lastname" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva">
+                                        <label for="lastname">Sobrenome</label>
+                                        <input type="lastname" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="on">
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" value="">
+                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" value="" autocomplete="on">
                                         </div>
                                     </div>     
                                     <div class="form-group mb-4">
                                         <label for="defaultEmailAddress">Telefone (Whatsapp) </label>
-                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="ph" id="ph">
+                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on">
                                     </div>
                                     <div class="form-group">
                                         <label for="city">Cidade - Estado</label>
@@ -139,42 +144,42 @@
                              
                             </div>
                             <div id="defaultStep-three" class="content" role="tabpanel" >
-                                
-                                    <div class="col-12">
-                                        <label for="defaultInputAddress" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="defaultInputAddress" placeholder="1234 Main St">
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="defaultInputAddress2" class="form-label">Address 2</label>
-                                        <input type="text" class="form-control" id="defaultInputAddress2" placeholder="Apartment, studio, or floor">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="defaultInputCity" class="form-label">City</label>
-                                        <input type="text" class="form-control" id="defaultInputCity">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label for="defaultInputState" class="form-label">State</label>
-                                        <select id="defaultInputState" class="form-select">
-                                            <option selected="">Choose...</option>
-                                            <option>...</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-2">
-                                        <label for="defaultInputZip" class="form-label">Zip</label>
-                                        <input type="text" class="form-control" id="defaultInputZip">
-                                    </div>
-                                    <div class="col-12">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" id="defaultGridCheck">
-                                            <label class="form-check-label" for="defaultGridCheck">
-                                                Check me out
-                                            </label>
+                                <div class="faq-header-content">
+                                    <div class="fq-header-wrapper">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-12 align-self-center order-md-0 order-1">
+                                                    <div class="faq-header-content">
+                                                        <h2 class="animate__animated animate__fadeIn">Nova Senha</h2>
+                                                        <div class="row">
+                                                        
+                                                        </div>
+                                                        <p class="mt-4 mb-0 animate__animated animate__fadeIn">Recomendamos que seja utilizado uma senha fácil.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
+                                </div>
+                                    <div class="col-12">
+                                        <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
+                                            
+                                            <label for="name">Nova Senha</label>
+                                            <input type="password" class="form-control" name="password" id="myInput" placeholder="******" autocomplete="on">
+                                            
+                                            <label for="name">Repita a Senha</label>
+                                            <input type="password" class="form-control mb-2" name="password" id="myInput2" placeholder="******" autocomplete="on">
+                                            <a id="customCheck1" class="mt-2" onclick="myFunction()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
+                                             
+                                        </div>
+                                        <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button>
+                                    </div>
+                                </div>
+                                    </div>
+                                </div>
+                                    </div>             
                                 
-                                    <div class="d-grid gap-2 mt-5">
-                                        <button class="btn btn-primary" type="submit">Enviar</button>
-                                      </div>
+                                    
                             </form>
                             </div>
                           
@@ -205,7 +210,59 @@
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask-custom.js')}}"></script>
    
-   
+
+
+        <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/FilePondPluginFileValidateType.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/FilePondPluginImageExifOrientation.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/FilePondPluginImagePreview.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/FilePondPluginImageCrop.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/FilePondPluginImageResize.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/FilePondPluginImageTransform.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/filepondPluginFileValidateSize.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/custom-filepond.js')}}"></script>
+        <script>
+            
+        </script>
+        <script>
+
+            const inputElement = document.querySelector('input[type="file"]');
+
+            const pond = FilePond.create(inputElement);
+                    
+            FilePond.setOptions({
+            server: {
+                process: '{{ getRouterValue(); }}/avatar-upload',
+                revert: '{{ getRouterValue(); }}/avatar-delete',
+                         
+                headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+                
+            }
+            
+            });
+
+
+
+        </script>
+
+        <script>
+            function myFunction() {
+            var x = document.getElementById("myInput");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+            var x = document.getElementById("myInput2");
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+            }
+            </script>
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

@@ -29,6 +29,7 @@
         @vite(['resources/layouts/vertical-dark-menu/loader.js'])
     @elseif ((Request::is('collapsible-menu/*')))
         @vite(['resources/layouts/collapsible-menu/loader.js'])
+    @else @vite(['resources/layouts/vertical-dark-menu/loader.js'])
     @endif
     
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateUserFormRequest;
+use App\Models\Avatar;
 use App\Models\City;
 use App\Models\State;
+use App\Models\TemporaryFile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,11 +17,13 @@ class UserController extends Controller
 {
     protected $model;
 
-    public function __construct(User $user, State $state, City $cities)
+    public function __construct(User $user, State $state, City $cities, TemporaryFile $file, Avatar $avatar)
     {
         $this->user = $user;
         $this->state = $state;
         $this->cities = $cities;
+        $this->file = $file;
+        $this->avatar = $avatar;
     }
 
     public function index(Request $request)
@@ -161,9 +165,25 @@ class UserController extends Controller
 
     public function post(Request $request)
     {
-        dd($request);
+        $user = $this->user->find(Auth::user()->id);
+
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+        $de = array('.','-');
+        $para = array('','');
+        $data['document'] = str_replace($de, $para, $request->document);
+        $de = array('(',')',' ','-');
+        $para = array('','','','');
+        $data['cellphone'] = str_replace($de, $para, $request->cellphone);
+        if ($request->image) {
+            $data['image'] = $request->image->store('users');
+            // $extension = $request->image->getClientOriginalExtension();
+            // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
+        }
+        $user->update($data);
         
-        //return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        
+        return view('pages.aluno.my', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
     }
 
 }

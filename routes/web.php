@@ -56,12 +56,12 @@ use Illuminate\Support\Facades\Route;
 
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', function () {
-                            return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início']);
+                            return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
                         })->name('first');
                         Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
-                        Route::get('/inicio', function () {
+                        Route::get('/my', function () {
                             return view('pages.aluno.my', ['title' => 'Início', 'breadcrumb' => 'Início']);
-                        })->name('inicio');
+                        })->name('my');
                         Route::get('/pagamento', function () {
                             return view('pages.aluno.payment', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
                         })->name('pagamento');
@@ -101,6 +101,8 @@ foreach ($prefixRouters as $prefixRouter) {
         
         Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
         Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+        Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
+        Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
         Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
         Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
            

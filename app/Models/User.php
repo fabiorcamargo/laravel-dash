@@ -24,6 +24,7 @@ class User extends Authenticatable
         'username',
         'email',
         'name',
+        'lastname',
         'password',
         'cellphone',
         'city',
@@ -79,5 +80,9 @@ class User extends Authenticatable
     public function cademis()
     {
         return $this->hasMany(Cademi::class);
+    }
+    public function avatar()
+    {
+        return $this->hasMany(Avatar::class);
     }
 }
