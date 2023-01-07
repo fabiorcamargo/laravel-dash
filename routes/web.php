@@ -52,19 +52,26 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
-            
+                    Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
+                    Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+                    Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
+                    Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
+                    Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
+                    Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
+                    
 
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', function () {
                             return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
-                        })->name('first');
+                        })->name('aluno.first');
+                        Route::get('/second', function () {
+                            return view('pages.aluno.second', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                        })->name('aluno.second');
                         Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
-                        Route::get('/my', function () {
-                            return view('pages.aluno.my', ['title' => 'Início', 'breadcrumb' => 'Início']);
-                        })->name('my');
+                        Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
                         Route::get('/pagamento', function () {
                             return view('pages.aluno.payment', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-                        })->name('pagamento');
+                        })->name('aluno.pagamento');
                         Route::get('/config', [UserController::class, 'username'])->name('config');
                         
                     });
@@ -99,13 +106,7 @@ $prefixRouters = [
 foreach ($prefixRouters as $prefixRouter) {
     Route::prefix($prefixRouter)->group(function () {
         
-        Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
-        Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
-        Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
-        Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
-        Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
-        Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
-           
+        
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
         Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');
         Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');

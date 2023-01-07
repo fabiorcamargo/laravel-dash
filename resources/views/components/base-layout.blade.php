@@ -11,6 +11,7 @@
 @php
     $isBoxed = layoutConfig()['boxed'];
     $isAltMenu = layoutConfig()['alt-menu']; 
+
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -101,9 +102,10 @@
             !Request::routeIs('login')
         )
 
-        @if (!Request::routeIs('blank', 'first'))  
+        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post'))  
         <!--  BEGIN NAVBAR  -->
-        <x-navbar.style-vertical-menu classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        <x-navbar.style-vertical-menu avatar="{{ $avatar }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        
         
         <!--  END NAVBAR  -->
         @endif
@@ -115,7 +117,7 @@
             <x-layout-overlay/>
             <!--  END LOADER  -->
 
-            @if (!Request::routeIs('blank', 'first')) 
+            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post')) 
             <!--  BEGIN SIDEBAR  -->
             
             

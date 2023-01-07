@@ -105,11 +105,27 @@ class TemporaryFileController extends Controller
     public function AvatarUpload(Request $request)
     {
         
-        if($request->hasFile('image')){
+
+        if ($avatar = $this->avatar->where('user_id', Auth::user()->id)->first()){
+           // dd($data);
+            if($request->hasFile('image')){
+                $image = $request->file('image');
+                $file_name = $image->getClientOriginalName();
+                $folder = uniqid('avatar', true);
+                $image->storeAs('avatar/' . $folder, $file_name);
+    
+                $avatar->update([
+                    'folder' => $folder,
+                    'file' => $file_name,
+                ]);
+                return $folder;
+            }
+        } else if($request->hasFile('image')){
             $image = $request->file('image');
             $file_name = $image->getClientOriginalName();
             $folder = uniqid('avatar', true);
             $image->storeAs('avatar/' . $folder, $file_name);
+
             Avatar::create([
                 'folder' => $folder,
                 'file' => $file_name,
@@ -137,12 +153,12 @@ class TemporaryFileController extends Controller
 
     public function AvatarDelete(Request $request)
     {
-        $tmp_file = TemporaryFile::where('folder', request()->getContent())->first();
+        $avatar = Avatar::where('folder', request()->getContent())->first();
         
-        if (isset($tmp_file)) {
-            Storage::deleteDirectory('avatar/' . $tmp_file->folder);
-            $tmp_file->delete();
-            return "Delete: " . $tmp_file->folder;
+        if (isset($avatar)) {
+            Storage::deleteDirectory('avatar/' . $avatar->folder);
+            $avatar->delete();
+            return "Delete: " . $avatar->folder;
         }
         return '';
     }

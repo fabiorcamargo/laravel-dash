@@ -42,7 +42,7 @@ class AuthenticatedSessionController extends Controller
         }
         else if ((Auth::user()->role) == 1)
         {
-        $home = '/modern-dark-menu/aluno/inicio';    
+        $home = '/modern-dark-menu/aluno/my';    
         }
         
     }

@@ -30,7 +30,7 @@ return [
     | By default, it is stored on the local disk which defaults to `/storage/app/{temporary_files_path}`
     |
     */
-    'temporary_files_path' => env('FILEPOND_TEMP_PATH', 'tmp'),
+    'temporary_files_path' => env('FILEPOND_TEMP_PATH', '/storage/app/public'),
     'temporary_files_disk' => env('FILEPOND_TEMP_DISK', 'local'),
 
     /*

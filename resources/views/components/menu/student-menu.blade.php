@@ -22,7 +22,7 @@
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="{{getRouterValue();}}/aluno/inicio" class="nav-link"> Estudante </a>
+                            <a href="{{getRouterValue();}}/aluno/my" class="nav-link"> Estudante </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
@@ -45,7 +45,7 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled {{ Request::is('*/aluno/*') ? "show" : "" }}" id="aluno" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('my') ? 'active' : '' }}">
+                            <li class="{{ Request::routeIs('aluno.my') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/aluno/my"> Início </a>
                             </li>
                             <li class="{{ Request::routeIs('pagamento') ? 'active' : '' }}">

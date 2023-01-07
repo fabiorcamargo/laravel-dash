@@ -183,9 +183,26 @@ class UserController extends Controller
         $user->update($data);
         
         
-        return view('pages.aluno.my', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.aluno.second', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
     }
 
+
+    public function my(){
+/*
+        $avatar = $this->avatar->where('user_id', Auth::user()->id)->first();
+        
+        
+
+        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => 'teste']);
+        */
+
+        $data = $this->avatar->where('user_id', Auth::user()->id)->first();
+        $avatar =  $data->folder . "/" . $data->file;
+
+
+        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('avatar'));
+
+    }
 }
 
 
