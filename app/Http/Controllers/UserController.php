@@ -24,6 +24,7 @@ class UserController extends Controller
         $this->cities = $cities;
         $this->file = $file;
         $this->avatar = $avatar;
+        
     }
 
     public function index(Request $request)
@@ -34,6 +35,7 @@ class UserController extends Controller
                         );
 
         return view('users.index', compact('users'));
+        
     }
 
     public function show($id)
@@ -200,7 +202,7 @@ class UserController extends Controller
         $avatar =  $data->folder . "/" . $data->file;
 
 
-        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('avatar'));
+        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => $avatar]);
 
     }
 }

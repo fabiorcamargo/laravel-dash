@@ -106,6 +106,7 @@
             <form action="{{ getRouterValue(); }}/csv"  method="post" enctype="multipart/form-data">
                 @csrf
             <input type="text" name="file" value="{{ $file }}">
+            <input type="text" name="folder" value="{{ $folder }}">
             <div class="d-flex justify-content-end">
                 <p>Total de Usuários da lista:  {{ count($users[0]) }} <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button></p>
             </div>
@@ -174,10 +175,7 @@
         </script>
         <script>
 
-            const inputElement = document.querySelector('input[type="file"]');
 
-            const pond = FilePond.create(inputElement);
-                    
             FilePond.setOptions({
             server: {
                 process: '{{ getRouterValue(); }}/tmp-upload',

@@ -104,7 +104,7 @@
 
         @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post'))  
         <!--  BEGIN NAVBAR  -->
-        <x-navbar.style-vertical-menu avatar="{{ $avatar }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        <x-navbar.style-vertical-menu avatar="{{ Auth::user()->image }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
         
         
         <!--  END NAVBAR  -->

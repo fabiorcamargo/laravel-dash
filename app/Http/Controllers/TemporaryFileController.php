@@ -6,6 +6,9 @@ use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+
+
+
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
@@ -43,7 +46,7 @@ class TemporaryFileController extends Controller
         
         $data = $this->file->where('folder', $request->image)->first();
         
-
+        $folder = "/tmp/" . $data->folder;
         $file = "/tmp/" . $data->folder . "/" . $data->file;
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
@@ -60,7 +63,7 @@ class TemporaryFileController extends Controller
 
         
 
-       return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file'));
+       return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file', 'folder'));
 
     }
     public function tmpUpload(Request $request)
@@ -104,32 +107,40 @@ class TemporaryFileController extends Controller
 
     public function AvatarUpload(Request $request)
     {
-        
-
+        $user = $this->user->where('id', Auth::user()->id)->first();
         if ($avatar = $this->avatar->where('user_id', Auth::user()->id)->first()){
            // dd($data);
             if($request->hasFile('image')){
                 $image = $request->file('image');
                 $file_name = $image->getClientOriginalName();
-                $folder = uniqid('avatar', true);
-                $image->storeAs('avatar/' . $folder, $file_name);
+                $folder = Auth::user()->username;
+
+                //$path = $request->file('image')->store('avatars', 'public');
+                $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
     
                 $avatar->update([
                     'folder' => $folder,
                     'file' => $file_name,
                 ]);
+                $user->update([
+                    'image' => $folder . "/" . $file_name,
+                ]);
                 return $folder;
             }
+
         } else if($request->hasFile('image')){
             $image = $request->file('image');
             $file_name = $image->getClientOriginalName();
-            $folder = uniqid('avatar', true);
-            $image->storeAs('avatar/' . $folder, $file_name);
+            $folder = Auth::user()->username;
+            $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
 
             Avatar::create([
                 'folder' => $folder,
                 'file' => $file_name,
                 'user_id' => Auth::user()->id
+            ]);
+            $user->update([
+                'image' => $folder . "/" . $file_name,
             ]);
             return $folder;
         }
@@ -139,11 +150,13 @@ class TemporaryFileController extends Controller
 
     public function FilepondDelete(Request $request)
     {
+        
         $tmp_file = TemporaryFile::where('folder', request()->getContent())->first();
         
         if (isset($tmp_file)) {
             Storage::deleteDirectory('tmp/' . $tmp_file->folder);
             $tmp_file->delete();
+            
             return "Delete: " . $tmp_file->folder;
         }
         return '';
@@ -153,11 +166,15 @@ class TemporaryFileController extends Controller
 
     public function AvatarDelete(Request $request)
     {
+        $user = $this->user->where('id', Auth::user()->id)->first();
         $avatar = Avatar::where('folder', request()->getContent())->first();
         
         if (isset($avatar)) {
             Storage::deleteDirectory('avatar/' . $avatar->folder);
             $avatar->delete();
+            $user->update([
+                'image' => null,
+            ]);
             return "Delete: " . $avatar->folder;
         }
         return '';
@@ -169,9 +186,13 @@ class TemporaryFileController extends Controller
         
         
             $file = $request->file;
+            $folder = $request->folder;
+
             $users = Excel::import(new UsersImport, "$file");
             //dd($users);
             $success = "Verdade";
+            Storage::deleteDirectory($folder);
+            
             return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
         
 

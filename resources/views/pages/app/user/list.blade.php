@@ -65,7 +65,7 @@
                                 <td>
                                     <div class="d-flex">
                                         <div class="usr-img-frame mr-2 rounded-circle">
-                                            <span><img src="{{Vite::asset('resources/images/profile-9.jpeg')}}" class="rounded-circle profile-img" alt="avatar"></span>
+                                            <span><img src="{{ asset("avatar/" . $user->image) }}" class="rounded-circle profile-img" alt="avatar"></span>
                                         </div>
                                     </div>
                                 </td>

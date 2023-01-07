@@ -30,7 +30,7 @@
 
 
 
-        <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+        <div id="tableSimple" class="col-lg-12 col-12 layout-spacing" style="    margin-top: -40px;">
             
             <div class="statbox widget box box-shadow">
                 
@@ -39,23 +39,25 @@
                         <div class="fq-header-wrapper">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-md-12 align-self-center order-md-0 order-1">
+                                    <div class="col-md-12 align-self-center order-md-0">
                                         <div class="faq-header-content">
                                             <h2 class="animate__animated animate__pulse animate__infinite"><img src="{{Vite::asset('resources/images/logo.svg')}}" class="navbar-logo logo-dark  mb-3" style="width: 80px;" alt="logo"></h2   >
-                                            <h2 class="animate__animated animate__fadeIn animate__delay-1s">Seja bem Vindo</h2>
+                                            <h2 class="animate__animated animate__fadeIn animate__delay-1s">Última Etapa</h2>
                                             <div class="row">
                                             
                                             </div>
-                                            <p class="mt-4 mb-0 animate__animated animate__fadeIn animate__delay-2s">Siga os próximos passos para ativar seu acesso</p>
-                                        </div>
-
-                                            <div class="row">
-                                                <input type="file" id="image" name="image" class="filepond col-md-2 avatar avatar-xl">
+                                            <p class="mt-4 mb-2 animate__animated animate__fadeIn animate__delay-2s">Carregue uma foto da sua preferência para o seu perfil.</p>
+                                            <div class="">
+                                                <input type="file" id="image" name="image" class="filepond col-md-2 ">
                                             </div>
-                                            
-                                            <div class="row mb-5">
+                                            <div class="row">
                                                 <a type="submit" href="{{getRouterValue();}}/aluno/my" class="btn btn-primary mb-2 me-4 mt-5">Enviar</a>
                                             </div>
+                                        </div>
+
+                                            
+                                            
+                                            
                                             
                                             
                                   
@@ -70,8 +72,6 @@
 
             </div>
         </div>
-
-        
 
 
 
@@ -88,16 +88,6 @@
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
 
-        @vite(['resources/assets/js/pages/knowledge-base.js'])
-
-        <script src="{{asset('plugins/stepper/bsStepper.min.js')}}"></script>
-        <script src="{{asset('plugins/stepper/custom-bsStepper.min.js')}}"></script>
-
-        <script src="{{asset('plugins/autocomplete/autoComplete.min.js')}}"></script>
-        <script src="{{asset('plugins/autocomplete/city_autoComplete.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/input-mask-custom.js')}}"></script>
-   
 
 
         <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
