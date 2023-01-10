@@ -30,7 +30,7 @@
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
-        <script src="{{asset('plugins/apex/apexcharts.min.js')}}"></script>
+        
         {{-- <script src="{{asset('plugins/apex/custom-apexcharts.js')}}"></script> --}}
         @vite(['resources/assets/js/widgets/modules-widgets.js'])
     </x-slot>

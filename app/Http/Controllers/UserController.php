@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\State;
 use App\Models\TemporaryFile;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -127,9 +128,11 @@ class UserController extends Controller
     public function list(Request $request)
     {
         $users = $this->user
-                        ->getUsers(
-                            search: $request->search ?? ''
+                        ->all(
+                            
                         );
+
+                       
 
         return view('pages.app.user.list', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
@@ -213,6 +216,46 @@ class UserController extends Controller
         return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => $avatar]);
 
     }
+
+    public function newids(Request $request){
+
+        $users = User::factory()
+                ->count(10)
+                ->state(new Sequence(
+                    ['admin' => 'Y'],
+                    ['admin' => 'N'],
+                ))
+                ->create();
+        
+        $data = $request->all();
+        dd($data);
+        $data['password'] = bcrypt($request->password);
+        $de = array('.','-');
+        $para = array('','');
+        $data['document'] = str_replace($de, $para, $request->document);
+        $de = array('(',')',' ','-');
+        $para = array('','','','');
+        $data['cellphone'] = str_replace($de, $para, $request->cellphone);
+        if ($request->image) {
+            $data['image'] = $request->image->store('users');
+            // $extension = $request->image->getClientOriginalExtension();
+            // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
+        }
+            
+        
+        $response = json_decode(($this->model->create($data)), true);
+
+        $id = ($response['id']);
+        
+               
+                
+                
+        
+        
+                return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb']);
+        
+            }
+    
 }
 
 

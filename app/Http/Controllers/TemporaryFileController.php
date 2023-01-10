@@ -6,24 +6,26 @@ use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-
+use App\Http\Controllers\CademiController;
 
 
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
 use App\Models\Avatar;
+use App\Models\Cademi;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class TemporaryFileController extends Controller
 {
 
-    public function __construct(TemporaryFile $file, User $user, Avatar $avatar)
+    public function __construct(TemporaryFile $file, User $user, Avatar $avatar, Cademi $cademi)
     {
         $this->file = $file;
         $this->user = $user;
         $this->avatar = $avatar;
+        $this->cademi = $cademi;
     }
     
 
@@ -184,23 +186,36 @@ class TemporaryFileController extends Controller
 
 
     public function openCsv(Request $request){
-
-
+        
+            //return redirect()->route('cademi.store', "fabiotb");
+           
             $file = $request->file;
             $folder = $request->folder;
             $users = Excel::toArray(new UsersImport, "$file");
-            Excel::import(new UsersImport, "$file");
             //dd($users[0][0]);
-            foreach ($users[0] as &$user){
-                $username = $user["username"];
+            
+            //return redirect()->route('cademi.lote', $users[0][0]['username']);
+            Excel::import(new UsersImport, "$file");
+                        
+            
+            foreach ($users[0] as &$usr){
+                //dd($usr['username']);
+                $user = $this->user->where('username', $usr['username'])->first();
                 
-                return redirect()->route('cademi.lote', $username);
-                dd($username);
+                $var = new CademiController();
+                $var->lote($user);
+            
+                //dd($user->id);
+                //$user->cademi()->lote($users[0]);
+                //dd($username);
+               
+                //return redirect()->route('cademi.create', $username);
+
             }
 
             //return redirect()->route('cademi.lote', ['file'=>$file, 'folder'=>$folder]);
             
-            /*
+            
             $tmp = TemporaryFile::where('folder', $folder);
 
             $users = Excel::import(new UsersImport, "$file");
@@ -210,7 +225,7 @@ class TemporaryFileController extends Controller
             $tmp->delete();
 
             return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
-        */
+        
 
         
     

@@ -12,22 +12,17 @@ use App\Models\{
 use App\Http\Requests\StoreUpdateCademiRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class CademiController extends Controller
 {
-    protected $cademi;
-    protected $user;
+   
 
-    public function __construct(Cademi $cademi, User $user)
-    {
-        $this->cademi = $cademi;
-        $this->user = $user;
-    }
+    
 
     public function create($userId)
     {
-
-
+        
         if (!$user = $this->user->find($userId)) {
             return redirect()->back();
         }
@@ -47,30 +42,34 @@ class CademiController extends Controller
             "cliente_endereco_estado"=> $user->uf,
             "produto_nome" => $user->courses
         ];
-
-        //dd($payload);
+        $data = Storage::get('file.txt', $user->username);
+        Storage::put('file.txt', $data . $user->username);
+        
         
 
         //Cria um novo aluno na cademi
 
-        Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+        //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
         
-        return redirect()->route('users.index');
+       // return redirect()->route('users.index');
     }
     
 
 
-    public function lote($username)
+    public function lote($data)
     {
-        
-        //dd($username);
-        $user = $this->user->where('username', $username)->first();
-        //dd($user);
-       
+
+        //dd($data);
+        /*
+        if (!$user = $this->user->find($data)) {
+            return redirect()->back();
+        }*/
+        $user = $data;
+       // dd($user->id);
 
         $payload = [
             "token" => env('CADEMI_TOKEN_GATEWAY'),
-            "codigo"=> "codf" . $user->id,
+            "codigo"=> "codc" . $user->id,
             "status"=> "aprovado",
             "produto_id"=> "AG60",
             "produto_nome"=> "Agente Bancário",
@@ -82,13 +81,13 @@ class CademiController extends Controller
             "cliente_endereco_estado"=> $user->uf,
             "produto_nome" => $user->courses
         ];
-
-        //dd($payload);
+        
+        
         
 
         //Cria um novo aluno na cademi
 
-        Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+        //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
         
         return '';
     }

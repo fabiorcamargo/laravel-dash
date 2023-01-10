@@ -58,8 +58,8 @@ use Illuminate\Support\Facades\Route;
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
                     Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
-                    
 
+                   
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', function () {
                             return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
@@ -128,8 +128,8 @@ foreach ($prefixRouters as $prefixRouter) {
     
      
         Route::get('/users/{id}/cademi/create', [CademiController::class, 'create'])->name('cademi.create');
-        Route::post('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
-        Route::get('/users/{username}/lote', [CademiController::class, 'lote'])->name('cademi.lote');
+        Route::get('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
+        Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
     
 
 
@@ -172,6 +172,11 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::get('/resp', [UserController::class, 'resp'])->name('user-resp');
                 Route::get('/create', [UserController::class, 'create'])->name('user-create');
                 Route::get('/lote', [UserController::class, 'lote'])->name('user-lote');
+                Route::get('/newids', function () {
+                    return view('pages.app.user.newids', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                });
+                Route::post('/newids', [UserController::class, 'newids'])->name('user-newids');
+                
             });
 
             Route::get('/calendar', function () {
