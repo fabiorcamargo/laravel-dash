@@ -67,6 +67,9 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/second', function () {
                             return view('pages.aluno.second', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
                         })->name('aluno.second');
+                        Route::get('/finish', function () {
+                            return view('pages.aluno.finish', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                        })->name('aluno.finish');
                         Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
                         Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
                         Route::get('/pagamento', function () {

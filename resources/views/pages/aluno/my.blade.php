@@ -23,43 +23,7 @@
     <div class="row layout-top-spacing">
 
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-card-cademi title="Statistics"/>
-        </div>
-        
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-card-four title="Expenses"/>
-        </div>  
-    
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-card-three title="Total Balance"/>
-        </div>
-    
-        <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-chart-three title="Unique Visitors"/>
-        </div>
-    
-        <div class="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-activity-five title="Activity Log"/>
-        </div>
-    
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-             <x-widgets._w-four title="Visitors by Browser"/>
-        </div>
-    
-        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
-            <x-widgets._w-hybrid-one title="Followers" chart-id="hybrid_followers"/>
-        </div>
-    
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-five title="Figma Design"/>
-        </div>
-    
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-card-one title="Jimmy Turner"/>
-        </div>
-    
-        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-card-two title="Dev Summit - New York"/>
+            <x-widgets._w-card-cademi title="Acesse seu curso"/>
         </div>
 
     </div>
