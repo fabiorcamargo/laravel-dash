@@ -34,6 +34,7 @@ class UsersSeeder extends Seeder
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
             'active' => true,
             'first' => true,
+            'image' => 'avatar/fabiotb/Fábio.jpg'
         ],[
             'username' => '61001',
             'name' => 'Fábio',
@@ -52,6 +53,7 @@ class UsersSeeder extends Seeder
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
             'active' => true,
             'first' => true,
+            'image' => 'avatar/default.jpeg'
         ],
         ]
     

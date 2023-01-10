@@ -126,6 +126,7 @@ foreach ($prefixRouters as $prefixRouter) {
      
         Route::get('/users/{id}/cademi/create', [CademiController::class, 'create'])->name('cademi.create');
         Route::post('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
+        Route::get('/users/{username}/lote', [CademiController::class, 'lote'])->name('cademi.lote');
     
 
 

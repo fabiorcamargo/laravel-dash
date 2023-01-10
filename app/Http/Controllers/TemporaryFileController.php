@@ -46,8 +46,8 @@ class TemporaryFileController extends Controller
         
         $data = $this->file->where('folder', $request->image)->first();
         
-        $folder = "/tmp/" . $data->folder;
-        $file = "/tmp/" . $data->folder . "/" . $data->file;
+        $folder =  $data->folder;
+        $file =  "tmp/" . $data->folder . "/" . $data->file;
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
 
@@ -59,6 +59,7 @@ class TemporaryFileController extends Controller
             }else{
             $user["exist"] = 0;
             }
+            
         }
 
         
@@ -93,7 +94,7 @@ class TemporaryFileController extends Controller
         if($request->hasFile('image')){
             $image = $request->file('image');
             $file_name = $image->getClientOriginalName();
-            $folder = uniqid('tmp', true);
+            $folder = date('d-m-Y H:i:s');
             $image->storeAs('tmp/' . $folder, $file_name);
             TemporaryFile::create([
                 'folder' => $folder,
@@ -103,6 +104,20 @@ class TemporaryFileController extends Controller
         }
         return '';
 
+    }
+
+    public function FilepondDelete(Request $request)
+    {
+        $tmp_file = TemporaryFile::where('folder', request()->getContent())->first();
+        
+        
+        if (isset($tmp_file)) {
+            Storage::deleteDirectory('tmp/' . $tmp_file->folder);
+            $tmp_file->delete();
+            
+            return "Delete: " . $tmp_file->folder;
+        }
+        return '';
     }
 
     public function AvatarUpload(Request $request)
@@ -119,11 +134,11 @@ class TemporaryFileController extends Controller
                 $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
     
                 $avatar->update([
-                    'folder' => $folder,
+                    'folder' => 'avatar/' . $folder,
                     'file' => $file_name,
                 ]);
                 $user->update([
-                    'image' => $folder . "/" . $file_name,
+                    'image' => 'avatar/' . $folder . "/" . $file_name,
                 ]);
                 return $folder;
             }
@@ -148,21 +163,7 @@ class TemporaryFileController extends Controller
 
     }
 
-    public function FilepondDelete(Request $request)
-    {
-        
-        $tmp_file = TemporaryFile::where('folder', request()->getContent())->first();
-        
-        if (isset($tmp_file)) {
-            Storage::deleteDirectory('tmp/' . $tmp_file->folder);
-            $tmp_file->delete();
-            
-            return "Delete: " . $tmp_file->folder;
-        }
-        return '';
-    }
-
-    
+     
 
     public function AvatarDelete(Request $request)
     {
@@ -183,18 +184,32 @@ class TemporaryFileController extends Controller
 
 
     public function openCsv(Request $request){
-        
-        
+
+
             $file = $request->file;
             $folder = $request->folder;
+            $users = Excel::toArray(new UsersImport, "$file");
+            //dd($users[0][0]);
+            foreach ($users[0] as &$user){
+                $username = $user["username"];
+                
+                return redirect()->route('cademi.lote', $username);
+                dd($username);
+            }
+
+            //return redirect()->route('cademi.lote', ['file'=>$file, 'folder'=>$folder]);
+            
+            /*
+            $tmp = TemporaryFile::where('folder', $folder);
 
             $users = Excel::import(new UsersImport, "$file");
-            //dd($users);
-            $success = "Verdade";
-            Storage::deleteDirectory($folder);
             
+            $success = "Verdade";
+            Storage::deleteDirectory("tmp/" . $folder);
+            $tmp->delete();
+
             return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
-        
+        */
 
         
     

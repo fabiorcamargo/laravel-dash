@@ -65,7 +65,7 @@
                                 <td>
                                     <div class="d-flex">
                                         <div class="usr-img-frame mr-2 rounded-circle">
-                                            <span><img src="{{ asset("avatar/" . $user->image) }}" class="rounded-circle profile-img" alt="avatar"></span>
+                                            <span><img src="{{ asset($user->image) }}" class="rounded-circle profile-img" alt="avatar"></span>
                                         </div>
                                     </div>
                                 </td>

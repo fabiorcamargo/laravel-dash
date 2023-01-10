@@ -33,7 +33,7 @@ return new class extends Migration
             $table->string('courses');
             $table->boolean('active');
             $table->boolean('first')->nullable();
-            $table->string('image')->nullable();
+            $table->string('image')->default('avatar/default.jpeg');
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

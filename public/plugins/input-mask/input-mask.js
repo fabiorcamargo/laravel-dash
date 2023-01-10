@@ -57,7 +57,7 @@ $(document).ready(function(){
                 }
             }
         }
-    )
+    );
 
     // IP Address
     $("#ip-add").inputmask({mask:"999.999.999.999"});

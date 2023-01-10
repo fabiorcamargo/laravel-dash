@@ -68,6 +68,7 @@ class UserController extends Controller
         $id = ($response['id']);
         //return redirect()->route('users.show', $id);
         return redirect()->route('cademi.create', $id);
+        
 
         //return redirect()->route("/users/$id/cademi/create")->$response;
 
@@ -197,9 +198,16 @@ class UserController extends Controller
 
         return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => 'teste']);
         */
+        
 
         $data = $this->avatar->where('user_id', Auth::user()->id)->first();
-        $avatar =  $data->folder . "/" . $data->file;
+        if ( $data != null ){
+            $avatar =  $data->folder . "/" . $data->file;
+        } else {
+            $avatar = "/default.jpeg";
+        }
+        
+        
 
 
         return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => $avatar]);

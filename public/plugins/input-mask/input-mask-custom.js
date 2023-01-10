@@ -57,7 +57,8 @@ $(document).ready(function(){
                 }
             }
         }
-    )
+        
+    );
 
     // IP Address
     $("#ip-add").inputmask({mask:"999.999.999.999"});
@@ -76,8 +77,8 @@ $(document).ready(function(){
         METHODS
     ==================
     */
-
-
+    
+    
     // On Complete
     $("#oncomplete").inputmask("99/99/9999",{ oncomplete: function(){ $('#oncompleteHelp').css('display', 'block'); } });
 

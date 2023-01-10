@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             CademisSeeder::class,
             CustomersSeeder::class,
             PaymentsSeeder::class,
+            AvatarsSeeder::class,
         ]);
     }
 }

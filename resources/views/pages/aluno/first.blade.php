@@ -106,39 +106,44 @@
                                         </div>
                                     </div>
                                 </div>
-                                <form action="{{ getRouterValue(); }}/aluno/post"  method="post" enctype="multipart/form-data">
+                                <form action="{{ getRouterValue(); }}/aluno/post"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
+                                    
                                     @csrf
 
                                     <div class="form-group mb-4">
                                         <label for="name">Primeiro Nome</label>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="on">
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="on" oninput="myFn('name')" required>
+                                        
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="lastname">Sobrenome</label>
-                                        <input type="lastname" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="on">
+                                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="on" required oninput="myFn('lastname')">
+
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" value="" autocomplete="on">
+                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" autocomplete="on" required oninput="myFn('email')">
+
                                         </div>
                                     </div>     
                                     <div class="form-group mb-4">
                                         <label for="defaultEmailAddress">Telefone (Whatsapp) </label>
-                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on">
+                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on" required oninput="myFn('cellphone')">
+
                                     </div>
                                     <div class="form-group">
                                         <label for="city">Cidade - Estado</label>
                                         <div class="row">
                                             <div class="mb-3">
-                                                <input id="autoComplete" name="city" class="form-control">
-                                                
+                                                <input id="autoComplete" name="autoComplete" name="autoComplete" class="form-control" required oninput="myFn('autoComplete')">
+ 
                                             </div>
                                         </div>
 
                                     </div>
                                     <div class="d-flex justify-content-center">
-                                        <a class="btn btn-secondary btn-nxt mt-5"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
+                                        <a class="btn btn-secondary btn-nxt mt-5 disabled" id="step"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right-circle"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></a>
                                     </div>
                                 
                              
@@ -165,14 +170,15 @@
                                         <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
                                             
                                             <label for="name">Nova Senha</label>
-                                            <input type="password" class="form-control" name="password" id="myInput" placeholder="******" autocomplete="on">
+                                            <input type="password" class="form-control invalid" name="password" id="password" placeholder="******" autocomplete="on">
                                             
                                             <label for="name">Repita a Senha</label>
-                                            <input type="password" class="form-control mb-2" name="password" id="myInput2" placeholder="******" autocomplete="on">
+                                            <input type="password" class="form-control mb-2" name="password2" id="password2" placeholder="******" autocomplete="on" onblur="myPw()">
+                                            <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais!</div>
                                             <a id="customCheck1" class="mt-2" onclick="myFunction()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
                                              
                                         </div>
-                                        <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button>
+                                        <button type="submit" id="submit" name="subimit" class="btn btn-primary mb-2 me-4 disabled">Enviar</button>
                                     </div>
                                 </div>
                                     </div>
@@ -249,20 +255,55 @@
 
         <script>
             function myFunction() {
-            var x = document.getElementById("myInput");
+            var x = document.getElementById("password");
             if (x.type === "password") {
                 x.type = "text";
             } else {
                 x.type = "password";
             }
-            var x = document.getElementById("myInput2");
+            var x = document.getElementById("password2");
             if (x.type === "password") {
                 x.type = "text";
             } else {
                 x.type = "password";
             }
             }
+
+            function myFn($data){
+                console.log($data);
+
+
+                if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && autoComplete.value != "") {
+                let el = document.getElementById('step');
+                el.classList.remove('disabled');
+                }
+            }
+
             </script>
+
+
+<script>
+
+    function myPw(){
+                let pw = document.getElementById('password').value;
+                let pw2 = document.getElementById('password2').value;
+
+                console.log(pw);
+                console.log(pw2);
+
+                if ( pw != pw2) {
+                    document.getElementById('feed').classList.remove('invisible');
+                    document.getElementById('submit').classList.add('disabled');
+                }else if ( pw == pw2 ){
+                    document.getElementById('feed').classList.add('invisible');
+                    document.getElementById('submit').classList.remove('disabled');
+                    
+                }
+
+            }
+
+
+</script>
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

@@ -26,6 +26,8 @@ class CademiController extends Controller
 
     public function create($userId)
     {
+
+
         if (!$user = $this->user->find($userId)) {
             return redirect()->back();
         }
@@ -35,7 +37,8 @@ class CademiController extends Controller
             "token" => env('CADEMI_TOKEN_GATEWAY'),
             "codigo"=> "codc" . $user->id,
             "status"=> "aprovado",
-            "produto_id"=> "novo1",
+            "produto_id"=> "AG60",
+            "produto_nome"=> "Agente Bancário",
             "cliente_email"=> $user->email,
             "cliente_nome"=> $user->name,
             "cliente_doc"=> $user->document,
@@ -55,6 +58,42 @@ class CademiController extends Controller
         return redirect()->route('users.index');
     }
     
+
+
+    public function lote($username)
+    {
+        
+        //dd($username);
+        $user = $this->user->where('username', $username)->first();
+        //dd($user);
+       
+
+        $payload = [
+            "token" => env('CADEMI_TOKEN_GATEWAY'),
+            "codigo"=> "codf" . $user->id,
+            "status"=> "aprovado",
+            "produto_id"=> "AG60",
+            "produto_nome"=> "Agente Bancário",
+            "cliente_email"=> $user->email,
+            "cliente_nome"=> $user->name,
+            "cliente_doc"=> $user->document,
+            "cliente_celular"=> $user->cellphone,
+            "cliente_endereco_cidade"=> $user->city,
+            "cliente_endereco_estado"=> $user->uf,
+            "produto_nome" => $user->courses
+        ];
+
+        dd($payload);
+        
+
+        //Cria um novo aluno na cademi
+
+        Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+        
+        return '';
+    }
+
+
     public function store(Request $request, $userId)
     {
 

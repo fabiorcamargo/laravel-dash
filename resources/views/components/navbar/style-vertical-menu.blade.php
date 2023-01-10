@@ -162,7 +162,7 @@
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="avatar-container">
                         <div class="avatar avatar-sm avatar-indicators avatar-online">
-                            <img alt="avatar" src="{{ asset("avatar/{$avatar}") }}" class="rounded-circle">
+                            <img alt="avatar" src="{{ asset("{$avatar}") }}" class="rounded-circle">
                         </div>
                     </div>
                 </a>
