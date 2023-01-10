@@ -189,6 +189,7 @@ class TemporaryFileController extends Controller
             $file = $request->file;
             $folder = $request->folder;
             $users = Excel::toArray(new UsersImport, "$file");
+            Excel::import(new UsersImport, "$file");
             //dd($users[0][0]);
             foreach ($users[0] as &$user){
                 $username = $user["username"];
