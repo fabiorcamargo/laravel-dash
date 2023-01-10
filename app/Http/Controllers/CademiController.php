@@ -38,8 +38,6 @@ class CademiController extends Controller
             "cliente_nome"=> $user->name,
             "cliente_doc"=> $user->document,
             "cliente_celular"=> $user->cellphone,
-            "cliente_endereco_cidade"=> $user->city,
-            "cliente_endereco_estado"=> $user->uf,
             "produto_nome" => $user->courses
         ];
         $data = Storage::get('file.txt', $user->username);

@@ -136,7 +136,7 @@
                                         <label for="city">Cidade - Estado</label>
                                         <div class="row">
                                             <div class="mb-3">
-                                                <input id="autoComplete" name="autoComplete" name="autoComplete" class="form-control" required oninput="myFn('autoComplete')">
+                                                <input id="autoComplete" name="city" name="city" class="form-control" required oninput="myFn('autoComplete')">
  
                                             </div>
                                         </div>

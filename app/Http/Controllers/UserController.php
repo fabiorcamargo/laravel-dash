@@ -186,6 +186,14 @@ class UserController extends Controller
             // $extension = $request->image->getClientOriginalExtension();
             // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
         }
+        $city = preg_replace('/[^0-9]/', '', $data['city']);
+        $city2 = City::where('id', $city)->first();
+        $uf = State::where('id', $city2->state_id)->first();
+        
+
+        $data['city'] = $city2->name;
+        $data['uf'] = $uf->abbr;
+        
         $user->update($data);
         
         
