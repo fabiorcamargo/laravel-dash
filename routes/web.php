@@ -1102,9 +1102,5 @@ Route::get('/', function () {
     return view('welcome', ['title' => 'This is Title', 'breadcrumb' => 'This Breadcrumb']);
 });
 
-Route::get('modern-dark-menu/aluno/cademi', function () {
-    return view('pages.aluno.cademi', ['title' => 'This is Title', 'breadcrumb' => 'This Breadcrumb', 'avatar' => 'avatar/default.jpeg']);
-});
-
 require __DIR__.'/auth.php';
 
