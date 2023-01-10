@@ -26,7 +26,7 @@ class ApiController extends Controller
         public function getAllUsers(Request $request){
 
                 $explode_id = json_decode($request->getContent(), true);
-                Storage::disk('local')->put('example.txt', $explode_id['event_id']);
+               // Storage::disk('local')->put('example.txt', $explode_id['event_id']);
                 $user = $explode_id['event']['usuario']['email'];
               // $user = $this->model->find(10);
                 $id = DB::table('users')->where('email', $user)->value('id');

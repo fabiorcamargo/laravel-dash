@@ -125,6 +125,8 @@
                 <x-menu.vertical-menu/>
                 @elseif ( (Auth::user()->role) == 1 )
                 <x-menu.student-menu/>
+                @elseif ( (Auth::user()->role) == 5 )
+                <x-menu.admin-menu/>
                 @endif
             
             

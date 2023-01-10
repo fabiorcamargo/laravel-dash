@@ -8,6 +8,7 @@
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
         <link rel="stylesheet" href="{{asset('plugins/apex/apexcharts.css')}}">
+        <script src="https://core.cademi.com.br/assets/js/remote.js"></script>
 
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/widgets/modules-widgets.scss'])
@@ -21,7 +22,7 @@
     <!-- Analytics -->
 
     <div class="row layout-top-spacing">
-
+        <h2>Olá {nome}</h2>
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
             <x-widgets._w-card-cademi title="Acesse seu curso"/>
         </div>
