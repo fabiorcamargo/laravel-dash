@@ -83,7 +83,7 @@ class CademiController extends Controller
             "produto_nome" => $user->courses
         ];
 
-        dd($payload);
+        //dd($payload);
         
 
         //Cria um novo aluno na cademi
