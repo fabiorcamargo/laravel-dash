@@ -280,17 +280,21 @@ class TemporaryFileController extends Controller
            $usr['courses'] = "NÃO";
            
         }
-        Excel::Import(new UsersImportNew, "$file");
+        (new UsersImportNew)->queue(public_path($file));
         
-       
+        //(new UsersImportNew)->queue("storage/app/tmp/11-01-2023 12:47:34/User.xlsx");
+        //dd($file);
+        //Excel::Import(new UsersImportNew, "$file");
+        
+        //Excel::import(new UsersImportNew,"$file");
 
         //Excel::import(new UsersImportNew, "$file");
                 
-        $tmp = TemporaryFile::where('folder', $folder);
+        //$tmp = TemporaryFile::where('folder', $folder);
         
         $success = "Verdade";
-        Storage::deleteDirectory("tmp/" . $folder);
-        $tmp->delete();
+        //Storage::deleteDirectory("tmp/" . $folder);
+        //$tmp->delete();
 
         return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
     

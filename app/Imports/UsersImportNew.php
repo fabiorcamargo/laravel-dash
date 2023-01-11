@@ -7,19 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
-use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-
-
-class UsersImportNew implements ToModel, WithBatchInserts, WithChunkReading
+class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow
 {
+    use Importable;
     /**
     * @param array $row
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    use Importable;
     public function model(array $row)
     {
         return new User([
@@ -41,15 +39,10 @@ class UsersImportNew implements ToModel, WithBatchInserts, WithChunkReading
             'active' => "1",
          ]);
     }
-
-    public function batchSize(): int
-    {
-        return 100;
-    }
     
+
     public function chunkSize(): int
     {
-        return 100;
+        return 20;
     }
-    
 }
