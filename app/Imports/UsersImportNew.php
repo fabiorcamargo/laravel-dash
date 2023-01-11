@@ -12,7 +12,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 
 
-class UsersImportNew implements ToModel, ShouldQueue, WithChunkReading
+class UsersImportNew implements ToModel, WithBatchInserts, WithChunkReading
 {
     /**
     * @param array $row
