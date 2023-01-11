@@ -1,4 +1,4 @@
-<x-base-layout :scrollspy="false" :avatar="$avatar">
+
 
     <x-slot:pageTitle>
         {{$title}} 
@@ -24,7 +24,7 @@
     <div class="row layout-top-spacing">
         <h2>Olá {nome}</h2>
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-            <x-widgets._w-card-cademi title="Acesse seu curso"/>
+            
         </div>
 
     </div>
@@ -36,4 +36,3 @@
         @vite(['resources/assets/js/widgets/modules-widgets.js'])
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
-</x-base-layout>

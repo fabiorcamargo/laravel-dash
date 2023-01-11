@@ -18,7 +18,8 @@ class UsersSeeder extends Seeder
         User::insert([
             [
             'username' => 'fabiotb',
-            'name' => 'Fábio Camargo',
+            'name' => 'Fábio',
+            'lastname' => 'Camargo',
             'email' => 'fabiorcamargo@gmail.com',
             'password' => bcrypt('277888'),
             'cellphone' => '42991622889',
@@ -31,9 +32,13 @@ class UsersSeeder extends Seeder
             'document' => '05348908908',
             'seller' => 'Fábio Divulgador',
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
+            'active' => true,
+            'first' => true,
+            'image' => 'avatar/fabiotb/Fábio.jpg'
         ],[
             'username' => '61001',
-            'name' => 'Fábio Aluno',
+            'name' => 'Fábio',
+            'lastname' => 'Aluno',
             'email' => 'fabio.xina@gmail.com',
             'password' => bcrypt('277888'),
             'cellphone' => '42991622889',
@@ -46,6 +51,9 @@ class UsersSeeder extends Seeder
             'document' => '05348908908',
             'seller' => 'Fábio Divulgador',
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
+            'active' => true,
+            'first' => true,
+            'image' => 'avatar/default.jpeg'
         ],
         ]
     

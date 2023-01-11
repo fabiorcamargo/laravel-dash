@@ -90,7 +90,8 @@ body.layout-dark {
 
 @media (max-width: 575px) {
   .bs-stepper-header {
-    display: block;
+    display: flex;
+    
   }
 
   .bs-stepper {

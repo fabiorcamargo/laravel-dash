@@ -4,6 +4,7 @@
  * ==================
 */
 
+
 // We register the plugins required to do 
 // image previews, cropping, resizing, etc.
 FilePond.registerPlugin(
@@ -58,3 +59,5 @@ FilePond.registerPlugin(
 window.multifiles = FilePond.create(
     document.querySelector('.file-upload-multiple')
   );
+
+  

@@ -23,11 +23,9 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
-    Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
-    Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
-    Route::get('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
-    Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
 
+
+    
         /**
          * ==============================
          *       @Router -  Aberta
@@ -54,14 +52,30 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
+                    Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
+                    Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+                    Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
+                    Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
+                    
+                    Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
+                    Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
 
+                   
                     Route::prefix('aluno')->group(function () {
-                        Route::get('/inicio', function () {
-                            return view('pages.aluno.my', ['title' => 'Início', 'breadcrumb' => 'Início']);
-                        })->name('inicio');
+                        Route::get('/first', function () {
+                            return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                        })->name('aluno.first');
+                        Route::get('/second', function () {
+                            return view('pages.aluno.second', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                        })->name('aluno.second');
+                        Route::get('/finish', function () {
+                            return view('pages.aluno.finish', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                        })->name('aluno.finish');
+                        Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
+                        Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
                         Route::get('/pagamento', function () {
                             return view('pages.aluno.payment', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-                        })->name('pagamento');
+                        })->name('aluno.pagamento');
                         Route::get('/config', [UserController::class, 'username'])->name('config');
                         
                     });
@@ -95,8 +109,8 @@ $prefixRouters = [
 
 foreach ($prefixRouters as $prefixRouter) {
     Route::prefix($prefixRouter)->group(function () {
-
-           
+        
+        
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
         Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');
         Route::put('/comments/{id}', [CommentController::class, 'update'])->name('comments.update');
@@ -115,7 +129,8 @@ foreach ($prefixRouters as $prefixRouter) {
     
      
         Route::get('/users/{id}/cademi/create', [CademiController::class, 'create'])->name('cademi.create');
-        Route::post('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
+        Route::get('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
+        Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
     
 
 
@@ -158,6 +173,17 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::get('/resp', [UserController::class, 'resp'])->name('user-resp');
                 Route::get('/create', [UserController::class, 'create'])->name('user-create');
                 Route::get('/lote', [UserController::class, 'lote'])->name('user-lote');
+                Route::post('/charge', [TemporaryFileController::class, 'charge'])->name('user-charge');
+                Route::post('/csv', [TemporaryFileController::class, 'openCsv2'])->name('user-csv');
+                Route::get('/charge', function () {
+                    return view('pages.app.user.charge', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                });
+
+                Route::get('/newids', function () {
+                    return view('pages.app.user.newids', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                });
+                Route::post('/newids', [UserController::class, 'newids'])->name('user-newids');
+                
             });
 
             Route::get('/calendar', function () {

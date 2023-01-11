@@ -11,6 +11,7 @@
 @php
     $isBoxed = layoutConfig()['boxed'];
     $isAltMenu = layoutConfig()['alt-menu']; 
+
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -29,6 +30,7 @@
         @vite(['resources/layouts/vertical-dark-menu/loader.js'])
     @elseif ((Request::is('collapsible-menu/*')))
         @vite(['resources/layouts/collapsible-menu/loader.js'])
+    @else @vite(['resources/layouts/vertical-dark-menu/loader.js'])
     @endif
     
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
@@ -100,9 +102,11 @@
             !Request::routeIs('login')
         )
 
-        @if (!Request::routeIs('blank'))  
+        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post'))  
         <!--  BEGIN NAVBAR  -->
-        <x-navbar.style-vertical-menu classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        <x-navbar.style-vertical-menu avatar="{{ Auth::user()->image }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        
+        
         <!--  END NAVBAR  -->
         @endif
 
@@ -113,14 +117,17 @@
             <x-layout-overlay/>
             <!--  END LOADER  -->
 
-            @if (!Request::routeIs('blank')) 
+            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post')) 
             <!--  BEGIN SIDEBAR  -->
             
-            @if ( (Auth::user()->role) == 7 )
-            <x-menu.vertical-menu/>
-            @elseif ( (Auth::user()->role) == 1 )
-            <x-menu.student-menu/>
-            @endif
+            
+                @if ( (Auth::user()->role) == 7 )
+                <x-menu.vertical-menu/>
+                @elseif ( (Auth::user()->role) == 1 )
+                <x-menu.student-menu/>
+                @elseif ( (Auth::user()->role) == 5 )
+                <x-menu.admin-menu/>
+                @endif
             
             
             <!--  END SIDEBAR  -->   

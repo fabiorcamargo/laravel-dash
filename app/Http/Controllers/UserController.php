@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateUserFormRequest;
+use App\Models\Avatar;
 use App\Models\City;
 use App\Models\State;
+use App\Models\TemporaryFile;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -15,11 +18,14 @@ class UserController extends Controller
 {
     protected $model;
 
-    public function __construct(User $user, State $state, City $cities)
+    public function __construct(User $user, State $state, City $cities, TemporaryFile $file, Avatar $avatar)
     {
         $this->user = $user;
         $this->state = $state;
         $this->cities = $cities;
+        $this->file = $file;
+        $this->avatar = $avatar;
+        
     }
 
     public function index(Request $request)
@@ -30,6 +36,7 @@ class UserController extends Controller
                         );
 
         return view('users.index', compact('users'));
+        
     }
 
     public function show($id)
@@ -62,6 +69,7 @@ class UserController extends Controller
         $id = ($response['id']);
         //return redirect()->route('users.show', $id);
         return redirect()->route('cademi.create', $id);
+        
 
         //return redirect()->route("/users/$id/cademi/create")->$response;
 
@@ -120,9 +128,11 @@ class UserController extends Controller
     public function list(Request $request)
     {
         $users = $this->user
-                        ->getUsers(
-                            search: $request->search ?? ''
+                        ->all(
+                            
                         );
+
+                       
 
         return view('pages.app.user.list', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
@@ -159,6 +169,116 @@ class UserController extends Controller
         return compact($field);
     }
 
+    public function post(Request $request)
+    {
+        $user = $this->user->find(Auth::user()->id);
+
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+        $de = array('.','-');
+        $para = array('','');
+        $data['document'] = str_replace($de, $para, $request->document);
+        $de = array('(',')',' ','-');
+        $para = array('','','','');
+        $data['cellphone'] = str_replace($de, $para, $request->cellphone);
+        if ($request->image) {
+            $data['image'] = $request->image->store('users');
+            // $extension = $request->image->getClientOriginalExtension();
+            // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
+        }
+        $city = preg_replace('/[^0-9]/', '', $data['city']);
+        $city2 = City::where('id', $city)->first();
+        $uf = State::where('id', $city2->state_id)->first();
+        
+
+        $data['city'] = $city2->name;
+        $data['uf'] = $uf->abbr;
+        $data['first'] = 1;
+        $user->update($data);
+        
+        
+        return view('pages.aluno.second', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
+
+    public function my(){
+/*
+        $avatar = $this->avatar->where('user_id', Auth::user()->id)->first();
+        
+        
+
+        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => 'teste']);
+        */
+        
+
+        $data = $this->avatar->where('user_id', Auth::user()->id)->first();
+        if ( $data != null ){
+            $avatar =  $data->folder . "/" . $data->file;
+        } else {
+            $avatar = "/default.jpeg";
+        }
+        
+        
+
+
+        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => $avatar]);
+
+    }
+
+    public function newids(Request $request){
+
+        $users = User::factory()
+                ->count(10)
+                ->state(new Sequence(
+                    ['admin' => 'Y'],
+                    ['admin' => 'N'],
+                ))
+                ->create();
+        
+        $data = $request->all();
+        dd($data);
+        $data['password'] = bcrypt($request->password);
+        $de = array('.','-');
+        $para = array('','');
+        $data['document'] = str_replace($de, $para, $request->document);
+        $de = array('(',')',' ','-');
+        $para = array('','','','');
+        $data['cellphone'] = str_replace($de, $para, $request->cellphone);
+        if ($request->image) {
+            $data['image'] = $request->image->store('users');
+            // $extension = $request->image->getClientOriginalExtension();
+            // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
+        }
+            
+        
+        $response = json_decode(($this->model->create($data)), true);
+
+        $id = ($response['id']);
+        
+               
+                
+                
+        
+        
+                return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb']);
+        
+            }
+
+
+        public function charge(Request $request)
+    {
+        $user = $this->user->find(Auth::user()->id);
+
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+        $data['image'] = 'avatar/default.jpeg';
+        dd($data);
+        $user->update($data);
+        
+        
+        return view('pages.aluno.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
+    
 }
 
 
