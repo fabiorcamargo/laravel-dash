@@ -77,8 +77,8 @@
                                     <tr>
                                         
                                         <td>{{ $user["username"] }}</td>
-                                        <td>{{ $user["name"]}}</td>
-                                        <td>{{ $user["lastname"]}}</td>
+                                        <td>{{ $user["username"]}}</td>
+                                        <td>{{ $user["username"]}}</td>
                                         <td>{{ $user["email"] }}</td>
                                         <td>{{ $user["exist"] }}</td>
                                         

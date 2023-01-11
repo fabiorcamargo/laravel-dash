@@ -30,20 +30,20 @@ class UsersImportNew implements ToModel, WithHeadingRow, WithUpserts
         return new User([
            'username' => $row['username'],
            'email' => $row['email'],
-           'name' => $row['name'],
-           'lastname' => $row['lastname'],
+           'name' => $row['username'],
+           'lastname' => $row['username'],
            'password' => Hash::make($row['password']),
            'cellphone' => $row['username'],
            'city' => "Cidade",
            'uf' => "UF",
            'payment' => "VAZIO",
-           'role' => $row['role'],
+           'role' => "1",
            '10courses' => "0",
            'secretary' => "NÃO",
            'document' => $row['username'],
            'seller' => "IZA",
            'courses' => "NÃO",
-           'active' => $row['active'],
+           'active' => "1",
         ]);
 
         
