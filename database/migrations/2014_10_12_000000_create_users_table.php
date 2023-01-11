@@ -17,13 +17,17 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('email2')->nullable();
             $table->string('name');
             $table->string('lastname');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('cellphone')->nullable();
+            $table->string('cellphone2')->nullable();
             $table->string('city')->nullable();
+            $table->string('city2')->nullable();
             $table->string('uf')->nullable();
+            $table->string('uf2')->nullable();
             $table->string('payment')->nullable();
             $table->integer('role');
             $table->boolean('10courses')->nullable();

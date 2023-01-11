@@ -85,8 +85,8 @@
                             <li class="{{ Request::routeIs('user-lote') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/lote"> Atualizar </a>
                             </li>         
-                            <li class="{{ Request::routeIs('user-lot') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/user/lot"> Carregar </a>
+                            <li class="{{ Request::routeIs('user-charge') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/user/charge"> Carregar </a>
                             </li>                       
                         </ul>
                     </li>

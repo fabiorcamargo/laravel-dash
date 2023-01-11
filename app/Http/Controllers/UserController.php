@@ -193,7 +193,7 @@ class UserController extends Controller
 
         $data['city'] = $city2->name;
         $data['uf'] = $uf->abbr;
-        
+        $data['first'] = 1;
         $user->update($data);
         
         
@@ -263,6 +263,21 @@ class UserController extends Controller
                 return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb']);
         
             }
+
+
+        public function charge(Request $request)
+    {
+        $user = $this->user->find(Auth::user()->id);
+
+        $data = $request->all();
+        $data['password'] = bcrypt($request->password);
+        $data['image'] = 'avatar/default.jpeg';
+        dd($data);
+        $user->update($data);
+        
+        
+        return view('pages.aluno.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    }
     
 }
 

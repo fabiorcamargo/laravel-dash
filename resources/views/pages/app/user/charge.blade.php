@@ -49,7 +49,7 @@
                     <div class="widget-header">
                         <div class="row">
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4>Importação Cidade de {{ $city }}</h4>
+                                <h4>Lista de Usuários</h4>
                             </div>
                         </div>
                     </div>
@@ -60,13 +60,10 @@
                                 <thead>
                                     <tr>
                                             
-                                        <th>Contrato</th>
+                                        <th>UserID</th>
                                         <th>Nome</th>
                                         <th>Sobrenome</th>
                                         <th>Email</th>
-                                        <th>Telefone</th>
-                                        <th>Curso</th>
-                                        <th class="text-center">Pagamento</th>
                                         <th class="text-center dt-no-sorting">Existe</th>
                                     </tr>
                                 </thead>
@@ -82,17 +79,7 @@
                                         <td>{{ $user["username"] }}</td>
                                         <td>{{ $user["name"]}}</td>
                                         <td>{{ $user["lastname"]}}</td>
-                                        <td>{{ $user["email2"] }}</td>
-                                        <td>{{ $user["cellphone2"] }}</td>
-                                        <td>{{ $user["courses"] }}</td>
-
-                                        @if ($user["payment"] == "CARTÃO")
-                                        <td class="text-center"><span class="shadow-none badge badge-success">Cartão</span></td>
-                                        @elseif ($user["payment"] == "BOLETO")
-                                        <td class="text-center"><span class="shadow-none badge badge-primary">Boleto</span></td>
-                                        @else
-                                        <td class="text-center"><span class="shadow-none badge badge-dark">Vazio</span></td>
-                                        @endif
+                                        <td>{{ $user["email"] }}</td>
                                         <td>{{ $user["exist"] }}</td>
                                         
                                     @endforeach
@@ -105,7 +92,7 @@
                     </div>
                 </div>
             </div>
-            <form action="{{ getRouterValue(); }}/csv"  method="post" enctype="multipart/form-data">
+            <form action="{{ getRouterValue(); }}/app/user/csv"  method="post" enctype="multipart/form-data">
                 @csrf
             <input type="text" name="file" value="{{ $file }}">
             <input type="text" name="folder" value="{{ $folder }}">
@@ -135,18 +122,12 @@
                 </div>
                 <div class="widget-content widget-content-area">
 
-        <form action="{{ getRouterValue(); }}/store"  method="post" enctype="multipart/form-data">
+        <form action="{{ getRouterValue(); }}/app/user/charge"  method="post" enctype="multipart/form-data">
             @csrf
             <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
                         <div class="row">
+                            
                             <div class="col-md-6 mx-auto">
-                                <label for="city">Cidade - Estado</label>
-                                        <div class="row">
-                                            <div class="mb-3">
-                                                <input id="autoComplete" name="city" name="city" class="form-control" required oninput="myFn('autoComplete')">
- 
-                                            </div>
-                                        </div>
                                 <div class="multiple-file-upload">
                                     <input type="file" id="image" name="image" class="file-upload-multiple">
                                     
@@ -180,8 +161,9 @@
         <script src="{{asset('plugins/filepond/FilePondPluginImageTransform.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/filepondPluginFileValidateSize.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/custom-filepond.js')}}"></script>
-        <script src="{{asset('plugins/autocomplete/autoComplete.min.js')}}"></script>
-        <script src="{{asset('plugins/autocomplete/city_autoComplete.js')}}"></script>
+        <script>
+            
+        </script>
         <script>
 
 

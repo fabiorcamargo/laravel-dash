@@ -172,6 +172,12 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::get('/resp', [UserController::class, 'resp'])->name('user-resp');
                 Route::get('/create', [UserController::class, 'create'])->name('user-create');
                 Route::get('/lote', [UserController::class, 'lote'])->name('user-lote');
+                Route::post('/charge', [TemporaryFileController::class, 'charge'])->name('user-charge');
+                Route::post('/csv', [TemporaryFileController::class, 'openCsv2'])->name('user-csv');
+                Route::get('/charge', function () {
+                    return view('pages.app.user.charge', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                });
+
                 Route::get('/newids', function () {
                     return view('pages.app.user.newids', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
                 });
