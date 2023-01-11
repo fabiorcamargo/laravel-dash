@@ -280,7 +280,7 @@ class TemporaryFileController extends Controller
            $usr['courses'] = "NÃO";
            
         }
-        Excel::queueImport(new UsersImportNew, "$file");
+        Excel::Import(new UsersImportNew, "$file");
         
        
 
