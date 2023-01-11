@@ -6,9 +6,6 @@ use App\Models\TemporaryFile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
-use App\Http\Controllers\CademiController;
-
-
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
@@ -198,6 +195,8 @@ class TemporaryFileController extends Controller
             
             //return redirect()->route('cademi.lote', $users[0][0]['username']);
             Excel::import(new UsersImport, "$file");
+
+            
             
             
             foreach ($users[0] as &$usr){
@@ -281,8 +280,11 @@ class TemporaryFileController extends Controller
            $usr['courses'] = "NÃO";
            
         }
+        Excel::queueImport(new UsersImportNew, "$file");
         
-        Excel::import(new UsersImportNew, "$file");
+       
+
+        //Excel::import(new UsersImportNew, "$file");
                 
         $tmp = TemporaryFile::where('folder', $folder);
         
@@ -296,4 +298,5 @@ class TemporaryFileController extends Controller
     
 
 }
+
 }

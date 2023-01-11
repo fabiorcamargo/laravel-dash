@@ -56,6 +56,7 @@ use Illuminate\Support\Facades\Route;
                     Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
+                    
                     Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
                     Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
 
