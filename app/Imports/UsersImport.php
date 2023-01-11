@@ -28,8 +28,8 @@ class UsersImport implements ToModel, WithHeadingRow, WithUpserts
     {
         
         $usr = (User::where('username', $row['username'])->first());
-        //dd($usr);
-        if ($usr->first == 1){
+    
+        if (!empty($usr->first)){
             $name = $usr->name;
             $lastname = $usr->lastname;
             $email = $usr->email;
@@ -43,9 +43,12 @@ class UsersImport implements ToModel, WithHeadingRow, WithUpserts
         }
 
         $city = preg_replace('/[^0-9]/', '', $row['city2']);
+        //dd($city);
+        $document = preg_replace('/[^0-9]/', '', $row['document']);
         $city2 = City::where('id', $city)->first();
         $uf = State::where('id', $city2->state_id)->first();
-        //dd($email);
+
+        
 
         
         
@@ -63,7 +66,7 @@ class UsersImport implements ToModel, WithHeadingRow, WithUpserts
            'role' => $row['role'],
            '10courses' => $row['10courses'],
            'secretary' => $row['secretary'],
-           'document' => $row['document'],
+           'document' => $document,
            'seller' => $row['seller'],
            'courses' => $row['courses'],
            'active' => $row['active'],
