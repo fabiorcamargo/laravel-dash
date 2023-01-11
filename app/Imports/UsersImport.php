@@ -6,7 +6,7 @@ use App\Models\Cademi;
 use App\Models\City;
 use App\Models\State;
 use App\Models\User;
-
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -15,7 +15,7 @@ use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 
-class UsersImport implements ToModel, WithHeadingRow, WithUpserts
+class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow, WithUpserts
 {
     /**
      * @param array $row

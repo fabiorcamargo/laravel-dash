@@ -194,7 +194,8 @@ class TemporaryFileController extends Controller
 
             
             //return redirect()->route('cademi.lote', $users[0][0]['username']);
-            Excel::import(new UsersImport, "$file");
+            //Excel::import(new UsersImport, "$file");
+            (new UsersImport)->queue(public_path($file));
 
             
             
