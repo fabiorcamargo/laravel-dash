@@ -16,3 +16,6 @@ yarn-error.log
 /.vscode
 .docker
 /docker
+/public/tmp
+/public/storage
+/public/avatar
