@@ -110,8 +110,8 @@ class CademiController extends Controller
         $user = $this->user->find($userId);
         
         
-        if (!$user = $this->user->find($userId)) {
-            return redirect()->back();
+        if (empty($user)) {
+            return response($user, 402);
         }
 
         $user->cademi()->create([
