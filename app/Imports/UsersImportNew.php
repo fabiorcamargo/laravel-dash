@@ -20,6 +20,12 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
     */
     public function model(array $row)
     {
+        
+        if ( (User::where('username', $row['username'])->first())){
+            
+            }else{
+            
+            
         return new User([
             'username' => $row['username'],
             'email' => $row['email'],
@@ -38,6 +44,7 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
             'courses' => "NÃO",
             'active' => "1",
          ]);
+        }
     }
     
 

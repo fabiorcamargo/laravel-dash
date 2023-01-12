@@ -202,7 +202,7 @@ class UserController extends Controller
         $user->city = $city2->name;
         $user->uf = $uf->abbr;
         
-        dd($user);
+        //dd($user);
         $user->update();
         
         
@@ -282,7 +282,7 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         $data['image'] = 'avatar/default.jpeg';
-        //dd($data);
+        dd($data);
         $user->update($data);
         
         

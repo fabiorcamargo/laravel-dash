@@ -18,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login2', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        return view('auth.login2', ['title' => 'Profissionaliza EAD - Seu melhor sistema de ensino', 'breadcrumb' => 'Login']);
     }
 
     /**

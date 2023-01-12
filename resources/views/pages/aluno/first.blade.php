@@ -142,7 +142,7 @@
                                         </div>
                                    
                                             
-                                            <input type="checkbox" name="first" class="switch-input" value="1" {{ old('first') ? 'checked="checked"' : '' }}/>
+                                            <input type="checkbox" name="first" class="switch-input invisible" value="1"/>
     
                               
 
@@ -285,6 +285,7 @@
             }
 
             </script>
+            
 
 
 <script>
