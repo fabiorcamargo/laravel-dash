@@ -107,19 +107,22 @@ class CademiController extends Controller
     public function store(Request $request, $userId)
     {
 
-        $user = $this->user->find($userId);
+        //$user = $this->user->find($userId);
         
         
-        if (empty($user)) {
-            return response($user, 402);
+        if (isset($this->user->find($userId))) {
+            return response("usuário não existe", 402);
+        } else {
+            $user = $this->user->find($userId);
+            $user->cademi()->create([
+                'body' => $request->body,
+                'visible' => isset($request->visible)
+            ]);
+    
+            return response($user, 200);
         }
 
-        $user->cademi()->create([
-            'body' => $request->body,
-            'visible' => isset($request->visible)
-        ]);
-
-        return response($user, 200);
+        
     }
 
 }
