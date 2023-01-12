@@ -51,6 +51,8 @@ class UserController extends Controller
     public function store(StoreUpdateUserFormRequest $request)
     {
         $data = $request->all();
+        $user = auth()->user();
+        
         $data['password'] = bcrypt($request->password);
         $de = array('.','-');
         $para = array('','');
@@ -68,6 +70,7 @@ class UserController extends Controller
 
         $id = ($response['id']);
         //return redirect()->route('users.show', $id);
+        
         return redirect()->route('cademi.create', $id);
         
 
@@ -172,17 +175,18 @@ class UserController extends Controller
     public function post(Request $request)
     {
         $user = $this->user->find(Auth::user()->id);
-
+        $user->first = 1;
+        ;
         $data = $request->all();
-        $data['password'] = bcrypt($request->password);
+        $user->password = bcrypt($request->password);
         $de = array('.','-');
         $para = array('','');
-        $data['document'] = str_replace($de, $para, $request->document);
+        $user->document = str_replace($de, $para, $request->document);
         $de = array('(',')',' ','-');
         $para = array('','','','');
-        $data['cellphone'] = str_replace($de, $para, $request->cellphone);
+        $user->cellphone = str_replace($de, $para, $request->cellphone);
         if ($request->image) {
-            $data['image'] = $request->image->store('users');
+            $user->image = $request->image->store('users');
             // $extension = $request->image->getClientOriginalExtension();
             // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
         }
@@ -191,10 +195,12 @@ class UserController extends Controller
         $uf = State::where('id', $city2->state_id)->first();
         
 
-        $data['city'] = $city2->name;
-        $data['uf'] = $uf->abbr;
-        $data['first'] = 1;
-        $user->update($data);
+        $user->city = $city2->name;
+        $user->uf = $uf->abbr;
+        
+        
+        $user->update();
+        //dd($user);
         
         
         return view('pages.aluno.second', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);

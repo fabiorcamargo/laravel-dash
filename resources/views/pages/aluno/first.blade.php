@@ -140,6 +140,11 @@
  
                                             </div>
                                         </div>
+                                   
+                                            
+                                            <input type="checkbox" name="first" class="switch-input" value="1" {{ old('first') ? 'checked="checked"' : '' }}/>
+    
+                              
 
                                     </div>
                                     <div class="d-flex justify-content-center">
