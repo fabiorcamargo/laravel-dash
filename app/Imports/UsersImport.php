@@ -22,6 +22,7 @@ use Maatwebsite\Excel\Events\AfterImport;
 
 class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow, WithUpserts
 {
+
     
     /**
      * @param array $row
@@ -33,17 +34,18 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
     public function model(array $row)
     {
         $s = count($row);
-        
-        $usr = (User::where('username', $row['username']));
-    
-        if (!empty($usr->first)){
-            $name = $usr->name;
-            $lastname = $usr->lastname;
-            $email = $usr->email;
-            $password = $usr->password;
-            $cellphone = $usr->cellphone;
-            $image = $usr->image;
-            $first = $usr->first;
+        //dd($row);
+        //$usr = (User::where('username', $row['username']));
+        $user = User::where('username', $row['username'])->first();
+        //dd($user);
+        if (!empty($user->first)){
+            $name = $user->name;
+            $lastname = $user->lastname;
+            $email = $user->email;
+            $password = $user->password;
+            $cellphone = $user->cellphone;
+            $image = $user->image;
+            $first = $user->first;
         } else {
             $email = $row['email2'];
             $password = Hash::make($row['password']);
@@ -55,29 +57,28 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
         $city2 = City::where('id', $city)->first();
         $uf = State::where('id', $city2->state_id)->first();
 
-        
+        //dd($city2->name);
 
-        
-        
-        new User([
-           'username' => $row['username'],
-           'email' => $email,
-           'email2' => $row['email2'],
-           'name' => $row['name'],
-           'lastname' => $row['lastname'],
-           'password' => $password,
-           'cellphone2' => $row['cellphone2'],
-           'city2' => $city2->name,
-           'uf2' => $uf->abbr,
-           'payment' => $row['payment'],
-           'role' => $row['role'],
-           '10courses' => $row['10courses'],
-           'secretary' => $row['secretary'],
-           'document' => $document,
-           'seller' => $row['seller'],
-           'courses' => $row['courses'],
-           'active' => $row['active'],
-        ]);
+           $user->username = $row['username'];
+           $user->email = $email;
+           $user->email2 = $row['email2'];
+           $user->name = $row['name'];
+           $user->lastname = $row['lastname'];
+           $user->password = $password;
+           $user->cellphone2 = $row['cellphone2'];
+           $user->city2 = $city2->name;
+           $user->uf2 = $uf->abbr;
+           $user->payment = $row['payment'];
+           $user->role = $row['role'];
+           //$user->ouro = $row['ouro'];
+           $user->secretary = $row['secretary'];
+           $user->document = $document;
+           $user->seller = $row['seller'];
+           $user->courses = $row['courses'];
+           $user->active = $row['active'];
+           $user->save();
+                 
+       
         //sleep($s*2);
         (new CademiController)->lote($row);
         

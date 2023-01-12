@@ -35,7 +35,7 @@ class User extends Authenticatable
         'uf2',
         'payment',
         'role',
-        '10courses',
+        'ouro',
         'secretary',
         'document',
         'seller',

@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('uf2')->nullable();
             $table->string('payment')->nullable();
             $table->integer('role');
-            $table->boolean('10courses')->nullable();
+            $table->boolean('ouro')->nullable();
             $table->string('secretary');
             $table->string('document',11);
             $table->string('seller')->nullable();
