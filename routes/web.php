@@ -78,6 +78,7 @@ use Illuminate\Support\Facades\Route;
                         })->name('aluno.pagamento');
                         Route::get('/config', [UserController::class, 'username'])->name('config');
                         
+                        
                     });
 
             });
@@ -183,7 +184,10 @@ foreach ($prefixRouters as $prefixRouter) {
                     return view('pages.app.user.newids', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
                 });
                 Route::post('/newids', [UserController::class, 'newids'])->name('user-newids');
-                
+                Route::post('/reset', [UserController::class, 'reset'])->name('user-reset');
+                Route::get('/reset', function () {
+                    return view('pages.app.user.reset', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb', 'avatar' => "Auth::user()->id"]);
+                })->name('user-reset');
             });
 
             Route::get('/calendar', function () {

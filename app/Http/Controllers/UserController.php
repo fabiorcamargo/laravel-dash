@@ -288,6 +288,22 @@ class UserController extends Controller
         
         return view('pages.aluno.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
     }
+
+    public function reset(Request $request)
+    {
+        
+        $data = $request->all();
+        //dd($data['username']);
+        $user = $this->user->where('username', $data['username'])->first();
+        
+        $data['password'] = bcrypt($request->password);
+        
+        //dd($data);
+        $user->update($data);
+        
+        
+        return view('pages.aluno.my', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb', 'avatar' => "Auth::user()->id"]);
+    }
     
 }
 

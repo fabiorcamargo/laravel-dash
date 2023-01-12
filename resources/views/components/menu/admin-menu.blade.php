@@ -88,7 +88,10 @@
                             </li>         
                             <li class="{{ Request::routeIs('user-charge') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/charge"> Carregar Lista </a>
-                            </li>                       
+                            </li>      
+                            <li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/user/reset"> Resetar Senha </a>
+                            </li>                   
                         </ul>
                     </li>
 
