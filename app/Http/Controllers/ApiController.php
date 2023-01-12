@@ -39,7 +39,7 @@ class ApiController extends Controller
 
         public function store(Request $request)
                 {
-                
+                  return response("Usuário não existe", 401);
                   $data = json_decode($request->getContent(), true);
                   $arr = (object)$data['event']['usuario'];
                   //dd($arr->id);
