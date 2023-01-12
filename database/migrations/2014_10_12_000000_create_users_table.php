@@ -32,7 +32,7 @@ return new class extends Migration
             $table->integer('role');
             $table->boolean('ouro')->nullable();
             $table->string('secretary');
-            $table->string('document',11);
+            $table->string('document');
             $table->string('seller')->nullable();
             $table->string('courses')->nullable();
             $table->boolean('active');
