@@ -39,34 +39,36 @@ class ApiController extends Controller
 
         public function store(Request $request)
                 {
-                  return response("Usuário não existe", 401);
+                
                   $data = json_decode($request->getContent(), true);
                   $arr = (object)$data['event']['usuario'];
                   //dd($arr->id);
-                  if (isset($this->user->where('email', $arr->email)->first())){
-                    return response("Usuário não existe", 401);
-                  }
+
                   $tabela = $this->user->where('email', $arr->email)->first();
                   
-                  $userId = $tabela['id'];
+                  if(empty($tabela['id'])){
+                    return response("Usuário não encontrado");
+                  }else{
+                    $userId =$tabela['id'];
+                    if (!$user = $this->user->find($userId)) {
+                      return redirect()->back();
+                      return response("Usuário não confere");
+                    }
+                    $response =  $user->cademis()->create([
+                      'user' => $arr->id,
+                      'nome' => $arr->nome,
+                      'email' => $arr->email,
+                      'celular' => $arr->celular,
+                      'login_auto' => $arr->login_auto,
+                      'gratis' => $arr->gratis,
+                      'visible' => isset($arr->visible)
+                  ]);
+                    
+  
+                      return response($response, 200);
 
-                  if (!$user = $this->user->find($userId)) {
-                    return redirect()->back();
-                  }
-
-                  
-                $response =  $user->cademis()->create([
-                    'user' => $arr->id,
-                    'nome' => $arr->nome,
-                    'email' => $arr->email,
-                    'celular' => $arr->celular,
-                    'login_auto' => $arr->login_auto,
-                    'gratis' => $arr->gratis,
-                    'visible' => isset($arr->visible)
-                ]);
-                  
-
-                    return response($userId, 200);
+                  }     
+                
           }
 
 }
