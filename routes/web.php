@@ -177,7 +177,7 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::post('/csv', [TemporaryFileController::class, 'openCsv2'])->name('user-csv');
                 Route::get('/charge', function () {
                     return view('pages.app.user.charge', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-                });
+                })->name('user-charge');
 
                 Route::get('/newids', function () {
                     return view('pages.app.user.newids', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
