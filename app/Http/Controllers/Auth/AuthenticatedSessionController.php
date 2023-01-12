@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
 
         if ((Auth::user()->role) == 7)
         {
-        $home = '/modern-dark-menu/dashboard/sales';
+        $home = '/modern-dark-menu/app/user/list';
         }
         else if ((Auth::user()->role) == 1)
         {

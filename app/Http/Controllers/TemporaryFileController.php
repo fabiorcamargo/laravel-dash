@@ -154,7 +154,7 @@ class TemporaryFileController extends Controller
             $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
 
             Avatar::create([
-                'folder' => $folder,
+                'folder' => 'avatar/' . $folder,
                 'file' => $file_name,
                 'user_id' => Auth::user()->id
             ]);

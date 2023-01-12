@@ -95,7 +95,7 @@ class CademiController extends Controller
  
          //Cria um novo aluno na cademi
  
-         Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+         //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
 
         
         

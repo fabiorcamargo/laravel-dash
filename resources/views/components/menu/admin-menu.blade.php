@@ -84,10 +84,10 @@
                                 <a href="{{getRouterValue();}}/app/user/create"> Novo </a>
                             </li> --}}
                             <li class="{{ Request::routeIs('user-lote') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/user/lote"> Atualizar </a>
+                                <a href="{{getRouterValue();}}/app/user/lote"> Cademi </a>
                             </li>         
                             <li class="{{ Request::routeIs('user-charge') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/user/charge"> Carregar </a>
+                                <a href="{{getRouterValue();}}/app/user/charge"> Carregar Lista </a>
                             </li>                       
                         </ul>
                     </li>

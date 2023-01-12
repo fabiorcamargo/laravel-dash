@@ -22,7 +22,7 @@
     <!-- Analytics -->
 
     <div class="row layout-top-spacing">
-        <h2>Olá {nome}</h2>
+        <div class="mb-3"><h4>Olá {{Auth::user()->name}}</h4></div>
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
             <x-widgets._w-card-cademi title="Acesse seu curso"/>
         </div>
