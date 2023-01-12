@@ -122,7 +122,7 @@
             
             
                 @if ( (Auth::user()->role) == 7 )
-                <x-menu.vertical-menu/>
+                <x-menu.admin-menu/>
                 @elseif ( (Auth::user()->role) == 1 )
                 <x-menu.student-menu/>
                 @elseif ( (Auth::user()->role) == 5 )

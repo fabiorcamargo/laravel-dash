@@ -9,7 +9,11 @@ use Illuminate\Support\Facades\Storage;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\CademiController;
 use App\Imports\UsersImportNew;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+
 use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\User;
@@ -189,31 +193,22 @@ class TemporaryFileController extends Controller
            
             $file = $request->file;
             $folder = $request->folder;
-            $users = Excel::toArray(new UsersImport, "$file");
-            //dd($users[0][0]);
-
+            $users1 = Excel::toArray(new UsersImport, "$file");
+           // dd($users1[0]);
             
+            
+            //dd("fim");
             //return redirect()->route('cademi.lote', $users[0][0]['username']);
             //Excel::import(new UsersImport, "$file");
             (new UsersImport)->queue(public_path($file));
 
-            
-            
-            
-            foreach ($users[0] as &$usr){
-                //dd($usr['username']);
-                $user = $this->user->where('username', $usr['username'])->first();
-                
-               // $var = new CademiController();
-                //$var->lote($user);
-            
-                //dd($user->id);
-                //$user->cademi()->lote($users[0]);
-                //dd($username);
-               
-                //return redirect()->route('cademi.create', $username);
 
-            }
+
+            
+           // (new CademiController)->lote($users1);
+            
+            
+            
 
             //return redirect()->route('cademi.lote', ['file'=>$file, 'folder'=>$folder]);
             
@@ -291,11 +286,11 @@ class TemporaryFileController extends Controller
 
         //Excel::import(new UsersImportNew, "$file");
                 
-        //$tmp = TemporaryFile::where('folder', $folder);
+        $tmp = TemporaryFile::where('folder', $folder);
         
         $success = "Verdade";
         //Storage::deleteDirectory("tmp/" . $folder);
-        //$tmp->delete();
+        $tmp->delete();
 
         return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
     
