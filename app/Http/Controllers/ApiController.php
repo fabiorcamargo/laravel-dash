@@ -43,7 +43,9 @@ class ApiController extends Controller
                   $data = json_decode($request->getContent(), true);
                   $arr = (object)$data['event']['usuario'];
                   //dd($arr->id);
-
+                  if (isset($this->user->where('email', $arr->email)->first())){
+                    return response("Usuário não existe", 401);
+                  }
                   $tabela = $this->user->where('email', $arr->email)->first();
                   
                   $userId = $tabela['id'];
