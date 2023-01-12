@@ -190,6 +190,10 @@ class UserController extends Controller
             // $extension = $request->image->getClientOriginalExtension();
             // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
         }
+        $user->name = $request->name;
+        $user->lastname = $request->name;
+        $user->email = $request->email;
+
         $city = preg_replace('/[^0-9]/', '', $data['city']);
         $city2 = City::where('id', $city)->first();
         $uf = State::where('id', $city2->state_id)->first();
@@ -198,9 +202,9 @@ class UserController extends Controller
         $user->city = $city2->name;
         $user->uf = $uf->abbr;
         
-        
+        dd($user);
         $user->update();
-        //dd($user);
+        
         
         
         return view('pages.aluno.second', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
