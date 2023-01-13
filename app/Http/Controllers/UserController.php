@@ -230,11 +230,15 @@ class UserController extends Controller
         }
         $cademi = Cademi::find(Auth::user()->id);
         if (Cademi::find(Auth::user()->id)){
-           if(Auth::user()->courses = "PRE"){
+           if(str_contains(Auth::user()->courses, "PRE")){
             $card = "resources/images/Militar.jpg";
             //dd($card);
+           }else if(str_contains(Auth::user()->courses, "AG")){
+            $card = "resources/images/Bancario.jpg";
            }
         
+        }else{
+            $card = "resources/images/em-breve.jpg";
         }
         if ( $data != null ){
             $avatar =  $data->folder . "/" . $data->file;
