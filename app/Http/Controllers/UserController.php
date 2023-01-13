@@ -228,8 +228,9 @@ class UserController extends Controller
         } else {
             $avatar = "/default.jpeg";
         }
-        $cademi = Cademi::find(Auth::user()->id);
-        if (Cademi::find(Auth::user()->id)){
+       
+        
+        if (Cademi::where('user_id', Auth::user()->id)->first()){
            if(str_contains(Auth::user()->courses, "PRE")){
             $card = "resources/images/Militar.jpg";
             //dd($card);
