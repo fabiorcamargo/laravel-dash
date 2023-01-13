@@ -16,13 +16,13 @@
                 <div class="navbar-nav theme-brand flex-row  text-center">
                     <div class="nav-logo">
                         <div class="nav-item theme-logo">
-                            <a href="{{getRouterValue();}}/dashboard/analytics">
+                            <a href="{{getRouterValue();}}/aluno/my">
                                 <img src="{{Vite::asset('resources/images/logo.svg')}}" class="navbar-logo logo-dark" alt="logo">
                                 <img src="{{Vite::asset('resources/images/logo2.svg')}}" class="navbar-logo logo-light" alt="logo">
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="{{getRouterValue();}}/dashboard/analytics" class="nav-link"> Admin </a>
+                            <a href="{{getRouterValue();}}/aluno/my" class="nav-link"> Admin </a>
                         </div>
                         
                     </div>
@@ -106,7 +106,7 @@
 
 
                             <li class="{{ Request::routeIs('user-list') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/aluno/my"> Lista </a>
+                                <a href="{{getRouterValue();}}/app/user/list"> Lista </a>
                             </li>
                             {{-- 
                             <li class="{{ Request::routeIs('user-resp') ? 'active' : '' }}">

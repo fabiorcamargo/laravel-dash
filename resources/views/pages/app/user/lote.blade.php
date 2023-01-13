@@ -17,10 +17,6 @@
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
-
-    <x-slot:scrollspyConfig>
-        data-bs-spy="scroll" data-bs-target="#navSection" data-bs-offset="100"
-    </x-slot>
     
 
     <!-- BREADCRUMB -->

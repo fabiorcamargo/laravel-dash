@@ -169,8 +169,10 @@ foreach ($prefixRouters as $prefixRouter) {
          */
         
         Route::prefix('app')->group(function () {
+                
 
             Route::prefix('/user')->group(function () {
+                Route::any('/search', [UserController::class, 'search'])->name('user-search');
                 Route::get('/list', [UserController::class, 'list'])->name('user-list');
                 Route::get('/resp', [UserController::class, 'resp'])->name('user-resp');
                 Route::get('/create', [UserController::class, 'create'])->name('user-create');

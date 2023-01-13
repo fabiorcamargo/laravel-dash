@@ -67,11 +67,13 @@ class User extends Authenticatable
     {
         $users = $this->where(function ($query) use ($search) {
             if ($search) {
-                $query->where('email', $search);
+                $query->where('username', $search);
                 $query->orWhere('name', 'LIKE', "%{$search}%");
+                $query->orWhere('lastname', 'LIKE', "%{$search}%");
+                $query->orWhere('email', 'LIKE', "%{$search}%");
+                $query->orWhere('city', 'LIKE', "%{$search}%");
             }
         })
-        ->with('comments')
         ->paginate();
 
         return $users;

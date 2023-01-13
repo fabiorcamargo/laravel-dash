@@ -131,15 +131,33 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
+        /*
         $users = $this->user
                         ->all(
                             
                         );
 
+        return view('user.index', [
+            'users' => User::paginate(15)
+        ]);*/
+        $users = User::first()->paginate(10);
+        
                        
-
+        
         return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
+
+    public function search(Request $request)
+    {
+        $users = $this->user
+                        ->getUsers(
+                            search: $request->search ?? ''
+                        );
+                        
+                        
+    return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+
+ }
 
     public function resp(Request $request)
     {
@@ -229,7 +247,7 @@ class UserController extends Controller
             $avatar = "/default.jpeg";
         }
        
-        
+
         if (Cademi::where('user_id', Auth::user()->id)->first()){
            if(str_contains(Auth::user()->courses, "PRE")){
             $card = "resources/images/Militar.jpg";
