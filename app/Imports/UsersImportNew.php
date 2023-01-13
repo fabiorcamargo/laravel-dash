@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\Importable;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -21,11 +22,8 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
     public function model(array $row)
     {
         
-        if ( (User::where('username', $row['username'])->first())){
-            
-            }else{
-            
-            
+        if (DB::table('users')->where('username', $row["username"])->doesntExist()) {
+
         return new User([
             'username' => $row['username'],
             'email' => $row['email'],

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateUserFormRequest;
 use App\Models\Avatar;
+use App\Models\Cademi;
 use App\Models\City;
 use App\Models\State;
 use App\Models\TemporaryFile;
@@ -137,7 +138,7 @@ class UserController extends Controller
 
                        
 
-        return view('pages.app.user.list', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+        return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
 
     public function resp(Request $request)
@@ -161,7 +162,7 @@ class UserController extends Controller
     {
 
         
-        return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
     }
 
     public function username()
@@ -207,7 +208,7 @@ class UserController extends Controller
         
         
         
-        return view('pages.aluno.second', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.aluno.second', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Ativação']);
     }
 
 
@@ -227,11 +228,21 @@ class UserController extends Controller
         } else {
             $avatar = "/default.jpeg";
         }
+        $cademi = Cademi::find(Auth::user()->id);
+        if (Cademi::find(Auth::user()->id)){
+           if(Auth::user()->courses = "PRE"){
+            $card = "resources/images/Militar.jpg";
+            //dd($card);
+           }
         
+        }
+        if ( $data != null ){
+            $avatar =  $data->folder . "/" . $data->file;
+        } else {
+            $avatar = "/default.jpeg";
+        }
         
-
-
-        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => $avatar]);
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
 
     }
 
@@ -270,7 +281,7 @@ class UserController extends Controller
                 
         
         
-                return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb']);
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início']);
         
             }
 
@@ -286,7 +297,7 @@ class UserController extends Controller
         $user->update($data);
         
         
-        return view('pages.aluno.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.aluno.charge', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Charge']);
     }
 
     public function reset(Request $request)
@@ -302,7 +313,7 @@ class UserController extends Controller
         $user->update($data);
         
         
-        return view('pages.aluno.my', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb', 'avatar' => "Auth::user()->id"]);
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => "Auth::user()->id"]);
     }
     
 }

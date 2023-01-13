@@ -9,6 +9,7 @@ use App\Http\Controllers\{
 };
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasController;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -63,18 +64,18 @@ use Illuminate\Support\Facades\Route;
                    
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', function () {
-                            return view('pages.aluno.first', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                            return view('pages.aluno.first', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste']);
                         })->name('aluno.first');
                         Route::get('/second', function () {
-                            return view('pages.aluno.second', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                            return view('pages.aluno.second', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste']);
                         })->name('aluno.second');
                         Route::get('/finish', function () {
-                            return view('pages.aluno.finish', ['title' => 'Início', 'breadcrumb' => 'Início', 'file' => 'teste']);
+                            return view('pages.aluno.finish', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste']);
                         })->name('aluno.finish');
                         Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
                         Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
                         Route::get('/pagamento', function () {
-                            return view('pages.aluno.payment', ['title' => 'Sales Admin | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                            return view('pages.aluno.payment', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
                         })->name('aluno.pagamento');
                         Route::get('/config', [UserController::class, 'username'])->name('config');
                         
@@ -177,16 +178,16 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::post('/charge', [TemporaryFileController::class, 'charge'])->name('user-charge');
                 Route::post('/csv', [TemporaryFileController::class, 'openCsv2'])->name('user-csv');
                 Route::get('/charge', function () {
-                    return view('pages.app.user.charge', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                    return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD | Carregar Lista', 'breadcrumb' => 'Carregar Lista']);
                 })->name('user-charge');
 
                 Route::get('/newids', function () {
-                    return view('pages.app.user.newids', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+                    return view('pages.app.user.newids', ['title' => 'Profissionaliza EAD | Carregar Lista', 'breadcrumb' => 'Carregar Lista']);
                 });
                 Route::post('/newids', [UserController::class, 'newids'])->name('user-newids');
                 Route::post('/reset', [UserController::class, 'reset'])->name('user-reset');
                 Route::get('/reset', function () {
-                    return view('pages.app.user.reset', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb', 'avatar' => "Auth::user()->id"]);
+                    return view('pages.app.user.reset', ['title' => 'Profissionaliza EAD | Reset de Senha', 'breadcrumb' => 'Reset de Senha', 'avatar' => "Auth::user()->id"]);
                 })->name('user-reset');
             });
 
@@ -1110,7 +1111,7 @@ Route::prefix('rtl')->group(function () {
 
 
 Route::get('/', function () {
-    return view('welcome', ['title' => 'This is Title', 'breadcrumb' => 'This Breadcrumb']);
+    return Redirect::to('https://ead.profissionalizaead.com.br/');;
 });
 
 require __DIR__.'/auth.php';

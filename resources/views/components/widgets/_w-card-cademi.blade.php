@@ -1,9 +1,9 @@
-<a class="card mb-md-0 mb-4" href="{{ App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') }}" target="_blank">
-    <img src="{{Vite::asset('resources/images/ag60.jpg')}}" class="card-img-top" alt="...">
+<a class="card mb-md-0 mb-4" href="{{ App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') }}" target="_self">
+    <img src="{{Vite::asset($card)}}" class="card-img-top" alt="Seu Curso">
     <div class="card-footer">
         <div class="row">
             <div class="col-6">
-                <b>Seu curso</b>
+                <b>{{ $title }}</b>
             </div>
             <div class="col-6 text-end">
                 <p class="text-success mb-0">0%</p>
