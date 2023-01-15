@@ -123,7 +123,7 @@
                                     <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-3" name="e-mail" id="e-mail" placeholder="Email" autocomplete="on" required oninput="myFn('email')">
+                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" autocomplete="on" required oninput="myFn('email')">
 
                                         </div>
                                     </div>     
@@ -278,7 +278,7 @@
                 console.log($data);
 
 
-                if ( name.value != ""  && lastname.value != "" && e-mail.value != "" && cellphone.value != "" && autoComplete.value != "") {
+                if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && autoComplete.value != "") {
                 let el = document.getElementById('step');
                 el.classList.remove('disabled');
                 }
