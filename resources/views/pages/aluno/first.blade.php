@@ -278,7 +278,7 @@
                 console.log($data);
 
 
-                if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && autoComplete.value != "") {
+                if ( name.value != ""  && lastname.value != "" && e-mail.value != "" && cellphone.value != "" && autoComplete.value != "") {
                 let el = document.getElementById('step');
                 el.classList.remove('disabled');
                 }
