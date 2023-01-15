@@ -213,13 +213,13 @@ class UserController extends Controller
         $user->lastname = $request->name;
         $user->email = $request->email;
 
-        $city = preg_replace('/[^0-9]/', '', $data['city']);
-        $city2 = City::where('id', $city)->first();
-        $uf = State::where('id', $city2->state_id)->first();
+        //$city = preg_replace('/[^0-9]/', '', $data['city']);
+        //$city2 = City::where('id', $city)->first();
+        //$uf = State::where('id', $city2->state_id)->first();
         
 
-        $user->city = $city2->name;
-        $user->uf = $uf->abbr;
+       // $user->city = $city2->name;
+        //$user->uf = $uf->abbr;
         
         //dd($user);
         $user->update();
