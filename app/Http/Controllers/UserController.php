@@ -195,8 +195,7 @@ class UserController extends Controller
     {
         $user = $this->user->find(Auth::user()->id);
         $user->first = 1;
-        ;
-        $data = $request->all();
+        
         $user->password = bcrypt($request->password);
         $de = array('.','-');
         $para = array('','');
@@ -211,7 +210,7 @@ class UserController extends Controller
         }
         $user->name = $request->name;
         $user->lastname = $request->name;
-        $user->email = $request->email;
+        $user->email = $request->mail;
 
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
         //$city2 = City::where('id', $city)->first();

@@ -45,20 +45,6 @@ $(document).ready(function(){
 
     // Email
 
-    $(".email").inputmask(
-      {
-          mask:"*{1,20}[.*{1,20}][.*{1,20}][.*{1,20}]@*{1,20}[.*{2,6}][.*{1,2}]",
-          greedy:!1,onBeforePaste:function(m,a){return(m=m.toLowerCase()).replace("mailto:","")},
-          definitions:{"*":
-              {
-                  validator:"[0-9A-Za-z!#$%&'*+/=?^_`{|}~-]",
-                  cardinality:1,
-                  casing:"lower"
-              }
-          }
-      }
-      
-  );
 
     // IP Address
     $("#ip-add").inputmask({mask:"999.999.999.999"});
