@@ -14,12 +14,7 @@
         @vite(['resources/scss/light/assets/pages/knowledge_base.scss'])
         @vite(['resources/scss/dark/assets/pages/knowledge_base.scss'])
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
-        <link rel="stylesheet" href="{{asset('plugins/filepond/filepond.min.css')}}">
-        <link rel="stylesheet" href="{{asset('plugins/filepond/FilePondPluginImagePreview.min.css')}}">
-        @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
-        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>   
         
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
@@ -112,39 +107,34 @@
 
                                     <div class="form-group mb-4">
                                         <label for="name">Primeiro Nome</label>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="on" oninput="myFn('name')" required>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="on" onchange="myFn('name')" required>
                                         
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="lastname">Sobrenome</label>
-                                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="on" required oninput="myFn('lastname')">
+                                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="on" required onchange="myFn('lastname')">
 
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" autocomplete="on" required oninput="myFn('email')">
+                                            <input type="text" class="form-control mb-3" name="mail" id="mail" placeholder="Email" autocomplete="on" required onchange="myFn('mail')">
 
                                         </div>
                                     </div>     
                                     <div class="form-group mb-4">
                                         <label for="defaultEmailAddress">Telefone (Whatsapp) </label>
-                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on" required oninput="myFn('cellphone')">
+                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on" required onchange = "myFn('cellphone')">
 
                                     </div>
                                     <div class="form-group">
                                         <label for="city">Cidade - Estado</label>
                                         <div class="row">
                                             <div class="mb-3">
-                                                <input id="autoComplete" name="city" name="city" class="form-control" required oninput="myFn('autoComplete')">
+                                                <input id="autoComplete" name="city" name="city" class="form-control" required onchange="myFn('autoComplete')">
  
                                             </div>
                                         </div>
-                                   
-                                            
-                                            <input type="checkbox" name="first" class="switch-input invisible" value="1"/>
-    
-                              
 
                                     </div>
                                     <div class="d-flex justify-content-center">
@@ -218,45 +208,11 @@
 
         <script src="{{asset('plugins/autocomplete/autoComplete.min.js')}}"></script>
         <script src="{{asset('plugins/autocomplete/city_autoComplete.js')}}"></script>
+
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/input-mask-custom.js')}}"></script>
+        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
    
-
-
-        <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginFileValidateType.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageExifOrientation.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImagePreview.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageCrop.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageResize.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageTransform.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/filepondPluginFileValidateSize.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/custom-filepond.js')}}"></script>
-        <script>
-            
-        </script>
-        <script>
-
-            const inputElement = document.querySelector('input[type="file"]');
-
-            const pond = FilePond.create(inputElement);
-                    
-            FilePond.setOptions({
-            server: {
-                process: '{{ getRouterValue(); }}/avatar-upload',
-                revert: '{{ getRouterValue(); }}/avatar-delete',
-                         
-                headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                }
-                
-            }
-            
-            });
-
-
-
-        </script>
+        
 
         <script>
             function myFunction() {
@@ -274,20 +230,7 @@
             }
             }
 
-            function myFn($data){
-                console.log($data);
-
-
-                if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && autoComplete.value != "") {
-                let el = document.getElementById('step');
-                el.classList.remove('disabled');
-                }
-            }
-
-            </script>
-            
-
-
+        </script>
 <script>
 
     function myPw(){
@@ -310,6 +253,32 @@
 
 
 </script>
+
+<script>
+    function myFunction() {
+    var x = document.getElementById("password");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+    var x = document.getElementById("password2");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
+    }
+</script>
+<script>
+    function myFn($data){
+        console.log($data);
+        if ( name.value != ""  && lastname.value != "" && mail.value != "" && cellphone.value != "" && autoComplete.value != "") {
+        let el = document.getElementById('step');
+        el.classList.remove('disabled');
+        }
+    }
+    </script>
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
