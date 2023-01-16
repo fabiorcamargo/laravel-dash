@@ -87,16 +87,24 @@ class CademiController extends Controller
              "cliente_endereco_estado"=> $user->uf2,
              "produto_nome" => $user->courses
          ];
+         if (env('APP_DEBUG') == true){
          
          $data = Storage::get('file1.txt', $user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->city2 . $user->uf2 . $user->courses . PHP_EOL);
          Storage::put('file1.txt', $data .$user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->city2 . $user->uf2 . $user->courses . PHP_EOL);
  
+         } else {
+            $data = Storage::get('file1.txt', $user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->city2 . $user->uf2 . $user->courses . PHP_EOL);
+            Storage::put('file1.txt', $data .$user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->city2 . $user->uf2 . $user->courses . PHP_EOL);
+   
+            Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+         }
          //dd($payload);
          
  
          //Cria um novo aluno na cademi
  
-         //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+         
+         //
 
         
         
