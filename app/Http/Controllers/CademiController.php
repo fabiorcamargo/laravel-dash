@@ -75,13 +75,13 @@ class CademiController extends Controller
  
          $payload = [
              "token" => env('CADEMI_TOKEN_GATEWAY'),
-             "codigo"=> "codc" . $user->username,
+             "codigo"=> "codd" . $user->username,
              "status"=> "aprovado",
              "produto_id"=> $user->courses,
              "produto_nome"=> $user->courses,
              "cliente_email"=> $user->email2,
              "cliente_nome"=> $user->name . " " . $user->lastname,
-             "cliente_doc"=> $user->document,
+             //"cliente_doc"=> $user->document,
              "cliente_celular"=> $user->cellphone,
              //"cliente_endereco_cidade"=> $user->city2,
              //"cliente_endereco_estado"=> $user->uf2,
