@@ -44,8 +44,9 @@ class ApiController extends Controller
                   $arr = (object)$data['event']['usuario'];
                   //dd($arr->id);
 
-                  $tabela = $this->user->where('email', $arr->email)->first();
-                  
+                  //$tabela = $this->user->where('email', $arr->email)->first();
+                  $tabela = $this->user->where('email2', $arr->email)->first();
+
                   if(empty($tabela['id'])){
                     return response("Usuário não encontrado");
                   }else{
