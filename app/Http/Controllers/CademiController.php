@@ -81,18 +81,21 @@ class CademiController extends Controller
              "produto_nome"=> $user->courses,
              "cliente_email"=> $user->email2,
              "cliente_nome"=> $user->name . " " . $user->lastname,
-             //"cliente_doc"=> $user->document,
+             "cliente_doc"=> $user->username,
              "cliente_celular"=> $user->cellphone,
              //"cliente_endereco_cidade"=> $user->city2,
              //"cliente_endereco_estado"=> $user->uf2,
              "produto_nome" => $user->courses
          ];
+
+         //dd($payload);
          if (env('APP_DEBUG') == true){
-         
+         //dd("não");
          $data = Storage::get('file1.txt', $user->username . $user->email . $user->name . $user->document . $user->cellphone  . $user->courses . PHP_EOL);
-         Storage::put('file1.txt', $data .$user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->uf2 . $user->courses . PHP_EOL);
+         Storage::put('file1.txt', $data .$user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->uf2 . $user->courses . "Não foi Enviado" . PHP_EOL);
  
          } else {
+            //dd("sim");
             $data = Storage::get('file1.txt', $user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->courses . PHP_EOL);
             Storage::put('file1.txt', $data .$user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->courses . PHP_EOL);
    
