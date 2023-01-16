@@ -37,7 +37,7 @@ class CademiController extends Controller
             "produto_nome"=> $user->courses,
             "cliente_email"=> $user->email,
             "cliente_nome"=> $user->name,
-            "cliente_doc"=> $user->document,
+            //"cliente_doc"=> $user->document,
             "cliente_celular"=> $user->cellphone,
             "produto_nome" => $user->courses
         ];
