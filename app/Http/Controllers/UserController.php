@@ -333,9 +333,21 @@ class UserController extends Controller
         
         //dd($data);
         $user->update($data);
+
+        if (Cademi::where('user_id', Auth::user()->id)->first()){
+            if(str_contains(Auth::user()->courses, "PRE")){
+             $card = "resources/images/Militar.jpg";
+             //dd($card);
+            }else if(str_contains(Auth::user()->courses, "AG")){
+             $card = "resources/images/Bancario.jpg";
+            }
+         
+         }else{
+             $card = "resources/images/em-breve.jpg";
+         }
         
         
-        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => "Auth::user()->id"]);
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => "Auth::user()->id", 'card' => $card]);
     }
     
 }
