@@ -210,7 +210,7 @@ class UserController extends Controller
         }
         $user->name = $request->name;
         $user->lastname = $request->name;
-        $user->email = $request->mail;
+        $user->email = $request->email;
 
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
         //$city2 = City::where('id', $city)->first();

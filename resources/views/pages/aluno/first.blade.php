@@ -118,7 +118,7 @@
                                     <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-3" name="mail" id="mail" placeholder="Email" autocomplete="on" required onchange="myFn('mail')">
+                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" autocomplete="on" required onchange="myFn('mail')">
 
                                         </div>
                                     </div>     
@@ -165,6 +165,7 @@
                                         <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
                                             
                                             <label for="name">Nova Senha</label>
+                                            <input class="invisible" id="login" type="text" name="login" value="{{Auth::user()->username}}"">
                                             <input type="password" class="form-control invalid" name="password" id="password" placeholder="******" autocomplete="on">
                                             
                                             <label for="name">Repita a Senha</label>
@@ -273,7 +274,7 @@
 <script>
     function myFn($data){
         console.log($data);
-        if ( name.value != ""  && lastname.value != "" && mail.value != "" && cellphone.value != "" && autoComplete.value != "") {
+        if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && autoComplete.value != "") {
         let el = document.getElementById('step');
         el.classList.remove('disabled');
         }

@@ -51,7 +51,7 @@
                                                 <input type="file" id="image" name="image" class="filepond col-md-2 ">
                                             </div>
                                             <div class="row">
-                                                <a type="submit" href="{{getRouterValue();}}/aluno/finish" class="btn btn-primary mb-2 me-4 mt-5">Enviar</a>
+                                                <a type="submit" href="{{getRouterValue();}}/aluno/finish" class="btn btn-primary mb-2 me-4 mt-5">Entrar</a>
                                             </div>
                                         </div>
 
