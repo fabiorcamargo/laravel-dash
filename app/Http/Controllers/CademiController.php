@@ -75,7 +75,7 @@ class CademiController extends Controller
  
          $payload = [
              "token" => env('CADEMI_TOKEN_GATEWAY'),
-             "codigo"=> "codc" . $user->id,
+             "codigo"=> "codc" . $user->username,
              "status"=> "aprovado",
              "produto_id"=> $user->courses,
              "produto_nome"=> $user->courses,
@@ -83,13 +83,13 @@ class CademiController extends Controller
              "cliente_nome"=> $user->name,
              "cliente_doc"=> $user->document,
              "cliente_celular"=> $user->cellphone,
-             "cliente_endereco_cidade"=> $user->city,
-             "cliente_endereco_estado"=> $user->uf,
+             "cliente_endereco_cidade"=> $user->city2,
+             "cliente_endereco_estado"=> $user->uf2,
              "produto_nome" => $user->courses
          ];
          
-         $data = Storage::get('file1.txt', $user->id . $user->email . $user->name . $user->document . $user->cellphone . $user->city . $user->uf . $user->courses . PHP_EOL);
-         Storage::put('file1.txt', $data .$user->id . $user->email . $user->name . $user->document . $user->cellphone . $user->city . $user->uf . $user->courses . PHP_EOL);
+         $data = Storage::get('file1.txt', $user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->city2 . $user->uf2 . $user->courses . PHP_EOL);
+         Storage::put('file1.txt', $data .$user->username . $user->email . $user->name . $user->document . $user->cellphone . $user->city2 . $user->uf2 . $user->courses . PHP_EOL);
  
          //dd($payload);
          

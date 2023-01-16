@@ -20,7 +20,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Events\AfterImport;
 
-class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow, WithUpserts
+class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts
 {
 
     
@@ -57,7 +57,7 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
         $city2 = City::where('id', $city)->first();
         $uf = State::where('id', $city2->state_id)->first();
 
-        //dd($city2->name);
+        //dd($uf);
 
            $user->username = $row['username'];
            $user->email = $email;
@@ -76,6 +76,7 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
            $user->seller = $row['seller'];
            $user->courses = $row['courses'];
            $user->active = $row['active'];
+           //dd($user);
            $user->save();
                  
        
