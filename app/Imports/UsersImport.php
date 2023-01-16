@@ -54,8 +54,8 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
         $city = preg_replace('/[^0-9]/', '', $row['city2']);
         //dd($city);
         $document = preg_replace('/[^0-9]/', '', $row['document']);
-        $city2 = City::where('id', $city)->first();
-        $uf = State::where('id', $city2->state_id)->first();
+        //$city2 = City::where('id', $city)->first();
+        //$uf = State::where('id', $city2->state_id)->first();
 
         //dd($uf);
 
@@ -66,8 +66,8 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
            $user->lastname = $row['lastname'];
            $user->password = $password;
            $user->cellphone2 = $row['cellphone2'];
-           $user->city2 = $city2->name;
-           $user->uf2 = $uf->abbr;
+           $user->city2 = $row['city2'];
+           $user->uf2 = $row['city2'];
            $user->payment = $row['payment'];
            $user->role = $row['role'];
            //$user->ouro = $row['ouro'];
