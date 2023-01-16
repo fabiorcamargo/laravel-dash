@@ -31,10 +31,10 @@ class CademiController extends Controller
 
         $payload = [
             "token" => env('CADEMI_TOKEN_GATEWAY'),
-            "codigo"=> "codc" . $user->id,
+            "codigo"=> "codc" . $user->username,
             "status"=> "aprovado",
-            "produto_id"=> "AG60",
-            "produto_nome"=> "Agente Bancário",
+            "produto_id"=> $user->courses,
+            "produto_nome"=> $user->courses,
             "cliente_email"=> $user->email,
             "cliente_nome"=> $user->name,
             "cliente_doc"=> $user->document,
@@ -48,7 +48,7 @@ class CademiController extends Controller
 
         //Cria um novo aluno na cademi
 
-        Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+        //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
         
        // return redirect()->route('users.index');
     }
