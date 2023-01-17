@@ -31,7 +31,7 @@ class CademiController extends Controller
 
         $payload = [
             "token" => env('CADEMI_TOKEN_GATEWAY'),
-            "codigo"=> "codd" . $user->username,
+            "codigo"=> "CODD-$user->courses-$user->username",
             "status"=> "aprovado",
             "produto_id"=> $user->courses,
             "produto_nome"=> $user->courses,
