@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateCademiRequest;
+use App\Jobs\cademi as JobsCademi;
 use App\Models\{
   Cademi,
   User
 };
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
-
+use stdClass;
 
 class ApiController extends Controller
 {
@@ -72,4 +76,81 @@ class ApiController extends Controller
                 
           }
 
+          public function verify()
+                {
+                  $array = array(
+                    array('developer' => array('name' => 'Taylor')),
+                    array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+                );
+                $i = 0;
+                $url = "https://profissionaliza.cademi.com.br/api/v1/usuario";
+                foreach($array as $arr){
+                  $response = Http::withHeaders([
+                    'Authorization' => env('CADEMI_TOKEN_API')
+                ])->get("$url");
+  
+                  $jsonData = $response->json();
+                  //dd($jsonData);
+                  $users = ($jsonData['data']['usuario']);
+                  $url = ($jsonData['data']['paginator']['next_page_url']);
+                  //dd($page);
+                  //dd($users);
+
+
+
+
+                  foreach($users as $user){
+                    //$email = User::where('email', $user['email'])->first();
+                    //$email2 = User::where('email2', $user['email'])->first();
+                    if (!empty($email = User::where('email', $user['email'])->first())){
+                      $cademi = new Cademi();
+
+                      $cademi->user_id = $email['id'];
+                      $cademi->user = $user['id'];
+                      $cademi->nome = $user['nome'];
+                      $cademi->email = $user['email'];
+                      $cademi->celular = $user['celular'];
+                      $cademi->login_auto = $user['login_auto'];
+                      $cademi->gratis = $user['gratis'];
+                      if (Cademi::where('user_id', $email['id'])->first()){
+                        
+                      } else {
+                        $cademi->save();
+                        //dd($cademi);
+                      }
+                      
+                      
+                      
+
+                    } else if (!empty($email = User::where('email2', $user['email'])->first())){
+                      $cademi = new Cademi();
+
+                      $cademi->user_id = $email['id'];
+                      $cademi->user = $user['id'];
+                      $cademi->nome = $user['nome'];
+                      $cademi->email = $user['email'];
+                      $cademi->celular = $user['celular'];
+                      $cademi->login_auto = $user['login_auto'];
+                      $cademi->gratis = $user['gratis'];
+
+                      if (Cademi::where('user_id', $email['id'])->first()){
+                        
+                      } else {
+                        $cademi->save();
+                        //dd($cademi);
+                      }
+                      
+                     
+
+
+                  }
+        
+                
+                
+          }
+$i++;
+}
+dd($i);
+                }
 }

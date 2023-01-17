@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\{
+    ApiController,
     CademiController,
     FilepondController,
     FileUploadController,
@@ -133,6 +134,7 @@ foreach ($prefixRouters as $prefixRouter) {
         Route::get('/users/{id}/cademi/create', [CademiController::class, 'create'])->name('cademi.create');
         Route::get('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
         Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
+        Route::get('/users/cademi/verify', [ApiController::class, 'verify'])->name('cademi.verify');
     
 
 
