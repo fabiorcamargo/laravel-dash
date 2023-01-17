@@ -1,4 +1,4 @@
-<x-base-layout :scrollspy="false">
+<x-base-layout :scrollspy="true">
 
     <x-slot:pageTitle>
         {{$title}} 
@@ -21,7 +21,7 @@
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <x-slot:scrollspyConfig>
-        data-bs-spy="scroll" data-bs-target="#navSection" data-bs-offset="100"
+        data-bs-spy="scroll" data-bs-target="" data-bs-offset="100"
     </x-slot>
     
 
