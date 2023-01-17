@@ -211,6 +211,12 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->lastname = $request->name;
         $user->email = $request->email;
+        $city = City::where('id', $request->city)->first();
+        $user->city = $city->name;
+        $state = State::where('id', $request->state)->first();
+        $user->uf = $state->name;
+
+        //dd($user);
 
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
         //$city2 = City::where('id', $city)->first();
@@ -372,7 +378,28 @@ class UserController extends Controller
         
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => "Auth::user()->id", 'card' => $card]);
     }
+
+    public function first(){
     
+    
+        $states = State::all('name', 'id');
+
+    
+    return view('pages.aluno.first', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste', 'states' => $states]);
+    }
+
+
+    public function city($id)
+    {
+        $cities = City::where("state_id",$id)
+                    ->pluck('name','id');
+                   //dd($cities);
+        return json_encode($cities);
+    }
+
+
+
+
 }
 
 

@@ -1,4 +1,4 @@
-<x-base-layout :scrollspy="true">
+<x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
         {{$title}} 
@@ -118,7 +118,7 @@
                                     <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="email" name="email" placeholder="Your email ID.." class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
+                                            <input type="email" name="email" placeholder="Para recuperação de senha" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
                                                     <div class="valid-feedback feedback-pos">
                                                         Ok!
                                                     </div>
@@ -134,10 +134,26 @@
 
                                     </div>
                                     <div class="form-group">
-                                        <label for="city">Cidade - Estado</label>
+  
                                         <div class="row">
                                             <div class="mb-3">
-                                                <input id="autoComplete" name="city" name="city" class="form-control" required onchange="myFn('autoComplete')">
+                                                <div class="form-group">
+                                                    <label for="title">Selecione seu Estado</label>
+                                                    <select name="state" class="form-control" onchange = "myFn('state')" required>
+                                                        <option value="">Selecione seu Estado</option>
+                                                        @foreach ($states as $key => $value)
+                                                            <option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="title">Selecione sua Cidade</label>
+                                                    
+                                                    <select name="city" id="city" class="form-control" aria-placeholder="Cidade" onchange = "myFn('city')" required>
+                                                        <option value="">Selecione sua Cidade</option>
+                                                    </select>
+                                                </div>
+                                        
  
                                             </div>
                                         </div>
@@ -200,6 +216,7 @@
             </div>
             
         </div>
+
         
 
     
@@ -212,9 +229,6 @@
 
         <script src="{{asset('plugins/stepper/bsStepper.min.js')}}"></script>
         <script src="{{asset('plugins/stepper/custom-bsStepper.min.js')}}"></script>
-
-        <script src="{{asset('plugins/autocomplete/autoComplete.min.js')}}"></script>
-        <script src="{{asset('plugins/autocomplete/city_autoComplete.js')}}"></script>
 
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
@@ -280,7 +294,7 @@
 <script>
     function myFn($data){
         console.log($data);
-        if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && autoComplete.value != "") {
+        if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && city.value != "") {
         let el = document.getElementById('step');
         el.classList.remove('disabled');
         }
@@ -304,6 +318,32 @@
   }, false);
 })();
     </script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('select[name="state"]').on('change', function() {
+            var stateID = $(this).val();
+            if(stateID) {
+                $.ajax({
+                    url: '/city/'+stateID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {   
+                        console.log("teste");   
+                        var city = "1";                
+                        $('select[name="city"]').empty();
+                        $.each(data, function(key, value) {
+                        $('select[name="city"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="city"]').empty();
+            }
+        });
+    });
+</script>
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
