@@ -316,7 +316,25 @@ class TemporaryFileController extends Controller
 
         return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
     
+}
 
+
+
+public function AvatarCorrect()
+{
+    $users = User::all();
+    foreach ($users as $user){
+        //dd($user);
+        if ($avatar = $this->avatar->where('user_id', $user->id)->first()){
+            //dd("$avatar->folder/$avatar->file");
+            $user->update([
+                'image' => "$avatar->folder/$avatar->file",
+            ]);
+            echo "$avatar->folder/$avatar->file";
+
+        }
+            
+    }
     
 
 }
