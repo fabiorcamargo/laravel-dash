@@ -131,31 +131,34 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        /*
-        $users = $this->user
-                        ->all(
-                            
-                        );
-
-        return view('user.index', [
-            'users' => User::paginate(15)
-        ]);*/
-        $users = User::first()->paginate(10);
-        
-                       
-        
+        $users = User::first()->orderBy('updated_at', 'desc')->paginate(20);
         return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+    }
+
+    public function listschool(Request $request)
+    {
+
+        $users = User::first()->orderBy('updated_at', 'desc')->paginate(20);
+        $fillable = (app(User::class)->getFillable());
+        //dd($fillable);
+        return view('pages.app.user.listschool', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'fillable' => $fillable], compact('users'));
     }
 
     public function search(Request $request)
     {
+        
+        if(str_contains(url()->previous(), "school")){
+            $url = "pages.app.user.listschool";
+        } else {
+            $url = "pages.app.user.list";
+        }
         $users = $this->user
                         ->getUsers(
                             search: $request->search ?? ''
                         );
                         
                         
-    return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+    return view($url, ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
 
  }
 

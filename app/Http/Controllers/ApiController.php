@@ -6,7 +6,8 @@ use App\Http\Requests\StoreUpdateCademiRequest;
 use App\Jobs\cademi as JobsCademi;
 use App\Models\{
   Cademi,
-  User
+    CademiCourse,
+    User
 };
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
@@ -21,9 +22,10 @@ class ApiController extends Controller
   protected $cademi;
   protected $user;
 
-    public function __construct(Cademi $cademi, User $user)
+    public function __construct(Cademi $cademi, User $user, CademiCourse $cademicourses)
     {
         $this->cademi = $cademi;
+        $this->cademi = $cademicourses;
         $this->user = $user;
     }
 
@@ -113,6 +115,8 @@ class ApiController extends Controller
                       $cademi->celular = $user['celular'];
                       $cademi->login_auto = $user['login_auto'];
                       $cademi->gratis = $user['gratis'];
+
+
                       if (Cademi::where('user_id', $email['id'])->first()){
                         
                       } else {
@@ -134,23 +138,102 @@ class ApiController extends Controller
                       $cademi->login_auto = $user['login_auto'];
                       $cademi->gratis = $user['gratis'];
 
+
+
                       if (Cademi::where('user_id', $email['id'])->first()){
                         
                       } else {
                         $cademi->save();
+                        
                         //dd($cademi);
                       }
                       
                      
 
 
+                    }
+          
+                  
+                  
+            }
+                      $i++;
+                      }
+                      dd($i);
+        }
+
+
+
+                public function course_store(Request $request){
+
+                  {
+                
+                    $data = json_decode($request->getContent(), true);
+                    //dd($data);
+                    $arr = (object)$data['event']['usuario'];
+                    //dd($arr->id);
+                    $entrega = (object)$data['event']['entrega'];
+                    //dd($entrega);
+                  
+                    $user = $this->user->where('email2', $arr->email)->first();
+                 
+                     // dd($tabela);
+                  
+                    //$tabela = $this->user->where('email', $arr->email)->first();
+                    
+                    //dd("não");
+
+                  
+                    //dd($user);
+                    //$cademi = Cademi::where('user', $arr->id)->first();
+                    //dd($cademi);
+                    if(empty($cademi = Cademi::where('user', $arr->id)->first())){
+                    
+                    if(empty($user['id'])){
+                      return response("Usuário não encontrado");
+                    }else{
+                      $userId = $user['id'];
+                      if (!$user = $this->user->find($userId)) {
+                        return redirect()->back();
+                        return response("Usuário não confere");
+                      }
+
+                      
+                      $aluno =  $user->cademis()->create([
+                        'user' => $arr->id,
+                        'nome' => $arr->nome,
+                        'email' => $arr->email,
+                        'celular' => $arr->celular,
+                        'course_id' => $entrega->engine_id,
+                        'course_name' => $entrega->nome,
+                        'login_auto' => $arr->login_auto,
+                        'gratis' => $arr->gratis,
+                        'visible' => isset($arr->visible)
+                    ]);
                   }
-        
-                
-                
-          }
-$i++;
-}
-dd($i);
                 }
+                
+                
+                
+                    if(empty($course = CademiCourse::where('doc', $entrega->id)->first())){
+                    $course =  $user->cademicourses()->create([
+                      'user' => $arr->id,
+                      'course_id' => $entrega->engine_id,
+                      'course_name' => $entrega->nome,
+                      'doc' => $entrega->id,
+                      ]);
+                      
+                      } else if($course = CademiCourse::where('doc', $entrega->id)->first()) {
+                        
+                      }
+                      
+    
+                        return response("Aluno: $user->username | Curso: $course->id", 200);
+  
+                         
+                  
+            }
+          }
+
+
+         
 }

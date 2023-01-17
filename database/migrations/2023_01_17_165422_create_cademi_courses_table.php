@@ -13,18 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('accesstimes', function (Blueprint $table) {
+        Schema::create('cademi_courses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->text('body');
-            $table->timestamps();
-        });
-
-        Schema::create('comments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->text('body');
-            $table->boolean('visible')->default(true);
+            $table->string('user');
+            $table->string('course_id');
+            $table->string('course_name');
+            $table->string('doc');
             $table->timestamps();
         });
     }
@@ -36,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('accesstimes');
+        Schema::dropIfExists('cademi_courses');
     }
 };

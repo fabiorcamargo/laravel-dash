@@ -87,6 +87,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Cademi::class);
     }
+    public function cademicourses()
+    {
+        return $this->hasMany(CademiCourse::class);
+    }
     public function avatar()
     {
         return $this->hasMany(Avatar::class);
