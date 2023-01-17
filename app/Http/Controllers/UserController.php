@@ -245,7 +245,8 @@ class UserController extends Controller
         } else {
             $avatar = "/default.jpeg";
         }
-       
+
+        $card = "resources/images/em-breve.jpg";
 
         if (Cademi::where('user_id', Auth::user()->id)->first()){
            if(str_contains(Auth::user()->courses, "PRE")){
@@ -253,17 +254,39 @@ class UserController extends Controller
             //dd($card);
            }else if(str_contains(Auth::user()->courses, "AG")){
             $card = "resources/images/Bancario.jpg";
+           }else if(str_contains(Auth::user()->courses, "CPA")){
+            $card = "resources/images/CP10.jpg";
            }
         
         }else{
             $card = "resources/images/em-breve.jpg";
         }
+
         if ( $data != null ){
             $avatar =  $data->folder . "/" . $data->file;
         } else {
             $avatar = "/default.jpeg";
         }
+/*
+        $states = State::all();
+
+        $cities = City::all();
+        //dd($cities[0]);
+        $uf = (State::where('id', "11")->first());
+        //dd($uf);
+        $i = 0;
         
+
+        foreach ($cities as $city){
+            
+            $cities1[(State::where('id', $city->state_id)->first())->abbr][$i] = $city->name;
+            $i++;
+        }
+        
+
+       //dd(($cities1));
+      dd(collect($cities1)->sortBy('Tvalue')->toArray());
+        */
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
 
     }

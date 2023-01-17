@@ -118,7 +118,13 @@
                                     <div class="form-group mb-4">
                                         <div class="form-group">
                                             <label for="email">Email</label>
-                                            <input type="text" class="form-control mb-3" name="email" id="email" placeholder="Email" autocomplete="on" required onchange="myFn('mail')">
+                                            <input type="email" name="email" placeholder="Your email ID.." class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
+                                                    <div class="valid-feedback feedback-pos">
+                                                        Ok!
+                                                    </div>
+                                                    <div class="invalid-feedback feedback-pos">
+                                                        Por favor coloque um email válido.
+                                                    </div>
 
                                         </div>
                                     </div>     
@@ -279,6 +285,24 @@
         el.classList.remove('disabled');
         }
     }
+    </script>
+
+    <script>
+        (function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var forms = document.getElementsByClassName('needs-validation');
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
     </script>
 
     </x-slot>
