@@ -159,7 +159,7 @@ class TemporaryFileController extends Controller
                 'user_id' => Auth::user()->id
             ]);
             $user->update([
-                'image' => $folder . "/" . $file_name,
+                'image' => "avatar/$folder/$file_name",
             ]);
             return $folder;
         }
