@@ -142,7 +142,7 @@ class TemporaryFileController extends Controller
                     'file' => $file_name,
                 ]);
                 $user->update([
-                    'image' => 'avatar/' . $folder . "/" . $file_name,
+                    'image' => "avatar/$folder/$file_name",
                 ]);
                 return $folder;
             }
