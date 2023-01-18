@@ -180,8 +180,8 @@ class ApiController extends Controller
                     }
                     $user = User::where('id', $cademi->user_id)->first();
                     //dd($user);
-                    $course = CademiCourse::where('doc', $entrega->id)->first();
-                   // dd($course);
+                    $course = CademiCourse::where('doc', $entrega->id)->where('user', $arr->id)->first();
+                    //dd($course);
                 
                     if(empty($course)){
                       //dd('sim');
@@ -193,8 +193,8 @@ class ApiController extends Controller
                       ]);
 
                       
-                      } else if($course = CademiCourse::where('doc', $entrega->id)->first()) {
-                        
+                      } else {
+                        return response("Curso já cadastrado: $user->username - $course->doc", 403);
                       }
                       
     
