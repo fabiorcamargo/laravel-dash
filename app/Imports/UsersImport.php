@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Events\AfterImport;
 
-class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow, WithUpserts, SkipsEmptyRows
+class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts, SkipsEmptyRows
 {
 
     
