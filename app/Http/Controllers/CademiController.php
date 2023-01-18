@@ -59,8 +59,9 @@ class CademiController extends Controller
     {
         
        
-      
-        $courses = explode(",", $row['courses']);
+        $r = str_replace(" ", "", $row['courses']);
+        $courses = explode(",",  $r);
+
         //dd($courses);
             //dd($row);
             
