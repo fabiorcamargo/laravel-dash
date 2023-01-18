@@ -166,7 +166,7 @@ class ApiController extends Controller
                 public function course_store(Request $request){
 
                   {
-                    sleep(15);
+                   
                     $data = json_decode($request->getContent(), true);
                     //dd($data);
                     $arr = (object)$data['event']['usuario'];
