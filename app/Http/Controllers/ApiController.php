@@ -173,54 +173,25 @@ class ApiController extends Controller
                     //dd($arr->id);
                     $entrega = (object)$data['event']['entrega'];
                     //dd($entrega);
-                  
-                    $user = $this->user->where('email2', $arr->email)->first();
-                 
-                     // dd($tabela);
-                  
-                    //$tabela = $this->user->where('email', $arr->email)->first();
-                    
-                    //dd("não");
-
-                  
-                    //dd($user);
-                    //$cademi = Cademi::where('user', $arr->id)->first();
+                    $cademi = Cademi::where('user', $arr->id)->first();
                     //dd($cademi);
-                    if(empty($cademi = Cademi::where('user', $arr->id)->first())){
-                    
-                    if(empty($user['id'])){
-                      return response("Usuário não encontrado");
-                    }else{
-                      $userId = $user['id'];
-                      if (!$user = $this->user->find($userId)) {
-                        return redirect()->back();
-                        return response("Usuário não confere");
-                      }
-
-                      
-                      $aluno =  $user->cademis()->create([
-                        'user' => $arr->id,
-                        'nome' => $arr->nome,
-                        'email' => $arr->email,
-                        'celular' => $arr->celular,
-                        'course_id' => $entrega->engine_id,
-                        'course_name' => $entrega->nome,
-                        'login_auto' => $arr->login_auto,
-                        'gratis' => $arr->gratis,
-                        'visible' => isset($arr->visible)
-                    ]);
-                  }
-                }
+                    if(empty($cademi)){
+                      return response("Aluno não existe", 403);
+                    }
+                    $user = User::where('id', $cademi->user_id)->first();
+                    //dd($user);
+                    $course = CademiCourse::where('doc', $entrega->id)->first();
+                   // dd($course);
                 
-                
-                
-                    if(empty($course = CademiCourse::where('doc', $entrega->id)->first())){
+                    if(empty($course)){
+                      //dd('sim');
                     $course =  $user->cademicourses()->create([
                       'user' => $arr->id,
                       'course_id' => $entrega->engine_id,
                       'course_name' => $entrega->nome,
                       'doc' => $entrega->id,
                       ]);
+
                       
                       } else if($course = CademiCourse::where('doc', $entrega->id)->first()) {
                         
