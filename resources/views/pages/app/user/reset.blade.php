@@ -58,6 +58,11 @@
                     <label for="name">Repita a Senha</label>
                     <input type="text" class="form-control mb-2" name="password2" id="password2" placeholder="******" autocomplete="off" onblur="myPw()">
                     <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais, ou o campo Id está vazio</div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="first" name="first">
+                        <label class="form-check-label" for="customCheck1">Deseja solicitar os dados do aluno novamente no primeiro acesso?</label>
+                    </div>
                      
                 </div>
                 <button type="submit" id="submit" name="subimit" class="btn btn-primary mb-2 me-4 disabled">Enviar</button>

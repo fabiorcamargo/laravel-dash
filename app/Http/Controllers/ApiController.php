@@ -205,6 +205,22 @@ class ApiController extends Controller
             }
           }
 
+/*
+          public function course_transf (){
+
+            $cademis = Cademi::all();
+            //$cademicourse = CademiCourse::all();
+
+            foreach( $cademis as $cademi) {
+              dd($cademi);
+              $this->$user->where('id')
+              $cademicourse = Cademi::where('')
+
+            }
+            
+
+          }
+*/
 
          
 }

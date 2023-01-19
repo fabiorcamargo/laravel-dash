@@ -358,26 +358,37 @@ class UserController extends Controller
     {
         
         $data = $request->all();
-        //dd($data['username']);
+        //dd($request->first);
         $user = $this->user->where('username', $data['username'])->first();
         
         $data['password'] = bcrypt($request->password);
-        
-        //dd($data);
-        $user->update($data);
+        if($request->first = "on" ){
+            $data['first'] = null;
+        } else if($request->first = "off" ){
+            $data['first'] = "1";
+        }
+   
+        $user->password = $data['password'];
+        $user->first = $data['first'];
+        //dd($user);
+        $user->update();
+        //dd(Cademi::where('user_id', Auth::user()->id)->first());
+
 
         if (Cademi::where('user_id', Auth::user()->id)->first()){
             if(str_contains(Auth::user()->courses, "PRE")){
              $card = "resources/images/Militar.jpg";
-             //dd($card);
+             dd($card);
             }else if(str_contains(Auth::user()->courses, "AG")){
              $card = "resources/images/Bancario.jpg";
+            }else if(str_contains(Auth::user()->courses, "CPA")){
+                $card = "resources/images/cpa10.jpg";
             }
          
          }else{
              $card = "resources/images/em-breve.jpg";
          }
-        
+        //dd($card);
         
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => "Auth::user()->id", 'card' => $card]);
     }
@@ -398,6 +409,14 @@ class UserController extends Controller
                     ->pluck('name','id');
                    //dd($cities);
         return json_encode($cities);
+    }
+
+
+    public function profile(Request $request)
+    {
+        dd($request->all());
+        $users = User::first()->orderBy('updated_at', 'desc')->paginate(20);
+        return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
 
 

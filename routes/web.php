@@ -142,7 +142,7 @@ foreach ($prefixRouters as $prefixRouter) {
         Route::get('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
         Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
         Route::get('/users/cademi/verify', [ApiController::class, 'verify'])->name('cademi.verify');
-        Route::get('/users/cademi/get', [ApiController::class, 'get'])->name('cademi.get');
+        Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
     
 
 
@@ -190,7 +190,7 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::get('/lote', [UserController::class, 'lote'])->name('user-lote');
                 Route::post('/charge', [TemporaryFileController::class, 'charge'])->name('user-charge');
                 Route::post('/csv', [TemporaryFileController::class, 'openCsv2'])->name('user-csv');
-                Route::get('/profile/{id}', [TemporaryFileController::class, 'profile'])->name('user-profile');
+                Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user-profile');
                 Route::get('/charge', function () {
                     return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD | Carregar Lista', 'breadcrumb' => 'Carregar Lista']);
                 })->name('user-charge');
