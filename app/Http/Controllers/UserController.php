@@ -383,6 +383,8 @@ class UserController extends Controller
              $card = "resources/images/Bancario.jpg";
             }else if(str_contains(Auth::user()->courses, "CPA")){
                 $card = "resources/images/cpa10.jpg";
+            }else{
+                $card = "resources/images/em-breve.jpg";
             }
          
          }else{
