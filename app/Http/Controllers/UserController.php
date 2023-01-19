@@ -414,11 +414,12 @@ class UserController extends Controller
     }
 
 
-    public function profile(Request $request)
+    public function profile($id)
     {
-        dd($request->all());
-        $users = User::first()->orderBy('updated_at', 'desc')->paginate(20);
-        return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+        //dd($id);
+        $user = User::find($id);
+        //dd($user);
+        return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user'));
     }
 
 
