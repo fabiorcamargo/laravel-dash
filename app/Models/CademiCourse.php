@@ -10,8 +10,8 @@ class CademiCourse extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
         'user',
+        'user_id',
         'course_id',
         'course_name',
         'doc',

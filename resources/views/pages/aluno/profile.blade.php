@@ -11,6 +11,8 @@
         @vite(['resources/scss/light/assets/users/user-profile.scss'])
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/users/user-profile.scss'])
+        @vite(['resources/scss/light/plugins/clipboard/custom-clipboard.scss'])
+        @vite(['resources/scss/dark/plugins/clipboard/custom-clipboard.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -44,29 +46,53 @@
 
                         <div class="">
                             <ul class="contacts-block list-unstyled">
-                                <li class="contacts-block__item">
+                               {{-- <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-coffee me-3"><path d="M18 8h1a4 4 0 0 1 0 8h-1"></path><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path><line x1="6" y1="1" x2="6" y2="4"></line><line x1="10" y1="1" x2="10" y2="4"></line><line x1="14" y1="1" x2="14" y2="4"></line></svg> Web Developer
+                                </li> --}}
+                                <li class="contacts-block__item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar me-3"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>{{ $user->created_at->format('d-m-Y H:i') }}
                                 </li>
                                 <li class="contacts-block__item">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar me-3"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>{{ $user->created_at }}
+                                    <a href="mailto:{{ $user->email }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail me-3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>{{ $user->email }}</a>
+                                </li>
+                                <li class="contacts-block__item">
+                                    <a href="mailto:{{ $user->email }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail me-3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>{{ $user->email2 }}</a>
                                 </li>
                                 <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map-pin me-3"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>{{ $user->city }} - {{ $user->uf }}
                                 </li>
-                                <li class="contacts-block__item">
-                                    <a href="mailto:example@mail.com"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail me-3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>{{ $user->email }}</a>
-                                </li>
-                                <li class="contacts-block__item">
-                                    <a href="mailto:example@mail.com"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail me-3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>{{ $user->email2 }}</a>
-                                </li>
+                               
                                 <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone me-3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> {{ $user->cellphone }}
                                 </li>
                                 <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone me-3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> {{ $user->cellphone2 }}
                                 </li>
+                                <li class="contacts-block__item">
+                                    @if (isset($cademi->login_auto))
+                                    <button class="btn btn-secondary  _effect--ripple waves-effect waves-light">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+                                        <span class="btn-text-inner">Acesse seu Curso</span>
+                                        </button>
+                                    
+                                    @endif
+                                </li>
+                                <li class="contacts-block__item">
+                                    @if ((Auth::user()->role) == 7)
+                                    <div class="clipboard">
+                                        <form class="form-horizontal">
+                                            <div class="clipboard-input">
+                                                <input type="text" class="form-control inative" id="copy-basic-input" value=" @if (isset($cademi->login_auto)) @endif" readonly>
+                                                <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click" title="Copied" data-clipboard-target="#copy-basic-input"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    @endif
+                                </li>
                             </ul>
-
+                            
+                            
+                            {{--
                             <ul class="list-inline mt-4">
                                 <li class="list-inline-item mb-0">
                                     <a class="btn btn-info btn-icon btn-rounded" href="javascript:void(0);">
@@ -84,6 +110,7 @@
                                     </a>
                                 </li>
                             </ul>
+                            --}}
                         </div>                                    
                     </div>
                 </div>
@@ -94,107 +121,35 @@
 
             <div class="usr-tasks ">
                 <div class="widget-content widget-content-area">
-                    <h3 class="">Cursos</h3>
+                    <h3 class="">Cursos Liberados</h3>
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th>Projects</th>
-                                    <th>Progress</th>
-                                    <th>Task Done</th>
+                                    <th>Nome</th>
+                                    <th>Completo</th>
+                                    <th>%</th>
                                     <th class="text-center">Time</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($courses as $course)
+                                    
+                                
                                 <tr>
-                                    <td>Figma Design</td>
+                                    <td>{{ $course['name'] }}</td>
                                     <td>                                                    
                                         <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-danger" role="progressbar" style="width: 29.56%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                            <div class="progress-bar br-30 bg-danger" role="progressbar" style="width: {{ $course['perc'] }}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </td>
-                                    <td><p class="text-danger">29.56%</p></td>
+                                    <td><p class="text-danger">{{ $course['perc'] }}</p></td>
                                     <td class="text-center">
                                         <p>2 mins ago</p>
                                     </td>
                                 </tr>
 
-                                <tr>
-                                    <td>Vue Migration</td>
-                                    <td>
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-info" role="progressbar" style="width: 50%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-success">50%</p></td>
-                                    <td class="text-center">
-                                        <p>4 hrs ago</p>
-                                    </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td>Flutter App</td>
-                                    <td>                                                    
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-warning" role="progressbar" style="width: 39%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-danger">39%</p></td>
-                                    <td class="text-center">
-                                        <p>a min ago</p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>API Integration</td>
-                                    <td>                                                    
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-success" role="progressbar" style="width: 78.03%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-success">78.03%</p></td>
-                                    <td class="text-center">
-                                        <p>2 weeks ago</p>
-                                    </td>
-                                </tr>
-                                
-                                <tr>
-                                    <td>Blog Update</td>
-                                    <td>                                                    
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-secondary" role="progressbar" style="width: 100%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-success">100%</p></td>
-                                    <td class="text-center">
-                                        <p>18 hrs ago</p>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Landing Page</td>
-                                    <td>                                                    
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-danger" role="progressbar" style="width: 19.15%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-danger">19.15%</p></td>
-                                    <td class="text-center">
-                                        <p>5 days ago</p>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>Shopify Dev</td>
-                                    <td>                                                    
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-info" role="progressbar" style="width: 60.55%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                    </td>
-                                    <td><p class="text-success">60.55%</p></td>
-                                    <td class="text-center">
-                                        <p>8 days ago</p>
-                                    </td>
-                                </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -396,7 +351,7 @@
 
                     <div class="list-group">
                         <div class="list-group-item d-flex justify-content-between align-items-start">
-                            <img src="{{Vite::asset('resources/images/card-americanexpress.svg')}}" class="align-self-center me-3" alt="americanexpress">
+                            <img src="{{ Vite::asset('resources/images/card-americanexpress.svg') }}" class="align-self-center me-3" alt="americanexpress">
                             <div class="me-auto">
                                 <div class="fw-bold title">American Express</div>
                                 <p class="sub-title mb-0">Expires on 12/2025</p>
@@ -428,7 +383,8 @@
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
-
+        <script src="{{asset('plugins/clipboard/clipboard.min.js')}}"></script>
+        <script type="module" src="{{asset('plugins/clipboard/custom-clipboard.min.js')}}"></script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>

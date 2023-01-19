@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUpdateUserFormRequest;
 use App\Models\Avatar;
 use App\Models\Cademi;
+use App\Models\CademiCourse;
 use App\Models\City;
 use App\Models\State;
 use App\Models\TemporaryFile;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 
 class UserController extends Controller
@@ -418,13 +420,53 @@ class UserController extends Controller
     {
         //dd($id);
         $user = User::find($id);
+
+        $cademi = Cademi::where('user_id', $user->id)->first();
+
+        if(!empty($cademi)){
+        $cademicourses = CademiCourse::where('user_id', $user->id)->get();
+        //dd($cademi);
+        //dd($cademicourses);
         //dd($user);
-        return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user'));
+        $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
+//        dd($response);
+        $profiler = json_decode($response->body(), true);
+        //dd($profiler);
+        if ($response['code'] == 200){
+        $produtos = ($profiler['data']['acesso']);
+        $i = 0;
+        foreach ($produtos as $produto){
+            //dd($course['produto']['id']);
+            $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
+            $data = (json_decode($response->body(), true));
+
+            
+            if ($i == 2){
+           // dd($data);
+        }
+        if (isset($data['data']['progresso'])){
+            $courses[$i] = ["name" => $produto['produto']['nome'], "perc" => $data['data']['progresso']['total']];
+
+            //dd($courses);
+            $i++;
+        }
+           
     }
+    }else{
+        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+    }
+    }else{
+        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
 
-
-
-
-}
-
-
+        //dd($courses);
+    }
+    
+    //dd($courses);
+        
+           //dd($response->body()); 
+           return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+       
+        }
+        
+       
+    }
