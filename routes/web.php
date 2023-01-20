@@ -86,6 +86,8 @@ use Illuminate\Support\Facades\Route;
                             return view('pages.aluno.payment', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
                         })->name('aluno.pagamento');
                         Route::get('/config', [UserController::class, 'username'])->name('config');
+                        Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
+                        Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
                         
                         
                     });

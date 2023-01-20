@@ -207,12 +207,16 @@ class UserController extends Controller
             } else {
                 $user->password = bcrypt($request->password);
             }
+            if(Auth::user()->role == 7){
             $user->email2 = $request->email2;
             $de = array('(',')',' ','-');
             $para = array('','','','');
             $user->cellphone2 = str_replace($de, $para, $request->cellphone2);
             $user->payment = $request->payment;
             $user->secretary = $request->secretary;
+            $de = array('.','-');
+            $para = array('','');
+            $user->document = str_replace($de, $para, $request->document);
             if( $request->ouro == "on"){
             $user->ouro = 1;
             }else{
@@ -223,6 +227,7 @@ class UserController extends Controller
             } else {
                 $user->first = 1;   
             }
+        }
            // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
         }else{
             $user = $this->user->find(Auth::user()->id);
@@ -237,9 +242,7 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
         }
         
-        $de = array('.','-');
-        $para = array('','');
-        $user->document = str_replace($de, $para, $request->document);
+        
         $de = array('(',')',' ','-');
         $para = array('','','','');
         $user->cellphone = str_replace($de, $para, $request->cellphone);
@@ -277,7 +280,7 @@ class UserController extends Controller
         $sucess = "Perfil atualizado com sucesso!";
         
         if (str_contains(url()->previous(), "profile")){
-            return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
+            return redirect("/modern-dark-menu/aluno/profile/$user->id")->with('sucess', 'Verdade');
         }
         
         
@@ -463,7 +466,15 @@ class UserController extends Controller
 
     public function profile($id)
     {
-        //dd($id);
+        
+        if((Auth::user()->role) == 1 ){
+            //dd("1");
+            if(Auth::user()->id != $id){
+                return back();
+            }
+
+        }
+        //dd("ok");
         $user = User::find($id);
 
         $cademi = Cademi::where('user_id', $user->id)->first();
@@ -517,12 +528,25 @@ class UserController extends Controller
     //dd($courses);
         
            //dd($response->body()); 
-           return view('pages.app.user.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+           if(str_contains(url()->previous(), "aluno")){
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+        } else {
+            return view('pages.app.user.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+        }
+           
        
         }
 
         public function profile_edit($id)
     {
+
+        if((Auth::user()->role) == 1 ){
+            //dd("1");
+            if(Auth::user()->id != $id){
+                return back();
+            }
+
+        }
         //dd($id);
         $user = $this->user->find($id);
         //dd($user);
@@ -575,7 +599,13 @@ if($data['code'] !== 200){
     //dd($courses);
         
            //dd($response->body()); 
-           return view('pages.app.user.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states'));
+
+           if(str_contains(url()->previous(), "aluno")){
+            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states'));
+           }else{
+            return view('pages.app.user.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states'));
+           }
+           
        
         }
 
