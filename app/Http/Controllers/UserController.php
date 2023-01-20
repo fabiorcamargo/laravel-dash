@@ -454,6 +454,7 @@ class UserController extends Controller
     }
     }else{
         $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+        
     }
     }else{
         $courses[0] = ["name" => "Vazio", "perc" => "0%"];

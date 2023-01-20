@@ -68,27 +68,29 @@
                                 <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone me-3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> {{ $user->cellphone2 }}
                                 </li>
+                                
+                                @isset($cademi->login_auto)
                                 <li class="contacts-block__item">
-                                    @if (isset($cademi->login_auto))
-                                    <button class="btn btn-secondary  _effect--ripple waves-effect waves-light">
+                                   <button class="btn btn-secondary  _effect--ripple waves-effect waves-light">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
                                         <span class="btn-text-inner">Acesse seu Curso</span>
-                                        </button>
-                                    
-                                    @endif
+                                        </button>    
                                 </li>
+                                
                                 <li class="contacts-block__item">
                                     @if ((Auth::user()->role) == 7)
                                     <div class="clipboard">
                                         <form class="form-horizontal">
                                             <div class="clipboard-input">
-                                                <input type="text" class="form-control inative" id="copy-basic-input" value=" @if (isset($cademi->login_auto)) @endif" readonly>
+                                                <input type="text" class="form-control inative" id="copy-basic-input" value="{{ $cademi->login_auto }}" readonly>
                                                 <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click" title="Copied" data-clipboard-target="#copy-basic-input"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></div>
                                             </div>
                                         </form>
                                     </div>
+                                    
                                     @endif
                                 </li>
+                                @endisset
                             </ul>
                             
                             
@@ -150,6 +152,7 @@
                                 </tr>
 
                                 @endforeach
+
 
                             </tbody>
                         </table>
