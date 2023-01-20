@@ -128,9 +128,10 @@ class TemporaryFileController extends Controller
     {
         $user = $this->user->where('id', Auth::user()->id)->first();
         if ($avatar = $this->avatar->where('user_id', Auth::user()->id)->first()){
-           // dd($data);
+            //dd($request);
             if($request->hasFile('image')){
                 $image = $request->file('image');
+                dd($image);
                 $file_name = $image->getClientOriginalName();
                 $folder = Auth::user()->username;
 

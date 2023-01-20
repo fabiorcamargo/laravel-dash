@@ -198,6 +198,7 @@ class UserController extends Controller
 
     public function post(Request $request)
     {
+        
         $user = $this->user->find(Auth::user()->id);
         $user->first = 1;
         
@@ -214,12 +215,18 @@ class UserController extends Controller
             // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
         }
         $user->name = $request->name;
-        $user->lastname = $request->name;
+        $user->lastname = $request->lastname;
         $user->email = $request->email;
+        if (is_numeric($request->city)){
+            //dd($request->city);
         $city = City::where('id', $request->city)->first();
         $user->city = $city->name;
         $state = State::where('id', $request->state)->first();
         $user->uf = $state->name;
+        } else {
+            $user->city = $request->city;
+            $user->uf = $request->state; 
+        }
 
         //dd($user);
 
@@ -233,7 +240,11 @@ class UserController extends Controller
         
         //dd($user);
         $user->update();
-        
+        $sucess = "Perfil atualizado com sucesso!";
+        return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
+        if (str_contains(url()->previous(), "profile")){
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Ativação']);
+        }
         
         
         return view('pages.aluno.second', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Ativação']);
@@ -465,7 +476,85 @@ class UserController extends Controller
     //dd($courses);
         
            //dd($response->body()); 
-           return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+           return view('pages.app.user.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+       
+        }
+
+        public function profile_edit($id)
+    {
+        //dd($id);
+        $user = User::find($id);
+
+        $cademi = Cademi::where('user_id', $user->id)->first();
+
+        if(!empty($cademi)){
+        $cademicourses = CademiCourse::where('user_id', $user->id)->get();
+        //dd($cademi);
+        //dd($cademicourses);
+        //dd($user);
+        $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
+//        dd($response);
+        $profiler = json_decode($response->body(), true);
+        //dd($profiler);
+        if ($response['code'] == 200){
+        $produtos = ($profiler['data']['acesso']);
+        $i = 0;
+        foreach ($produtos as $produto){
+            //dd($course['produto']['id']);
+            $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
+            $data = (json_decode($response->body(), true));
+
+            
+            if ($i == 2){
+           // dd($data);
+        }
+        if (isset($data['data']['progresso'])){
+            $courses[$i] = ["name" => $produto['produto']['nome'], "perc" => $data['data']['progresso']['total']];
+
+            //dd($courses);
+            $i++;
+        }
+           
+    }
+    }else{
+        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+        
+    }
+    }else{
+        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+
+        //dd($courses);
+    }
+
+    $states = State::all('name', 'id');
+    
+    //dd($courses);
+        
+           //dd($response->body()); 
+           return view('pages.app.user.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states'));
+       
+        }
+
+        public function courses_profile($id){
+        $user = User::find($id);
+        $cademi = Cademi::where('user_id', $user->id)->first();
+        $cademicourses = CademiCourse::where('user_id', $user->id)->get();
+            $i=0;
+        foreach($cademicourses as $course){
+            
+            $courses[$i] = ["user" => $course->user, "course_id" => $course->course_id, "doc" => $course->doc, "created_at" => $course->created_at, "updated_at" => $course->updated_at];
+            $i++;
+        }
+        //dd($courses);
+
+        
+
+        //dd($user);
+        //dd($cademi);
+        //dd($courses);
+
+        return view('pages.app.user.listcourses', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+
        
         }
         

@@ -7,12 +7,16 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
+        
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/users/user-profile.scss'])
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/users/user-profile.scss'])
         @vite(['resources/scss/light/plugins/clipboard/custom-clipboard.scss'])
         @vite(['resources/scss/dark/plugins/clipboard/custom-clipboard.scss'])
+
+        @vite(['resources/scss/light/assets/elements/alert.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -29,6 +33,11 @@
     <!-- /BREADCRUMB -->
 
     <div class="row layout-spacing ">
+        @if (session('sucess'))
+            <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4 mt-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> $Usuário atualizado com sucesso! </div>
+        @endif
+        
+        
 
         <!-- Content -->
         <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 layout-top-spacing">
@@ -36,7 +45,7 @@
                 <div class="widget-content widget-content-area">
                     <div class="d-flex justify-content-between">
                         <h3 class="">Perfil do Usuário</h3>
-                        <a href="{{getRouterValue();}}/user/settings" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                        <a href="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/edit" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
                     </div>
                     <div class="text-center user-info">
                         <img src="{{ asset($user->image) }}" alt="avatar">
@@ -121,9 +130,13 @@
 
         <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 layout-top-spacing">
 
-            <div class="usr-tasks ">
+            <div class="user-profile">
                 <div class="widget-content widget-content-area">
-                    <h3 class="">Cursos Liberados</h3>
+                    <div class="d-flex justify-content-between">
+                        <h3 class="">Cursos Liberados</h3>
+                        <a href="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/courses" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="green" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                    </div>
+                    
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
@@ -163,7 +176,7 @@
         </div>
         
     </div>
-
+{{--
     <div class="row">
 
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
@@ -382,12 +395,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/clipboard/clipboard.min.js')}}"></script>
         <script type="module" src="{{asset('plugins/clipboard/custom-clipboard.min.js')}}"></script>
+        
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
