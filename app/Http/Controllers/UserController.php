@@ -198,11 +198,45 @@ class UserController extends Controller
 
     public function post(Request $request)
     {
+        //($request);
+        if (str_contains(url()->previous(), "profile")){
+            $user = $this->user->find($request->id);
+
+            if($request->password == null){
+                $user->password = $user->password;
+            } else {
+                $user->password = bcrypt($request->password);
+            }
+            $user->email2 = $request->email2;
+            $de = array('(',')',' ','-');
+            $para = array('','','','');
+            $user->cellphone2 = str_replace($de, $para, $request->cellphone2);
+            $user->payment = $request->payment;
+            $user->secretary = $request->secretary;
+            if( $request->ouro == "on"){
+            $user->ouro = 1;
+            }else{
+            $user->ouro = 0;   
+            }
+            if( $request->first == "on"){
+            $user->first = 0;
+            } else {
+                $user->first = 1;   
+            }
+           // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
+        }else{
+            $user = $this->user->find(Auth::user()->id);
+            $user->first = 1;
+        }
+
         
-        $user = $this->user->find(Auth::user()->id);
-        $user->first = 1;
+        //$user->first = 1;
+        if($request->password == null){
+            $user->password = $user->password;
+        } else {
+            $user->password = bcrypt($request->password);
+        }
         
-        $user->password = bcrypt($request->password);
         $de = array('.','-');
         $para = array('','');
         $user->document = str_replace($de, $para, $request->document);
@@ -447,7 +481,7 @@ class UserController extends Controller
         $produtos = ($profiler['data']['acesso']);
         $i = 0;
         foreach ($produtos as $produto){
-            //dd($course['produto']['id']);
+            //dd($produto['produto']['id']);
             $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
             $data = (json_decode($response->body(), true));
 
@@ -483,8 +517,8 @@ class UserController extends Controller
         public function profile_edit($id)
     {
         //dd($id);
-        $user = User::find($id);
-
+        $user = $this->user->find($id);
+        //dd($user);
         $cademi = Cademi::where('user_id', $user->id)->first();
 
         if(!empty($cademi)){

@@ -31,6 +31,7 @@
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/users/account-setting.scss'])
         
+        
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -93,6 +94,10 @@
                                     
                                                         <div class="img-uploader-content">
                                                             <input type="file" id="image" name="image" class="filepond col-md-2 ">
+                                                            <h3 for="fullName" class="text-center pt-2">{{ $user->username }}</h3>
+                                                            <input for="form-control mb-3" class="text-center pt-2"  name="id" id="id" value="{{ $user->id }}" hidden>
+                                                           
+                                                        
                                                         </div>
                                     
                                                     </div>
@@ -117,14 +122,14 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Email Aluno</label>
-                                                                    <input type="email" class="form-control mb-3" name="email" placeholder="Email Aluno" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email }}" required>
+                                                                    <input type="email" class="form-control mb-3" name="email" id="email" placeholder="Email Aluno" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email }}" required>
                                                                 </div>
                                                             </div>
                                                             @if (Auth::user()->role == 7)
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Email Escola</label>
-                                                                    <input type="email" class="form-control mb-3" name="email2" placeholder="Email Escola" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email2" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email2 }}" required>
+                                                                    <input type="email" class="form-control mb-3" name="email2" id="email2" placeholder="Email Escola" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email2" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email2 }}" required>
                                                                 </div>
                                                             </div>
                                                             @endif
@@ -166,7 +171,40 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Secretaria</label>
+                                                                            <select id="secretary" name="secretary" class="form-control mb-4" required>
+                                                                                <option value="{{ $user->secretary }}">{{ $user->secretary }}</option>
+                                                                                <option value="MGA">MGA</option>
+                                                                                <option value="TB">TB</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label for="title">CPF</label>
+                                                                            <input type="text" class="cpf-number form-control mb-4" name="document" id="document"  value="{{ $user->document }}"  autocomplete="off">
+                                                                        </div>
+                                                                    </div>
 
+                                                                    
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Tipo de Pagamento</label>
+                                                                            <select id="payment" name="payment" class="form-control mb-4" required>
+                                                                                <option value="{{ $user->payment }}">{{ $user->payment }}</option>
+                                                                                <option value="BOLETO">BOLETO</option>
+                                                                                <option value="CARTÃO">CARTÃO</option>
+                                                                                <option value="LINK DE PAGAMENTO">LINK DE PAGAMENTO</option>
+                                                                                <option value="A VISTA">A VISTA</option>
+                                                        
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    
                                                                     <div class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label for="profession">Nova Senha</label>
@@ -177,24 +215,24 @@
                                                                     <div class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label for="profession">Repita Senha</label>
-                                                                            <input type="text" class="form-control mb-4" name="password2" id="password2" autocomplete="off">
+                                                                            <input type="text" class="form-control mb-4" name="password2" id="password2" autocomplete="off" oninput="myPw()">
+                                                                            <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais</div>
+                                                                            <div class="text-danger invisible" name="feed1" id="feed1" >As Senhas não são iguais</div>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="col-md-6">
+                                                                        <label for="title"></label>
                                                                         <div class="form-group">
-                                                                            <label for="title">Tipo de Pagamento</label>
-                                                                            <select name="payment" id="payment" class="form-control mb-4" required>
-                                                                                <option value="{{ $user->payment }}">{{ $user->payment }}</option>
-                                                                                <option value="BOLETO">BOLETO</option>
-                                                                                <option value="BOLETO">CARTÃO</option>
-                                                                                <option value="BOLETO">LINK DE PAGAMENTO</option>
-                                                                                <option value="BOLETO">A VISTA</option>
-                                                        
-                                                                            </select>
+                                                                            <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif>
+                                                                            Contratou 10 Cursos
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <input class="form-check-input me-1" id="first" name="first" type="checkbox" @if ($user->first !== 1 ) checked @endif>
+                                                                            Enviar cadastro de primeiro acesso
                                                                         </div>
                                                                     </div>
-                         
+        
                                                              
                                                               
                                                        
@@ -206,7 +244,7 @@
                                                            
                                                             <div class="col-md-12 mt-1">
                                                                 <div class="form-group text-end">
-                                                                    <button class="btn btn-secondary">Save</button>
+                                                                    <button class="btn btn-secondary" type="submit">Salvar</button>
                                                                 </div>
                                                             </div>
                                                             
@@ -704,8 +742,9 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-<script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-<script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
+        
+        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
         <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/FilePondPluginFileValidateType.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/FilePondPluginImageExifOrientation.min.js')}}"></script>
@@ -773,6 +812,27 @@
 
 
 </script>
+
+
+<script>
+    function myPw(){
+        let pw = document.getElementById('password').value;
+        let pw2 = document.getElementById('password2').value;
+        //let username = document.getElementById('username').value;
+
+        console.log(pw);
+        console.log(pw2);
+
+        if ( pw != pw2) {
+            document.getElementById('feed').classList.remove('invisible');
+
+        }else if ( pw == pw2){
+            document.getElementById('feed').classList.add('invisible');
+
+            
+        }
+
+    }</script>
 
         
         

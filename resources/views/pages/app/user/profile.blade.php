@@ -52,6 +52,7 @@
                         <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
                     </div>
                     <div class="user-info-list">
+                        
 
                         <div class="">
                             <ul class="contacts-block list-unstyled">
@@ -77,6 +78,13 @@
                                 <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone me-3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> {{ $user->cellphone2 }}
                                 </li>
+                                
+                                <li class="contacts-block__item">
+                                    <div class="form-group">
+                                        <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif disabled>
+                                        Contratou 10 Cursos
+                                    </div>
+                                </li>
 
                                 @isset($cademi->login_auto)
                                 <li class="contacts-block__item">
@@ -85,6 +93,8 @@
                                         <span class="btn-text-inner">Acesse seu Curso</span>
                                         </button>    
                                 </li>
+
+                                
                                 
                                 <li class="contacts-block__item">
                                     @if ((Auth::user()->role) == 7)
@@ -96,6 +106,7 @@
                                             </div>
                                         </form>
                                     </div>
+                                    
                                     
                                     @endif
                                 </li>
