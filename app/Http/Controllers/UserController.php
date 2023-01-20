@@ -241,9 +241,9 @@ class UserController extends Controller
         //dd($user);
         $user->update();
         $sucess = "Perfil atualizado com sucesso!";
-        return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
+        
         if (str_contains(url()->previous(), "profile")){
-        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Ativação']);
+            return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
         }
         
         
