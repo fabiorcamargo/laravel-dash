@@ -40,7 +40,7 @@
                     </div>
                     <div class="text-center user-info">
                         <img src="{{ asset($user->image) }}" alt="avatar">
-                        <p class="">{{ $user->id }} | {{ $user->name }} {{ $user->lastname }}</p>
+                        <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
                     </div>
                     <div class="user-info-list">
 
