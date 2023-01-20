@@ -120,7 +120,7 @@
                                             <label for="email">Email</label>
                                             <input type="email" name="email" placeholder="Para recuperação de senha" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
                                                     <div class="valid-feedback feedback-pos">
-                                                        Ok!
+                                                        Email Válido!
                                                     </div>
                                                     <div class="invalid-feedback feedback-pos">
                                                         Por favor coloque um email válido.
@@ -129,9 +129,14 @@
                                         </div>
                                     </div>     
                                     <div class="form-group mb-4">
-                                        <label for="defaultEmailAddress">Telefone (Whatsapp) </label>
-                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on" required onchange = "myFn('cellphone')">
-
+                                        <label for="defaultEmailAddress">Celular com Whatsapp </label>
+                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" pattern="(\([0-9]{2}\))\s([9]{1})\s?([0-9]{4})-([0-9]{4})" autocomplete="on" required onchange = "myFn('cellphone')">
+                                        <div class="valid-feedback feedback-pos">
+                                            Celular válido!
+                                        </div>
+                                        <div class="invalid-feedback feedback-pos">
+                                            Por favor coloque um Telefone válido com DDD e 9º dígito.
+                                        </div>
                                     </div>
                                     <div class="form-group">
   
@@ -193,6 +198,7 @@
                                             <label for="name">Repita a Senha</label>
                                             <input type="password" class="form-control mb-2" name="password2" id="password2" placeholder="******" autocomplete="on" oninput ="myPw()">
                                             <div class="text-warning invisible" name="feed" id="feed" >As Senhas não são iguais!</div>
+                                            <div class="text-warning invisible" name="feed" id="feed" >Existem campos incompletos, favor voltar no passo anterior</div>
                                             <a id="customCheck1" class="mt-2" onclick="myFunction()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
                                              
                                         </div>
