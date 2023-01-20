@@ -467,19 +467,22 @@ class UserController extends Controller
         $user = User::find($id);
 
         $cademi = Cademi::where('user_id', $user->id)->first();
-
+        $i = 0;
         if(!empty($cademi)){
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
-        //dd($cademi);
+        dd($cademi);
         //dd($cademicourses);
         //dd($user);
         $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
-//        dd($response);
+       //dd($response);
         $profiler = json_decode($response->body(), true);
+        if ($profiler['code'] !== 200){
+            $courses[$i] = ["name" => "Vazio", "perc" => "0%"];
+        }
         //dd($profiler);
         if ($response['code'] == 200){
         $produtos = ($profiler['data']['acesso']);
-        $i = 0;
+        
         foreach ($produtos as $produto){
             //dd($produto['produto']['id']);
             $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
