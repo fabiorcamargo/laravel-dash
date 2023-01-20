@@ -470,7 +470,7 @@ class UserController extends Controller
         $i = 0;
         if(!empty($cademi)){
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
-        dd($cademi);
+        //dd($cademi);
         //dd($cademicourses);
         //dd($user);
         $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
