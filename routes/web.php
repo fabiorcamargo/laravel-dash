@@ -82,10 +82,9 @@ use Illuminate\Support\Facades\Route;
                         })->name('aluno.finish');
                         Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
                         Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
-                        Route::get('/pagamento', function () {
-                            return view('pages.aluno.payment', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
-                        })->name('aluno.pagamento');
+                        
                         Route::get('/config', [UserController::class, 'username'])->name('config');
+                        Route::get('/payment/{id}', [AsaasController::class, 'get_client'])->name('aluno-payment');
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
                         

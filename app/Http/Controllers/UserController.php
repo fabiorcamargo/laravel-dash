@@ -428,7 +428,7 @@ class UserController extends Controller
         if (Cademi::where('user_id', Auth::user()->id)->first()){
             if(str_contains(Auth::user()->courses, "PRE")){
              $card = "resources/images/Militar.jpg";
-             dd($card);
+             //dd($card);
             }else if(str_contains(Auth::user()->courses, "AG")){
              $card = "resources/images/Bancario.jpg";
             }else if(str_contains(Auth::user()->courses, "CPA")){

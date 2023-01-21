@@ -192,7 +192,7 @@
                                         <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
                                             
                                             <label for="name">Nova Senha</label>
-                                            <input class="invisible" id="login" type="text" name="login" value="{{Auth::user()->username}}">
+                                            <input class="invisible" id="login" type="text" name="login" value="{{Auth::user()->username}}" disabled>
                                             <input type="password" class="form-control invalid" name="password" id="password" placeholder="******" autocomplete="on">
                                             
                                             <label for="name">Repita a Senha</label>

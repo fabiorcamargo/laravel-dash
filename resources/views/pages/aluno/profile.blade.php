@@ -179,15 +179,8 @@
                     </div>
                 </div>
             </div>
-            
-        </div>
-        
-    </div>
-{{--
-    <div class="row">
 
-        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-            <div class="summary layout-spacing ">
+            <div class="summary layout-spacing pt-5">
                 <div class="widget-content widget-content-area">
                     <h3 class="">Summary</h3>
                     <div class="order-summary">
@@ -257,8 +250,18 @@
                     </div>
                 </div>
             </div>
+            
         </div>
+        
+    </div>
 
+    <div class="row">
+
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+            
+        </div>
+    </div>
+{{--
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
 
             <div class="pro-plan layout-spacing">

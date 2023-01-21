@@ -15,13 +15,14 @@ return new class extends Migration
     {
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
             $table->string('gateway_id')->nullable();
             $table->string('dateCreated')->nullable();
             $table->string('cpfCnpj');
             $table->string('name');
-            $table->string('phone');
-            $table->string('mobilePhone');
-            $table->string('externalReference')->constrained('users');
+            $table->string('phone')->nullable();
+            $table->string('mobilePhone')->nullable();
+            $table->string('externalReference')->nullable();
             $table->boolean('notificationDisabled')->nullable();
   
 
