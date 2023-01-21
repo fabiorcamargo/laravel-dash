@@ -131,7 +131,7 @@ class TemporaryFileController extends Controller
             //dd($request);
             if($request->hasFile('image')){
                 $image = $request->file('image');
-                dd($image);
+                //dd($image);
                 $file_name = $image->getClientOriginalName();
                 $folder = Auth::user()->username;
 

@@ -48,7 +48,7 @@
                                             </div>
                                             <p class="mt-4 mb-2 animate__animated animate__fadeIn animate__delay-2s">Carregue uma foto da sua preferência para o seu perfil.</p>
                                             <div class="">
-                                                <input type="file" id="image" name="image" class="filepond col-md-2 ">
+                                                <input type="file" id="image" name="image" class="filepond col-md-2" accept="image/png, image/jpeg, image/gif">
                                             </div>
                                             <div class="row">
                                                 <a type="submit" href="{{getRouterValue();}}/aluno/finish" class="btn btn-primary mb-2 me-4 mt-5">Entrar</a>
