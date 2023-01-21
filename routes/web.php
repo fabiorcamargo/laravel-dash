@@ -194,9 +194,8 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user-profile');
                 Route::get('/profile/{id}/courses', [UserController::class, 'courses_profile'])->name('user-courses');
                 Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('user-profile-edit');
-                Route::get('/charge', function () {
-                    return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD | Carregar Lista', 'breadcrumb' => 'Carregar Lista']);
-                })->name('user-charge');
+                Route::get('/charge', [TemporaryFileController::class, 'getcharge'])->name('user-get-charge');
+                  
 
                 Route::get('/newids', function () {
                     return view('pages.app.user.newids', ['title' => 'Profissionaliza EAD | Carregar Lista', 'breadcrumb' => 'Carregar Lista']);

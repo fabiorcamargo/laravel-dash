@@ -17,7 +17,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class TemporaryFileController extends Controller
 {
@@ -273,6 +275,26 @@ class TemporaryFileController extends Controller
 */
     
        //return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file', 'folder'));
+
+    }
+
+    public function getcharge()
+    {
+       
+        $faileds = DB::select('select * from failed_jobs order by `failed_jobs`.`failed_at` desc');
+ 
+        //dd($faileds);
+        //dd(strstr($faileds[0]->exception,"\n",true));
+        $i = 0;
+        foreach($faileds as $failed){
+            $fails[$i] = ["fail" => (strstr($failed->exception,"\n",true)), "date" => Carbon::createFromFormat('Y-m-d H:i:s', $failed->failed_at)->format('d/m/Y H:i:s')];
+            $i++;
+        }
+        //dd($fails);
+        
+   
+
+        return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('fails'));
 
     }
 

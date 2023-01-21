@@ -40,73 +40,20 @@
     @if (@isset($success))
     <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> Todos os usuários foram atualizados. </div>
     @endif
-        @if (@isset($users))
-
-        <div class="row layout-top-spacing">
-
-            <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
-                <div class="statbox widget box box-shadow">
-                    <div class="widget-header">
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4>Lista de Usuários</h4>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="widget-content widget-content-area">
-    
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                            
-                                        <th>UserID</th>
-                                        <th>Nome</th>
-                                        <th>Sobrenome</th>
-                                        <th>Email</th>
-                                        <th class="text-center dt-no-sorting">Existe</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($users[0] as $user)
-
-
-                                    
-
-
-                                    <tr>
-                                        
-                                        <td>{{ $user["username"] }}</td>
-                                        <td>{{ $user["username"]}}</td>
-                                        <td>{{ $user["username"]}}</td>
-                                        <td>{{ $user["email"] }}</td>
-                                        <td>{{ $user["exist"] }}</td>
-                                        
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-    
-    
-    
+    @if (count($errors) > 0)
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-1">
+                      <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4">
+                          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                          <h4><i class="icon fa fa-ban"></i> Error!</h4>
+                          @foreach($errors->all() as $error)
+                          {{ $error }} <br>
+                          @endforeach      
+                      </div>
                     </div>
                 </div>
-            </div>
-            <form action="{{ getRouterValue(); }}/app/user/csv"  method="post" enctype="multipart/form-data">
-                @csrf
-            <input type="text" name="file" value="{{ $file }}">
-            <input type="text" name="folder" value="{{ $folder }}">
-            <div class="d-flex justify-content-end">
-                <p>Total de Usuários da lista:  {{ count($users[0]) }} <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button></p>
-            </div>
-            </form>
-
-        </div>
-
-
+                @endif
         
-
-    @endif
         
     @if (@empty($users))
     <div class="row layout-top-spacing">
@@ -142,6 +89,61 @@
         </div>
     </div>
     
+
+    @endif
+
+    @if (@isset($fails))
+
+        <div class="row layout-top-spacing">
+
+            <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                <h4>Lista de Falhas</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+    
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                            
+                                        <th>Data</th>
+                                        <th>Falha</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($fails as $fail)
+
+
+                                    
+
+
+                                    <tr>
+                                        
+                                        <td >{{ $fail['date'] }}</td>
+                                        <td>{{ $fail['fail'] }}</td>
+                                        
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+    
+    
+    
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        
+
+
+        
 
     @endif
 
