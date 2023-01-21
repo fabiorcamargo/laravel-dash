@@ -59,8 +59,6 @@
         ],
 
         "post-install-cmd": [
-            "chgrp -R psacln storage bootstrap/cache",
-            "chmod -R ug+rwx storage bootstrap/cache",
             "php /var/www/vhosts/alunos.profissionalizaead.com.br/httpdocs/artisan storage:link",
 			"php /var/www/vhosts/alunos.profissionalizaead.com.br/httpdocs/artisan config:clear"
         ]
