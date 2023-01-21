@@ -179,7 +179,7 @@
                     </div>
                 </div>
             </div>
-
+            @if ((Auth::user()->role) == 7)
             <div class="summary layout-spacing pt-5">
                 <div class="widget-content widget-content-area">
                     <h3 class="">Summary</h3>
@@ -250,7 +250,7 @@
                     </div>
                 </div>
             </div>
-            
+            @endif
         </div>
         
     </div>
