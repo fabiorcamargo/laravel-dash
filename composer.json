@@ -24,7 +24,7 @@
         "laravel/sail": "^1.0.1",
         "lucascudo/laravel-pt-br-localization": "^1.2",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
+        "nunomaduro/collision": "^6.4.0",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
@@ -59,9 +59,10 @@
         ],
 
         "post-install-cmd": [
-            "chgrp -R www-data storage bootstrap/cache",
+            "chgrp -R psacln storage bootstrap/cache",
             "chmod -R ug+rwx storage bootstrap/cache",
-            "php httpdocs/artisan storage:link"
+            "php /var/www/vhosts/alunos.profissionalizaead.com.br/httpdocs/artisan storage:link",
+			"php /var/www/vhosts/alunos.profissionalizaead.com.br/httpdocs/artisan config:clear"
         ]
         
         
