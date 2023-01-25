@@ -44,9 +44,11 @@
                             <div id="thumbnail-slider" class="splide">
                                 <div class="splide__track">
                                     <ul class="splide__list">
+                                        
                                         @foreach ($product->image as $image)
-                                        <li class="splide__slide"><img alt="slider-image" src="{{Vite::asset("/storage/app/product/$image")}}"></li>
+                                        <li class="splide__slide"><img alt="slider-image" src="{{asset("/product/$image")}}"></li>
                                         @endforeach
+                                        
                                     </ul>
                                 </div>
                             </div>
