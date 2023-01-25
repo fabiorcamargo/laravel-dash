@@ -464,7 +464,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                {!! $product->description !!}
+                                                {!! $product->specification !!}
                                             </div>
                                         </div>
                                     </div>
