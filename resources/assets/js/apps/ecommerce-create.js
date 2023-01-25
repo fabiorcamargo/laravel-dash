@@ -37,6 +37,9 @@ FilePond.registerPlugin(
 // Select the file input and use 
 // create() to turn it into a pond
 window.ecommerce = FilePond.create(document.querySelector('.file-upload-multiple'));
+var input = document.querySelector('.file-upload-multiple');
+
+
 
 /**
  * =====================

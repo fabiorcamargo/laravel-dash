@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     ApiController,
     CademiController,
+    EcommerceController,
     FilepondController,
     FileUploadController,
     TemporaryFileController,
@@ -60,6 +61,8 @@ use Illuminate\Support\Facades\Route;
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::get('/avatar-correct',[TemporaryFileController::class, 'AvatarCorrect'])->name('avatar-correct');
+                    Route::post('/img_product_upload',[TemporaryFileController::class, 'img_product_upload'])->name('img_product_upload');
+                    Route::delete('/img_product_delete',[TemporaryFileController::class, 'img_product_delete'])->name('img_product_delete');
 
 
                     
@@ -151,6 +154,16 @@ foreach ($prefixRouters as $prefixRouter) {
             return view('welcome', ['title' => 'this is ome ', 'breadcrumb' => 'This Breadcrumb']);
         });
 
+        Route::prefix('/eco')->group(function () {
+            Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
+            Route::get('/add', function () {
+                return view('pages.eco.add', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+            })->name('eco-show-add');
+
+            Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco_product_show');
+            Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
+            Route::post('/checkout/end', [EcommerceController::class, 'checkout_post'])->name('eco_checkout_end');
+        });
         
 
 
@@ -206,6 +219,8 @@ foreach ($prefixRouters as $prefixRouter) {
                     return view('pages.app.user.reset', ['title' => 'Profissionaliza EAD | Reset de Senha', 'breadcrumb' => 'Reset de Senha', 'avatar' => "Auth::user()->id"]);
                 })->name('user-reset');
             });
+
+           
 
             Route::get('/calendar', function () {
                 return view('pages.app.calendar', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);

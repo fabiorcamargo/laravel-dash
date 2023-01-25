@@ -57,7 +57,7 @@ FilePond.registerPlugin(
   // Select the file input and use 
   // create() to turn it into a pond
 window.multifiles = FilePond.create(
-    document.querySelector('.file-upload-multiple')
+    document.querySelector('.file-upload-multiple2')
   );
 
   

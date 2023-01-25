@@ -54,6 +54,9 @@ $(document).ready(function(){
     
     // CPF Number
     $(".cpf-number").inputmask({mask:"999.999.999-99"});
+    
+    // CNPJ Number
+     $(".cnpj-number").inputmask({mask:"99.999.999/9999-99"});
 
     // Currency
     $("#currency").inputmask({mask:"$999,9999,999.99"});

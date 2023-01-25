@@ -65,6 +65,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return Redirect::to('https://ead.profissionalizaead.com.br/');;
+        return Redirect::to('https://alunos.profissionalizaead.com.br/login');;
     }
 }

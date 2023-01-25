@@ -17,8 +17,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\User;
+use App\Models\ProductImage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
 class TemporaryFileController extends Controller
@@ -362,4 +364,32 @@ public function AvatarCorrect()
 
 }
 
-}
+        public function img_product_upload(Request $request)
+            {
+
+                $produto = ($_COOKIE['name']);
+
+                    if($request->hasFile('image')){
+                        $image = $request->file('image');
+                        $file_name = $image->getClientOriginalName();
+                        $file = $image->storePubliclyAs('/' . $produto , $file_name, ['visibility'=>'public', 'disk'=>'product']);
+                    }
+
+                
+                    return [$produto . '/' .$file_name,];
+                }
+
+                public function img_product_delete(Request $request)
+                {
+    
+                    $produto = ($_COOKIE['name']);
+                    $delete = Storage::deleteDirectory('product/' . $produto);
+                     
+                        return [$delete];
+                    }
+        
+
+    }
+
+
+
