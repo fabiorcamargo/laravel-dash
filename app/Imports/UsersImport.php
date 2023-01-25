@@ -87,7 +87,7 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
     }
     public function chunkSize(): int
     {
-        return 10;
+        return 30;
     }
     public function uniqueBy()
     {

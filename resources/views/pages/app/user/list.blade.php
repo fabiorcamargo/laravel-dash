@@ -65,14 +65,18 @@
                                 <th scope="col">Telefone</th>
                                 <th scope="col">Cidade - UF</th>
                                 <th class="text-center">Image</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center dt-no-sorting">Action</th>
+                                <th class="text-center">Pagamento</th>
+                                <th class="text-center dt-no-sorting">Ação</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->username }} 
+                                    @if($user->first == 2)
+                                    <div class="badge badge-success badge-dot"></div>
+                                    @endif
+                                </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>{{ $user->cellphone }}</td>

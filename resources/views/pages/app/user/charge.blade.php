@@ -76,7 +76,7 @@
                             
                             <div class="col-md-6 mx-auto">
                                 <div class="multiple-file-upload">
-                                    <input type="file" id="image"  accept=".xlsx, .xls"  name="image" class="file-upload-multiple">
+                                    <input type="file" id="image" name="image" class="file-upload-multiple">
                                     
                                 </div>
                             </div>

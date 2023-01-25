@@ -86,6 +86,7 @@
                                                                 <img class="company-logo" src="{{Vite::asset('resources/images/boleto.svg')}}" style="width: 60px;" alt="logo"> Boleto Bancário R${{ $product->price }} (Valor à vista) <span class="badge badge-warning mb-2 me-4">Liberação após compensação</span>
                                                             </label>
                                                             </div>
+                                                            <input type="text" name="payment" id="payment">
                                                         </div>
                                                     </div>
                                                     <div class="inv--head-section inv--detail-section"></div>
@@ -277,6 +278,7 @@
                     document.getElementById("holderName").required = true;
                     document.getElementById("expiry").required = true;
                     document.getElementById("cvc").required = true;
+                    document.getElementById("payment").value = "Cartão";
                     
             }
             function mypix(){
@@ -288,6 +290,7 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
+                    document.getElementById("payment").value = "Pix";
             }
             function myboleto(){
                     prec.innerText = "R${!! $product->price !!}" ;
@@ -298,6 +301,7 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
+                    document.getElementById("payment").value = "Boleto";
             }
         </script>
 

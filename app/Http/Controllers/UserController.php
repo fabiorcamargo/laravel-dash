@@ -627,6 +627,22 @@ if($data['code'] !== 200){
 
        
         }
+
+        public function usercademi(Request $request)
+        {
+
+           $users = User::all();
+           foreach($users as $user){
+                if(Cademi::where('user_id', $user->id)->first()){
+                    $user->first = 2;
+                    $user->save();
+                    //dd($user);
+                }
+               // dd("n");
+           }
+           //dd($user[0]);
+           echo("Fim");
+        }
         
        
     }

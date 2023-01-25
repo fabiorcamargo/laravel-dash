@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     UserController
 };
 use App\Http\Controllers\Admin\CommentController;
+use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -87,7 +88,7 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
                         
                         Route::get('/config', [UserController::class, 'username'])->name('config');
-                        Route::get('/payment/{id}', [AsaasController::class, 'get_client'])->name('aluno-payment');
+                        Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
                         
@@ -134,7 +135,7 @@ foreach ($prefixRouters as $prefixRouter) {
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users', [UserController::class, 'usercademi'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');

@@ -24,7 +24,7 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
         
         if (DB::table('users')->where('username', $row["username"])->doesntExist()) {
 
-        return new User([
+        $user = new User([
             'username' => $row['username'],
             'email' => $row['email'],
             'name' => $row['username'],

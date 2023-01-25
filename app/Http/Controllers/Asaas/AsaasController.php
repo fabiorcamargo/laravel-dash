@@ -16,7 +16,7 @@ class AsaasController extends Controller
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
             $asaas->Cliente()->getAll();
             $clientes = $asaas->Cliente()->getAll();
-            dd($clientes->data[3]->name);
+            dd($clientes);
 
        
 
@@ -28,45 +28,47 @@ class AsaasController extends Controller
         //dd($user);
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
 
-        $filtro = array(
-            'name'                 => '',
-            'cpfCnpj'              => $user->document,
-            'email'                => '',
-            'phone'                => '',
-            'mobilePhone'          => '',
-            'address'              => '',
-            'addressNumber'        => '',
-            'complement'           => '',
-            'province'             => '',
-            'postalCode'           => '',
-            'externalReference'    => '',
-            'notificationDisabled' => '',
-            'additionalEmails'     => ''
-        );
+        //dd($asaas);
 
-            $client = $asaas->Cliente()->getAll($filtro);
-            //dd($clientes->data[3]->name);
-            /*
-            $user->customer()->create([
-                'gateway_id' => $request->body,
-                'visible' => isset($request->visible)
-            ]);  */  
-            $request = ($client->data[0]);
-            //dd($request);
-
-            $customer = ($user->customer()->create([
-                        'gateway_id' => $request->id,
-                        'dateCreated' => $request->dateCreated,
-                        'cpfCnpj' => $request->cpfCnpj, 
-                        'name' => $request->name,
-                        'phone' => $request->phone,
-                        'mobilePhone' => $request->mobilePhone,
-                        'externalReference' => $user->username,
-                        'notificationDisabled' => $request->notificationDisabled,
-                    ]));
-
-       
-                return $customer;
+        $dados = array(
+            'name' => ' Marcelo Almeida',
+            'email' => ' marcelo.almeida@gmail.com',
+            'phone' => ' 4738010919',
+            'mobilePhone' => ' 4799376637',
+            'cpfCnpj' => ' 24971563792',
+            'postalCode' => ' 01310-000',
+            'address' => ' Av. Paulista',
+            'addressNumber' => ' 150',
+            'complement' => ' Sala 201',
+            'province' => ' Centro',
+            'externalReference' => ' 12987382',
+            'notificationDisabled' => ' false',
+            'additionalEmails' => ' marcelo.almeida2@gmail.commarcelo.almeida3@gmail.com',
+            'municipalInscription' => ' 46683695908',
+            'stateInscription' => ' 646681195275',
+            'observations' => ' ótimo pagador nenhum problema até o momento'
+          );
+        //dd($dados);
+        $clientes = $asaas->Cliente()->create([
+            'name' => ' Marcelo Almeida',
+            'email' => ' marcelo.almeida@gmail.com',
+            'phone' => ' 4738010919',
+            'mobilePhone' => ' 4799376637',
+            'cpfCnpj' => ' 24971563792',
+            'postalCode' => ' 01310-000',
+            'address' => ' Av. Paulista',
+            'addressNumber' => ' 150',
+            'complement' => ' Sala 201',
+            'province' => ' Centro',
+            'externalReference' => ' 12987382',
+            'notificationDisabled' => ' false',
+            'additionalEmails' => ' marcelo.almeida2@gmail.commarcelo.almeida3@gmail.com',
+            'municipalInscription' => ' 46683695908',
+            'stateInscription' => ' 646681195275',
+            'observations' => ' ótimo pagador nenhum problema até o momento'
+          ]);
+        dd($clientes);
+               // return $clientes;
     }
 
     public function get_client($id){
