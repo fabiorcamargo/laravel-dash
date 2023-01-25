@@ -51,7 +51,7 @@ FilePond.registerPlugin(
     FilePondPluginImagePreview,
     FilePondPluginImageExifOrientation,
     FilePondPluginFileValidateSize,
-    FilePondPluginImageEdit
+    //FilePondPluginImageEdit
 );
   
   // Select the file input and use 

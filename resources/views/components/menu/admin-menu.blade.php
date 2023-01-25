@@ -119,7 +119,7 @@
                             <li class="{{ Request::routeIs('user-lote') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/lote"> Cademi </a>
                             </li>         
-                            <li class="{{ Request::routeIs('user-charge') ? 'active' : '' }}">
+                            <li class="{{ Request::routeIs('user-get-charge') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/charge"> Carregar Lista </a>
                             </li>      
                             <li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">

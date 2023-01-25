@@ -144,7 +144,7 @@
                                             </div>
                                         </div>
                                 <div class="multiple-file-upload">
-                                    <input type="file" id="image" name="image" class="file-upload-multiple">
+                                    <input type="file" id="image" accept=".xlsx, .xls" name="image" class="file-upload-multiple">
                                     
                                 </div>
                             </div>
@@ -180,6 +180,9 @@
         <script src="{{asset('plugins/autocomplete/city_autoComplete.js')}}"></script>
         <script>
 
+            const inputElement = document.querySelector('input[type="file"]');
+
+            const pond = FilePond.create(inputElement);
 
             FilePond.setOptions({
             server: {
