@@ -7,6 +7,7 @@ use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\CademiCourse;
 use App\Models\City;
+use App\Models\Role;
 use App\Models\State;
 use App\Models\TemporaryFile;
 use App\Models\User;
@@ -198,7 +199,7 @@ class UserController extends Controller
 
     public function post(Request $request)
     {
-        //($request);
+        //dd($request);
         if (str_contains(url()->previous(), "profile")){
             $user = $this->user->find($request->id);
 
@@ -265,6 +266,9 @@ class UserController extends Controller
             $user->uf = $request->state; 
         }
 
+        if (isset($request->role)){
+        $user->role = (integer)$request->role;
+        }
         //dd($user);
 
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
@@ -548,6 +552,9 @@ class UserController extends Controller
         //dd($user);
         $cademi = Cademi::where('user_id', $user->id)->first();
 
+        $roles = Role::all('id', 'name');
+        //dd($role);
+
         if(!empty($cademi)){
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
         //dd($cademi);
@@ -597,9 +604,9 @@ if($data['code'] !== 200){
            //dd($response->body()); 
 
            if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states'));
+            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states', 'roles'));
            }else{
-            return view('pages.app.user.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states'));
+            return view('pages.app.user.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states', 'roles'));
            }
            
        

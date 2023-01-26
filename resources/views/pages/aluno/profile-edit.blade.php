@@ -10,6 +10,8 @@
         {{-- @vite(['resources/scss/light/assets/components/timeline.scss']) --}}
         <link rel="stylesheet" href="{{asset('plugins/filepond/filepond.min.css')}}">
         <link rel="stylesheet" href="{{asset('plugins/filepond/FilePondPluginImagePreview.min.css')}}">
+        @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
+        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
         <link rel="stylesheet" href="{{asset('plugins/notification/snackbar/snackbar.min.css')}}">
         <link rel="stylesheet" href="{{asset('plugins/sweetalerts2/sweetalerts2.css')}}">
 
@@ -93,10 +95,26 @@
                                                         // properties to JavaScript -->
                                     
                                                         <div class="img-uploader-content">
-                                                            <input type="file" id="image" name="image" class="filepond col-md-2 ">
+                                                            <div class="">
+                                                                <input type="file" id="image" name="image" class="filepond col-md-2" accept="image/png, image/jpeg, image/gif">
+                                                            </div>
                                                             <h3 for="fullName" class="text-center pt-2">{{ $user->username }}</h3>
                                                             <input for="form-control mb-3" class="text-center pt-2"  name="id" id="id" value="{{ $user->id }}" hidden>
-                                                           
+                                                           @if($user->role == 7)
+                                                            <div class="form-group">
+                                                                
+                                                                
+                                                                <select name="role" id="role" class="form-control mb-4" aria-placeholder="Função" required>
+
+                                                                    <option value="{{ $user->role }}">{{ $roles[$user->role-1]->name }}</option>
+                                                                    @foreach ( $roles as $role )
+                                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                    @endforeach
+                                                                    
+
+                                                                </select>
+                                                            </div>
+                                                            @endif
                                                         
                                                         </div>
                                     
@@ -232,7 +250,10 @@
                                                                             <input class="form-check-input me-1" id="first" name="first" type="checkbox" @if ($user->first !== 1 ) checked @endif>
                                                                             Enviar cadastro de primeiro acesso
                                                                         </div>
+                                                                        
                                                                     </div>
+
+                                                                   
                                                                     @endif
                                                              
                                                               
@@ -746,7 +767,8 @@
         
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
-        <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
+
+             <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/FilePondPluginFileValidateType.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/FilePondPluginImageExifOrientation.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/FilePondPluginImagePreview.min.js')}}"></script>
@@ -754,6 +776,7 @@
         <script src="{{asset('plugins/filepond/FilePondPluginImageResize.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/FilePondPluginImageTransform.min.js')}}"></script>
         <script src="{{asset('plugins/filepond/filepondPluginFileValidateSize.min.js')}}"></script>
+        <script src="{{asset('plugins/filepond/custom-filepond.js')}}"></script>
 
         <script src="{{asset('plugins/notification/snackbar/snackbar.min.js')}}"></script>
         <script src="{{asset('plugins/sweetalerts2/sweetalerts2.min.js')}}"></script>
@@ -793,7 +816,7 @@
 
 <script>
 
-    const inputElement = document.querySelector('input[type="file"]');
+    const inputElement = document.getElementById('image');
 
     const pond = FilePond.create(inputElement);
             
