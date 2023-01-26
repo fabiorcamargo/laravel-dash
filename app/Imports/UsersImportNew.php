@@ -48,6 +48,6 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
 
     public function chunkSize(): int
     {
-        return 20;
+        return 200;
     }
 }
