@@ -88,6 +88,13 @@ class ApiController extends Controller
                     array('developer' => array('name' => 'Taylor')),
                     array('developer' => array('name' => 'Dayle')),
                     array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+                    array('developer' => array('name' => 'Dayle')),
+
                 );
                 $i = 0;
                 $url = "https://profissionaliza.cademi.com.br/api/v1/usuario";
@@ -99,6 +106,9 @@ class ApiController extends Controller
                   $jsonData = $response->json();
                   //dd($jsonData);
                   $users = ($jsonData['data']['usuario']);
+                  if (!isset($jsonData['data']['paginator']['next_page_url'])){
+                    return 'fim';
+                  }
                   $url = ($jsonData['data']['paginator']['next_page_url']);
                   //dd($page);
                   //dd($users);
@@ -162,7 +172,7 @@ class ApiController extends Controller
             }
                       $i++;
                       }
-                      dd($i);
+                      //dd($i);
         }
 
 
