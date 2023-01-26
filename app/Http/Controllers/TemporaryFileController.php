@@ -62,7 +62,17 @@ class TemporaryFileController extends Controller
         foreach ($users[0] as &$user)
         {
             $username = $user["username"];
-            if ( (User::where('username', $username)->first())){
+            if ( ($u = User::where('username', $username)->first())){
+                if($u->first == 2){
+                    //dd('2');
+                    $user["first"] = 2;
+                } else if($u->first == 1){
+                    //dd('1');
+                    $user["first"] = 1;
+                } else {
+                    //dd('0');
+                    $user["first"] = 0;
+                }
             $user["exist"] = 1;
             }else{
             $user["exist"] = 0;

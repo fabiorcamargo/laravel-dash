@@ -70,6 +70,10 @@ class ApiController extends Controller
                       'gratis' => $arr->gratis,
                       'visible' => isset($arr->visible)
                   ]);
+
+                  $user->first = 2;
+                  //dd($user);
+                  $user->save();
                     
   
                       return response($response, 200);

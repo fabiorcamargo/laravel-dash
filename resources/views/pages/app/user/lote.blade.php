@@ -75,7 +75,11 @@
 
                                     <tr>
                                         
-                                        <td>{{ $user["username"] }}</td>
+                                        <td>{{ $user["username"] }} 
+                                            @if($user['first'] == 2)
+                                            <div class="badge badge-success badge-dot"></div>
+                                            @endif
+                                        </td>
                                         <td>{{ $user["name"]}}</td>
                                         <td>{{ $user["lastname"]}}</td>
                                         <td>{{ $user["email2"] }}</td>
