@@ -34,7 +34,7 @@
 
     <div class="row layout-spacing ">
         @if (session('sucess'))
-            <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4 mt-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> Perfil atualizado com sucesso! </div>
+            <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4 mt-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> $Usuário atualizado com sucesso! </div>
         @endif
         
         
@@ -45,7 +45,7 @@
                 <div class="widget-content widget-content-area">
                     <div class="d-flex justify-content-between">
                         <h3 class="">Perfil do Usuário</h3>
-                        <a href="{{getRouterValue();}}/aluno/profile/{{ $user->id }}/edit" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                        <a href="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/edit" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
                     </div>
                     <div class="text-center user-info">
                         <img src="{{ asset($user->image) }}" alt="avatar">
@@ -145,16 +145,17 @@
                 <div class="widget-content widget-content-area">
                     <div class="d-flex justify-content-between">
                         <h3 class="">Cursos Liberados</h3>
+                        <a href="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/courses" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="green" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
                     </div>
                     
-                    <div class="table-responsive pt-4">
+                    <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>Nome</th>
                                     <th>Completo</th>
                                     <th>%</th>
-                                    
+                                    <th class="text-center">Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -169,6 +170,9 @@
                                         </div>
                                     </td>
                                     <td><p class="text-secondary">{{ $course['perc'] }}</p></td>
+                                    <td class="text-center">
+                                        <p>2 mins ago</p>
+                                    </td>
                                 </tr>
 
                                 @endforeach
@@ -179,8 +183,15 @@
                     </div>
                 </div>
             </div>
-            @if ((Auth::user()->role) == 7)
-            <div class="summary layout-spacing pt-5">
+            
+        </div>
+        
+    </div>
+{{--
+    <div class="row">
+
+        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
+            <div class="summary layout-spacing ">
                 <div class="widget-content widget-content-area">
                     <h3 class="">Summary</h3>
                     <div class="order-summary">
@@ -250,18 +261,8 @@
                     </div>
                 </div>
             </div>
-            @endif
         </div>
-        
-    </div>
 
-    <div class="row">
-
-        <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
-            
-        </div>
-    </div>
-{{--
         <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12">
 
             <div class="pro-plan layout-spacing">

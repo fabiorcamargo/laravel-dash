@@ -8,14 +8,11 @@
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
         {{-- @vite(['resources/scss/light/assets/components/timeline.scss']) --}}
-        <link rel="stylesheet" href="{{asset('plugins/filepond/filepond.min.css')}}">
-        <link rel="stylesheet" href="{{asset('plugins/filepond/FilePondPluginImagePreview.min.css')}}">
-        @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
-        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
+
         <link rel="stylesheet" href="{{asset('plugins/notification/snackbar/snackbar.min.css')}}">
         <link rel="stylesheet" href="{{asset('plugins/sweetalerts2/sweetalerts2.css')}}">
 
-        @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
+
         @vite(['resources/scss/light/assets/components/tabs.scss'])
         @vite(['resources/scss/light/assets/elements/alert.scss'])        
         @vite(['resources/scss/light/plugins/sweetalerts2/custom-sweetalert.scss'])
@@ -24,7 +21,7 @@
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/users/account-setting.scss'])
 
-        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
+
         @vite(['resources/scss/dark/assets/components/tabs.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])        
         @vite(['resources/scss/dark/plugins/sweetalerts2/custom-sweetalert.scss'])
@@ -94,30 +91,36 @@
                                                         // to a file pond, we moved the configuration
                                                         // properties to JavaScript -->
                                     
-                                                        <div class="img-uploader-content">
-                                                            <div class="">
-                                                                <input type="file" id="image" name="image" class="filepond col-md-2" accept="image/png, image/jpeg, image/gif">
+                                                        <div class="img-uploader-content text-center">
+                                                            
+                                                            <img class="rounded-circle text-center" alt="avatar2" width="120" height="120" src="{{ asset($user->image) }}" />
+                                                            <div class="pt-4 text-center">
+                                                            <a href="{{ getRouterValue(); }}/aluno/second" class="btn btn-outline-dark btn-icon text-center" title="Trocar imagem do perfil">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                            </a>
                                                             </div>
-                                                            <h3 for="fullName" class="text-center pt-2">{{ $user->username }}</h3>
-                                                            <input for="form-control mb-3" class="text-center pt-2"  name="id" id="id" value="{{ $user->id }}" hidden>
-                                                           @if($user->role == 7)
-                                                            <div class="form-group">
-                                                                
-                                                                
-                                                                <select name="role" id="role" class="form-control mb-4" aria-placeholder="Função" required>
-
-                                                                    <option value="{{ $user->role }}">{{ $roles[$user->role-1]->name }}</option>
-                                                                    @foreach ( $roles as $role )
-                                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                                                    @endforeach
-                                                                    
-
-                                                                </select>
-                                                            </div>
-                                                            @endif
+                                                          
+                                                            <h3 for="fullName" class="text-center pt-4">{{ $user->username }}</h3>
+                                                            <input for="form-control mb-3" class="text-center pt-4"  name="id" id="id" value="{{ $user->id }}" hidden>
+                                                           
                                                         
                                                         </div>
-                                    
+                                                        @if(Auth::user()->role == 7)
+                                                        
+                                                        <div class="form-group pt-4">
+                                                            
+                                                            
+                                                            <select name="role" id="role" class="form-control mb-4" aria-placeholder="Função" required>
+
+                                                                <option value="{{ $user->role }}">{{ $roles[$user->role-1]->name }}</option>
+                                                                @foreach ( $roles as $role )
+                                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                @endforeach
+                                                                
+
+                                                            </select>
+                                                        </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                                 <div class="col-xl-10 col-lg-12 col-md-8 mt-md-0 mt-4">
@@ -250,10 +253,7 @@
                                                                             <input class="form-check-input me-1" id="first" name="first" type="checkbox" @if ($user->first !== 1 ) checked @endif>
                                                                             Enviar cadastro de primeiro acesso
                                                                         </div>
-                                                                        
                                                                     </div>
-
-                                                                   
                                                                     @endif
                                                              
                                                               
@@ -768,25 +768,10 @@
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
 
-             <script src="{{asset('plugins/filepond/filepond.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginFileValidateType.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageExifOrientation.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImagePreview.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageCrop.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageResize.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/FilePondPluginImageTransform.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/filepondPluginFileValidateSize.min.js')}}"></script>
-        <script src="{{asset('plugins/filepond/custom-filepond.js')}}"></script>
-
         <script src="{{asset('plugins/notification/snackbar/snackbar.min.js')}}"></script>
         <script src="{{asset('plugins/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
         @vite(['resources/assets/js/users/account-settings.js'])
-
-        <script type="module">
-            userProfile.addFiles("{{ asset($user->image) }}");
-        </script>
-
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -812,29 +797,6 @@
             }
         });
     });
-</script>
-
-<script>
-
-    const inputElement = document.getElementById('image');
-
-    const pond = FilePond.create(inputElement);
-            
-    FilePond.setOptions({
-    server: {
-        process: '{{ getRouterValue(); }}/avatar-upload',
-        revert: '{{ getRouterValue(); }}/avatar-delete',
-                 
-        headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        }
-        
-    }
-    
-    });
-
-
-
 </script>
 
 
