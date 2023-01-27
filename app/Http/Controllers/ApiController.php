@@ -53,6 +53,8 @@ class ApiController extends Controller
                   //$tabela = $this->user->where('email', $arr->email)->first();
                   $tabela = $this->user->where('email2', $arr->email)->first();
 
+                  
+
                   if(empty($tabela['id'])){
                     return response("Usuário não encontrado");
                   }else{
@@ -71,11 +73,11 @@ class ApiController extends Controller
                       'visible' => isset($arr->visible)
                   ]);
 
-                  $user->first = 2;
-                  //dd($user);
-                  $user->save();
-                    
-  
+                  $tabela->first = 2;
+                  
+                  $tabela->save();
+                  //dd($tabela);
+                  $response->first = $tabela->first;
                       return response($response, 200);
 
                   }     
