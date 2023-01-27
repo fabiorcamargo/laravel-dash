@@ -104,7 +104,8 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
            $user->seller = $row['seller'];
            $user->courses = $row['courses'];
            $user->active = $row['active'];
-           $user->active = $row['active'];
+           $user->observation = $row['observation'];
+          
            
            //dd($user);
            $user->save();
