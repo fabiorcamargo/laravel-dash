@@ -240,7 +240,8 @@ class UserController extends Controller
 
     public function post(Request $request)
     {
-        //dd($request);
+        //$observation = ($_POST['observation']);
+        //dd($request->all());
         if (str_contains(url()->previous(), "profile")){
             $user = $this->user->find($request->id);
 
@@ -269,6 +270,7 @@ class UserController extends Controller
             } else {
                 $user->first = 1;   
             }
+            $user->observation = $request->observation;
         }
            // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
         }else{

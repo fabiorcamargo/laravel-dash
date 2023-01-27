@@ -158,14 +158,14 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Telefone (Whatsapp)</label>
-                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="on" value="{{ $user->cellphone }}" required >
+                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="off" value="{{ $user->cellphone }}" required >
                                                                 </div>
                                                             </div>
                                                             @if (Auth::user()->role == 7)
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Telefone 2 (Whatsapp)</label>
-                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone2" id="cellphone2" autocomplete="on" value="{{ $user->cellphone2 }}">
+                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone2" id="cellphone2" autocomplete="off" value="{{ $user->cellphone2 }}">
                                                                 </div>
                                                             </div>
                                                             @endif
@@ -238,10 +238,10 @@
                                                                         <div class="form-group">
                                                                             <label for="profession">Repita Senha</label>
                                                                             <input type="text" class="form-control mb-4" name="password2" id="password2" autocomplete="off" oninput="myPw()">
-                                                                            <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais</div>
-                                                                            <div class="text-danger invisible" name="feed1" id="feed1" >As Senhas não são iguais</div>
+                                                                        
                                                                         </div>
                                                                     </div>
+                                                                    
                                                                     @if (Auth::user()->role == 7)
                                                                     <div class="col-md-6">
                                                                         <label for="title"></label>
@@ -253,9 +253,19 @@
                                                                             <input class="form-check-input me-1" id="first" name="first" type="checkbox" @if ($user->first !== 1 ) checked @endif>
                                                                             Enviar cadastro de primeiro acesso
                                                                         </div>
+                                                                        
                                                                     </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group">
+                                                                            <label for="profession">Observações</label>
+                                                                            <input type="text" name="observation" id="observation" class="form-control mb-8" value="{{$user->observation}}">
+                                                                        </div>
+                                                                    </div>
+                                                                    
                                                                     @endif
-                                                             
+
+                                                                    
+                                                                    
                                                               
                                                        
                                                             
@@ -266,6 +276,8 @@
                                                            
                                                             <div class="col-md-12 mt-1">
                                                                 <div class="form-group text-end">
+                                                                    <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais</div>
+                                                                    <div class="text-danger invisible" name="feed1" id="feed1" >As Senhas não são iguais</div>
                                                                     <button class="btn btn-secondary" type="submit">Salvar</button>
                                                                 </div>
                                                             </div>
