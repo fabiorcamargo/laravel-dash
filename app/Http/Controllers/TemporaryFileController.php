@@ -50,6 +50,7 @@ class TemporaryFileController extends Controller
 
     public function store(Request $request)
     {
+        
        
         $city = $request->city;
         
@@ -59,6 +60,18 @@ class TemporaryFileController extends Controller
         $file =  "tmp/" . $data->folder . "/" . $data->file;
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
+
+        //dd($users[0]);
+        if($request->observation == "on"){
+            foreach ($users[0] as $user){
+                $u = User::where('username', $user['username'])->first();
+                $u->observation = $user['observation'];
+                $u->save();
+                
+            }
+            return back();
+            
+        }
 
         foreach ($users[0] as &$user)
         {

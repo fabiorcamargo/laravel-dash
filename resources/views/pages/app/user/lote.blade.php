@@ -139,7 +139,14 @@
         <form action="{{ getRouterValue(); }}/store"  method="post" enctype="multipart/form-data">
             @csrf
             <div id="fuMultipleFile" class="col-lg-12 layout-spacing">
+                
                         <div class="row">
+                            <div class="col-md-6 mx-auto pt-4 pb-4">  
+                            <input class="form-check-input me-1" id="observation" name="observation" type="checkbox">
+                            <label for="city">Somente Observações</label>
+                            </div>
+                        </div>
+                        <div class="row"></div>
                             <div class="col-md-6 mx-auto">
                                 <label for="city">Cidade - Estado</label>
                                         <div class="row">
