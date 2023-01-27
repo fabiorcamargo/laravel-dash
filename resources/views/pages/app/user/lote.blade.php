@@ -107,8 +107,9 @@
             </div>
             <form action="{{ getRouterValue(); }}/csv"  method="post" enctype="multipart/form-data">
                 @csrf
-            <input type="text" name="file" value="{{ $file }}">
-            <input type="text" name="folder" value="{{ $folder }}">
+            <input type="text" name="file" value="{{ $file }}" hidden>
+            <input type="text" name="folder" value="{{ $folder }}" hidden>
+            <input type="text" name="folder" value="{{ $city }}" hidden>
             <div class="d-flex justify-content-end">
                 <p>Total de Usuários da lista:  {{ count($users[0]) }} <button type="submit" class="btn btn-primary mb-2 me-4">Enviar</button></p>
             </div>
@@ -143,7 +144,7 @@
                                 <label for="city">Cidade - Estado</label>
                                         <div class="row">
                                             <div class="mb-3">
-                                                <input id="autoComplete" name="city" name="city" class="form-control" required oninput="myFn('autoComplete')">
+                                                <input id="autoComplete" name="city" name="city" class="form-control" required onblur="submeter()">
  
                                             </div>
                                         </div>
@@ -204,6 +205,18 @@
 
 
         </script>
+
+<script>
+    function submeter() {
+
+        
+        var inpname = document.querySelector('#autoComplete').value;
+        document.cookie = "city=" + inpname + ";" + "path=/";
+        
+        console.log(inpname);
+    }
+
+</script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>

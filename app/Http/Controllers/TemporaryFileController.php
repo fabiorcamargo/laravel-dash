@@ -52,6 +52,7 @@ class TemporaryFileController extends Controller
     {
        
         $city = $request->city;
+        
         $data = $this->file->where('folder', $request->image)->first();
         
         $folder =  $data->folder;
@@ -229,7 +230,7 @@ class TemporaryFileController extends Controller
     public function openCsv(Request $request){
         
             //return redirect()->route('cademi.store', "fabiotb");
-           
+            //dd($_COOKIE['city']);
             $file = $request->file;
             $folder = $request->folder;
             $users1 = Excel::toArray(new UsersImport, "$file");
@@ -238,8 +239,8 @@ class TemporaryFileController extends Controller
             
             //dd("fim");
             //return redirect()->route('cademi.lote', $users[0][0]['username']);
-            //Excel::import(new UsersImport, "$file");
-            (new UsersImport)->queue(public_path($file));
+            Excel::import(new UsersImport, "$file");
+            //(new UsersImport)->queue(public_path($file));
 
 
 
@@ -268,13 +269,14 @@ class TemporaryFileController extends Controller
     public function charge(Request $request)
     {
        
+        //dd($_COOKIE['city']);
         $data = $this->file->where('folder', $request->image)->first();
         
         $folder =  $data->folder;
         $file =  "tmp/" . $data->folder . "/" . $data->file;
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
-        
+        $produto = ($_COOKIE['name']);
         //Excel::import(new UsersImportNew, "$file");
         (new UsersImportNew)->queue(public_path($file));
         

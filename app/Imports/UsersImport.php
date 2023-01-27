@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Events\AfterImport;
 
-class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow, WithUpserts, SkipsEmptyRows
+class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts, SkipsEmptyRows
 {
 
     
@@ -34,6 +34,13 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
 
     public function model(array $row)
     {
+      
+        $city = (preg_replace('/[^0-9]/', '', $_COOKIE['city']));
+        $state = (City::find($city)->state_id);
+        $state = State::find($state)->abbr;
+        $city = (City::find($city)->name);
+        
+                
         $s = count($row);
         //dd($row);
         //$usr = (User::where('username', $row['username']));
@@ -73,8 +80,6 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
             $email = $row['email2'];
             $password = Hash::make($row['password']);
         }
-
-        $city = preg_replace('/[^0-9]/', '', $row['city2']);
         //dd($city);
         $document = preg_replace('/[^0-9]/', '', $row['document']);
         //$city2 = City::where('id', $city)->first();
@@ -89,8 +94,8 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
            $user->lastname = $row['lastname'];
            $user->password = $password;
            $user->cellphone2 = $row['cellphone2'];
-           $user->city2 = $row['city2'];
-           $user->uf2 = $row['city2'];
+           $user->city2 = $city;
+           $user->uf2 = $state;
            $user->payment = $row['payment'];
            $user->role = $row['role'];
            //$user->ouro = $row['ouro'];
