@@ -208,6 +208,7 @@ foreach ($prefixRouters as $prefixRouter) {
                 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('user-profile');
                 Route::get('/profile/{id}/courses', [UserController::class, 'courses_profile'])->name('user-courses');
                 Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('user-profile-edit');
+                Route::delete('/profile/{id}/delete', [UserController::class, 'destroy'])->name('user-profile-delete');
                 Route::get('/charge', [TemporaryFileController::class, 'getcharge'])->name('user-get-charge');
                   
 

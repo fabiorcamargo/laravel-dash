@@ -38,6 +38,28 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
         //dd($row);
         //$usr = (User::where('username', $row['username']));
         $user = User::where('username', $row['username'])->first();
+
+        $r = str_replace(" ", "", $row['courses']);
+        $courses = explode(",",  $r);
+
+        foreach ($courses as $course){
+            //dd($course);
+        if(!isset($user->codesale)){
+        
+            $user->codesale = "CODD-$course-$user->username";
+
+            } else {
+                if(!str_contains($user->codesale, "CODD-$course-$user->username") ){
+                    $user->codesale = $user->codesale . ", CODD-$course-$user->username";
+                }
+           }
+
+        }
+            //dd($user);
+           // $user->save();
+   
+            //dd($user);
+
         //dd($user);
         if (!empty($user->first)){
             $name = $user->name;
@@ -77,6 +99,8 @@ class UsersImport implements ToModel, WithChunkReading, ShouldQueue, WithHeading
            $user->seller = $row['seller'];
            $user->courses = $row['courses'];
            $user->active = $row['active'];
+           $user->active = $row['active'];
+           
            //dd($user);
            $user->save();
                  

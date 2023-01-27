@@ -42,6 +42,8 @@ class User extends Authenticatable
         'courses',
         'active',
         'image',
+        'codesale',
+        'observation',
     ];
 
     /**
@@ -98,5 +100,9 @@ class User extends Authenticatable
     public function customer()
     {
         return $this->hasMany(Customer::class);
+    }
+    public function sales()
+    {
+        return $this->hasMany(sales::class);
     }
 }

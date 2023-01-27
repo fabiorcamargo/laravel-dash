@@ -117,14 +117,55 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function destroy($id)
-    {
-        if (!$user = $this->user->find($id))
-            return redirect()->route('users.index');
+    public function destroy($id) {
+        /*
+        $user = $this->user->find($id);
+        $courses = $user->courses;
+        $courses  = str_replace(" ", "", $user->courses);
+        $courses = explode(",",  $courses);
+        //dd($courses);
+        foreach ($courses as $course){
+            //dd($course);
+            $payload = [
+                "token" => env('CADEMI_TOKEN_GATEWAY'),
+                "status"=> "disputa",
+                "codigo"=> "CODD-$course-$user->username",
+                "cliente_email"=> $user->email2,
+                "produto_id" => $course
+            ];
+            dd($payload);
 
-        $user->delete();
+            Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+    
+        }
 
-        return redirect()->route('users.index');
+        dd($user);
+        //$r = str_replace(" ", "", $row['courses']);
+        //$courses = explode(",",  $r);
+        
+        $payload = [
+            "token" => env('CADEMI_TOKEN_GATEWAY'),
+            "status"=> "aprovado",
+            "cliente_email"=> $user->email2,
+        ];
+
+        //dd($payload);
+        if (env('APP_DEBUG') == true){
+        //dd("não");
+        $data = Storage::get('file1.txt', $user->username . $user->email2 . $user->name . $user->document . $user->cellphone  . PHP_EOL);
+        Storage::put('file1.txt', $data .$user->username . $user->email2 . $user->name . $user->document . $user->cellphone . $user->uf2 . "Não foi Enviado" . PHP_EOL);
+
+        } else {
+           //dd("sim");
+           $data = Storage::get('file1.txt', $user->username . $user->email2 . $user->name . $user->document . $user->cellphone . PHP_EOL);
+           Storage::put('file1.txt', $data .$user->username . $user->email2 . $user->name . $user->document . $user->cellphone . PHP_EOL);
+  
+           Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+        }
+
+        dd($user);
+        */
+            
     }
 
     public function getUsers() {
@@ -524,7 +565,17 @@ class UserController extends Controller
 
         //dd($courses);
     }
+    /*
+    $c = CademiCourse::where('user_id', $user->id)->get();
+    foreach ($courses as $course){
+        if(str_contains($course->name, "PRE" ));
+    }
+
     
+
+    dd($c[0]->course_id);
+
+    */
     //dd($courses);
         
            //dd($response->body()); 

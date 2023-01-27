@@ -96,22 +96,19 @@ class CademiController extends Controller
          //dd($payload);
          if (env('APP_DEBUG') == true){
          //dd("não");
-         $data = Storage::get('file1.txt', $user->username . $user->email2 . $user->name . $user->document . $user->cellphone  . $course . "CODD-$course-$user->username" . PHP_EOL);
-         Storage::put('file1.txt', $data .$user->username . $user->email2 . $user->name . $user->document . $user->cellphone . $user->uf2 . $course . "CODD-$course-$user->username" . "Não foi Enviado" . PHP_EOL);
+         $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
+         Storage::put('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
  
          } else {
             //dd("sim");
-            $data = Storage::get('file1.txt', $user->username . $user->email2 . $user->name . $user->document . $user->cellphone . $course . "CODD-$course-$user->username" . PHP_EOL);
-            Storage::put('file1.txt', $data .$user->username . $user->email2 . $user->name . $user->document . $user->cellphone . $course . "CODD-$course-$user->username" . PHP_EOL);
+            $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
+            Storage::put('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
    
             Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
          }
          //dd($payload);
-         
- 
-         //Cria um novo aluno na cademi
- 
-         
+
+
          //
 
             }
@@ -137,6 +134,9 @@ class CademiController extends Controller
         ]);
 
         return response($user, 200);
+    }
+    public function delete(Request $request, $userId){
+  
     }
 
 }

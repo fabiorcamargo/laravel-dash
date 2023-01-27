@@ -5,9 +5,11 @@
             <div class="col-6">
                 <b>{{ $title }}</b>
             </div>
+            {{--
             <div class="col-6 text-end">
                 <p class="text-success mb-0">0%</p>
             </div>
+            --}}
         </div>
         <div class="progress br-30">
             <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>

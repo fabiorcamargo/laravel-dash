@@ -275,6 +275,7 @@ class TemporaryFileController extends Controller
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
         
+        //Excel::import(new UsersImportNew, "$file");
         (new UsersImportNew)->queue(public_path($file));
         
         //(new UsersImportNew)->queue("storage/app/tmp/11-01-2023 12:47:34/User.xlsx");
