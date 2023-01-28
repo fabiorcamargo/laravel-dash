@@ -11,21 +11,10 @@ class Payment extends Model
 
     protected $fillable = [
         'id',
-        'dateCreated',
+        'pay_id',
+        'user_id',
         'customer',
         'paymentLink',
-        'installment',
-        'dueDate',
-        'value',
-        'netValue',
-        'billingType',
-        'status',
-        'description',
-        'externalReference',
-        'installmentNumber',
-        'invoiceUrl',
-        'bankSlipUrl',
-        'invoiceNumber',
     ];
 
 

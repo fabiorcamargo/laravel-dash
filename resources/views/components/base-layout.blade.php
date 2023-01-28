@@ -102,11 +102,14 @@
             !Request::routeIs('login')
         )
 
-        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout_end', 'eco_checkout_show'))  
+        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout_show', 'eco_checkout_end'))  
         <!--  BEGIN NAVBAR  -->
+        @isset((Auth::user()->role))
         <x-navbar.style-vertical-menu avatar="{{ Auth::user()->image }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
-        
-        
+        @endisset
+        @unless (Auth::check())
+        <x-navbar.style-sales-menu avatar="" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
+        @endunless
         <!--  END NAVBAR  -->
         @endif
 
@@ -117,10 +120,10 @@
             <x-layout-overlay/>
             <!--  END LOADER  -->
 
-            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout_end', 'eco_checkout_show')) 
+            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout_show', 'eco_checkout_end')) 
             <!--  BEGIN SIDEBAR  -->
             
-            
+            @isset((Auth::user()->role))
                 @if ( (Auth::user()->role) == 7 )
                 <x-menu.admin-menu/>
                 @elseif ( (Auth::user()->role) == 1 )
@@ -128,6 +131,10 @@
                 @elseif ( (Auth::user()->role) == 5 )
                 <x-menu.admin-menu/>
                 @endif
+            @endisset
+            @unless (Auth::check())
+                <x-menu.sales-menu/>
+            @endunless                
             
             
             <!--  END SIDEBAR  -->   

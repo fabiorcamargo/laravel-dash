@@ -7,6 +7,8 @@ use App\Jobs\cademi as JobsCademi;
 use App\Models\{
   Cademi,
     CademiCourse,
+    Customer,
+    Payment,
     User
 };
 use GuzzleHttp\Client;
@@ -237,6 +239,35 @@ class ApiController extends Controller
 
           }
 */
+
+          public function gateway_pay_post (Request $request){
+            //$body = json_encode($request);
+            //dd(($request->getContent()));
+            
+            $event = (object)json_decode($request->getContent(), true);
+            //dd($event);
+            if($event->event == "PAYMENT_RECEIVED"){
+              
+              $data = (object)json_decode($request->getContent(), true)['payment'];
+              $user_id = Customer::where('gateway_id',$data->customer)->first()->id;
+              $body = json_encode($data);
+
+              
+              $payment = new Payment();
+              $payment->pay_id = $data->id;
+              $payment->user_id = $user_id;
+              $payment->customer = $data->customer;
+              $payment->dateCreated = $data->dateCreated;
+              $payment->paymentDate = $data->paymentDate;
+              $payment->status = $data->status;
+              $payment->body = $body;
+              $payment->save();
+
+              return response("User: $user_id | Payment: $payment->id", 200);
+            }
+            
+            
+          }
 
          
 }

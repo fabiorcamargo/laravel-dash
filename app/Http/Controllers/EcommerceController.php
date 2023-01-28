@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Asaas\AsaasController;
 use App\Mail\SendMailUser;
+use App\Models\Customer;
 use App\Models\EcoProduct;
+use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -87,24 +90,25 @@ class EcommerceController extends Controller
 
         return view('pages.eco.checkout', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu'], compact('product'));
     }
-    public function checkout_post(Request $request){
-/*
+    public function checkout_post($product_id, Request $request){
+       
+        $product = (EcoProduct::find($product_id));
+        //dd($product);
+        $type = $request->payment;
+        //dd($type);
+        if ((User::where('email', $request->email))->first()){
+            return back()->with('erro', 'Email já existe, por favor faça login com este email para continuar');
+        } 
+
         $this->faker = \Faker\Factory::create();
         $password = ($this->faker->randomNumber(5, false));
         //dd($request->all());
         $nome = explode(" ", $request->nome, 2);
 
-        if ((User::where('email', $request->email))->first()){
-            dd('existe');
-        } 
-
-      
-
         $user = new User;
-
         $user->username = $request->email;
         $user->name =$nome[0];
-        $user->lastname = $nome[1];
+        $user->lastname =  (isset($nome[1])) ? $nome[1] : "";
         $user->email = $request->email;
         $user->email2 = $request->email;
         $user->cellphone = preg_replace('/[^0-9]/', '',$request->cellphone);
@@ -115,29 +119,46 @@ class EcommerceController extends Controller
         $user->password = bcrypt($password);
         $user->role = "1";
         $user->active = "1";
+        $user->courses = "$product->course_id";
+
         $user->payment = $request->payment;
         //dd($user);
-
-        
-
         $user->save();
 
         //dd($user);
-        $user->password = $password;*/
+        $user->password = $password;
         //dd($user);
         $asaas = new AsaasController();
-        $asaas->create_client(21541);
+        $response = $asaas->create_client($user->id);
+        //dd($response);
+        $customer = new Customer();
+        $customer->user_id = $user->id;
+        $customer->gateway_id = $response->id;
+        $customer->body = json_encode($response);
+        $customer->save();
 
-        dd($asaas);
+        $sales = new Sales();
+        $sales->user_id = $user->id;
+        $sales->customer = $customer->gateway_id;
+        $sales->seller = $user->seller;
+        $sales->save();
+
+
+        $cobranca = $asaas->create_payment($user->id, $product_id, $sales->id, $type);
+
+
+
+        dd($cobranca);
 
         Mail::to("fabiorcamargo@gmail.com")->send(new SendMailUser($user));
 
+        //dd($asaas);
 
+        //dd('ete');
 
-        dd('ete');
+        //dd($request->all());
 
-        dd($request->all());
-
+        return back()->with('success', 'Usuário criado com sucesso, seus dados de acesso foram enviados no seu email');
 
     }
 }

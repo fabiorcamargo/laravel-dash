@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 //Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
-
+    
 
     
         /**
@@ -116,13 +116,13 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
  * =======================
  */
 
-$prefixRouters = [
-    'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
-];
+    $prefixRouters = [
+        'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+    ];
 
 
 
-foreach ($prefixRouters as $prefixRouter) {
+    foreach ($prefixRouters as $prefixRouter) {
     Route::prefix($prefixRouter)->group(function () {
         
         
@@ -1142,6 +1142,29 @@ Route::prefix('rtl')->group(function () {
     
 });
 
+$prefixRouters = [
+    'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+];
+
+
+
+foreach ($prefixRouters as $prefixRouter) {
+Route::prefix($prefixRouter)->group(function () {
+
+
+Route::prefix('/eco')->group(function () {
+    Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
+    Route::get('/add', function () {
+        return view('pages.eco.add', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+    })->name('eco-show-add');
+
+    Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco_product_show');
+    Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
+    Route::post('/checkout/{id}/end', [EcommerceController::class, 'checkout_post'])->name('eco_checkout_end');
+});
+
+});
+}
 
 Route::get('/', function () {
     return Redirect::to('https://ead.profissionalizaead.com.br/');;

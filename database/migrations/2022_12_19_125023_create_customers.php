@@ -17,15 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->string('gateway_id')->nullable();
-            $table->string('dateCreated')->nullable();
-            $table->string('cpfCnpj');
-            $table->string('name');
-            $table->string('phone')->nullable();
-            $table->string('mobilePhone')->nullable();
-            $table->string('externalReference')->nullable();
-            $table->boolean('notificationDisabled')->nullable();
-  
-
+            $table->json('body')->nullable();
             $table->timestamps();
         });
     }

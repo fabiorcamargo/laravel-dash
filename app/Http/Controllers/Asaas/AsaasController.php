@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Asaas;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\EcoProduct;
+use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
 use CodePhix\Asaas;
@@ -23,52 +25,63 @@ class AsaasController extends Controller
     }
 
     public function create_client($id){
-        //($id);
+ 
         $user = User::find($id);
-        //dd($user);
+
+        $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
+        $user->name = $user->name . (isset($user->lastname)) ? $user->lastname : "";
+
+        $clientes = $asaas->Cliente()->create([
+            'name' => $user->name,
+            'email' => $user->email,
+            'phone' => $user->cellphone,
+            'mobilePhone' => (isset($user->cellphone2)) ? $user->cellphone2 : $user->cellphone,
+            'cpfCnpj' => $user->document,
+            'externalReference' => $user->id,
+            'notificationDisabled' => ' false',
+          ]);
+          return $clientes;
+    }
+
+    public function create_payment($user_id, $product_id, $sales_id, $type){
+        $user = User::find($user_id);
+        $customer = Customer::where("user_id", $user_id)->first();
+        $product = EcoProduct::find($product_id);
+
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
 
-        //dd($asaas);
+        if($type == "Pix"){
+            $type = "BOLETO";
+            $type2 = "Pix";
+            $due_date = (now()->addDays(1)->format('Y-m-d'));
+            $product->price = $product->price * 0.9;
 
-        $dados = array(
-            'name' => ' Marcelo Almeida',
-            'email' => ' marcelo.almeida@gmail.com',
-            'phone' => ' 4738010919',
-            'mobilePhone' => ' 4799376637',
-            'cpfCnpj' => ' 24971563792',
-            'postalCode' => ' 01310-000',
-            'address' => ' Av. Paulista',
-            'addressNumber' => ' 150',
-            'complement' => ' Sala 201',
-            'province' => ' Centro',
-            'externalReference' => ' 12987382',
-            'notificationDisabled' => ' false',
-            'additionalEmails' => ' marcelo.almeida2@gmail.commarcelo.almeida3@gmail.com',
-            'municipalInscription' => ' 46683695908',
-            'stateInscription' => ' 646681195275',
-            'observations' => ' ótimo pagador nenhum problema até o momento'
-          );
-        //dd($dados);
-        $clientes = $asaas->Cliente()->create([
-            'name' => ' Marcelo Almeida',
-            'email' => ' marcelo.almeida@gmail.com',
-            'phone' => ' 4738010919',
-            'mobilePhone' => ' 4799376637',
-            'cpfCnpj' => ' 24971563792',
-            'postalCode' => ' 01310-000',
-            'address' => ' Av. Paulista',
-            'addressNumber' => ' 150',
-            'complement' => ' Sala 201',
-            'province' => ' Centro',
-            'externalReference' => ' 12987382',
-            'notificationDisabled' => ' false',
-            'additionalEmails' => ' marcelo.almeida2@gmail.commarcelo.almeida3@gmail.com',
-            'municipalInscription' => ' 46683695908',
-            'stateInscription' => ' 646681195275',
-            'observations' => ' ótimo pagador nenhum problema até o momento'
-          ]);
-        dd($clientes);
-               // return $clientes;
+            $cobranca = $asaas->Cobranca()->create([
+                'customer'=> $customer->gateway_id,
+                'billingType'=> $type,
+                'dueDate'=> $due_date,
+                'value'=> $product->price,
+                'externalReference'=> $sales_id,
+                'postalService'=> false,
+                'description' => "$product->course_id | $product->name" 
+              ]);
+    
+            if($type2 == "Pix"){
+                $Pix = $asaas->Pix()->create($cobranca->id);
+                if($Pix->success){
+                   // $cobranca = '<img src="data:image/jpeg;base64, '.$Pix->encodedImage.'" />';
+                }
+            }
+        }
+        
+        //dd($cobranca);
+
+        $sales = Sales::find($sales_id);
+        $sales->pay_id = $cobranca->id;
+        $sales->body = json_encode($cobranca);
+        $sales->save();
+
+        return $cobranca;
     }
 
     public function get_client($id){

@@ -9,6 +9,10 @@
         <!--  BEGIN CUSTOM STYLE FILE  -->
         @vite(['resources/scss/light/assets/apps/invoice-preview.scss'])
         @vite(['resources/scss/dark/assets/apps/invoice-preview.scss'])
+
+        
+        @vite(['resources/scss/light/assets/elements/alert.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])
         
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
@@ -56,12 +60,19 @@
                                             </div>
 
                                             
-                                            <form action="{{ getRouterValue(); }}/eco/checkout/end" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
+                                            <form action="{{ getRouterValue(); }}/eco/checkout/{{ $product->id }}/end" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
                                                 @csrf
                                                 <div class="inv--detail-section">
 
                                                     <div class="row">
-
+                                                        @if (\Session::has('erro'))
+                                                            <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('erro') !!} </div>
+                                                
+                                                        @endif
+                                                        @if (\Session::has('success'))
+                                                            <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('success') !!} </div>
+                                                
+                                                        @endif
                                                         <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4 align-self-center">
                                                             <p class="inv-to">Formas de pagamento</p>
                                                         
@@ -86,7 +97,7 @@
                                                                 <img class="company-logo" src="{{Vite::asset('resources/images/boleto.svg')}}" style="width: 60px;" alt="logo"> Boleto Bancário R${{ $product->price }} (Valor à vista) <span class="badge badge-warning mb-2 me-4">Liberação após compensação</span>
                                                             </label>
                                                             </div>
-                                                            <input type="text" name="payment" id="payment">
+                                                            <input type="text" name="payment" id="payment" value="Pix">
                                                         </div>
                                                     </div>
                                                     <div class="inv--head-section inv--detail-section"></div>

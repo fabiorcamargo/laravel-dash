@@ -7,7 +7,7 @@
         <p></p>
         <p>Id/Email de Acesso: {{$user->email}}</p>
         <p>Senha Inicial: {{$user->password}}</p>
-        <p>Endereço: <a href="https://ead.profissionalizaead.com.br/">ead.profissionalizaead.com.br</a></p>
+        <p>Endereço: <a href="https://alunos.profissionalizaead.com.br/modern-dark-menu/aluno/first">ead.profissionalizaead.com.br</a></p>
         <p></p>
         <p></p>
         <p></p>

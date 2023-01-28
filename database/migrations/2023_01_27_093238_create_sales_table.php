@@ -16,18 +16,11 @@ return new class extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('customer')->constrained('customers')->nullable();
+            $table->string('customer')->nullable();
             $table->string('codesale')->nullable();
             $table->string('seller')->nullable();
-            $table->string('installment')->nullable();
-            $table->string('type')->nullable();
-            $table->string('id_pay')->nullable();
-            $table->string('invoice')->nullable();
-            $table->string('bankSlipUrl')->nullable();
-            $table->string('status')->nullable();
-            $table->string('paymentLink')->nullable();
-            $table->string('dueDate')->nullable();
-            $table->string('value')->nullable();
+            $table->string('pay_id')->nullable();
+            $table->json('body')->nullable();
             $table->timestamps();
         });
     }
