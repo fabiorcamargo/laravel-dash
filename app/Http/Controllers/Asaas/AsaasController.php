@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use CodePhix\Asaas;
 use CodePhix\Asaas\Asaas as AsaasAsaas;
 use Illuminate\Support\Facades\Http;
+use stdClass;
 
 class AsaasController extends Controller
 {
@@ -29,7 +30,10 @@ class AsaasController extends Controller
         $user = User::find($id);
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
-        $user->name = $user->name . (isset($user->lastname)) ? $user->lastname : "";
+        $user->name = $user->name;
+        $user->name = $user->name . ((isset($user->lastname)) ? " " . $user->lastname : "");
+
+        //dd($user);
 
         $clientes = $asaas->Cliente()->create([
             'name' => $user->name,
@@ -50,15 +54,15 @@ class AsaasController extends Controller
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
 
-        if($type == "Pix"){
-            $type = "BOLETO";
+        if($type->payment == "Pix"){
+            $type1 = "BOLETO";
             $type2 = "Pix";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
             $product->price = $product->price * 0.9;
 
             $cobranca = $asaas->Cobranca()->create([
                 'customer'=> $customer->gateway_id,
-                'billingType'=> $type,
+                'billingType'=> $type1,
                 'dueDate'=> $due_date,
                 'value'=> $product->price,
                 'externalReference'=> $sales_id,
@@ -72,6 +76,43 @@ class AsaasController extends Controller
                    // $cobranca = '<img src="data:image/jpeg;base64, '.$Pix->encodedImage.'" />';
                 }
             }
+        }
+
+        if($type->payment == "CREDIT_CARD"){
+            $type1 = "CREDIT_CARD";
+            $due_date = (now()->addDays(1)->format('Y-m-d'));
+            $product->price = $product->price;
+            $card = str_replace(array(' ', "\t", "\n"), '', $type->number);
+
+            $dadosAssinatura = array(
+                "customer" => "$customer->gateway_id",
+                "billingType" => "$type1",
+                "value" => $product->price,
+                "dueDate" => $due_date,
+                "description" => "$product->course_id $product->name",
+                "creditCard" => array(
+                  "holderName" => "$type->name",
+                  "number" => "$card",
+                  "expiryMonth" => "$type->expiryMonth",
+                  "expiryYear" => "$type->expiryYear",
+                  "ccv" => "$type->cvc"
+                ),
+                "creditCardHolderInfo" => array(
+                  "name" => "$user->name $user->lastname",
+                  "email" => "$user->email",
+                  "cpfCnpj" => "$user->document",
+                  "postalCode" => "$type->cep",
+                  "addressNumber" => "$type->numero",
+                  "addressComplement" => null,
+                  "phone" => "$user->cellphone",
+                  "mobilePhone" => "$user->cellphone"
+                )
+              );
+
+            $cobranca = $asaas->Cobranca()->create(
+                $dadosAssinatura
+            );
+    
         }
         
         //dd($cobranca);

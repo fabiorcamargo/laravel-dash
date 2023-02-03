@@ -11,6 +11,7 @@ use App\Models\{
     Payment,
     User
 };
+use Canducci\Cep\Cep;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
@@ -263,10 +264,32 @@ class ApiController extends Controller
               $payment->body = $body;
               $payment->save();
 
+              
+
+
               return response("User: $user_id | Payment: $payment->id", 200);
             }
             
             
+          }
+
+          public function chatbot_pre_hen(Request $request){
+
+            $response = (json_encode($request->getContent(), true));
+            $header1 = (json_encode($request->header()));
+            $header = (json_decode($header1));
+                  
+                  $time = (now()->toDateTimeString());
+                  $data = Storage::get('msg.txt', "$time | $header->chip || $response" . PHP_EOL);
+                  Storage::put('msg.txt', $data . "$time | $header->chip || $response" . PHP_EOL);
+      
+                  $reposta = '{
+                    "data":[{
+                            "message":"Teste de Resposta"
+                    }]
+                  }';
+                  return  response($reposta, 200);
+
           }
 
          

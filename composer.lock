@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50d5739dad62f0e0b34113873b82cecb",
+    "content-hash": "1a89fcb1951f451ae753ff4a85f641a4",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -171,6 +171,55 @@
                 }
             ],
             "time": "2022-08-10T22:54:19+00:00"
+        },
+        {
+            "name": "canducci/cep",
+            "version": "v3.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/netdragoon/canduccicep.git",
+                "reference": "b30aa566db1bf6cdfbe31367b22a2d2791a7fd04"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/netdragoon/canduccicep/zipball/b30aa566db1bf6cdfbe31367b22a2d2791a7fd04",
+                "reference": "b30aa566db1bf6cdfbe31367b22a2d2791a7fd04",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.7"
+            },
+            "require-dev": {
+                "illuminate/support": "7.x-dev",
+                "phpspec/phpspec": "6.1.1",
+                "phpunit/phpunit": "8.5.2"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Canducci/Cep/Helpers/cep_helper.php",
+                    "src/Canducci/Cep/Helpers/uf_helper.php"
+                ],
+                "psr-4": {
+                    "Canducci\\Cep\\": "src/Canducci/Cep/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fulvio",
+                    "email": "fulviocanducci@hotmail.com"
+                }
+            ],
+            "description": "CEP do Brasil Web Service ViaCep (https://viacep.com.br)",
+            "support": {
+                "issues": "https://github.com/netdragoon/canduccicep/issues",
+                "source": "https://github.com/netdragoon/canduccicep/tree/v3.1.1"
+            },
+            "time": "2020-09-10T15:11:52+00:00"
         },
         {
             "name": "codephix/asaas-sdk",

@@ -138,88 +138,118 @@
                                             </div>
 
                                             
-                                            <form action="{{ getRouterValue(); }}/eco/checkout/{{ $product->id }}/client" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
+                                            <form action="{{ getRouterValue(); }}/eco/checkout/{{ $product->id }}/end/{{ $user->id }}" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
                                                 @csrf
                                                 <div class="inv--detail-section">
 
-                                                    <div class="row">
-                                                        @if (\Session::has('erro'))
-                                                            <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('erro') !!} </div>
-                                                
-                                                        @endif
-                                                        @if (\Session::has('success'))
-                                                            <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('success') !!} </div>
-                                                
-                                                        @endif
+                                                        <div class="row">
+                                                                @if (\Session::has('erro'))
+                                                                    <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('erro') !!} </div>
                                                         
-                                                    </div>
-                                                 
-                                                    
-                                                    <div class="row">
+                                                                @endif
+                                                                @if (\Session::has('success'))
+                                                                    <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('success') !!} </div>
                                                         
-                                                        <div class="col-md-6">
-                                                            <h4 class="pb-4">Dados Pessoais</h4>
-                                                            <label for="defaultEmailAddress">Nome Completo</label>
-                                                            <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
-                                                            <div class="valid-feedback feedback-pos">
-                                                                Celular válido!
-                                                            </div>
-                                                            <div class="invalid-feedback feedback-pos">
-                                                                Por favor preencha com seu nome completo.
-                                                            </div>
-                                                
-                                                            <div class="form-group">
-                                                            <label for="defaultEmailAddress">Telefone com Whatsapp</label>
-                                                            <input type="text" class="ph-number form-control mb-4" placeholder="Digite apenas os números" name="cellphone" id="cellphone"  autocomplete="on" required >
-                                                            <div class="valid-feedback feedback-pos">
-                                                                Celular válido!
-                                                            </div>
-                                                            <div class="invalid-feedback feedback-pos">
-                                                                Por favor coloque um Telefone válido com DDD e 9º dígito.
-                                                            </div>
-                                                            </div>
+                                                                @endif
+                                                                
 
-                                                            <div class="form-group">
-                                                                <label for="email">Email</label>
-                                                                <input type="email" name="email" placeholder="Para receber acesso ao portal" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
-                                                                        <div class="valid-feedback feedback-pos">
-                                                                            Email Válido!
-                                                                        </div>
-                                                                        <div class="invalid-feedback feedback-pos">
-                                                                            Por favor coloque um email válido.
-                                                                        </div>
-                    
+
+                                                            <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4 align-self-center">
+                                                                
+                                                                <h4>Escolha uma forma de pagamento</h4>
+                                                            
+
+                                                                    <div class="form-check form-check-primary form-check-inline pt-4">
+                                                                        <input class="form-check-input" type="radio" name="radio-checked" id="PIX" onchange="mypix()" checked>
+                                                                        <label class="form-check-label" for="PIX">
+                                                                            <img class="company-logo" src="{{Vite::asset('resources/images/logo-pix.svg')}}" style="width: 58px;" alt="logo"> Pagamento via PIX R${{ $product->price *0.90 }} (10% de Desconto) <span class="badge badge-primary mb-2 me-4">Liberação Imediata</span>
+                                                                        </label>
+                                                                    </div>
+                                                                        
+                                                                    <div class="form-check form-check-primary form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name="radio-checked" id="CREDIT_CARD" onchange="mycard()">
+                                                                        <label class="form-check-label" for="CREDIT_CARD">
+                                                                            <img class="company-logo" src="{{Vite::asset('resources/images/credit-card.svg')}}" style="width: 60px;" alt="logo"> Cartão de Crédito R${{ $product->price }} (Em até 10x R${{ $product->price/10 }}) <span class="badge badge-primary mb-2 me-4">Liberação Imediata</span>
+                                                                        </label>
+                                                                    </div>
+                                                                        
+                                                                    <div class="form-check form-check-primary form-check-inline">
+                                                                        <input class="form-check-input" type="radio" name="radio-checked" id="BOLETO" onchange="myboleto()">
+                                                                        <label class="form-check-label" for="BOLETO">
+                                                                            <img class="company-logo" src="{{Vite::asset('resources/images/boleto.svg')}}" style="width: 60px;" alt="logo"> Boleto Bancário R${{ $product->price }} (Valor à vista) <span class="badge badge-warning mb-2 me-4">Liberação após compensação</span>
+                                                                        </label>
+                                                                    </div>
+                                                                        <input type="text" name="payment" id="payment" value="PIX">
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                    <div class="inv--head-section inv--detail-section">
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group col-md-6 mt-4">
+                                                                <div class="form-control mb-4">
+                                                                    <label for="defaultEmailAddress">CPF do Pagador:</label>
+                                                                    <input type="text" class="cpf-number form-control mb-4" placeholder="Apenas os números" name="cpfCnpj" id="cpfCnpj"  autocomplete="on" required>
+                                                                    <div class="valid-feedback feedback-pos">
+                                                                        CPF válido!
+                                                                    </div>
+                                                                    <div class="invalid-feedback feedback-pos">
+                                                                        Por favor insira um CPF Válido.
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     
-                                                    
-                                            
-                                            
-                                                   
-
                                                     <div class="row" >
                                                         <div class="col-xl-10 col-lg-12 col-md-12 layout-spacing">
                                                             <div class="section general-info payment-info">
                                                                 <div class="info">
                                                                                                                                      
                                                                     <div id='cards' name='cards' hidden>
-                                                                    <x-widgets._w-cardcredit/>
+                                                                        <h4 class="form-control mb-4">
+                                                                        <x-widgets._w-cardcredit/>
                                                                     </div>
 
                                                                     <div id='pixs' name='pixs' hidden>
+                                                                        <h4 class="form-control mb-4">
                                                                         <h3>Pix</h3>
                                                                     </div>
 
                                                                     <div id='boletos' name='boletos' hidden="true">
+                                                                        <h4 class="form-control mb-4">
                                                                         <h3>Boleto</h3>
                                                                     </div>
-                                                                    <button class="btn btn-primary mt-4" type="submit">Finalizar</button>
+                                                                    
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
+
+                                                    <div class="">
+                                                        <div class="text-sm">
+                                                            <div class="row">
+                                                                
+                                                                <h4 class="form-control mb-4">
+                                                                <div class="col-sm-8 col-12">
+                                                                    <h4  class="">{{ $product->name }}</h4>
+                                                                </div>
+                                
+                                                               
+                                                                <div class="col-sm-8 col-7 grand-total-title mt-3">
+                                                                    <h4 class="" id="prec">Total: R${!! $product->price * 0.90 !!}</h4>
+                                                                </div>
+                                                                <div class="col-sm-4 col-5 grand-total-amount mt-3">
+                                                                    
+                                                                </div>
+                                                                <div class="d-grid gap-2 col-12 mx-auto">
+                                                                <button class="btn btn-primary btn-lg mt-4" type="submit">Finalizar</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                             </form>
                                         </div>
                                     </div>
@@ -227,11 +257,8 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
-                
-            </div>
-
+            </div>   
         </div>
     </div>
     <body>
@@ -275,7 +302,7 @@
             
 
             function mycard(){
-                    prec.innerText = "R${!! $product->price !!}" ;
+                    prec.innerText = "Total: R${!! $product->price !!}" ;
                     document.getElementById("cards").hidden = false;
                     document.getElementById("pixs").hidden = true;
                     document.getElementById("boletos").hidden = true;
@@ -283,13 +310,11 @@
                     document.getElementById("holderName").required = true;
                     document.getElementById("expiry").required = true;
                     document.getElementById("cvc").required = true;
-                    document.getElementById("cep").required = true;
-                    document.getElementById("numero").required = true;
-                    document.getElementById("payment").value = "Cartão";
+                    document.getElementById("payment").value = "CREDIT_CARD";
                     
             }
             function mypix(){
-                    prec.innerText = "R${!! $product->price * 0.90 !!}" ;
+                    prec.innerText = "Total: R${!! $product->price * 0.90 !!}" ;
                     document.getElementById("pixs").hidden = false;
                     document.getElementById("cards").hidden = true;
                     document.getElementById("boletos").hidden = true;
@@ -297,10 +322,10 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
-                    document.getElementById("payment").value = "Pix";
+                    document.getElementById("payment").value = "PIX";
             }
             function myboleto(){
-                    prec.innerText = "R${!! $product->price !!}" ;
+                    prec.innerText = "Total: R${!! $product->price !!}" ;
                     document.getElementById("boletos").hidden = false;
                     document.getElementById("cards").hidden = true;
                     document.getElementById("pixs").hidden = true;
@@ -308,7 +333,7 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
-                    document.getElementById("payment").value = "Boleto";
+                    document.getElementById("payment").value = "BOLETO";
             }
         </script>
 

@@ -289,7 +289,7 @@ class TemporaryFileController extends Controller
         $file =  "tmp/" . $data->folder . "/" . $data->file;
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
-        $produto = ($_COOKIE['name']);
+        //$produto = ($_COOKIE['name']);
         //Excel::import(new UsersImportNew, "$file");
         (new UsersImportNew)->queue(public_path($file));
         

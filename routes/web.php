@@ -93,6 +93,7 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
                         
                         
+                        
                     });
 
             });
@@ -163,7 +164,7 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
             Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco_product_show');
             Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
-            Route::post('/checkout/end', [EcommerceController::class, 'checkout_post'])->name('eco_checkout_end');
+            
         });
         
 
@@ -1153,14 +1154,13 @@ Route::prefix($prefixRouter)->group(function () {
 
 
 Route::prefix('/eco')->group(function () {
-    Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
-    Route::get('/add', function () {
-        return view('pages.eco.add', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-    })->name('eco-show-add');
 
     Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco_product_show');
     Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
-    Route::post('/checkout/{id}/end', [EcommerceController::class, 'checkout_post'])->name('eco_checkout_end');
+    Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end');
+    Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay');
+    Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end');
+
 });
 
 });
