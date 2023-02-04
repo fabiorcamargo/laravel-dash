@@ -278,19 +278,9 @@ class ApiController extends Controller
             
           }
 
-          public function chatbot_pre_hen(Request $request){
+          public function chatbot_pre_hen1(Request $request){
 
-            $data = (json_encode($request->header(),true) . "|||" . (json_encode($request->getContent(),true)) . PHP_EOL);
-            Storage::put('autoresponse.txt', $data . PHP_EOL);
-            
-
-            $resposta = "{
-              'data':[{
-                      'message':'Teste'
-              }]
-            }";
-            return  response($resposta, 200); 
-           /*
+           
             $response = (json_decode($request->getContent()));
             $header1 = (json_encode($request->header()));
             $header = (json_decode($header1));
@@ -418,8 +408,179 @@ class ApiController extends Controller
               return  response($resposta, 200);
             }
             }  
-            */                
+                          
           }
+
+          public function chatbot_pre_hen(Request $request){
+
+           
+                    $response = (json_decode($request->getContent()));
+                    $header1 = (json_encode($request->header()));
+                    $header = (json_decode($header1));
+                    //dd($header->chip);
+                    $de = array('+','-', ' ');
+                    $para = array('','', '');
+                    $number = str_replace($de, $para,$response->senderName);
+                    //dd($number);
+                    $message = ChatbotMessage::where('number', $number)->first();
+                    
+                    if($message !== null){
+
+                      if($message->fluxo == "Fim"){
+
+                      
+                        $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
+                        $resposta = $fluxo->response;
+                        $resposta = "{
+                          'data':[{
+                                  'message':$resposta
+                          }]
+                        }";
+                        return  response($resposta, 200);
+                      }
+
+                      //dd($message);
+                      if($message->fluxo == "Motivo"){
+                        $message->fluxo = "Fim";
+                        $fluxo = (ChatProgram::where('i_fluxo', "Motivo")->first());
+                        $message->motivo = "1";
+                        $message->message = $response->senderMessage;
+                        $message->save();
+
+                        $resposta = $fluxo->response;
+
+                        $resposta = "{
+                          'data':[{
+                                  'message':$resposta
+                          }]
+                        }";
+                        return  response($resposta, 200);
+
+
+                      }
+                    
+                      if($message->fluxo == "Menu"){
+                  
+                        if(Str::contains($response->senderMessage, [1,2,3,4,5,6])){
+                  
+                            $fluxo = (ChatProgram::where('i_fluxo', $response->senderMessage)->first());
+                  
+                            $resposta = $fluxo->response;
+                            $message->fluxo = $fluxo->f_fluxo;
+                            $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+                  
+                            $message->number = $number;
+                            $message->message = $response->senderMessage;
+                            $message->body = json_encode($request->getContent(), true);
+                            $message->save();
+                                  
+                            return  response($resposta, 200);
+                        
+                        }
+
+                        $resposta = "Por favor digite apenas o número";
+
+                        $resposta = "{
+                          'data':[{
+                                  'message':$resposta
+                          }]
+                        }";
+                        return  response($resposta, 200);
+                      }
+
+                      if (Str::contains($response->senderMessage, ["Não", "não", "nao", "não", "n"])) {
+                        $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
+                
+                        $resposta = $fluxo->response;
+                        $message = new ChatbotMessage();
+                        $message->fluxo = $fluxo->f_fluxo;
+                        $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+              
+                        $message->number = $number;
+                        $message->message = $response->senderMessage;
+                        $message->body = json_encode($request->getContent(), true);
+                        $message->save();
+                              
+                        $resposta = "{
+                          'data':[{
+                                  'message':$resposta
+                          }]
+                        }";
+
+                        return  response($resposta, 200);
+                      }
+                      
+                    } else {
+
+                      if($response->senderMessage == "Sim" || $response->senderMessage == "sim"){
+                        
+                      $message = new ChatbotMessage();
+                      $message->fluxo = "Início";
+
+                      $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+                      $message->fluxo = $fluxo->f_fluxo;
+                      $resposta = $fluxo->response;
+
+                      $message->number = $number;
+                      $message->message = $response->senderMessage;
+                      $message->body = json_encode($request->getContent(), true);
+          
+                      $message->save();
+
+                      $resposta = "{
+                        'data':[{
+                                'message':$resposta
+                        }]
+                      }";
+                      
+                      return  response($resposta, 200);
+                      
+                    } else  if ($response->senderMessage == "Não" || $response->senderMessage == "não") {
+                      $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
+              
+                      $resposta = $fluxo->response;
+                      $message = new ChatbotMessage();
+                      $message->fluxo = $fluxo->f_fluxo;
+                      $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+            
+                      $message->number = $number;
+                      $message->message = $response->senderMessage;
+                      $message->body = json_encode($request->getContent(), true);
+                      $message->save();
+                            
+                      $resposta = "{
+                        'data':[{
+                                'message':$resposta
+                        }]
+                      }";
+
+                      return  response($resposta, 200);
+                    } else  if(Str::contains($response->senderMessage, ["Cadastro realizado"])){
+                     
+                            
+                      $resposta = "{
+                        'data':[{
+                                'message':'✅ *Parabéns!!!*
+                                ‼️ Em breve você receberá novas informações. 
+                                📲 Para isso, salve o nosso contato.'
+                        }]
+                      }";
+
+                      return  response($resposta, 200);
+                    } else {
+
+                      $resposta = "{
+                        'data':[{
+                                'message':'‼️ Olá! te peço desculpas, mas no momento não vou conseguir responder! 
+                                Em breve eu te retorno para falarmos 😉'
+                        }]
+                      }";
+                      return  response($resposta, 200);
+                    }
+                  }  
+                                  
+                }
         }
+      
 
          
