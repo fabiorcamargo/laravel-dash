@@ -279,6 +279,8 @@ class ApiController extends Controller
           }
 
           public function chatbot_pre_hen(Request $request){
+
+            return  response("Teste", 200); 
            
             $response = (json_decode($request->getContent()));
             $header1 = (json_encode($request->header()));
