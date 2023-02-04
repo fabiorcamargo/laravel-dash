@@ -283,7 +283,12 @@ class ApiController extends Controller
             $data = Storage::get('autoresponse.txt', (json_encode($request->getContent(),true)) . PHP_EOL);
             Storage::put('autoresponse.txt', $data . (json_encode($request->getContent(),true)) . PHP_EOL);
 
-            return  response("Teste", 200); 
+            $resposta = "{
+              'data':[{
+                      'message':'Teste'
+              }]
+            }";
+            return  response($resposta, 200); 
            
             $response = (json_decode($request->getContent()));
             $header1 = (json_encode($request->header()));
