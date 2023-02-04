@@ -416,13 +416,13 @@ class ApiController extends Controller
             $data = json_encode($request->getContent());
             Storage::put('autoresponse.txt', $data);
 
-            $resposta = "{
-              'data':[
+            $resposta = '{
+              "data":[
                 {
-                      'message':'Teste'
+                      "message":"Teste"
               }
               ]
-            }";
+            }';
             return  response($resposta, 200);
            
                     $response = (json_decode($request->getContent()));
