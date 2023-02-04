@@ -423,7 +423,7 @@ class ApiController extends Controller
               }
               ]
             }";
-            return  $resposta;
+            return  response($resposta, 200);
            
                     $response = (json_decode($request->getContent()));
                     $header1 = (json_encode($request->header()));
