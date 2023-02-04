@@ -90,6 +90,7 @@ class TemporaryFileController extends Controller
             $user["exist"] = 1;
             }else{
             $user["exist"] = 0;
+            $user["first"] = 0;
             }
             
         }
@@ -252,8 +253,8 @@ class TemporaryFileController extends Controller
             
             //dd("fim");
             //return redirect()->route('cademi.lote', $users[0][0]['username']);
-            Excel::import(new UsersImport, "$file");
-            //(new UsersImport)->queue(public_path($file));
+            //Excel::import(new UsersImport, "$file");
+            (new UsersImport)->queue(public_path($file));
 
 
 

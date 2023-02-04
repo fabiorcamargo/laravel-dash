@@ -7,6 +7,10 @@ use App\Jobs\cademi as JobsCademi;
 use App\Models\{
   Cademi,
     CademiCourse,
+    Chatbot_Message,
+    Chatbot_Program,
+    ChatbotMessage,
+    ChatProgram,
     Customer,
     Payment,
     User
@@ -18,6 +22,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use stdClass;
 
 class ApiController extends Controller
@@ -274,21 +279,108 @@ class ApiController extends Controller
           }
 
           public function chatbot_pre_hen(Request $request){
-
-            $response = (json_encode($request->getContent(), true));
+           
+            $response = (json_decode($request->getContent()));
             $header1 = (json_encode($request->header()));
             $header = (json_decode($header1));
-                  
-                  $time = (now()->toDateTimeString());
-                  $data = Storage::get('msg.txt', "$time | $header->chip || $response" . PHP_EOL);
-                  Storage::put('msg.txt', $data . "$time | $header->chip || $response" . PHP_EOL);
-      
-                  $reposta = '{
-                    "data":[{
-                            "message":"Teste de Resposta"
-                    }]
-                  }';
-                  return  response($reposta, 200);
+            $number = ($response->Body->Info->RemoteJid);
+            $message = ChatbotMessage::where('number', $response->Body->Info->RemoteJid)->first();
+            if($message !== null){
+
+              //dd($message);
+              if($message->fluxo == "Motivo"){
+                $message->fluxo = "Fim";
+                $fluxo = (ChatProgram::where('i_fluxo', "Motivo")->first());
+                $message->motivo = "1";
+                $message->message = $response->Body->Text;
+                $message->save();
+
+                $resposta = $fluxo->response;
+
+                $resposta = "{
+                  'data':[{
+                          'message':$resposta
+                  }]
+                }";
+                return  response($resposta, 200);
+
+
+              }
+            
+              if($message->fluxo == "Menu"){
+           
+                if(Str::contains($response->Body->Text, [1,2,3,4,5,6])){
+           
+                    $fluxo = (ChatProgram::where('i_fluxo', $response->Body->Text)->first());
+           
+                    $resposta = $fluxo->response;
+                    $message->fluxo = $fluxo->f_fluxo;
+                    $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+           
+                    $message->number = $response->Body->Info->RemoteJid;
+                    $message->message = $response->Body->Text;
+                    $message->body = json_encode($request->getContent(), true);
+                    $message->save();
+                           
+                    return  response($resposta, 200);
+                
+                }
+
+                $resposta = "Por favor digite apenas o número";
+
+                $resposta = "{
+                  'data':[{
+                          'message':$resposta
+                  }]
+                }";
+                return  response($resposta, 200);
+              }
+              
+            } else {
+
+              if(Str::contains($response->Body->Text, ["Não", "não", "nao", "não", "n"])) {
+                $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
+         
+                $resposta = $fluxo->response;
+                $message = new ChatbotMessage();
+                $message->fluxo = $fluxo->f_fluxo;
+                $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+       
+                $message->number = $response->Body->Info->RemoteJid;
+                $message->message = $response->Body->Text;
+                $message->body = json_encode($request->getContent(), true);
+                $message->save();
+                       
+                $resposta = "{
+                  'data':[{
+                          'message':$resposta
+                  }]
+                }";
+
+                return  response($resposta, 200);
+              }
+              $message = new ChatbotMessage();
+              $message->fluxo = "Início";
+
+              $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
+              $message->fluxo = $fluxo->f_fluxo;
+              $resposta = $fluxo->response;
+
+              $message->number = $response->Body->Info->RemoteJid;
+              $message->message = $response->Body->Text;
+              $message->body = json_encode($request->getContent(), true);
+  
+              $message->save();
+
+              $resposta = "{
+                'data':[{
+                        'message':$resposta
+                }]
+              }";
+              
+              return  response($resposta, 200);
+            }                  
+
 
           }
 
