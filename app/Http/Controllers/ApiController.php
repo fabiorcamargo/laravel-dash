@@ -412,18 +412,6 @@ class ApiController extends Controller
           }
 
           public function chatbot_pre_hen(Request $request){
-
-            $data = json_encode($request->getContent());
-            Storage::put('autoresponse.txt', $data);
-
-            $resposta = '{
-              "data":[
-                {
-                      "message":"Teste"
-              }
-              ]
-            }';
-            return  response($resposta, 200);
            
                     $response = (json_decode($request->getContent()));
                     $header1 = (json_encode($request->header()));
@@ -442,11 +430,11 @@ class ApiController extends Controller
                       
                         $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
                         $resposta = $fluxo->response;
-                        $resposta = "{
-                          'data':[{
-                                  'message':$resposta
+                        $resposta = '{
+                          "data":[{
+                                  "message":' . $resposta . '
                           }]
-                        }";
+                        }';
                         return  response($resposta, 200);
                       }
 
@@ -460,11 +448,11 @@ class ApiController extends Controller
 
                         $resposta = $fluxo->response;
 
-                        $resposta = "{
-                          'data':[{
-                                  'message':$resposta
+                        $resposta = '{
+                          "data":[{
+                                  "message":' . $resposta . '
                           }]
-                        }";
+                        }';
                         return  response($resposta, 200);
 
 
@@ -491,11 +479,11 @@ class ApiController extends Controller
 
                         $resposta = "Por favor digite apenas o número";
 
-                        $resposta = "{
-                          'data':[{
-                                  'message':$resposta
+                        $resposta = '{
+                          "data":[{
+                                  "message":' . $resposta . '
                           }]
-                        }";
+                        }';
                         return  response($resposta, 200);
                       }
 
@@ -512,11 +500,11 @@ class ApiController extends Controller
                         $message->body = json_encode($request->getContent(), true);
                         $message->save();
                               
-                        $resposta = "{
-                          'data':[{
-                                  'message':$resposta
+                        $resposta = '{
+                          "data":[{
+                                  "message":' . $resposta . '
                           }]
-                        }";
+                        }';
 
                         return  response($resposta, 200);
                       }
@@ -538,11 +526,11 @@ class ApiController extends Controller
           
                       $message->save();
 
-                      $resposta = "{
-                        'data':[{
-                                'message':$resposta
+                      $resposta = '{
+                        "data":[{
+                                "message":' . $resposta . '
                         }]
-                      }";
+                      }';
                       
                       return  response($resposta, 200);
                       
@@ -559,33 +547,33 @@ class ApiController extends Controller
                       $message->body = json_encode($request->getContent(), true);
                       $message->save();
                             
-                      $resposta = "{
-                        'data':[{
-                                'message':$resposta
+                      $resposta = '{
+                        "data":[{
+                                "message":' . $resposta . '
                         }]
-                      }";
+                      }';
 
                       return  response($resposta, 200);
                     } else  if(Str::contains($response->senderMessage, ["Cadastro realizado"])){
                      
                             
-                      $resposta = "{
-                        'data':[{
-                                'message':'✅ *Parabéns!!!*
+                      $resposta = '{
+                        "data":[{
+                                "message":"✅ *Parabéns!!!*
                                 ‼️ Em breve você receberá novas informações. 
-                                📲 Para isso, salve o nosso contato.'
+                                📲 Para isso, salve o nosso contato."
                         }]
-                      }";
+                      }';
 
                       return  response($resposta, 200);
                     } else {
 
-                      $resposta = "{
-                        'data':[{
-                                'message':'‼️ Olá! te peço desculpas, mas no momento não vou conseguir responder! 
-                                Em breve eu te retorno para falarmos 😉'
+                      $resposta = '{
+                        "data":[{
+                                "message":"‼️ Olá! te peço desculpas, mas no momento não vou conseguir responder! 
+                                Em breve eu te retorno para falarmos 😉"
                         }]
-                      }";
+                      }';
                       return  response($resposta, 200);
                     }
                   }  
