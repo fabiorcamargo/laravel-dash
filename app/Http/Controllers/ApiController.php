@@ -285,6 +285,18 @@ class ApiController extends Controller
             $header = (json_decode($header1));
             $number = ($response->Body->Info->RemoteJid);
             $message = ChatbotMessage::where('number', $response->Body->Info->RemoteJid)->first();
+            if($message->fluxo == "Fim"){
+
+              
+              $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
+              $resposta = $fluxo->response;
+              $resposta = "{
+                'data':[{
+                        'message':$resposta
+                }]
+              }";
+              return  response($resposta, 200);
+            }
             if($message !== null){
 
               //dd($message);
