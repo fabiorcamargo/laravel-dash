@@ -472,6 +472,13 @@ class ApiController extends Controller
                             $message->message = $response->senderMessage;
                             $message->body = json_encode($request->getContent(), true);
                             $message->save();
+
+                            $resposta = '{
+                              "data":[{
+                                      "message":' . $fluxo->response . '
+                                    }]
+                                  }';
+
                                   
                             return  response($resposta, 200);
                         
