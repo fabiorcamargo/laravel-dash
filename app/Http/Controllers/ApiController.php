@@ -285,19 +285,22 @@ class ApiController extends Controller
             $header = (json_decode($header1));
             $number = ($response->Body->Info->RemoteJid);
             $message = ChatbotMessage::where('number', $response->Body->Info->RemoteJid)->first();
-            if($message->fluxo == "Fim"){
+            
+            
+            if($message !== null){
+
+              if($message->fluxo == "Fim"){
 
               
-              $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
-              $resposta = $fluxo->response;
-              $resposta = "{
-                'data':[{
-                        'message':$resposta
-                }]
-              }";
-              return  response($resposta, 200);
-            }
-            if($message !== null){
+                $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
+                $resposta = $fluxo->response;
+                $resposta = "{
+                  'data':[{
+                          'message':$resposta
+                  }]
+                }";
+                return  response($resposta, 200);
+              }
 
               //dd($message);
               if($message->fluxo == "Motivo"){
@@ -347,10 +350,8 @@ class ApiController extends Controller
                 }";
                 return  response($resposta, 200);
               }
-              
-            } else {
 
-              if(Str::contains($response->Body->Text, ["Não", "não", "nao", "não", "n"])) {
+              if (Str::contains($response->Body->Text, ["Não", "não", "nao", "não", "n"])) {
                 $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
          
                 $resposta = $fluxo->response;
@@ -371,6 +372,10 @@ class ApiController extends Controller
 
                 return  response($resposta, 200);
               }
+              
+            } else {
+              if($response->Body->Text == "Sim"){
+                
               $message = new ChatbotMessage();
               $message->fluxo = "Início";
 
@@ -391,10 +396,18 @@ class ApiController extends Controller
               }";
               
               return  response($resposta, 200);
+              
+            } else {
+              $resposta = "{
+                'data':[{
+                        'message':'‼️ Olá! te peço desculpas, mas no momento não vou conseguir responder! 
+                        Em breve eu te retorno para falarmos 😉'
+                }]
+              }";
+              return  response($resposta, 200);
+            }
             }                  
-
-
           }
+        }
 
          
-}
