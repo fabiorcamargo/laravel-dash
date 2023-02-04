@@ -280,8 +280,8 @@ class ApiController extends Controller
 
           public function chatbot_pre_hen(Request $request){
 
-            $data = Storage::get('autoresponse.txt', (json_encode($request->getContent(),true)) . PHP_EOL);
-            Storage::put('autoresponse.txt', $data . (json_encode($request->getContent(),true)) . PHP_EOL);
+            $data = Storage::get('autoresponse.txt', (json_encode($request->all(),true)) . PHP_EOL);
+            Storage::put('autoresponse.txt', $data . (json_encode($request->all(),true)) . PHP_EOL);
 
             $resposta = "{
               'data':[{
@@ -289,7 +289,7 @@ class ApiController extends Controller
               }]
             }";
             return  response($resposta, 200); 
-           
+           /*
             $response = (json_decode($request->getContent()));
             $header1 = (json_encode($request->header()));
             $header = (json_decode($header1));
@@ -416,7 +416,8 @@ class ApiController extends Controller
               }";
               return  response($resposta, 200);
             }
-            }                  
+            }  
+            */                
           }
         }
 

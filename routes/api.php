@@ -24,4 +24,4 @@ Route::post('users/store', [ApiController::class, 'store'])->name('api.cademi.st
 Route::post('course/store', [ApiController::class, 'course_store'])->name('api.cademi.course.store'); 
 Route::post('gateway/pay', [ApiController::class, 'gateway_pay_post'])->name('api.gateway.pay.post');
 
-Route::post('chatbot/pre_hen', [ApiController::class, 'chatbot_pre_hen'])->name('api.chatbot.pre_hen');
+Route::any('chatbot/pre_hen', [ApiController::class, 'chatbot_pre_hen'])->name('api.chatbot.pre_hen');
