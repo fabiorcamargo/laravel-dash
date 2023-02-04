@@ -432,7 +432,7 @@ class ApiController extends Controller
                         $resposta = $fluxo->response;
                         $resposta = '{
                           "data":[{
-                                  "message":' . $resposta . '
+                                  "message":"' . $resposta . '"
                           }]
                         }';
                         return  response($resposta, 200);
@@ -450,7 +450,7 @@ class ApiController extends Controller
 
                         $resposta = '{
                           "data":[{
-                                  "message":' . $resposta . '
+                                  "message":"' . $resposta . '"
                           }]
                         }';
                         return  response($resposta, 200);
@@ -475,9 +475,9 @@ class ApiController extends Controller
 
                             $resposta = '{
                               "data":[{
-                                      "message":' . $fluxo->response . '
-                                    }]
-                                  }';
+                                      "message":"' . $resposta . '"
+                              }]
+                            }';
 
                                   
                             return  response($resposta, 200);
@@ -488,7 +488,7 @@ class ApiController extends Controller
 
                         $resposta = '{
                           "data":[{
-                                  "message":' . $resposta . '
+                                  "message":"' . $resposta . '"
                           }]
                         }';
                         return  response($resposta, 200);
@@ -509,7 +509,7 @@ class ApiController extends Controller
                               
                         $resposta = '{
                           "data":[{
-                                  "message":' . $resposta . '
+                                  "message":"' . $resposta . '"
                           }]
                         }';
 
@@ -535,7 +535,7 @@ class ApiController extends Controller
 
                       $resposta = '{
                         "data":[{
-                                "message":' . $resposta . '
+                                "message":"' . $resposta . '"
                         }]
                       }';
                       
@@ -556,7 +556,7 @@ class ApiController extends Controller
                             
                       $resposta = '{
                         "data":[{
-                                "message":' . $resposta . '
+                                "message":"' . $resposta . '"
                         }]
                       }';
 
