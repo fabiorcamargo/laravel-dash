@@ -563,22 +563,25 @@ class ApiController extends Controller
                       return  response($resposta, 200);
                     } else  if(Str::contains($response->senderMessage, ["Cadastro realizado"])){
                      
-                            
+                      $fluxo = (ChatProgram::where('i_fluxo', "Cadastro")->first());
+              
+                      $resposta = $fluxo->response;
+
                       $resposta = '{
                         "data":[{
-                                "message":"✅ *Parabéns!!!*
-                                ‼️ Em breve você receberá novas informações. 
-                                📲 Para isso, salve o nosso contato."
+                                "message":"' . $resposta . '"
                         }]
                       }';
 
                       return  response($resposta, 200);
                     } else {
+                      $fluxo = (ChatProgram::where('i_fluxo', "Ocupado")->first());
+              
+                      $resposta = $fluxo->response;
 
                       $resposta = '{
                         "data":[{
-                                "message":"‼️ Olá! te peço desculpas, mas no momento não vou conseguir responder! 
-                                Em breve eu te retorno para falarmos 😉"
+                                "message":"' . $resposta . '"
                         }]
                       }';
                       return  response($resposta, 200);
