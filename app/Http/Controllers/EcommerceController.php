@@ -77,7 +77,7 @@ class EcommerceController extends Controller
     public function checkout_show($id){
         
         if(isset(Auth::user()->id)){
-       
+            $user = Auth::user();
             $product = (EcoProduct::find($id));
             if($product->perc > 15 || $product->percent < 30){
                 $product->perc = "<span class='badge badge-light-success mb-3'>" . $product->percent*100 . "% off</span>";
@@ -89,11 +89,7 @@ class EcommerceController extends Controller
     
             $product->oprice = ($product->price / (1-$product->percent));
     
-            //dd($product);
-    
-            
-    
-            return view('pages.eco.checkout_pay', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu'], compact('product'));
+            return view('pages.eco.checkout_pay', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu'], compact('product', 'user'));
 
         } else {
             $product = (EcoProduct::find($id));
