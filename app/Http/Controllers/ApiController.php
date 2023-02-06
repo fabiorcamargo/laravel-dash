@@ -435,6 +435,8 @@ class ApiController extends Controller
                                   "message":"' . $resposta . '"
                           }]
                         }';
+                        
+                        sleep(5);
                         return  response($resposta, 200);
                       }
 
@@ -453,6 +455,7 @@ class ApiController extends Controller
                                   "message":"' . $resposta . '"
                           }]
                         }';
+                        sleep(5);
                         return  response($resposta, 200);
 
 
@@ -479,7 +482,7 @@ class ApiController extends Controller
                               }]
                             }';
 
-                                  
+                            sleep(5);      
                             return  response($resposta, 200);
                         
                         }
@@ -491,6 +494,7 @@ class ApiController extends Controller
                                   "message":"' . $resposta . '"
                           }]
                         }';
+                        sleep(5);
                         return  response($resposta, 200);
                       }
 
@@ -513,12 +517,13 @@ class ApiController extends Controller
                           }]
                         }';
 
+                        sleep(5);
                         return  response($resposta, 200);
                       }
                       
                     } else {
 
-                      if($response->senderMessage == "Sim" || $response->senderMessage == "sim"){
+                      if($response->senderMessage == "Sim" || $response->senderMessage == "sim" || $response->senderMessage == "SIM"){
                         
                       $message = new ChatbotMessage();
                       $message->fluxo = "Início";
@@ -538,7 +543,8 @@ class ApiController extends Controller
                                 "message":"' . $resposta . '"
                         }]
                       }';
-                      
+
+                      sleep(5);
                       return  response($resposta, 200);
                       
                     } else  if ($response->senderMessage == "Não" || $response->senderMessage == "não") {
@@ -560,6 +566,7 @@ class ApiController extends Controller
                         }]
                       }';
 
+                      sleep(5);
                       return  response($resposta, 200);
                     } else  if(Str::contains($response->senderMessage, ["Cadastro realizado"])){
                      
@@ -573,6 +580,7 @@ class ApiController extends Controller
                         }]
                       }';
 
+                      sleep(5);
                       return  response($resposta, 200);
                     } else {
                       $fluxo = (ChatProgram::where('i_fluxo', "Ocupado")->first());
@@ -584,6 +592,8 @@ class ApiController extends Controller
                                 "message":"' . $resposta . '"
                         }]
                       }';
+
+                      sleep(5);
                       return  response($resposta, 200);
                     }
                   }  
