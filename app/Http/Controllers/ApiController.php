@@ -411,7 +411,7 @@ class ApiController extends Controller
                           
           }
 
-          public function chatbot_pre_hen(Request $request){
+          public function chatbot_pre_hen2(Request $request){
            
                     $response = (json_decode($request->getContent()));
                     $header1 = (json_encode($request->header()));
@@ -435,7 +435,7 @@ class ApiController extends Controller
                                   "message":"' . $resposta . '"
                           }]
                         }';
-                        
+
                         sleep(5);
                         return  response($resposta, 200);
                       }
@@ -498,7 +498,7 @@ class ApiController extends Controller
                         return  response($resposta, 200);
                       }
 
-                      if (Str::contains($response->senderMessage, ["Não", "não", "nao", "não", "n"])) {
+                      if ($response->senderMessage == "Não" || $response->senderMessage == "não" || $response->senderMessage == "NÃO") {
                         $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
                 
                         $resposta = $fluxo->response;
@@ -547,7 +547,7 @@ class ApiController extends Controller
                       sleep(5);
                       return  response($resposta, 200);
                       
-                    } else  if ($response->senderMessage == "Não" || $response->senderMessage == "não") {
+                    } else  if ($response->senderMessage == "Não" || $response->senderMessage == "não" || $response->senderMessage == "NÃO") {
                       $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
               
                       $resposta = $fluxo->response;
@@ -599,7 +599,49 @@ class ApiController extends Controller
                   }  
                                   
                 }
-        }
+
+                public function chatbot_pre_hen (Request $request){
+
+                  $response = (json_decode($request->getContent()));
+                  $header1 = (json_encode($request->header()));
+                  $header = (json_decode($header1));
+                  //dd($header->chip);
+                  $de = array('+','-', ' ');
+                  $para = array('','', '');
+                  $number = str_replace($de, $para,$response->senderName);
+                  //dd($number);
+                  $exist = ChatbotMessage::where('number', $number)->first();
+                  if (!empty($exist)){
+
+                  $programs = ChatProgram::all();
+
+                  foreach ($programs as $program) {
+                    $message = explode(",", $program->message);
+                    if(in_array($response->senderMessage, $message)){
+                    //dd("Yes, design_id: exits in array");
+                    $resposta = (ChatProgram::where('i_fluxo', $response->senderMessage)->first())->response;
+
+                      $resposta = '{
+                        "data":[{
+                                "message":"' . $resposta . '"
+                        }]
+                      }';
+
+                      sleep(5);
+                      return  response($resposta, 200);
+
+                    }
+
+                  
+                  }
+
+                }
+
+                }
+
+   }
+            
+        
       
 
          

@@ -14,8 +14,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EcommerceController extends Controller
+
 {
     public function add(Request $request){
         if (EcoProduct::where('course_id', $request->course_id)->first()){
@@ -114,9 +116,8 @@ class EcommerceController extends Controller
         if ((User::where('email', $request->email))->first()){
             return back()->with('erro', 'Email já existe, por favor faça login com este email para continuar');
         } 
-
-        $this->faker = \Faker\Factory::create();
-        $password = ($this->faker->randomNumber(5, false));
+        $faker = \Faker\Factory::create();
+        $password = ($faker->randomNumber(5, false));
         //dd($request->all());
         $nome = explode(" ", $request->nome, 2);
 
@@ -183,8 +184,8 @@ class EcommerceController extends Controller
             return back()->with('erro', 'Email já existe, por favor faça login com este email para continuar');
         } 
 
-        $this->faker = \Faker\Factory::create();
-        $password = ($this->faker->randomNumber(5, false));
+        $faker = \Faker\Factory::create();
+        $password = ($faker->randomNumber(5, false));
 
         $nome = explode(" ", $request->nome, 2);
 
