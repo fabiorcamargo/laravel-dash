@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chat_programs', function (Blueprint $table) {
+        Schema::create('chatbot_messages', function (Blueprint $table) {
             $table->id();
-            $table->string('i_fluxo');
-            $table->string('f_fluxo')->nullable();
+            $table->string('number');
+            $table->string('motivo')->nullable();
             $table->string('message');
-            $table->text('response');
+            $table->string('i_fluxo')->nullable();
+            $table->string('fluxo')->nullable();
+            $table->json('body');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chat_programs');
+        Schema::dropIfExists('chatbot_messages');
     }
 };

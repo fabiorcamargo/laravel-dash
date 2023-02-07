@@ -13,13 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('chatbot_messages', function (Blueprint $table) {
+        Schema::create('chatbot_programs', function (Blueprint $table) {
             $table->id();
-            $table->string('number');
-            $table->string('motivo')->nullable();
+            $table->string('tipo');
+            $table->string('i_fluxo')->nullable();
+            $table->string('f_fluxo')->nullable();
             $table->string('message');
-            $table->string('fluxo');
-            $table->json('body');
+            $table->text('response');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chatbot_messages');
+        Schema::dropIfExists('chatbot_programs');
     }
 };

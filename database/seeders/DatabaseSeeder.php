@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            Chat_Program_Seeder::class,
+            ChatbotProgramSeeder::class,
         ]);
     }
 }

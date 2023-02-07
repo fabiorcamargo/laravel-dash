@@ -10,7 +10,7 @@ use App\Models\{
     Chatbot_Message,
     Chatbot_Program,
     ChatbotMessage,
-    ChatProgram,
+    ChatbotProgram,
     Customer,
     Payment,
     User
@@ -278,364 +278,84 @@ class ApiController extends Controller
             
           }
 
-          public function chatbot_pre_hen1(Request $request){
-
-           
-            $response = (json_decode($request->getContent()));
-            $header1 = (json_encode($request->header()));
-            $header = (json_decode($header1));
-            $number = ($response->Body->Info->RemoteJid);
-            $message = ChatbotMessage::where('number', $response->Body->Info->RemoteJid)->first();
-            
-            
-            if($message !== null){
-
-              if($message->fluxo == "Fim"){
-
-              
-                $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
-                $resposta = $fluxo->response;
-                $resposta = "{
-                  'data':[{
-                          'message':$resposta
-                  }]
-                }";
-                return  response($resposta, 200);
-              }
-
-              //dd($message);
-              if($message->fluxo == "Motivo"){
-                $message->fluxo = "Fim";
-                $fluxo = (ChatProgram::where('i_fluxo', "Motivo")->first());
-                $message->motivo = "1";
-                $message->message = $response->Body->Text;
-                $message->save();
-
-                $resposta = $fluxo->response;
-
-                $resposta = "{
-                  'data':[{
-                          'message':$resposta
-                  }]
-                }";
-                return  response($resposta, 200);
-
-
-              }
-            
-              if($message->fluxo == "Menu"){
-           
-                if(Str::contains($response->Body->Text, [1,2,3,4,5,6])){
-           
-                    $fluxo = (ChatProgram::where('i_fluxo', $response->Body->Text)->first());
-           
-                    $resposta = $fluxo->response;
-                    $message->fluxo = $fluxo->f_fluxo;
-                    $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-           
-                    $message->number = $response->Body->Info->RemoteJid;
-                    $message->message = $response->Body->Text;
-                    $message->body = json_encode($request->getContent(), true);
-                    $message->save();
-                           
-                    return  response($resposta, 200);
-                
-                }
-
-                $resposta = "Por favor digite apenas o número";
-
-                $resposta = "{
-                  'data':[{
-                          'message':$resposta
-                  }]
-                }";
-                return  response($resposta, 200);
-              }
-
-              if (Str::contains($response->Body->Text, ["Não", "não", "nao", "não", "n"])) {
-                $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
-         
-                $resposta = $fluxo->response;
-                $message = new ChatbotMessage();
-                $message->fluxo = $fluxo->f_fluxo;
-                $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-       
-                $message->number = $response->Body->Info->RemoteJid;
-                $message->message = $response->Body->Text;
-                $message->body = json_encode($request->getContent(), true);
-                $message->save();
-                       
-                $resposta = "{
-                  'data':[{
-                          'message':$resposta
-                  }]
-                }";
-
-                return  response($resposta, 200);
-              }
-              
-            } else {
-              if($response->Body->Text == "Sim"){
-                
-              $message = new ChatbotMessage();
-              $message->fluxo = "Início";
-
-              $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-              $message->fluxo = $fluxo->f_fluxo;
-              $resposta = $fluxo->response;
-
-              $message->number = $response->Body->Info->RemoteJid;
-              $message->message = $response->Body->Text;
-              $message->body = json_encode($request->getContent(), true);
-  
-              $message->save();
-
-              $resposta = "{
-                'data':[{
-                        'message':$resposta
-                }]
-              }";
-              
-              return  response($resposta, 200);
-              
-            } else {
-              $resposta = "{
-                'data':[{
-                        'message':'‼️ Olá! te peço desculpas, mas no momento não vou conseguir responder! 
-                        Em breve eu te retorno para falarmos 😉'
-                }]
-              }";
-              return  response($resposta, 200);
-            }
-            }  
-                          
-          }
-
-          public function chatbot_pre_hen2(Request $request){
-           
-                    $response = (json_decode($request->getContent()));
-                    $header1 = (json_encode($request->header()));
-                    $header = (json_decode($header1));
-                    //dd($header->chip);
-                    $de = array('+','-', ' ');
-                    $para = array('','', '');
-                    $number = str_replace($de, $para,$response->senderName);
-                    //dd($number);
-                    $message = ChatbotMessage::where('number', $number)->first();
-                    
-                    if($message !== null){
-
-                      if($message->fluxo == "Fim"){
-
-                      
-                        $fluxo = (ChatProgram::where('i_fluxo', "Fim")->first());
-                        $resposta = $fluxo->response;
-                        $resposta = '{
-                          "data":[{
-                                  "message":"' . $resposta . '"
-                          }]
-                        }';
-
-                        sleep(5);
-                        return  response($resposta, 200);
-                      }
-
-                      //dd($message);
-                      if($message->fluxo == "Motivo"){
-                        $message->fluxo = "Fim";
-                        $fluxo = (ChatProgram::where('i_fluxo', "Motivo")->first());
-                        $message->motivo = "1";
-                        $message->message = $response->senderMessage;
-                        $message->save();
-
-                        $resposta = $fluxo->response;
-
-                        $resposta = '{
-                          "data":[{
-                                  "message":"' . $resposta . '"
-                          }]
-                        }';
-                        sleep(5);
-                        return  response($resposta, 200);
-
-
-                      }
-                    
-                      if($message->fluxo == "Menu"){
-                  
-                        if(Str::contains($response->senderMessage, [1,2,3,4,5,6])){
-                  
-                            $fluxo = (ChatProgram::where('i_fluxo', $response->senderMessage)->first());
-                  
-                            $resposta = $fluxo->response;
-                            $message->fluxo = $fluxo->f_fluxo;
-                            $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-                  
-                            $message->number = $number;
-                            $message->message = $response->senderMessage;
-                            $message->body = json_encode($request->getContent(), true);
-                            $message->save();
-
-                            $resposta = '{
-                              "data":[{
-                                      "message":"' . $resposta . '"
-                              }]
-                            }';
-
-                            sleep(5);      
-                            return  response($resposta, 200);
-                        
-                        }
-
-                        $resposta = "Por favor digite apenas o número";
-
-                        $resposta = '{
-                          "data":[{
-                                  "message":"' . $resposta . '"
-                          }]
-                        }';
-                        sleep(5);
-                        return  response($resposta, 200);
-                      }
-
-                      if ($response->senderMessage == "Não" || $response->senderMessage == "não" || $response->senderMessage == "NÃO") {
-                        $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
-                
-                        $resposta = $fluxo->response;
-                        $message = new ChatbotMessage();
-                        $message->fluxo = $fluxo->f_fluxo;
-                        $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-              
-                        $message->number = $number;
-                        $message->message = $response->senderMessage;
-                        $message->body = json_encode($request->getContent(), true);
-                        $message->save();
-                              
-                        $resposta = '{
-                          "data":[{
-                                  "message":"' . $resposta . '"
-                          }]
-                        }';
-
-                        sleep(5);
-                        return  response($resposta, 200);
-                      }
-                      
-                    } else {
-
-                      if($response->senderMessage == "Sim" || $response->senderMessage == "sim" || $response->senderMessage == "SIM"){
-                        
-                      $message = new ChatbotMessage();
-                      $message->fluxo = "Início";
-
-                      $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-                      $message->fluxo = $fluxo->f_fluxo;
-                      $resposta = $fluxo->response;
-
-                      $message->number = $number;
-                      $message->message = $response->senderMessage;
-                      $message->body = json_encode($request->getContent(), true);
-          
-                      $message->save();
-
-                      $resposta = '{
-                        "data":[{
-                                "message":"' . $resposta . '"
-                        }]
-                      }';
-
-                      sleep(5);
-                      return  response($resposta, 200);
-                      
-                    } else  if ($response->senderMessage == "Não" || $response->senderMessage == "não" || $response->senderMessage == "NÃO") {
-                      $fluxo = (ChatProgram::where('i_fluxo', "Não")->first());
-              
-                      $resposta = $fluxo->response;
-                      $message = new ChatbotMessage();
-                      $message->fluxo = $fluxo->f_fluxo;
-                      $fluxo = (ChatProgram::where('i_fluxo', $message->fluxo)->first());
-            
-                      $message->number = $number;
-                      $message->message = $response->senderMessage;
-                      $message->body = json_encode($request->getContent(), true);
-                      $message->save();
-                            
-                      $resposta = '{
-                        "data":[{
-                                "message":"' . $resposta . '"
-                        }]
-                      }';
-
-                      sleep(5);
-                      return  response($resposta, 200);
-                    } else  if(Str::contains($response->senderMessage, ["Cadastro realizado"])){
-                     
-                      $fluxo = (ChatProgram::where('i_fluxo', "Cadastro")->first());
-              
-                      $resposta = $fluxo->response;
-
-                      $resposta = '{
-                        "data":[{
-                                "message":"' . $resposta . '"
-                        }]
-                      }';
-
-                      sleep(5);
-                      return  response($resposta, 200);
-                    } else {
-                      $fluxo = (ChatProgram::where('i_fluxo', "Ocupado")->first());
-              
-                      $resposta = $fluxo->response;
-
-                      $resposta = '{
-                        "data":[{
-                                "message":"' . $resposta . '"
-                        }]
-                      }';
-
-                      sleep(5);
-                      return  response($resposta, 200);
-                    }
-                  }  
-                                  
-                }
-
                 public function chatbot_pre_hen (Request $request){
-
+                  
                   $response = (json_decode($request->getContent()));
                   $header1 = (json_encode($request->header()));
                   $header = (json_decode($header1));
-                  //dd($header->chip);
                   $de = array('+','-', ' ');
                   $para = array('','', '');
                   $number = str_replace($de, $para,$response->senderName);
-                  //dd($number);
-                  $exist = ChatbotMessage::where('number', $number)->first();
-                  if (!empty($exist)){
-
-                  $programs = ChatProgram::all();
-
-                  foreach ($programs as $program) {
-                    $message = explode(",", $program->message);
-                    if(in_array($response->senderMessage, $message)){
-                    //dd("Yes, design_id: exits in array");
-                    $resposta = (ChatProgram::where('i_fluxo', $response->senderMessage)->first())->response;
-
+                  $client = ChatbotMessage::where('number', $number)->first();
+                  
+                  
+                  if(empty($client)){
+                     if (!isset((ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('i_fluxo', null)->where('message', 'LIKE', "$response->senderMessage%")->first())->response)){
+                      $resposta = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('i_fluxo', "Ocupado")->first())->response;
                       $resposta = '{
                         "data":[{
                                 "message":"' . $resposta . '"
                         }]
                       }';
-
-                      sleep(5);
+                      return  response($resposta, 200);
+                     }
+                      $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('message', 'LIKE', "$response->senderMessage%")->first());
+                      $resposta = '{
+                        "data":[{
+                                "message":"' . $data->response . '"
+                        }]
+                      }';
+                      $client = new ChatbotMessage();
+                      $client->number = $number;
+                      $client->message = $response->senderMessage;
+                      $client->body = json_encode($request->getContent(), true);
+                      $client->i_fluxo = $data->f_fluxo;
+                      $client->fluxo = $data->tipo;
+                      $data->f_fluxo == "" ? "" : $client->save();;
                       return  response($resposta, 200);
 
-                    }
+                      
+                  } else {
 
-                  
+                    if(str_contains("$client->i_fluxo", "f")){
+                      $resposta = ((ChatbotProgram::where('i_fluxo', 'LIKE', "$client->i_fluxo"))->first()->response);
+                      $resposta = '{
+                        "data":[{
+                                "message":"' . $resposta . '"
+                        }]
+                      }';
+                      return  response($resposta, 200);
+                    } 
+                    
+                    if (isset((ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('message', 'LIKE', "$response->senderMessage%")->where('i_fluxo', 'LIKE', "$client->i_fluxo%")->first())->response)){
+                      $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('message', 'LIKE', "$response->senderMessage%")->where('i_fluxo', 'LIKE', "$client->i_fluxo%")->first());
+
+                      //dd($response->response);
+                      $resposta = '{
+                        "data":[{
+                                "message":"' . $data->response . '"
+                        }]
+                      }';
+                      $client->message = $response->senderMessage;
+                      $client->body = json_encode($request->getContent(), true);
+                      $client->i_fluxo = $data->f_fluxo;
+                      $client->fluxo = $data->tipo;
+                      $client->save();
+                      return  response($resposta, 200);
+                     } else {
+                     $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('i_fluxo', 'LIKE', "erro")->first());
+                     $resposta = '{
+                      "data":[{
+                              "message":"' . $data->response . '"
+                      }]
+                    }';
+                    return  response($resposta, 200);
                   }
 
-                }
+                  }
+
+                  
+
 
                 }
 
