@@ -127,7 +127,15 @@
                                                 <input class="form-check-input" type="radio" name="radio-checked" id="CREDIT_CARD" onchange="mycard()">
                                                 <label class="form-check-label" for="CREDIT_CARD">
                                                     <img class="company-logo" src="{{Vite::asset('resources/images/credit-card.svg')}}" style="width: 60px;" alt="logo"> Cartão de Crédito R${{ $product->price }} (Em até 10x R${{ $product->price/10 }}) <span class="badge badge-primary mb-2 me-4">Liberação Imediata</span>
+                                                    
                                                 </label>
+                                                <div class="col-md-4">
+                                                <select name="parcela" id="parcela" class="form-control mb-4" hidden>
+                                                    @for ($i = 1; $i < 13; $i++)
+                                                    <option value="{{$i}}">{{$i}}x de R$ {{ round($product->price / $i, 2) }}</option>
+                                                    @endfor
+                                                </select>
+                                                </div>
                                             </div>
                                                 
                                             <div class="form-check form-check-primary form-check-inline">
@@ -264,6 +272,7 @@
                     document.getElementById("holderName").required = true;
                     document.getElementById("expiry").required = true;
                     document.getElementById("cvc").required = true;
+                    document.getElementById("parcela").hidden = false;
                     document.getElementById("payment").value = "CREDIT_CARD";
                     
             }
@@ -276,6 +285,7 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
+                    document.getElementById("parcela").hidden = true;
                     document.getElementById("payment").value = "PIX";
             }
             function myboleto(){
@@ -287,6 +297,7 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
+                    document.getElementById("parcela").hidden = true;
                     document.getElementById("payment").value = "BOLETO";
             }
         </script>

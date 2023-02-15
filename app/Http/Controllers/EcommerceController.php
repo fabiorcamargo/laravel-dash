@@ -153,9 +153,6 @@ class EcommerceController extends Controller
         }
     }
     public function checkout_post($product_id, Request $request){
-
-        
-        
         $cepResponse = \Canducci\Cep\Facades\Cep::find('01010000');
         $data = $cepResponse->getCepModel();
         dd($data);
@@ -291,7 +288,6 @@ class EcommerceController extends Controller
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
         $type = (object)$request->all();
-        //dd($type);
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $type->expiry));
         $type->expiryMonth = $expiry[0];
         $type->expiryYear = $expiry[1];
