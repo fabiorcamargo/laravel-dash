@@ -123,18 +123,10 @@
             @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout*')) 
             <!--  BEGIN SIDEBAR  -->
             
-            @isset((Auth::user()->role))
-                @if ( (Auth::user()->role) == 7 )
-                <x-menu.admin-menu/>
-                @elseif ( (Auth::user()->role) == 1 )
-                <x-menu.student-menu/>
-                @elseif ( (Auth::user()->role) == 5 )
-                <x-menu.admin-menu/>
-                @endif
-            @endisset
-            @unless (Auth::check())
-                <x-menu.sales-menu/>
-            @endunless                
+           
+                <x-menu.stand-menu/>
+              
+                       
             
             
             <!--  END SIDEBAR  -->   

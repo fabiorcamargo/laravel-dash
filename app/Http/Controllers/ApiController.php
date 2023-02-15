@@ -285,21 +285,26 @@ class ApiController extends Controller
                   $header = (json_decode($header1));
                   $de = array('+','-', ' ');
                   $para = array('','', '');
-                  $number = str_replace($de, $para,$response->senderName);
+                  $number = str_replace($de, $para, $response->senderName);
                   $client = ChatbotMessage::where('number', $number)->first();
                   
+                  $msg = strtolower($response->senderMessage);
+                  if(str_contains($msg, "ok")){
+                    return response("",200);
+                  }
                   
                   if(empty($client)){
-                     if (!isset((ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('i_fluxo', null)->where('message', 'LIKE', "$response->senderMessage%")->first())->response)){
-                      $resposta = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('i_fluxo', "Ocupado")->first())->response;
+                     if (!isset((ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('a_fluxo', null)->where('message', 'LIKE', "$response->Body->Text;%")->first())->response)){
+                      $resposta = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('a_fluxo', "Ocupado")->first())->response;
                       $resposta = '{
                         "data":[{
                                 "message":"' . $resposta . '"
                         }]
                       }';
+                      sleep(5);
                       return  response($resposta, 200);
                      }
-                      $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('message', 'LIKE', "$response->senderMessage%")->first());
+                      $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo[0])->where('message', 'LIKE', "$response->senderMessage%")->first());
                       $resposta = '{
                         "data":[{
                                 "message":"' . $data->response . '"
@@ -309,26 +314,29 @@ class ApiController extends Controller
                       $client->number = $number;
                       $client->message = $response->senderMessage;
                       $client->body = json_encode($request->getContent(), true);
-                      $client->i_fluxo = $data->f_fluxo;
+                      $client->a_fluxo = $data->f_fluxo;
                       $client->fluxo = $data->tipo;
-                      $data->f_fluxo == "" ? "" : $client->save();;
+                      $client->motivo = $header->motivo[0];
+                      $data->f_fluxo == "" ? "" : $client->save();
+                      sleep(5);
                       return  response($resposta, 200);
 
                       
                   } else {
 
-                    if(str_contains("$client->i_fluxo", "f")){
-                      $resposta = ((ChatbotProgram::where('i_fluxo', 'LIKE', "$client->i_fluxo"))->first()->response);
+                    if(str_contains("$client->a_fluxo", "f")){
+                      $resposta = ((ChatbotProgram::where('a_fluxo', 'LIKE', "$client->a_fluxo"))->first()->response);
                       $resposta = '{
                         "data":[{
                                 "message":"' . $resposta . '"
                         }]
                       }';
+                      sleep(5);
                       return  response($resposta, 200);
                     } 
                     
-                    if (isset((ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('message', 'LIKE', "$response->senderMessage%")->where('i_fluxo', 'LIKE', "$client->i_fluxo%")->first())->response)){
-                      $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('message', 'LIKE', "$response->senderMessage%")->where('i_fluxo', 'LIKE', "$client->i_fluxo%")->first());
+                    if (isset((ChatbotProgram::where('tipo', 'LIKE', $header->tipo[0])->where('message', 'LIKE', "$response->senderMessage%")->where('a_fluxo', 'LIKE', "$client->a_fluxo%")->first())->response)){
+                      $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo[0])->where('message', 'LIKE', "$response->senderMessage%")->where('a_fluxo', 'LIKE', "$client->a_fluxo%")->first());
 
                       //dd($response->response);
                       $resposta = '{
@@ -338,26 +346,92 @@ class ApiController extends Controller
                       }';
                       $client->message = $response->senderMessage;
                       $client->body = json_encode($request->getContent(), true);
-                      $client->i_fluxo = $data->f_fluxo;
+                      $client->a_fluxo = $data->f_fluxo;
                       $client->fluxo = $data->tipo;
                       $client->save();
+                      sleep(5);
                       return  response($resposta, 200);
                      } else {
-                     $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo)->where('i_fluxo', 'LIKE', "erro")->first());
+                     $data = (ChatbotProgram::where('tipo', 'LIKE', $header->tipo[0])->where('a_fluxo', 'LIKE', "erro")->first());
                      $resposta = '{
                       "data":[{
                               "message":"' . $data->response . '"
                       }]
                     }';
+                    sleep(5);
                     return  response($resposta, 200);
                   }
 
                   }
-
-                  
-
-
                 }
+
+                public function chatbot_test (Request $request){
+                  $data = json_encode($request);
+                  Storage::put('chat_test.txt', $data);
+          
+                  return  response("ok", 200);
+                 
+              }
+                
+              public function chatbot_chat_pro (Request $request){
+                //dd($request->all());
+                $response = (json_decode($request->getContent()));
+                $json = (json_encode($request->getContent()));
+                //Storage::put('chat_pro.txt', $d . $d1 . PHP_EOL);
+                $tipo = $request->tipo;
+                $seller = $request->seller;
+                //dd($seller);
+                $number = preg_replace('/[^0-9]/', '',$response->Body->Info->RemoteJid);
+                $msg = strtolower($response->Body->Text);
+
+                if ((ChatbotMessage::where("number", $number)->first())){
+                    $chatbot_msg = ChatbotMessage::where("number", $number)->first();
+                } else {
+                    $chatbot_msg = new ChatbotMessage();
+                    //dd($chatbot_msg);
+                }
+                $chatbot_msg->number = $number;
+                $chatbot_msg->tipo = $tipo;
+                $chatbot_msg->seller = $seller;
+                $chatbot_msg->message = $msg;
+                $chatbot_msg->body = $json;
+                $chatbot_msg->save();
+                /*
+                $a_fluxo = $chatbot_msg->tipo;
+                //dd($a_fluxo);
+                //$a_fluxo = "1.1.1";
+                //dd($msg);
+                if($a_fluxo == null){
+                  if((
+                  $message = (ChatbotProgram::where('tipo', '=', $fluxo)
+                  ->whereNull('a_fluxo')
+                  ->where('message', 'LIKE', "%$msg%")
+                  ->get()))){
+                  dd($message);
+                  }
+                  if(($message)){
+                    dd('sim');
+                  }
+                } else {
+                  $message = (ChatbotProgram::where('tipo', '=', $fluxo)
+                  ->where('a_fluxo', 'LIKE', $a_fluxo)
+                  ->where('message', 'LIKE', $msg)
+                  ->get());
+                  if ($message == ""){
+                    dd('vazio');
+                  }
+                }
+
+                
+               
+
+               dd($message);*/
+
+                if(str_contains($msg, "ok")){
+                  return response("",200);
+                }
+                return response("oi",200);
+              }
 
    }
             

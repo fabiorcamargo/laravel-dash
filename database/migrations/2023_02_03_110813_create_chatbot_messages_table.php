@@ -17,9 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('number');
             $table->string('motivo')->nullable();
+            $table->string('seller')->nullable();
+            $table->string('a_fluxo')->nullable();
+            $table->string('p_fluxo')->nullable();
+            $table->string('tipo')->nullable();
             $table->string('message');
-            $table->string('i_fluxo')->nullable();
-            $table->string('fluxo')->nullable();
             $table->json('body');
             $table->timestamps();
         });

@@ -13,18 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('eco_products', function (Blueprint $table) {
+        Schema::create('rd_crm_flows', function (Blueprint $table) {
             $table->id();
-            $table->string('course_id');
+            $table->string('fluxo_id');
             $table->string('name');
-            $table->text('description');
-            $table->string('tag');
-            $table->string('category');
-            $table->string('image')->nullable();
-            $table->string('specification')->nullable();
-            $table->float('price');
-            $table->float('percent')->nullable();
-            $table->boolean('public');
+            $table->json('body');
             $table->timestamps();
         });
     }
@@ -36,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eco_products');
+        Schema::dropIfExists('rd_crm_flows');
     }
 };

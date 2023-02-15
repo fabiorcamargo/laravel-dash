@@ -6,6 +6,7 @@ use App\Http\Controllers\{
     EcommerceController,
     FilepondController,
     FileUploadController,
+    RdController,
     TemporaryFileController,
     UserController
 };
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Route::middleware(['auth', 'can:super_admin'])->group(function () {
+//Route::middleware(['auth', 'can:admin'])->group(function () {
 
     
 
@@ -39,6 +40,7 @@ use Illuminate\Support\Facades\Route;
 
         Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
         Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
+        Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
         
     
     
@@ -57,23 +59,14 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
-                    Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
-                    Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::get('/avatar-correct',[TemporaryFileController::class, 'AvatarCorrect'])->name('avatar-correct');
-                    Route::post('/img_product_upload',[TemporaryFileController::class, 'img_product_upload'])->name('img_product_upload');
-                    Route::delete('/img_product_delete',[TemporaryFileController::class, 'img_product_delete'])->name('img_product_delete');
 
-
-                    
-
-                    
-                    
                     Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
                     Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
 
-                   
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', [UserController::class, 'first'])->name('aluno.first');
                         
@@ -102,11 +95,11 @@ use Illuminate\Support\Facades\Route;
 
         /**
          * ==============================
-         *       @Router -  Super_Admin
+         *       @Router -  admin
          * ==============================
          */
 
-Route::middleware(['auth', 'can:super_admin'])->group(function () {
+Route::middleware(['auth', 'can:edit'])->group(function () {
 
     Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
 
@@ -125,7 +118,13 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
 
     foreach ($prefixRouters as $prefixRouter) {
     Route::prefix($prefixRouter)->group(function () {
+
         
+        Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
+        Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
+        Route::post('/img_product_upload',[TemporaryFileController::class, 'img_product_upload'])->name('img_product_upload');
+        Route::delete('/img_product_delete',[TemporaryFileController::class, 'img_product_delete'])->name('img_product_delete');
+
         
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
         Route::get('/users/{user}/comments/{id}', [CommentController::class, 'edit'])->name('comments.edit');
@@ -156,16 +155,7 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
             return view('welcome', ['title' => 'this is ome ', 'breadcrumb' => 'This Breadcrumb']);
         });
 
-        Route::prefix('/eco')->group(function () {
-            Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
-            Route::get('/add', function () {
-                return view('pages.eco.add', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-            })->name('eco-show-add');
-
-            Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco_product_show');
-            Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
-            
-        });
+        
         
 
 
@@ -196,7 +186,7 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
         
         Route::prefix('app')->group(function () {
                 
-
+            Route::middleware(['can:secretary'])->group(function () {
             Route::prefix('/user')->group(function () {
                 Route::any('/search', [UserController::class, 'search'])->name('user-search');
                 Route::get('/list', [UserController::class, 'list'])->name('user-list');
@@ -222,9 +212,21 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
                     return view('pages.app.user.reset', ['title' => 'Profissionaliza EAD | Reset de Senha', 'breadcrumb' => 'Reset de Senha', 'avatar' => "Auth::user()->id"]);
                 })->name('user-reset');
             });
+        });
 
+        Route::prefix('/eco')->group(function () {
+            Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
+            Route::get('/list', [EcommerceController::class, 'show'])->name('eco-list');
+            Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
+            Route::get('/add', [EcommerceController::class, 'add_show'])->name('eco-add-show');
+            Route::get('/product/{id}/edit', [EcommerceController::class, 'edit'])->name('eco-edit');
+            Route::post('/product/{id}/edit', [EcommerceController::class, 'edit_save'])->name('eco-edit-save');
+            Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-product-show');
+            
+            Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     
+        });
            
-
+        Route::middleware(['can:api'])->group(function () {
             Route::get('/calendar', function () {
                 return view('pages.app.calendar', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
             })->name('calendar');
@@ -266,7 +268,7 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
                     return view('pages.app.blog.post', ['title' => 'Post Content | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
                 })->name('blog-post');
             });
-        
+        /*
             // Ecommerce
             Route::prefix('/ecommerce')->group(function () {
                 Route::get('/add', function () {
@@ -284,7 +286,7 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
                 Route::get('/shop', function () {
                     return view('pages.app.ecommerce.shop', ['title' => 'Ecommerce Shop | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
                 })->name('ecommerce-shop');
-            });
+            });*/
         
             // Invoice
         
@@ -657,6 +659,8 @@ Route::middleware(['auth', 'can:super_admin'])->group(function () {
             return view('pages.map', ['title' => 'jVector Maps | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
         })->name('maps');
 
+        });
+
     });
 }
 
@@ -744,7 +748,7 @@ Route::prefix('rtl')->group(function () {
                         return view('pages-rtl.app.blog.post', ['title' => 'Post Content | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
                     })->name('blog-post');
                 });
-            
+            /*
                 // Ecommerce
                 Route::prefix('/ecommerce')->group(function () {
                     Route::get('/add', function () {
@@ -762,7 +766,7 @@ Route::prefix('rtl')->group(function () {
                     Route::get('/shop', function () {
                         return view('pages-rtl.app.ecommerce.shop', ['title' => 'Ecommerce Shop | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
                     })->name('ecommerce-shop');
-                });
+                });*/
             
                 // Invoice
             
@@ -1143,6 +1147,61 @@ Route::prefix('rtl')->group(function () {
     
 });
 
+    /**
+ * =======================
+ *      SHOP ROUTERS
+ * =======================
+ */
+
+Route::middleware(['auth', 'can:admin', 'can:shop'])->group(function () {
+
+    
+
+    /**
+ * =======================
+ *      SHOP ROUTERS
+ * =======================
+ */
+
+    $prefixRouters = [
+        'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+    ];
+
+
+
+    foreach ($prefixRouters as $prefixRouter) {
+    Route::prefix($prefixRouter)->group(function () {
+
+        Route::prefix('app')->group(function () {
+
+
+
+
+// Ecommerce
+Route::prefix('/ecommerce')->group(function () {
+    Route::get('/add', function () {
+        return view('pages.app.eco.add', ['title' => 'Ecommerce Create | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
+    })->name('ecommerce-add');
+    Route::get('/detail', function () {
+        return view('pages.app.ecommerce.detail', ['title' => 'Ecommerce Product Details | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
+    })->name('ecommerce-detail');
+    Route::get('/edit', function () {
+        return view('pages.app.ecommerce.edit', ['title' => 'Ecommerce Edit | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
+    })->name('ecommerce-edit');
+    Route::get('/list', function () {
+        return view('pages.app.ecommerce.list', ['title' => 'Ecommerce List | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
+    })->name('ecommerce-list');
+    Route::get('/shop', function () {
+        return view('pages.app.ecommerce.shop', ['title' => 'Ecommerce Shop | CORK - Multipurpose Bootstrap Dashboard Template ', 'breadcrumb' => 'This Breadcrumb']);
+    })->name('ecommerce-shop');
+});
+
+    });
+});
+}});
+
+
+
 $prefixRouters = [
     'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
 ];
@@ -1153,14 +1212,19 @@ foreach ($prefixRouters as $prefixRouter) {
 Route::prefix($prefixRouter)->group(function () {
 
 
-Route::prefix('/eco')->group(function () {
+Route::prefix('/app/eco')->group(function () {
 
-    Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco_product_show');
+    Route::get('/shop', [EcommerceController::class, 'product_show'])->name('eco-shop');
+    Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-show');
     Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
     Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end');
     Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay');
     Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end');
-
+    Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
+    Route::get('/rd/fluxo', [RdController::class, 'rd_fluxos']);
+    Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);
+    
+    
 });
 
 });

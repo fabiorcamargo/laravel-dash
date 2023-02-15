@@ -138,7 +138,7 @@
                                             </div>
 
                                             
-                                            <form action="{{ getRouterValue(); }}/eco/checkout/{{ $product->id }}/client" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
+                                            <form action="{{ getRouterValue(); }}/app/eco/checkout/{{ $product->id }}/client" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
                                                 @csrf
                                                 <div class="inv--detail-section">
 
@@ -214,7 +214,7 @@
                                                                     <div id='boletos' name='boletos' hidden="true">
                                                                         <h3>Boleto</h3>
                                                                     </div>
-                                                                    <button class="btn btn-primary mt-4" type="submit">Finalizar</button>
+                                                                    <button class="btn btn-primary mt-4" type="submit">Próximo</button>
                                                                 </div>
                                                             </div>
                                                         </div>

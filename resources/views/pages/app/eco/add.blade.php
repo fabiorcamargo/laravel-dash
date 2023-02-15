@@ -46,55 +46,91 @@
   
         @endif
 
-            <div class="widget-content widget-content-area ecommerce-create-section">
-                <form action="{{ getRouterValue(); }}/eco/add"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
+            <div class="">
+                <form action="{{ getRouterValue(); }}/app/eco/add"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
                     @csrf
                 <div class="row mb-4">
                     <div class="col-sm-12">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
                         <h4>Nome do Produto:</h4>
+                        <br>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nome do Produto" onblur="submeter()" required>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
                         <h4>Descrição curta:</h4>
+                        <p>Deve ser uma descrição resumida fica ao lado da imagem do produto</p>
                         <div id="quillEditor"></div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-sm-12">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
                         <h4>Descrição longa:</h4>
+                        <p>Deve ser uma descrição mais detalhada fica localizada na opção detalhes do produto</p>
                         <div id="quillEditor2"></div>
+                        </div>
                     </div>
                 </div>
+
+                <div class="row mb-4">
+                    <div class="col-sm-12">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
+                        <h4>Comentários:</h4>
+                        <p>Cria uma sequência de comentários para este produto, para utilizar esse recurso baixe o modelo e preencha corretamente.</p>
+                            <a href="{{(asset("/product/Model_Comment.txt"))}}" download="Modelo Comentários.txt" class="btn btn-outline-dark  mb-2 me-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <span class="btn-text-inner">Baixar Modelo</span>
+                        </a>
+                        <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                
                 
 
                 <input id="description" name="description" hidden>
                 <input id="specification" name="specification" hidden>
 
-                <div class="row">
-                    <div class="col-md-8">
-                        <label for="product-images">Carregar imagens</label>
-                        <div class="multiple-file-upload ">
-                            <input type="file" 
-                                class="filepond"
-                                name="image"
-                                id="product-images" 
-                                multiple 
-                                data-allow-reorder="true"
-                                data-max-file-size="3MB"
-                                data-max-files="5"
-                                accept="image/*" hidden>
+                <div class="row md-4">
+                    <div class="col-md-8 md-4" style="padding-bottom: 15pt">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
+                            <h4>Carregar imagens:</h4>
+                       
+                            <p for="product-images">Renomeie as fotos com uma númeração sequencial para garantir a ordem correta <br> (Exemplo: 01 Nome.jpg, 02 Nome.jpg) a foto 01 será a miniatura.</p>
+                            <div class="multiple-file-upload ">
+                                <input type="file" 
+                                    class="filepond"
+                                    name="image"
+                                    id="product-images" 
+                                    multiple 
+                                    data-allow-reorder="true"
+                                    data-max-file-size="3MB"
+                                    data-max-files="5"
+                                    accept="image/*" hidden oninput="show()">
+                            </div>
                         </div>
                         
                     </div>
 
-                    <div class="col-md-4 text-center">
-                        <div class="switch form-switch-custom switch-inline form-switch-primary mt-4">
+                    <div class="col text-center">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
+                        <div class="switch form-switch-custom switch-inline form-switch-primary">
+                            
+                            <h4 class="switch-label" for="showPublicly">Público</h4>
                             <input class="switch-input" type="checkbox" role="switch" id="public" name="public" checked>
-                            <label class="switch-label" for="showPublicly">Exibição Pública</label>
+                            
+                            <p>Quando habilitado exibe no shop</p>
+                    
+                            
+                    
+                        </div>
                         </div>
                     </div>
                     
@@ -142,17 +178,22 @@
                             
                             <div class="col-xxl-12 col-md-6 mb-4">
                                 <label for="category">Categoria</label>
-                                <select class="form-select" id="category" name="category">
-                                     <option value="">Choose...</option>
-                                    <option value="Informática">Informática</option>
-                                    <option value="Profissionalizante">Profissionalizante</option>
-                                    <option value="Inglês">Inglês</option>
-                                    <option value="Especialidades">Especialidades</option>
-                                    <option value="Administrativo">Administrativo</option>
-                                    <option value="Kids">Kids</option>
-                                    <option value="Programação">Programação</option>
+                                <select name="category" id="category" class="form-control mb-4" required>
+                                    @foreach ($categorys as $category)
+                                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
+
+                            <div class="col-xxl-12 col-md-6 mb-4">
+                                <label for="flow">Fluxo RD</label>
+                                <select name="flow" id="flow" class="form-control mb-4" required>
+                                    @foreach ($flows as $flow)
+                                    <option value="{{ $flow->name }}">{{ $flow->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            
                        
                             <div class="col-xxl-12 col-lg-6 col-md-12">
                                 <label for="tags">Tags (Separadas por vírgula)</label>
@@ -180,7 +221,7 @@
                                 </div>
                             </div>--}}
                             <div class="col-sm-12">
-                                <button class="btn btn-success w-100">Add Product</button>
+                                <button id="adicionar" class="btn btn-success w-100">Adicionar Produto</button>
                             </div>
                         </div>                                            
                     </div>
@@ -258,15 +299,10 @@
             
             var inpname = document.getElementById('name').value;
             document.cookie = "name=" + inpname + ";" + "path=/";
-            
             console.log(inpname);
-
             const inputElement = document.querySelector('input[type="file"]');
-
             const pond = FilePond.create(inputElement);
-
-            
-                    
+     
             FilePond.setOptions({
             server: {
                 process: '{{ getRouterValue(); }}/img_product_upload',
@@ -284,11 +320,18 @@
         </script>
 
         <script>
+             $(document).ready(function() {
+            console.log(document.getElementByName("image").value);
+            document.getElementById("adicionar").disabled = false;
+            });
+        </script>
+        <script>
             // Multiple select boxes
             $("input[name='percent']").TouchSpin({
             verticalbuttons: true,
             });
         </script>
+
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

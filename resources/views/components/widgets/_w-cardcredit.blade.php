@@ -26,38 +26,4 @@
             <input type="text" id="cvc" name="cvc" class="form-control">
         </div>
     </div>
-    <div class="col-md-3">
-        <div class="mb-3">
-            <label class="form-label">Cep:</label>
-            <input name="cep" type="text" id="cep" class="cep-number form-control" maxlength="9" onchange="pesquisacep(this.value);"/><span class="badge badge-light-success mb-2 me-4">Buscar</span>
-        </div>
-    </div>
 </div>
-
-
-
-
-    
-
-    <div id="end"  class="row" hidden>
-    <div class="col-md-10">    
-    <label class="form-label">Rua: </label>
-    <input name="rua" type="text" id="rua"  class="form-control" />
-    </div>
-    <div class="col-md-2"> 
-    <label class="form-label">Número:</label>
-    <input name="numero" type="text" id="numero" class="form-control" />
-    </div>
-    <div class="col-md-12"> 
-    <label class="form-label">Bairro:</label>
-    <input name="bairro" type="text" id="bairro"class="form-control"/>
-    </div>
-    <div class="col-md-8"> 
-    <label class="form-label">Cidade:</label>
-    <input name="cidade" type="text" id="cidade" class="form-control"/>
-    </div>
-    <div class="col-md-2"> 
-    <label class="form-label">Estado:</label>
-    <input name="uf" type="text" id="uf" class="form-control" />
-    </div>
-    </div>

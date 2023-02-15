@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ChatbotAsset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,3 +27,12 @@ Route::post('course/store', [ApiController::class, 'course_store'])->name('api.c
 Route::post('gateway/pay', [ApiController::class, 'gateway_pay_post'])->name('api.gateway.pay.post');
 
 Route::post('chatbot/pre_hen', [ApiController::class, 'chatbot_pre_hen'])->name('api.chatbot.pre_hen');
+Route::post('chatbot/chat_pro', [ApiController::class, 'chatbot_chat_pro'])->name('api.chatbot.chat_pro');
+Route::post('chatbot/test', [ApiController::class, 'chatbot_test']);
+//Route::post('chatbot/queue', [ChatbotAsset::class, 'chatbot_convert_data']);
+
+Route::any('rd', function (Request $request) {
+    $data = json_encode(($request));
+    Storage::put('rd.txt', $data);
+    return response('',200);
+	});

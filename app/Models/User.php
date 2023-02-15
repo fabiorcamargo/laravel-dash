@@ -109,4 +109,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Payment::class);
     }
+    public function rd()
+    {
+        return $this->hasMany(RdCrmOportunity::class);
+    }
 }
