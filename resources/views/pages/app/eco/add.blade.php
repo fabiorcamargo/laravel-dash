@@ -192,6 +192,7 @@
                                     <option value="{{ $flow->name }}">{{ $flow->name }}</option>
                                     @endforeach
                                 </select>
+                                <a href="{{ getRouterValue(); }}/app/eco/rd/fluxo" class="btn btn-light-primary mb-2 me-4">Atualizar</a>
                             </div>
                             
                        

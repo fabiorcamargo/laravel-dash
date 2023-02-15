@@ -171,13 +171,23 @@ class RdController extends Controller
         $json = json_decode($response->getBody()); 
 
         foreach($json as $fluxos){
-        $fluxo = new RdCrmFlow();
-        $fluxo->fluxo_id = $fluxos->id;
-        $fluxo->name = $fluxos->name;
+        if(RdCrmFlow::where('fluxo_id', $fluxos->id)->first() == ""){
+          $fluxo = new RdCrmFlow();
+          $fluxo->fluxo_id = $fluxos->id;
+          $fluxo->name = $fluxos->name;
+          $fluxo->body = json_encode($fluxos->deal_stages);
+          $fluxo->save();
+        }else{
+          $fluxo = RdCrmFlow::where('fluxo_id', $fluxos->id)->first();
+          $fluxo->fluxo_id = $fluxos->id;
+          $fluxo->name = $fluxos->name;
+          $fluxo->body = json_encode($fluxos->deal_stages);
 
-        $fluxo->body = json_encode($fluxos->deal_stages);
-
-        $fluxo->save();
+          //dd($fluxo);
+          $fluxo->save();
+        }
+        
+        return back();
         }
     }
 
