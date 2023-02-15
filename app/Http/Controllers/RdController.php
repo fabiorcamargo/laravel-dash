@@ -186,9 +186,8 @@ class RdController extends Controller
           //dd($fluxo);
           $fluxo->save();
         }
-        
-        return back();
         }
+        return back();
     }
 
     
