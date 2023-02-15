@@ -24,73 +24,75 @@
 
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
             <div class="widget-content widget-content-area br-8">
+                <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Tag</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Preço</th>
-                        <th scope="col">Desconto</th>
-                        <th scope="col">Exibição</th>
-                        <th class="text-center dt-no-sorting">Ação</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($products as $product)
-                    <tr>
-                        <td>{{ $product->course_id }}</td>
-                        <td>
-                            <div class="d-flex justify-content-left align-items-center">
-                                <div class="avatar--group">
-                                        @php $product->image = json_decode($product->image) @endphp
-                                        @foreach ($product->image as $image)
-                                        <div class="avatar avatar-sm">
-                                            <img alt="avatar" src="{{asset("/product/$image")}}" class="rounded-circle">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Tag</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Preço</th>
+                            <th scope="col">Desconto</th>
+                            <th scope="col">Exibição</th>
+                            <th class="text-center dt-no-sorting">Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($products as $product)
+                        <tr>
+                            <td>{{ $product->course_id }}</td>
+                            <td>
+                                <div class="d-flex justify-content-left align-items-center">
+                                    <div class="avatar--group">
+                                            @php $product->image = json_decode($product->image) @endphp
+                                            @foreach ($product->image as $image)
+                                            <div class="avatar avatar-sm">
+                                                <img alt="avatar" src="{{asset("/product/$image")}}" class="rounded-circle">
+                                            </div>
+                                            @endforeach
+                                        <div class="d-flex flex-column ps-2">
+                                            <span class="text-truncate fw-bold">{{ $product->name }}</span>
                                         </div>
-                                        @endforeach
-                                    <div class="d-flex flex-column ps-2">
-                                        <span class="text-truncate fw-bold">{{ $product->name }}</span>
                                     </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td>{{ $product->tag }}</td>
-                        <td>{{ $product->category }}</td>
-                        <td>R$ {{ $product->price }}</td>
-                        <td>{{ $product->percent *100 }}%</td>
+                            </td>
+                            <td>{{ $product->tag }}</td>
+                            <td>{{ $product->category }}</td>
+                            <td>R$ {{ $product->price }}</td>
+                            <td>{{ $product->percent *100 }}%</td>
+                            
+
+                            @if ($product->public == 1)
+                            <td class="text-center"><span class="shadow-none badge badge-success">Público</span></td>
+                            @elseif ($product->public == 0)
+                            <td class="text-center"><span class="shadow-none badge badge-primary">Não Listado</span></td>
+                            @endif
+
+                            <td class="text-center">
+                                {{--<form action="{{ route('user-profile-delete', $user->id) }}" method="POST" id="delete_form" class="py-12">
+                                    @method('DELETE')
+                                    @csrf--}}
+                                <div class="action-btns">
+                                    <a href="{{ getRouterValue(); }}/app/eco/product/{{ $product->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="View">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                    </a>
+                                    <a href="{{ getRouterValue(); }}/app/eco/product/{{ $product->id }}/edit" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Edit">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                    </a>
+
+                                    <a href="javascript:void(0);" onClick="document.getElementById('delete_form').submit();" class="action-btn btn-delete bs-tooltip" data-toggle="tooltip" data-placement="top" title="Delete">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                    </a>
+                                </div>
+                                </form>
+                            </td>
+                        </tr>
+                        @endforeach
                         
-
-                        @if ($product->public == 1)
-                        <td class="text-center"><span class="shadow-none badge badge-success">Público</span></td>
-                        @elseif ($product->public == 0)
-                        <td class="text-center"><span class="shadow-none badge badge-primary">Não Listado</span></td>
-                        @endif
-
-                        <td class="text-center">
-                            {{--<form action="{{ route('user-profile-delete', $user->id) }}" method="POST" id="delete_form" class="py-12">
-                                @method('DELETE')
-                                @csrf--}}
-                            <div class="action-btns">
-                                <a href="{{ getRouterValue(); }}/app/eco/product/{{ $product->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="View">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                </a>
-                                <a href="{{ getRouterValue(); }}/app/eco/product/{{ $product->id }}/edit" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Edit">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                                </a>
-
-                                <a href="javascript:void(0);" onClick="document.getElementById('delete_form').submit();" class="action-btn btn-delete bs-tooltip" data-toggle="tooltip" data-placement="top" title="Delete">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                </a>
-                            </div>
-                            </form>
-                        </td>
-                    </tr>
-                    @endforeach
-                    
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+                </div>
             </div>
         </div>
 
