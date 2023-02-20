@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Events\AfterImport;
 
-class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts, SkipsEmptyRows, WithEvents
+class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts, SkipsEmptyRows
 {
 
     
@@ -30,7 +30,7 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
      *
      * @return User|null
      */
-    use Importable, RegistersEventListeners;
+    use Importable;
 
     public function model(array $row)
     {

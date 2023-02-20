@@ -126,16 +126,16 @@ class CademiController extends Controller
 
     public function get_user ($id){
         $user = User::find($id);
-        $url = "https://profissionaliza.cademi.com.br/api/v1/usuario/$user->email";
+        $url = "https://profissionaliza.cademi.com.br/api/v1/usuario/$user->email2";
         $cademi = json_decode(Http::withHeaders([
             'Authorization' => env('CADEMI_TOKEN_API')
         ])->get("$url"));
         if ($cademi->success == true){
-            if(Cademi::where('email', $cademi->data->usuario->email)->first() == null){
+            if(Cademi::where('email', $cademi->data->usuario->email2)->first() == null){
                 $response = $user->cademis()->create([
                     'user' => $cademi->data->usuario->id,
                     'nome' => $cademi->data->usuario->nome,
-                    'email' => $cademi->data->usuario->email,
+                    'email' => $cademi->data->usuario->email2,
                     'login_auto' => $cademi->data->usuario->login_auto,
                     'gratis' => $cademi->data->usuario->gratis == true ? 1 : 0
                                                     ]);
@@ -153,7 +153,7 @@ class CademiController extends Controller
                                                     $user->save();
                 }
                                     }
-        
+        dd($response);
         return $response;
     }
 
