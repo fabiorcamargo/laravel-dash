@@ -67,6 +67,8 @@ class CademiController extends Controller
              "token" => env('CADEMI_TOKEN_GATEWAY'),
              "codigo"=> "CODD-$course-$user->username",
              "status"=> "aprovado",
+             "recorrencia_id" => "CODD-$course-$user->username",
+             "recorrencia_status" => "ativo",
              "produto_id"=> $course,
              "produto_nome"=> $course,
              "cliente_email"=> $user->email2,
@@ -131,6 +133,7 @@ class CademiController extends Controller
         $cademi = json_decode(Http::withHeaders([
             'Authorization' => env('CADEMI_TOKEN_API')
         ])->get("$url"));
+        //dd($cademi);
         if ($cademi->success == true){
             if(Cademi::where('email', $cademi->data->usuario->email)->first() == null){
                 $response = $user->cademis()->create([

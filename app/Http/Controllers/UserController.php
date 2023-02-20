@@ -118,54 +118,155 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function destroy($id) {
-        /*
-        $user = $this->user->find($id);
-        $courses = $user->courses;
-        $courses  = str_replace(" ", "", $user->courses);
-        $courses = explode(",",  $courses);
-        //dd($courses);
-        foreach ($courses as $course){
-            //dd($course);
-            $payload = [
-                "token" => env('CADEMI_TOKEN_GATEWAY'),
-                "status"=> "disputa",
-                "codigo"=> "CODD-$course-$user->username",
-                "cliente_email"=> $user->email2,
-                "produto_id" => $course
-            ];
-            dd($payload);
-
-            Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
-    
-        }
-
-        dd($user);
-        //$r = str_replace(" ", "", $row['courses']);
-        //$courses = explode(",",  $r);
+    public function delete($id) {
         
-        $payload = [
-            "token" => env('CADEMI_TOKEN_GATEWAY'),
-            "status"=> "aprovado",
-            "cliente_email"=> $user->email2,
-        ];
+        $user = $this->user->find($id);
+        //dd($user);
+        $r = str_replace(" ", "", $user->courses);
+        $courses = explode(",",  $r);
+        //dd($courses);
 
-        //dd($payload);
-        if (env('APP_DEBUG') == true){
-        //dd("não");
-        $data = Storage::get('file1.txt', $user->username . $user->email2 . $user->name . $user->document . $user->cellphone  . PHP_EOL);
-        Storage::put('file1.txt', $data .$user->username . $user->email2 . $user->name . $user->document . $user->cellphone . $user->uf2 . "Não foi Enviado" . PHP_EOL);
+        foreach($courses as $course){
+         $payload = [
+             "token" => env('CADEMI_TOKEN_GATEWAY'),
+             "codigo"=> "CODD-$course-$user->username",
+             "status"=> "disputa",
+             "recorrencia_status" => "em-atraso",
+             "produto_id"=> $course,
+             "produto_nome"=> $course,
+             "cliente_email"=> $user->email2,
+             "cliente_nome"=> $user->name . " " . $user->lastname,
+             "cliente_doc"=> $user->username,
+             "cliente_celular"=> $user->cellphone,
+             //"cliente_endereco_cidade"=> $user->city2,
+             //"cliente_endereco_estado"=> $user->uf2,
+             "produto_nome" => $course
+         ];
 
-        } else {
-           //dd("sim");
-           $data = Storage::get('file1.txt', $user->username . $user->email2 . $user->name . $user->document . $user->cellphone . PHP_EOL);
-           Storage::put('file1.txt', $data .$user->username . $user->email2 . $user->name . $user->document . $user->cellphone . PHP_EOL);
-  
-           Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
-        }
+         if (env('APP_DEBUG') == true){
+            $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
+            Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
+            
+            $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
+            $cademi = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->post("$url", $payload));
 
-        dd($user);
-        */
+         } else {
+            $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
+            Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
+   
+            //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+            $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
+            $cademi = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->post("$url", $payload));
+         }
+        //dd($cademi);
+         
+            if (isset($cademi->data[0]->erro)){
+                //dd($cademi);
+                $import = new CademiImport();
+                $import->username = $user->username;
+                $import->status = "error";
+                $import->msg = $cademi->data[0]->erro;
+                $import->body = json_encode($cademi);
+                $import->save();
+
+            }else{
+
+                $import = new CademiImport();
+                $import->username = $user->username;
+                $import->status = "success";
+                $import->course = $course;
+                $import->code = "CODD-$course-$user->username";
+                $import->msg = $cademi->data[0]->status . "Bloqueado Acesso";
+                $import->body = json_encode($cademi);
+                $import->save();
+            }
+
+    }
+                $user->first = 3;
+                $user->save();        
+        
+                return back();
+        
+            
+    }
+
+    public function active($id) {
+        
+        $user = $this->user->find($id);
+        //dd($user);
+        $r = str_replace(" ", "", $user->courses);
+        $courses = explode(",",  $r);
+        //dd($courses);
+
+        foreach($courses as $course){
+         $payload = [
+             "token" => env('CADEMI_TOKEN_GATEWAY'),
+             "codigo"=> "CODD-$course-$user->username",
+             "status"=> "aprovado",
+             "recorrencia_status" => "ativo",
+             "produto_id"=> $course,
+             "produto_nome"=> $course,
+             "cliente_email"=> $user->email2,
+             "cliente_nome"=> $user->name . " " . $user->lastname,
+             "cliente_doc"=> $user->username,
+             "cliente_celular"=> $user->cellphone,
+             //"cliente_endereco_cidade"=> $user->city2,
+             //"cliente_endereco_estado"=> $user->uf2,
+             "produto_nome" => $course
+         ];
+
+         if (env('APP_DEBUG') == true){
+            $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
+            Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
+            
+            $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
+            $cademi = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->post("$url", $payload));
+
+         } else {
+            $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
+            Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
+   
+            //Http::post("https://profissionaliza.cademi.com.br/api/postback/custom", $payload);
+            $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
+            $cademi = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->post("$url", $payload));
+         }
+        //dd($cademi);
+         
+            if (isset($cademi->data[0]->erro)){
+                //dd($cademi);
+                $import = new CademiImport();
+                $import->username = $user->username;
+                $import->status = "error";
+                $import->msg = $cademi->data[0]->erro;
+                $import->body = json_encode($cademi);
+                $import->save();
+
+            }else{
+
+                $import = new CademiImport();
+                $import->username = $user->username;
+                $import->status = "success";
+                $import->course = $course;
+                $import->code = "CODD-$course-$user->username";
+                $import->msg = $cademi->data[0]->status . "Desbloqueado Acesso";
+                $import->body = json_encode($cademi);
+                $import->save();
+            }
+
+    }
+                $user->first = 2;
+                $user->save();        
+        
+                return back();
+        
             
     }
 
@@ -337,14 +438,6 @@ class UserController extends Controller
 
 
     public function my(){
-/*
-        $avatar = $this->avatar->where('user_id', Auth::user()->id)->first();
-        
-        
-
-        return view('pages.aluno.my', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb', 'avatar' => 'teste']);
-        */
-        
 
         $data = $this->avatar->where('user_id', Auth::user()->id)->first();
         if ( $data != null ){
@@ -355,41 +448,27 @@ class UserController extends Controller
 
         $card = "resources/images/em-breve.jpg";
 
-        if (Cademi::where('user_id', Auth::user()->id)->first()){
-           if((Auth::user()->courses != "")){
-            $card = "resources/images/Curso Liberado.jpg";
-            //dd($card);
-           }
-        
+        if(Auth::user()->first == 3){
+            $card = "resources/images/Curso Bloqueado.jpg";
         }else{
-            $card = "resources/images/em-breve.jpg";
-        }
 
+            if (Cademi::where('user_id', Auth::user()->id)->first()){
+            if((Auth::user()->courses != "")){
+                $card = "resources/images/Curso Liberado.jpg";
+                //dd($card);
+            }
+            
+            }else{
+                $card = "resources/images/em-breve.jpg";
+            }
+        }
         if ( $data != null ){
             $avatar =  $data->folder . "/" . $data->file;
         } else {
             $avatar = "/default.jpeg";
         }
-/*
-        $states = State::all();
 
-        $cities = City::all();
-        //dd($cities[0]);
-        $uf = (State::where('id', "11")->first());
-        //dd($uf);
-        $i = 0;
         
-
-        foreach ($cities as $city){
-            
-            $cities1[(State::where('id', $city->state_id)->first())->abbr][$i] = $city->name;
-            $i++;
-        }
-        
-
-       //dd(($cities1));
-      dd(collect($cities1)->sortBy('Tvalue')->toArray());
-        */
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
 
     }
