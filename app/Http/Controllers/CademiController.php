@@ -153,7 +153,7 @@ class CademiController extends Controller
                                                     $user->save();
                 }
                                     }
-        dd($response);
+        //dd($response);
         return $response;
     }
 
