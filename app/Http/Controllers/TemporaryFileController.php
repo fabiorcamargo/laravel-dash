@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 
 use App\Models\Avatar;
 use App\Models\Cademi;
+use App\Models\CademiImport;
 use App\Models\User;
 use App\Models\ProductImage;
 use Carbon\Carbon;
@@ -243,47 +244,30 @@ class TemporaryFileController extends Controller
 
     public function openCsv(Request $request){
         
-            //return redirect()->route('cademi.store', "fabiotb");
             //dd($_COOKIE['city']);
             $file = $request->file;
             $folder = $request->folder;
             $users1 = Excel::toArray(new UsersImport, "$file");
-           // dd($users1[0]);
-            
-            
-            //dd("fim");
-            //return redirect()->route('cademi.lote', $users[0][0]['username']);
-            Excel::import(new UsersImport, "$file");
+  
             //(new UsersImport)->queue(public_path($file));
 
-
-
-            
-           // (new CademiController)->lote($users1);
-            
-            
-            
-
-            //return redirect()->route('cademi.lote', ['file'=>$file, 'folder'=>$folder]);
-            
+            Excel::Import(new UsersImport, "$file");
             
             $tmp = TemporaryFile::where('folder', $folder);
             
-            $success = "Verdade";
             Storage::deleteDirectory("tmp/" . $folder);
             $tmp->delete();
 
-            return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
+            $cademis = CademiImport::first()->orderBy('updated_at', 'desc')->paginate(20);
         
-
-        
+            return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('cademis'));  
     
     }
 
     public function charge(Request $request)
     {
        
-        //dd($_COOKIE['city']);
+        dd($_COOKIE['city']);
         $data = $this->file->where('folder', $request->image)->first();
         
         $folder =  $data->folder;
@@ -291,8 +275,9 @@ class TemporaryFileController extends Controller
         $users = Excel::toArray(new UsersImport, "$file");
         //$users = $response[0];
         //$produto = ($_COOKIE['name']);
-        //Excel::import(new UsersImportNew, "$file");
-        (new UsersImportNew)->queue(public_path($file));
+        $excel = Excel::import(new UsersImportNew, "$file");
+        //dd($excel);
+        //(new UsersImportNew)->queue(public_path($file));
         
         //(new UsersImportNew)->queue("storage/app/tmp/11-01-2023 12:47:34/User.xlsx");
         //dd($file);
@@ -305,6 +290,7 @@ class TemporaryFileController extends Controller
         $tmp = TemporaryFile::where('folder', $folder);
         
         $success = "Verdade";
+        
         //Storage::deleteDirectory("tmp/" . $folder);
         $tmp->delete();
 

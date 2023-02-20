@@ -64,9 +64,6 @@ use Illuminate\Support\Facades\Route;
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::get('/avatar-correct',[TemporaryFileController::class, 'AvatarCorrect'])->name('avatar-correct');
 
-                    Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
-                    Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
-
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', [UserController::class, 'first'])->name('aluno.first');
                         
@@ -139,9 +136,11 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
         Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
+
+        Route::post('/csv',[TemporaryFileController::class, 'openCsv'])->name('openCsv');
+        Route::post('/store',[TemporaryFileController::class, 'store'])->name('store');
     
         Route::get('/users/asaas/index', [AsaasController::class, 'asaascliente'])->name('asaas.index');
-    
      
         Route::get('/users/{id}/cademi/create', [CademiController::class, 'create'])->name('cademi.create');
         Route::get('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');

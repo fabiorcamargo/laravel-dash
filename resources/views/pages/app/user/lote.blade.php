@@ -14,6 +14,8 @@
 
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
+
+        <link rel="stylesheet" href="{{asset('plugins/table/datatable/datatables.css')}}">
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -31,12 +33,11 @@
     </div>
     <!-- /BREADCRUMB -->
    
-    
-    
-    @if (@isset($success))
-    <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> Todos os usuários foram atualizados. </div>
-    @endif
+       
         @if (@isset($users))
+
+
+        
 
         <div class="row layout-top-spacing">
 
@@ -167,7 +168,63 @@
             </div>
         </form>
         </div>
+        <div class="row layout-top-spacing">
+
+            <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+                <div class="statbox widget box box-shadow">
+                    <div class="widget-header">
+                        <div class="row">
+                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                <h4>Importação Cademi</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="widget-content widget-content-area">
+    
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="col-md-2">Atualização</th>   
+                                        <th class="col-md-1">Username</th>
+                                        <th class="col-md-1">Status</th>
+                                        <th class="col-md-2">Code</th>
+                                        <th class="col-md-1">Msg</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($cademis as $cademi)
+                                    <tr>
+                                        <td class="col-md-1">{{ $cademi['updated_at'] }}</td>
+                                        <td >{{ $cademi['username'] }}</td>
+                                        @if($cademi['status'] == "success")
+                                        <td class=""><span class="shadow-none badge badge-success">Success</span></td>
+                                        @elseif ($cademi['status'] == "error")
+                                        <td class=""><span class="shadow-none badge badge-danger">Error</span></td>
+                                        @endif
+                                        <td>{{ $cademi['code'] }}</td>
+                                        <td>{{ $cademi['msg'] }}</td>
+                                        
+                                    @endforeach
+                                </tbody>
+                            </table>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{ $cademis->appends($_POST)->links('pagination::bootstrap-5') }}
+        
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
+
+        
     
 
     @endif

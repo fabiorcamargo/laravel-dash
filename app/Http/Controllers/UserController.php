@@ -6,6 +6,7 @@ use App\Http\Requests\StoreUpdateUserFormRequest;
 use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\CademiCourse;
+use App\Models\CademiImport;
 use App\Models\City;
 use App\Models\Role;
 use App\Models\State;
@@ -225,9 +226,9 @@ class UserController extends Controller
 
     public function lote(Request $request)
     {
-
+        $cademis = CademiImport::first()->orderBy('updated_at', 'desc')->paginate(20);
         
-        return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('cademis'));
     }
 
     public function username()

@@ -105,7 +105,7 @@
                             </div>
                                         
                             <div class="content-section pt-4">
-                                <form action="{{ getRouterValue(); }}/eco/checkout/{{ $product->id }}/end/{{ $user->id }}" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
+                                <form action="{{ getRouterValue(); }}/app/eco/checkout/{{ $product->id }}/end/{{ $user->id }}" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
                                     @csrf  
                                     <div class="row">
                                         <div class="widget-content widget-content-area br-8 ">
@@ -177,13 +177,7 @@
                                                                 <div id='cards' name='cards' hidden>
                                                               
                                                                     <x-widgets._w-cardcredit/>
-                                                                    <div class="col-md-3">
-                                                                        
-                                                                        <div class="mb-3">
-                                                                            <label class="form-label">Cep:</label>
-                                                                            <input name="cep" type="text" id="cep" class="cep-number form-control" maxlength="9" onchange="pesquisacep(this.value);"/><span class="badge badge-light-success mt-2 me-4">Buscar</span>
-                                                                        </div>
-                                                                    </div>
+                                                                    
                                                                 </div>
                                                                 <div id='pixs' name='pixs' hidden>
                                                                     <h3>Pix</h3>
@@ -191,18 +185,22 @@
                                                                 <div id='boletos' name='boletos' hidden>
                                                                    
                                                                         <h4>Informações de Pagamento</h4>
-                                                                        <div class="col-md-3">
-                                                                            <div class="mb-3">
-                                                                                
-                                                                                <label class="form-label">Cep:</label>
-                                                                                <input name="cep" type="text" id="cep" class="cep-number form-control" maxlength="9" onchange="pesquisacep(this.value);"/><span class="badge badge-light-success mt-2 me-4">Buscar</span>
-                                                                            </div>
-                                                                        </div>
+                                                                       
                                                                 </div>
+
+                                                                <div class="col-md-3" id="show_cep">
+                                                                        
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Cep:</label>
+                                                                        <input name="cep" type="text" id="cep" class="cep-number form-control" maxlength="9" onchange="pesquisacep(this.value);"/><span class="badge badge-light-success mt-2 me-4">Buscar</span>
+                                                                    </div>
+                                                                </div>
+
                                                                 <div id='end' name='end' hidden>
                                                                  
                                                                     <x-widgets._w-end/>
                                                                 </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>

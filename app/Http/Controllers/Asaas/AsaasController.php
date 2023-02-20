@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Asaas;
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\EcoProduct;
+use App\Models\Payment;
 use App\Models\Sales;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -34,23 +35,43 @@ class AsaasController extends Controller
         $user->name = $user->name . ((isset($user->lastname)) ? " " . $user->lastname : "");
 
         //dd($user);
+        $clientes = $asaas->Cliente()->getByEmail($user->email);
+        //dd($clientes->error[0]->description);
+        if($clientes->error == ""){
+            //dd($user);
+            
+            $customer = Customer::where('gateway_id', $clientes->id)->first();
 
-        $clientes = $asaas->Cliente()->create([
-            'name' => $user->name,
-            'email' => $user->email,
-            'phone' => $user->cellphone,
-            'mobilePhone' => (isset($user->cellphone2)) ? $user->cellphone2 : $user->cellphone,
-            'cpfCnpj' => $user->document,
-            'externalReference' => $user->id,
-            'notificationDisabled' => ' false',
-          ]);
-          return $clientes;
+            //dd($customer);
+
+        }else{
+            //dd('n');
+            $clientes = $asaas->Cliente()->create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->cellphone,
+                'mobilePhone' => (isset($user->cellphone2)) ? $user->cellphone2 : $user->cellphone,
+                'cpfCnpj' => $user->document,
+                'externalReference' => $user->id,
+                'notificationDisabled' => ' false',
+              ]);
+
+                $customer = new Customer();
+                $customer->user_id = $user->id;
+                $customer->gateway_id = $clientes->id;
+                $customer->body = json_encode($clientes);
+                $customer->save();
+        }
+
+        
+          return $customer;
     }
 
     public function create_payment($user_id, $product_id, $sales_id, $type){
         $user = User::find($user_id);
         $customer = Customer::where("user_id", $user_id)->first();
         $product = EcoProduct::find($product_id);
+        $sales = Payment::find($product_id);
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
 
@@ -87,6 +108,7 @@ class AsaasController extends Controller
             $dadosAssinatura = array(
                 "customer" => "$customer->gateway_id",
                 "billingType" => "$type1",
+                "installmentCount" => "",
                 "value" => $product->price,
                 "dueDate" => $due_date,
                 "description" => "$product->course_id $product->name",

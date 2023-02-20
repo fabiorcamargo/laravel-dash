@@ -287,10 +287,13 @@ class EcommerceController extends Controller
 
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
+        //dd($request->all());
+
         $type = (object)$request->all();
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $type->expiry));
         $type->expiryMonth = $expiry[0];
         $type->expiryYear = $expiry[1];
+        $parcela = $request->parcela;
 
         $product = EcoProduct::find($product_id);
         $user = User::find($client);
@@ -307,7 +310,7 @@ class EcommerceController extends Controller
             $user->courses = $user->courses . ", $product->course_id";
         }
         $user->save();
-
+        
         $asaas = new AsaasController();
         $response = $asaas->create_client($user->id);
         //dd($response);
@@ -317,15 +320,9 @@ class EcommerceController extends Controller
         $customer->body = json_encode($response);
         $customer->save();
 
-        $sales = new Sales();
-        $sales->user_id = $user->id;
-        $sales->customer = $customer->gateway_id;
-        $sales->seller = $user->seller;
-        $sales->save();
+        //$cobranca = $asaas->create_payment($user->id, $product_id, $sales->id, $type);
 
-        $cobranca = $asaas->create_payment($user->id, $product_id, $sales->id, $type);
-
-        return $cobranca;
+        //return $cobranca;
 
     }
 

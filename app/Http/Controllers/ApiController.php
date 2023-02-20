@@ -64,12 +64,12 @@ class ApiController extends Controller
                   
 
                   if(empty($tabela['id'])){
-                    return response("Usuário não encontrado");
+                    return response("Usuário não encontrado", 404);
                   }else{
                     $userId =$tabela['id'];
                     if (!$user = $this->user->find($userId)) {
                       return redirect()->back();
-                      return response("Usuário não confere");
+                      return response("Usuário não confere", 404);
                     }
                     $response =  $user->cademis()->create([
                       'user' => $arr->id,
@@ -383,7 +383,9 @@ class ApiController extends Controller
                 //dd($seller);
                 $number = preg_replace('/[^0-9]/', '',$response->Body->Info->RemoteJid);
                 $msg = strtolower($response->Body->Text);
-
+                //dd($request->Type);
+                if ($request->Type == "receveid_message"){
+                  //dd("sim");
                 if ((ChatbotMessage::where("number", $number)->first())){
                     $chatbot_msg = ChatbotMessage::where("number", $number)->first();
                 } else {
@@ -396,6 +398,9 @@ class ApiController extends Controller
                 $chatbot_msg->message = $msg;
                 $chatbot_msg->body = $json;
                 $chatbot_msg->save();
+
+              }
+              //dd("não");
                 /*
                 $a_fluxo = $chatbot_msg->tipo;
                 //dd($a_fluxo);

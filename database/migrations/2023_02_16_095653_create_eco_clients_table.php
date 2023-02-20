@@ -13,15 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('payments', function (Blueprint $table) {
+        Schema::create('eco_clients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('pay_id');
-            $table->string('customer')->nullable();
-            $table->string('dateCreated')->nullable();
-            $table->string('paymentDate')->nullable();
-            $table->string('status')->nullable();
-            $table->json('body')->nullable();
+            $table->string('customer_id');
+            $table->json('body');
             $table->timestamps();
         });
     }
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('payments');
+        Schema::dropIfExists('eco_clients');
     }
 };

@@ -21,7 +21,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithUpserts;
 use Maatwebsite\Excel\Events\AfterImport;
 
-class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts, SkipsEmptyRows
+class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpserts, SkipsEmptyRows, WithEvents
 {
 
     
@@ -30,11 +30,11 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
      *
      * @return User|null
      */
-    use Importable;
+    use Importable, RegistersEventListeners;
 
     public function model(array $row)
     {
-      
+        //dd($_COOKIE['city']);
         $city = (preg_replace('/[^0-9]/', '', $_COOKIE['city']));
         $state = (City::find($city)->state_id);
         $state = State::find($state)->abbr;
@@ -42,32 +42,19 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
         
                 
         $s = count($row);
-        //dd($row);
-        //$usr = (User::where('username', $row['username']));
         $user = User::where('username', $row['username'])->first();
-
         $r = str_replace(" ", "", $row['courses']);
         $courses = explode(",",  $r);
 
         foreach ($courses as $course){
-            //dd($course);
         if(!isset($user->codesale)){
-        
             $user->codesale = "CODD-$course-$user->username";
-
             } else {
                 if(!str_contains($user->codesale, "CODD-$course-$user->username") ){
                     $user->codesale = $user->codesale . ", CODD-$course-$user->username";
                 }
            }
-
         }
-            //dd($user);
-           // $user->save();
-   
-            //dd($user);
-
-        //dd($user);
         if (!empty($user->first)){
             $name = $user->name;
             $lastname = $user->lastname;
@@ -80,12 +67,7 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
             $email = $row['email2'];
             $password = Hash::make($row['password']);
         }
-        //dd($city);
         $document = preg_replace('/[^0-9]/', '', $row['document']);
-        //$city2 = City::where('id', $city)->first();
-        //$uf = State::where('id', $city2->state_id)->first();
-
-        //dd($uf);
 
            $user->username = $row['username'];
            $user->email = $email;
@@ -98,23 +80,27 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
            $user->uf2 = $state;
            $user->payment = $row['payment'];
            $user->role = $row['role'];
-           //$user->ouro = $row['ouro'];
+           $user->ouro = $row['ouro'];
            $user->secretary = $row['secretary'];
            $user->document = $document;
            $user->seller = $row['seller'];
            $user->courses = $row['courses'];
            $user->active = $row['active'];
            $user->observation = $row['observation'];
-          
-           
-           //dd($user);
            $user->save();
-                 
-       
-        //sleep($s*2);
+
         (new CademiController)->lote($row);
+
+        (new CademiController)->get_user($user->id);
+ 
+    }
+
+    public static function afterImport(AfterImport $event)
+    {
         
     }
+
+    
     public function chunkSize(): int
     {
         return 200;
