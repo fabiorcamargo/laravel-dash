@@ -35,16 +35,20 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
     public function model(array $row)
     {
         //dd($_COOKIE['city']);
-        $city = (preg_replace('/[^0-9]/', '', $_COOKIE['city']));
-        $state = (City::find($city)->state_id);
-        $state = State::find($state)->abbr;
-        $city = (City::find($city)->name);
+        $city2 = (preg_replace('/[^0-9]/', '', $_COOKIE['city']));
+        $state2 = (City::find($city2)->state_id);
+        $state2 = State::find($state2)->abbr;
+        $city2 = (City::find($city2)->name);
         
                 
+        
+
         $s = count($row);
         $user = User::where('username', $row['username'])->first();
         $r = str_replace(" ", "", $row['courses']);
         $courses = explode(",",  $r);
+
+        
 
         foreach ($courses as $course){
         if(!isset($user->codesale)){
@@ -67,6 +71,7 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
             $email = $row['email2'];
             $password = Hash::make($row['password']);
         }
+
         $document = preg_replace('/[^0-9]/', '', $row['document']);
 
            $user->username = $row['username'];
@@ -76,8 +81,10 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
            $user->lastname = $row['lastname'];
            $user->password = $password;
            $user->cellphone2 = $row['cellphone2'];
-           $user->city2 = $city;
-           $user->uf2 = $state;
+           $user->city  = $user->city == "Cidade" ? $city2 : $user->city;
+           $user->city2 = $city2;
+           $user->uf = $user->uf == "UF" ? $state2 : $user->uf;
+           $user->uf2 = $state2;
            $user->payment = $row['payment'];
            $user->role = $row['role'];
            $user->ouro = $row['ouro'];
@@ -87,6 +94,7 @@ class UsersImport implements ToModel, WithChunkReading, WithHeadingRow, WithUpse
            $user->courses = $row['courses'];
            $user->active = $row['active'];
            $user->observation = $row['observation'];
+           //dd($user);
            $user->save();
 
         (new CademiController)->lote($row);

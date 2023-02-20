@@ -81,11 +81,11 @@ class CademiController extends Controller
          if (env('APP_DEBUG') == true){
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
-            /*
+            
             $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
             $cademi = json_decode(Http::withHeaders([
                 'Authorization' => env('CADEMI_TOKEN_API')
-            ])->post("$url", $payload));*/
+            ])->post("$url", $payload));
 
          } else {
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
