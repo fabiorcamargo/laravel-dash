@@ -641,7 +641,7 @@ class UserController extends Controller
             }
             
             if ($i == 1){
-                if (isset($data['data']['progresso']['aulas'][0])){
+                if (isset($data['data']['progresso']['aulas'])){
                     //dd('s');
                         $aulas = $data['data']['progresso']['aulas'];
                         //dd($aulas);
