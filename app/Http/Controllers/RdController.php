@@ -62,6 +62,7 @@ class RdController extends Controller
                 'content-type' => 'application/json',
             ],
             ]);
+
             $response = (json_decode($response->getBody()));
             $date = new Carbon();
             $date = Carbon::now();
@@ -201,7 +202,7 @@ class RdController extends Controller
             $rd_crm->save();
            
         
-        dd(json_decode($response->getBody()));
+        //dd(json_decode($response->getBody()));
     }
 
     public function rd_fluxos(){

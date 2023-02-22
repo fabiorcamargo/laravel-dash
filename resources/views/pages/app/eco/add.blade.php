@@ -111,7 +111,7 @@
                                     id="product-images" 
                                     multiple 
                                     data-allow-reorder="true"
-                                    data-max-file-size="3MB"
+                                    data-max-file-size="1MB"
                                     data-max-files="5"
                                     accept="image/*" hidden oninput="show()">
                             </div>

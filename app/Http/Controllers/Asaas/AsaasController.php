@@ -162,16 +162,25 @@ class AsaasController extends Controller
         );
         }
 
-        //dd($cobranca->status);
+        //dd($cobranca);
+        if(isset($cobranca->errors)){
+            $externalReference->update([
+                'pay_id' => $cobranca->errors[0]->code,
+                'status' => "RECUSED",
+                'body' => json_encode($cobranca),
+              ]);
+        }else{
+
         $externalReference->update([
             'pay_id' => $cobranca->id,
-            'status' => $cobranca->status,
+            'status' => "$cobranca->status",
             'body' => json_encode($cobranca),
           ]);
+        }
         
         //dd($cobranca);
 
-        return $cobranca;
+        return $externalReference;
     }
 
     public function get_client($id){

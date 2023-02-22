@@ -259,11 +259,11 @@ class EcommerceController extends Controller
         $user->password = $password;
 
         
-/*
+
         //Cria CRM no RD
         $rd = new RdController;
         $teste = $rd->rd_client_register($user->id, $password, $product);
-*/
+
         //Mail::to($user->email)->send(new SendMailUser($user));
 
         Auth::login($user);
@@ -318,15 +318,22 @@ class EcommerceController extends Controller
             $response = $asaas->create_client($user->id, $cep);
             }else{
             }
-
+            
             if($sales = $user->eco_sales()->where('codesale', $codesale)->first()){
                 
             }else{
                 $asaas = new AsaasController();
                 $cobranca = $asaas->create_payment($user->id, $product_id, $pay, $codesale);
             }
+            //dd($cobranca);
+            $status = $cobranca->status; 
+            //return redirect(getRouterValue() . "/app/eco/checkout_end");
+            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status"]);
+            //dd($cobranca);
 
-            dd($cobranca);
+    }
+
+    public function checkout_end($id, $status){
 
     }
 

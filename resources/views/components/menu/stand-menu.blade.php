@@ -138,14 +138,14 @@
                                 <a href="{{getRouterValue();}}/app/eco/detail"> Product </a>
                             </li>--}}
                             <li class="{{ Request::routeIs('eco-list') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/eco/list"> List </a>
+                                <a href="{{getRouterValue();}}/app/eco/list"> Produtos </a>
                             </li>
                             <li class="{{ Request::routeIs('eco-add') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/eco/add"> Create </a>
+                                <a href="{{getRouterValue();}}/app/eco/add"> Novo </a>
                             </li>
                             @if(Request::routeIs('eco-edit'))                            
                             <li class="{{ Request::routeIs('eco-edit') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/eco/edit"> Edit </a>
+                                <a href="{{getRouterValue();}}/app/eco/edit"> Editar </a>
                             </li>           
                             @endif                 
                         </ul>
