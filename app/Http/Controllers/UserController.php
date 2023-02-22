@@ -629,7 +629,7 @@ class UserController extends Controller
             $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
             $data = (json_decode($response->body(), true));
 
-            dd($data);
+            //dd($data);
 			
 			if($response->status() !== 200){
 				$courses[$i] = ["row" => "$i",  "name" => $produto['produto']['nome'], "perc" => "0%"];
