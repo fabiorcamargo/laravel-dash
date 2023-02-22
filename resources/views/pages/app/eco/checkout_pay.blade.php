@@ -130,7 +130,7 @@
                                                     
                                                 </label>
                                                 <div class="col-md-4">
-                                                <select name="parcela" id="parcela" class="form-control mb-4" hidden>
+                                                <select name="parcelac" id="parcelac" class="form-control mb-4" hidden>
                                                     @for ($i = 1; $i < 13; $i++)
                                                     <option value="{{$i}}">{{$i}}x de R$ {{ round($product->price / $i, 2) }}</option>
                                                     @endfor
@@ -143,6 +143,13 @@
                                                 <label class="form-check-label" for="BOLETO">
                                                     <img class="company-logo" src="{{Vite::asset('resources/images/boleto.svg')}}" style="width: 60px;" alt="logo"> Boleto Bancário R${{ $product->price }} (Valor à vista) <span class="badge badge-warning mb-2 me-4">Liberação após compensação</span>
                                                 </label>
+                                                <div class="col-md-4">
+                                                    <select name="parcelab" id="parcelab" class="form-control mb-4" hidden>
+                                                        @for ($i = 1; $i < 13; $i++)
+                                                        <option value="{{$i}}">{{$i}}x de R$ {{ round($product->price / $i, 2) }}</option>
+                                                        @endfor
+                                                    </select>
+                                                    </div>
                                             </div>
                                                 <input type="text" name="payment" id="payment" value="PIX" hidden>
                                         </div>
@@ -270,7 +277,8 @@
                     document.getElementById("holderName").required = true;
                     document.getElementById("expiry").required = true;
                     document.getElementById("cvc").required = true;
-                    document.getElementById("parcela").hidden = false;
+                    document.getElementById("parcelac").hidden = false;
+                    document.getElementById("parcelab").hidden = true;
                     document.getElementById("payment").value = "CREDIT_CARD";
                     
             }
@@ -283,7 +291,7 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
-                    document.getElementById("parcela").hidden = true;
+                    document.getElementById("parcelac").hidden = true;
                     document.getElementById("payment").value = "PIX";
             }
             function myboleto(){
@@ -295,7 +303,8 @@
                     document.getElementById("holderName").required = false;
                     document.getElementById("expiry").required = false;
                     document.getElementById("cvc").required = false;
-                    document.getElementById("parcela").hidden = true;
+                    document.getElementById("parcelac").hidden = true;
+                    document.getElementById("parcelab").hidden = false;
                     document.getElementById("payment").value = "BOLETO";
             }
         </script>

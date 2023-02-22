@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('eco_clients', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('seller');
             $table->string('customer_id');
             $table->json('body');
             $table->timestamps();

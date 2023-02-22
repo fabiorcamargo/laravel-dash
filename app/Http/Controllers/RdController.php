@@ -12,6 +12,45 @@ use Illuminate\Support\Facades\Http;
 
 class RdController extends Controller
 {
+
+    public function re_token_update(){
+
+      if (env('RD_EXPIRITY') < Carbon::now()){
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://api.rd.services/auth/token', [
+        'body' => '{"client_id":"' . env('RD_CLIENT_ID') . '","client_secret":"' . env('RD_CLIENT_SECRET') . '","refresh_token":"' . env('RD_REFRESH_TOKEN') . '"}',
+        'headers' => [
+            'accept' => 'application/json',
+            'content-type' => 'application/json',
+        ],
+        ]);
+        $response = (json_decode($response->getBody()));
+
+        if($response->status() == 200){
+
+        $date = new Carbon();
+        $date = Carbon::now();
+        $date = $date->addDays(1);
+        $date = $date->toDateTimeString();
+        $token = $response->access_token;
+        $refresh_token = $response->refresh_token;
+
+        $path = base_path('.env');
+        $test = file_get_contents($path);
+
+        } 
+        
+        if (file_exists($path)) {
+            $ini = [env('RD_EXPIRITY'), env('RD_ACCESS_TOKEN'), env('RD_REFRESH_TOKEN')];
+            $fim = [$date, $token, $refresh_token];
+            file_put_contents($path, str_replace($ini, $fim, $test));
+            }
+    }else{
+
+    }
+
+    }
+
     public function rd_client_register($id, $password, $product){
     
         if (env('RD_EXPIRITY') < Carbon::now()){
@@ -55,7 +94,6 @@ class RdController extends Controller
               "personal_phone": "' . $user->cellphone . '",
               "mobile_phone": "' . $user->cellphone . '",
               "cf_custom_field_api_identifier": "convert_test_fabio_api",
-              "client_tracking_id": "' . $user->id . '",
               "traffic_source": "' . $product->course_id . "|" . $product->name . '",
               "traffic_medium": "cpc",
               "traffic_campaign": "easter-50-off",

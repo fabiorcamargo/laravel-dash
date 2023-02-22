@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('eco_sales', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->string('customer')->constrained('eco_client');
+            $table->string('customer_id');
             $table->string('codesale')->nullable();
             $table->string('seller')->nullable();
             $table->string('pay_id')->nullable();
-            $table->string('installmentCount')->nullable();
-            $table->string('installmentValue')->nullable();
+            $table->string('status')->nullable();
+            $table->float('installmentCount')->nullable();
+            $table->float('installmentValue')->nullable();
             $table->json('body')->nullable();
             $table->timestamps();
         });
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('sales');
+        Schema::dropIfExists('eco_sales');
     }
 };

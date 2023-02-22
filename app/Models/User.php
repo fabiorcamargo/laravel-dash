@@ -101,9 +101,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Customer::class);
     }
-    public function sales()
+    public function eco_client()
     {
-        return $this->hasMany(Sales::class);
+        return $this->hasOne(EcoClient::class);
+    }
+    public function eco_sales()
+    {
+        return $this->hasMany(EcoSales::class);
     }
     public function payment()
     {

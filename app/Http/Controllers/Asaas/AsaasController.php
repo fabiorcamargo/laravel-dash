@@ -26,105 +26,108 @@ class AsaasController extends Controller
 
     }
 
-    public function create_client($id){
- 
+    public function create_client($id, $cep){
         $user = User::find($id);
-
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
         $user->name = $user->name;
         $user->name = $user->name . ((isset($user->lastname)) ? " " . $user->lastname : "");
-
-        //dd($user);
-        $clientes = $asaas->Cliente()->getByEmail($user->email);
-        //dd($clientes->error[0]->description);
-        if($clientes->error == ""){
-            //dd($user);
-            
-            $customer = Customer::where('gateway_id', $clientes->id)->first();
-
-            //dd($customer);
-
-        }else{
-            //dd('n');
             $clientes = $asaas->Cliente()->create([
                 'name' => $user->name,
                 'email' => $user->email,
                 'phone' => $user->cellphone,
                 'mobilePhone' => (isset($user->cellphone2)) ? $user->cellphone2 : $user->cellphone,
                 'cpfCnpj' => $user->document,
+                'postalCode' => $cep,
                 'externalReference' => $user->id,
                 'notificationDisabled' => ' false',
+                'groupName' => $user->seller,
               ]);
-
-                $customer = new Customer();
-                $customer->user_id = $user->id;
-                $customer->gateway_id = $clientes->id;
-                $customer->body = json_encode($clientes);
-                $customer->save();
-        }
-
+                    $client = $user->eco_client()->create([
+                        'customer_id' => $clientes->id,
+                        'seller' => $user->seller,
+                        'body' => json_encode($clientes),
+                    ]);
         
-          return $customer;
+          return $clientes;
     }
 
-    public function create_payment($user_id, $product_id, $sales_id, $type){
+    public function create_payment($user_id, $product_id, $pay, $codesale){
         $user = User::find($user_id);
-        $customer = Customer::where("user_id", $user_id)->first();
+        $customer = ($user->eco_client()->first()->customer_id);
         $product = EcoProduct::find($product_id);
-        $sales = Payment::find($product_id);
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
 
-        if($type->payment == "Pix"){
-            $type1 = "BOLETO";
-            $type2 = "Pix";
+        if($pay->payment == "Pix"){
+            $pay1 = "BOLETO";
+            $pay2 = "Pix";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
             $product->price = $product->price * 0.9;
 
+            $externalReference = $user->eco_sales()->create([
+                'customer_id' => $customer,
+                'codesale' => $codesale,
+                'seller' => $user->seller,
+                'installmentCount' => (float)$pay->parcelac,
+                'installmentValue' => (float)$product->price / $pay->parcelac,
+            ]);
+
+            //dd($externalReference);
+
             $cobranca = $asaas->Cobranca()->create([
-                'customer'=> $customer->gateway_id,
-                'billingType'=> $type1,
+                'customer'=> $customer,
+                'billingType'=> $pay1,
                 'dueDate'=> $due_date,
                 'value'=> $product->price,
-                'externalReference'=> $sales_id,
+                'externalReference'=> $externalReference,
                 'postalService'=> false,
-                'description' => "$product->course_id | $product->name" 
+                'description' => "$product->course_id | $product->name | $codesale" 
               ]);
     
-            if($type2 == "Pix"){
+            if($pay2 == "Pix"){
                 $Pix = $asaas->Pix()->create($cobranca->id);
                 if($Pix->success){
-                   // $cobranca = '<img src="data:image/jpeg;base64, '.$Pix->encodedImage.'" />';
+                   $cobranca = '<img src="data:image/jpeg;base64, '.$Pix->encodedImage.'" />';
                 }
             }
-        }
-
-        if($type->payment == "CREDIT_CARD"){
-            $type1 = "CREDIT_CARD";
+        } else if($pay->payment == "CREDIT_CARD"){
+            $pay1 = "CREDIT_CARD";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
             $product->price = $product->price;
-            $card = str_replace(array(' ', "\t", "\n"), '', $type->number);
+            $card = str_replace(array(' ', "\t", "\n"), '', $pay->number);
+
+            //dd($product->price / $pay->parcelac);
+            $externalReference = $user->eco_sales()->create([
+                'customer_id' => $customer,
+                'codesale' => $codesale,
+                'seller' => $user->seller,
+                'installmentCount' => (float)$pay->parcelac,
+                'installmentValue' => (float)$product->price / $pay->parcelac,
+            ]);
+
+            //dd($externalReference);
 
             $dadosAssinatura = array(
-                "customer" => "$customer->gateway_id",
-                "billingType" => "$type1",
-                "installmentCount" => "",
-                "value" => $product->price,
+                "customer" => "$customer",
+                "billingType" => "$pay1",
+                "installmentCount" => $pay->parcelac,
+                'installmentValue' => $product->price / $pay->parcelac,
                 "dueDate" => $due_date,
                 "description" => "$product->course_id $product->name",
+                'externalReference'=> $externalReference->id,
                 "creditCard" => array(
-                  "holderName" => "$type->name",
+                  "holderName" => "$pay->name",
                   "number" => "$card",
-                  "expiryMonth" => "$type->expiryMonth",
-                  "expiryYear" => "$type->expiryYear",
-                  "ccv" => "$type->cvc"
+                  "expiryMonth" => "$pay->expiryMonth",
+                  "expiryYear" => "$pay->expiryYear",
+                  "ccv" => "$pay->cvc"
                 ),
                 "creditCardHolderInfo" => array(
                   "name" => "$user->name $user->lastname",
                   "email" => "$user->email",
                   "cpfCnpj" => "$user->document",
-                  "postalCode" => "$type->cep",
-                  "addressNumber" => "$type->numero",
+                  "postalCode" => "$pay->cep",
+                  "addressNumber" => "$pay->numero",
                   "addressComplement" => null,
                   "phone" => "$user->cellphone",
                   "mobilePhone" => "$user->cellphone"
@@ -135,14 +138,38 @@ class AsaasController extends Controller
                 $dadosAssinatura
             );
     
+        }else if($pay->payment == "BOLETO"){
+            $due_date = (now()->addDays(1)->format('Y-m-d'));
+            $externalReference = $user->eco_sales()->create([
+                'customer_id' => $customer,
+                'codesale' => $codesale,
+                'seller' => $user->seller,
+                'installmentCount' => (float)$pay->parcelac,
+                'installmentValue' => (float)$product->price / $pay->parcelac,
+            ]);
+
+            $dadosAssinatura = array(
+                "customer" => "$customer",
+                "billingType" => "$pay->payment",
+                "installmentCount" => $pay->parcelab,
+                'installmentValue' => $product->price / $pay->parcelab,
+                "dueDate" => $due_date,
+                "description" => "$product->course_id $product->name",
+                'externalReference'=> $externalReference->id,
+              );
+            $cobranca = $asaas->Cobranca()->create(
+            $dadosAssinatura
+        );
         }
+
+        //dd($cobranca->status);
+        $externalReference->update([
+            'pay_id' => $cobranca->id,
+            'status' => $cobranca->status,
+            'body' => json_encode($cobranca),
+          ]);
         
         //dd($cobranca);
-
-        $sales = Sales::find($sales_id);
-        $sales->pay_id = $cobranca->id;
-        $sales->body = json_encode($cobranca);
-        $sales->save();
 
         return $cobranca;
     }
@@ -157,7 +184,7 @@ class AsaasController extends Controller
         return $customer;
         }
         
-        $curstomer = AsaasController::create_client($id);
+        //$curstomer = AsaasController::create_client($id);
 
         
 

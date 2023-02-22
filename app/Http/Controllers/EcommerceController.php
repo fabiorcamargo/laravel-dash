@@ -194,12 +194,12 @@ class EcommerceController extends Controller
         $user->password = $password;
         //dd($user);
         $asaas = new AsaasController();
-        $response = $asaas->create_client($user->id);
+        //$response = $asaas->create_client($user->id);
         //dd($response);
         $customer = new Customer();
         $customer->user_id = $user->id;
-        $customer->gateway_id = $response->id;
-        $customer->body = json_encode($response);
+        //$customer->gateway_id = $response->id;
+        //$customer->body = json_encode($response);
         $customer->save();
 
         $sales = new Sales();
@@ -257,12 +257,16 @@ class EcommerceController extends Controller
         $user->save();
 
         $user->password = $password;
-        
 
+        
+/*
+        //Cria CRM no RD
         $rd = new RdController;
         $teste = $rd->rd_client_register($user->id, $password, $product);
-
+*/
         //Mail::to($user->email)->send(new SendMailUser($user));
+
+        Auth::login($user);
 
         return redirect(getRouterValue() . "/app/eco/checkout/$product->id/pay/$user->id");
         //return view('pages.eco.checkout_pay', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu'], compact('product', 'user'));
@@ -271,33 +275,30 @@ class EcommerceController extends Controller
 
     public function checkout_client_pay($product_id, $client){
 
-        //dd('sim');
-
         $product = (EcoProduct::find($product_id));
         $user = User::find($client);
 
-        //dd($client);
-
         $success = "Seu usuário foi criado, as informações de acesso serão enviadas no seu email.";
-
         return view('pages.app.eco.checkout_pay', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu', 'success' => $success], compact('product', 'user'));
-
 
     }
 
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
-        //dd($request->all());
 
-        $type = (object)$request->all();
-        $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $type->expiry));
-        $type->expiryMonth = $expiry[0];
-        $type->expiryYear = $expiry[1];
-        $parcela = $request->parcela;
-
+        //Captura dados do pagamento
+        $pay = (object)$request->all();
+        $cep = str_replace("-","", $request->cep);
+        $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $pay->expiry));
+        if($pay->payment == "CREDIT_CARD"){
+        $pay->expiryMonth = $expiry[0];
+        $pay->expiryYear = $expiry[1];
+        }
+        $parcelac = $request->parcelac;
+        $parcelab = $request->parcelab;
         $product = EcoProduct::find($product_id);
         $user = User::find($client);
-
+        $codesale = $product->course_id . "-" . $user->id;
         $user->city = $request->cidade;
         $user->city2 = $request->cidade;
         $user->uf = $request->uf;
@@ -310,19 +311,22 @@ class EcommerceController extends Controller
             $user->courses = $user->courses . ", $product->course_id";
         }
         $user->save();
-        
-        $asaas = new AsaasController();
-        $response = $asaas->create_client($user->id);
-        //dd($response);
-        $customer = new Customer();
-        $customer->user_id = $user->id;
-        $customer->gateway_id = $response->id;
-        $customer->body = json_encode($response);
-        $customer->save();
 
-        //$cobranca = $asaas->create_payment($user->id, $product_id, $sales->id, $type);
+            //Cria o cliente no gateway
+            if(!($user->eco_client()->first())){
+            $asaas = new AsaasController();
+            $response = $asaas->create_client($user->id, $cep);
+            }else{
+            }
 
-        //return $cobranca;
+            if($sales = $user->eco_sales()->where('codesale', $codesale)->first()){
+                
+            }else{
+                $asaas = new AsaasController();
+                $cobranca = $asaas->create_payment($user->id, $product_id, $pay, $codesale);
+            }
+
+            dd($cobranca);
 
     }
 

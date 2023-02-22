@@ -1219,7 +1219,10 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
     Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end');
     Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay');
-    Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end');
+    //Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end');
+    Route::get('/checkout_end', function () {
+        return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
+    })->name('eco_checkout_end');
     Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
     Route::get('/rd/fluxo', [RdController::class, 'rd_fluxos']);
     Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);

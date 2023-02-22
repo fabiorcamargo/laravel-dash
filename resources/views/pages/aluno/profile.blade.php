@@ -19,6 +19,9 @@
 
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
+
+        @vite(['resources/scss/light/assets/components/accordions.scss'])
+        @vite(['resources/scss/dark/assets/components/accordions.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -91,7 +94,7 @@
                 <div class="widget-content widget-content-area">
                     <div class="d-flex justify-content-between">
                         <h3 class="">Perfil do Usuário</h3>
-                        <a href="{{getRouterValue();}}/aluno/profile/{{ $user->id }}/edit" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                        {{--<a href="{{getRouterValue();}}/aluno/profile/{{ $user->id }}/edit" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>--}}
                     </div>
                     
                     <div class="text-center user-info">
@@ -216,43 +219,70 @@
 
             <div class="user-profile">
                 <div class="widget-content widget-content-area">
+
                     <div class="d-flex justify-content-between">
                         <h3 class="">Cursos Liberados</h3>
                         <a href="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/courses" class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="green" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
                     </div>
-                    
-                    <div class="table-responsive">
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Completo</th>
-                                    <th>%</th>
-                                    <th class="text-center">Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($courses as $course)
-                                    
-                                
-                                <tr>
-                                    <td>{{ $course['name'] }}</td>
-                                    <td>                                                    
-                                        <div class="progress br-30">
-                                            <div class="progress-bar br-30 bg-secondary" role="progressbar" style="width: {{ $course['perc'] }}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
+                    <div id="toggleAccordion" class="accordion">
+                        @foreach ($courses as $course)
+                            <div class="card">
+                                <div class="card-header" id="...">
+                                    <section class="mb-0 mt-0">
+                                        <div role="menu" class="collapsed" data-bs-toggle="collapse" data-bs-target="#defaultAccordion{{ $course['row'] }}" aria-expanded="false" aria-controls="defaultAccordion{{ $course['row'] }}">
+                                            <p class="text-success"> {{ $course['name'] }}   |  {{ $course['perc'] }} </p>  <div class="icons"><svg> ... </svg></div>
                                         </div>
-                                    </td>
-                                    <td><p class="text-secondary">{{ $course['perc'] }}</p></td>
-                                    <td class="text-center">
-                                        <p>2 mins ago</p>
-                                    </td>
-                                </tr>
+                                    </section>
+                                </div>
+                                
+                                        <div id="defaultAccordion{{ $course['row'] }}" class="collapse" aria-labelledby="..." data-bs-parent="#toggleAccordion">
+                                            <div class="card-body">
+                                            
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>{{ $course['name'] }}</td>
+                                                                <td>                                                    
+                                                                    <div class="progress br-30">
+                                                                        <div class="progress-bar br-30 bg-secondary" role="progressbar" style="width: {{ $course['perc'] }}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td><p class="text-secondary">{{ $course['perc'] }}</p></td>
+                                                               
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Aula</th>
+                                                                <th>Finalizada em</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @isset($course['aula'])
+                                                               @foreach ($course['aula'] as $aula)
+                                                                <tr>
+                                                                    <td>{{$aula['nome']}}</td>
+                                                                    <td><p class="text-secondary">{{$aula['data']}}</p></td>
+                                                                </tr>
+                                                                @endforeach
+                                                            @endisset
 
-                                @endforeach
-
-
-                            </tbody>
-                        </table>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>    
+                                
+                            </div>
+                                
+                            
+                        @endforeach
                     </div>
                 </div>
             </div>

@@ -602,6 +602,7 @@ class UserController extends Controller
 
         $cademi = Cademi::where('user_id', $user->id)->first();
         $i = 0;
+        $n = 0;
         if(!empty($cademi)){
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
         //dd($cademi);
@@ -609,41 +610,62 @@ class UserController extends Controller
         //dd($user);
         $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
        //dd($response);
+       //dd($response->status()); 
         $profiler = json_decode($response->body(), true);
-        if ($profiler['code'] !== 200){
+
+        //dd($profiler);
+
+        if ($response->status() !== 200){
             $courses[$i] = ["name" => "Vazio", "perc" => "0%"];
         }
         //dd($profiler);
-        if ($response['code'] == 200){
+        if ($response->status() == 200){
         $produtos = ($profiler['data']['acesso']);
+
+        //dd($produtos);
         
         foreach ($produtos as $produto){
-            //dd($produto['produto']['id']);
+            //dd($produto);
             $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
             $data = (json_decode($response->body(), true));
+
+            //dd($data);
 			
-			if(isset($data['code']) !== 200){
-				$courses[$i] = ["name" => $produto['produto']['nome'], "perc" => "0%"];
+			if($response->status() !== 200){
+				$courses[$i] = ["row" => "$i",  "name" => $produto['produto']['nome'], "perc" => "0%"];
 			}
 			//dd($courses);
             
-            if ($i == 2){
-           // dd($data);
-        }
-        if (isset($data['data']['progresso'])){
-            $courses[$i] = ["name" => $produto['produto']['nome'], "perc" => $data['data']['progresso']['total']];
-
-            //dd($courses);
+            if (isset($data['data']['progresso'])){
+                $courses[$i] = ["row" => "$i", "name" => $produto['produto']['nome'], "perc" => $data['data']['progresso']['total']];
+            }
             
-        }
-       $i++;    
+            if ($i == 1){
+                if (isset($data['data']['progresso']['aulas'][0])){
+                    //dd('s');
+                        $aulas = $data['data']['progresso']['aulas'];
+                        //dd($aulas);
+                        foreach($aulas as $aula){
+                            $courses[$i]['aula'][$n] = ["nome" => $aula['aula']['nome'], "data" => date('d-m-Y H:i:s', strtotime($aula['acesso_em']))];
+                            $n++;
+                        }
+                        $n = 0;
+                        //dd($courses);
+                    }
+                    //dd('n');
+            }
+            
+            
+
+            
+        $i++;    
     }
     }else{
-        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+        $courses[0] = ["row" => "$i", "name" => "Vazio", "perc" => "0%"];
         
     }
     }else{
-        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+        $courses[0] = ["row" => "$i","name" => "Vazio", "perc" => "0%"];
 
         //dd($courses);
     }
@@ -659,6 +681,8 @@ class UserController extends Controller
 
     */
     //dd($courses);
+
+    
         
            //dd($response->body()); 
            if(str_contains(url()->previous(), "aluno")){
@@ -704,7 +728,7 @@ class UserController extends Controller
             //dd($course['produto']['id']);
             $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
             $data = (json_decode($response->body(), true));
-if($data['code'] !== 200){
+            if($data['code'] !== 200){
 				$courses[$i] = ["name" => $produto['produto']['nome'], "perc" => "0%"];
 			}
             
@@ -721,11 +745,11 @@ if($data['code'] !== 200){
     }
 			
     }else{
-        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+        $courses[0] = ["row" => 0, "name" => "Vazio", "perc" => "0%"];
         
     }
     }else{
-        $courses[0] = ["name" => "Vazio", "perc" => "0%"];
+        $courses[0] = ["row" => 0, "name" => "Vazio", "perc" => "0%"];
 
         //dd($courses);
     }
