@@ -196,15 +196,14 @@ class CademiController extends Controller
         //dd($json);
         foreach($json as $tag){
            // dd($tag->id);
-        if(CademiTag::where('tag_id', $tag->id)->first() == ""){
-          $cademi_tag = new CademiTag();
-          $cademi_tag->tag_id = $tag->id;
-          $cademi_tag->name = $tag->nome;
-          $cademi_tag->save();
+            if(CademiTag::where('tag_id', $tag->id)->first()){
+                $cademi_tag = new CademiTag();
+                $cademi_tag->tag_id = $tag->id;
+                $cademi_tag->name = $tag->nome;
+                $cademi_tag->save();
+            }
         }
-        
         return back();
-    }
 
 }
 }
