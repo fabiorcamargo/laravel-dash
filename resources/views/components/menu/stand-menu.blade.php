@@ -113,9 +113,9 @@
                             <li class="{{ Request::routeIs('user-get-charge') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/charge"> Carregar Lista </a>
                             </li>      
-                            <li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
+                            {{--<li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/reset"> Resetar Senha </a>
-                            </li>                       
+                            </li>--}}
                         </ul>
                     </li>
                     @endcan

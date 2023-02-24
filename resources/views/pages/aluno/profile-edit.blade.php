@@ -249,11 +249,6 @@
                                                                             <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif>
                                                                             Contratou 10 Cursos
                                                                         </div>
-                                                                        <div class="form-group">
-                                                                            <input class="form-check-input me-1" id="first" name="first" type="checkbox" @if ($user->first !== 1 ) checked @endif>
-                                                                            Enviar cadastro de primeiro acesso
-                                                                        </div>
-                                                                        
                                                                     </div>
                                                                     <div class="col-md-8">
                                                                         <div class="form-group">

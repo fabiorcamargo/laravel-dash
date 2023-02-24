@@ -365,15 +365,16 @@ class UserController extends Controller
             $para = array('','');
             $user->document = str_replace($de, $para, $request->document);
             if( $request->ouro == "on"){
-            $user->ouro = 1;
-            }else{
-            $user->ouro = 0;   
-            }
+                $user->ouro = 1;
+                }else{
+                $user->ouro = 0;   
+                }
+                /*
             if( $request->first == "on"){
-            $user->first = 0;
-            } else {
+                $user->first = 0;
+                } else {
                 $user->first = 1;   
-            }
+                }*/
             $user->observation = $request->observation;
         }
            // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
