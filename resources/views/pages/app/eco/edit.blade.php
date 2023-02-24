@@ -46,6 +46,7 @@
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <h4>Nome do Produto: {{ $product->id }}</h4>
+                        <br>
                         <input type="text" class="form-control" id="name" name="name" placeholder="Nome do Produto" onblur="submeter()" value="{{ $product->name }}" required>
                     </div>
                 </div>
@@ -111,9 +112,32 @@
                                     <label class="switch-label" for="in-stock">In Stock</label>
                                 </div>
                             </div> --}}
-                            <div class="col-xxl-12 col-md-6 mb-4">
-                                <label for="proCode">Código do Produto</label>
-                                <input type="text" class="form-control" id="course_id" name="course_id" value="{{ $product->course_id }}" required>
+                            <div class="col-xxl-12 col-md-6 mb-3">
+                                <label for="flow">Código do Produto</label>
+                                <select name="course_id" id="course_id" class="form-control mb-2" required>
+                                    @foreach ($tags as $tag)
+                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a href="{{ getRouterValue(); }}/app/eco/cademi/tag" class="btn btn-light-primary mb-2 me-4">Atualizar</a>
+                            </div>
+
+                            <div class="col-xxl-12 col-md-6 mb-3">
+                                <label for="flow">Produto Base</label>
+                                <select name="product_base" id="product_base" class="form-control mb-2" disabled>
+                                    <option value="{{ $product->product_base }}">{{ $product->product_base }}</option>
+                                </select>
+                            </div>
+
+                            <div class="col-xxl-12 col-md-6 mb-3">
+                                <label for="flow">Fluxo RD</label>
+                                <select name="flow" id="flow" class="form-control mb-2" required>
+                                    <option value="{{ $product->flow }}" selected>{{ $product->flow }}</option>
+                                    @foreach ($flows as $flow)
+                                    <option value="{{ $flow->name }}">{{ $flow->name }}</option>
+                                    @endforeach
+                                </select>
+                                <a href="{{ getRouterValue(); }}/app/eco/rd/fluxo" class="btn btn-light-primary mb-2 me-4">Atualizar</a>
                             </div>
                             {{--
                             <div class="col-xxl-12 col-md-6 mb-4">
@@ -134,21 +158,26 @@
                                 </select>
                             </div>--}}
                             
-                            <div class="col-xxl-12 col-md-6 mb-4">
+                            <div class="col-xxl-12 col-md-6 mb-3">
                                 <label for="category">Categoria</label>
-                                <select class="form-select" id="category" name="category">
-                                    <option value="{{ $product->category }}">{{ $product->category }}</option>
-                                    <option value="Informática">Informática</option>
-                                    <option value="Profissionalizante">Profissionalizante</option>
-                                    <option value="Inglês">Inglês</option>
-                                    <option value="Especialidades">Especialidades</option>
-                                    <option value="Administrativo">Administrativo</option>
-                                    <option value="Kids">Kids</option>
-                                    <option value="Programação">Programação</option>
+                                <select name="category" id="category" class="form-control mb-2" required>
+                                    @foreach ($categorys as $category)
+                                    <option value="{{ $category->name }}">{{ $category->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-xxl-12 col-md-6 mb-3">
+                                <label for="category">Vendedor</label>
+                                <select name="seller" id="seller" class="form-control mb-2" required>
+                                    <option value="{{ $seller->id }}" selected>{{ $seller->name }}</option>
+                                    @foreach ($sellers as $seller)
+                                    <option value="{{ $seller->user_id }}">{{ $seller->name }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                        
-                            <div class="col-xxl-12 col-lg-6 col-md-12">
+                            <div class="col-xxl-12 col-lg-6 col-md-12 mb-3">
                                 <label for="tags">Tags (Separadas por vírgula)</label>
                                 <input id="tag" name="tag" class="product-tags" value="{{ $product->tag }}">
                             </div>

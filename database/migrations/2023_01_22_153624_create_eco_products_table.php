@@ -19,12 +19,15 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('tag')->nullable();
+            $table->string('product_base')->nullable();
+            $table->string('product_url')->nullable();
             $table->string('category')->nullable();
             $table->string('image')->nullable();
             $table->text('specification')->nullable();
             $table->float('price')->nullable();
             $table->float('percent')->nullable();
             $table->text('flow')->nullable();
+            $table->string('seller')->nullable();
             $table->json('comment')->nullable();
             $table->boolean('public');
             $table->timestamps();

@@ -26,8 +26,8 @@ class AsaasController extends Controller
 
     }
 
-    public function create_client($id, $cep){
-        $user = User::find($id);
+    public function create_client($user, $cep){
+        //$user = User::find($id);
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
         $user->name = $user->name;
         $user->name = $user->name . ((isset($user->lastname)) ? " " . $user->lastname : "");
@@ -51,14 +51,14 @@ class AsaasController extends Controller
           return $clientes;
     }
 
-    public function create_payment($user_id, $product_id, $pay, $codesale){
-        $user = User::find($user_id);
+    public function create_payment($user, $product, $pay, $codesale){
+        //$user = User::find($user_id);
         $customer = ($user->eco_client()->first()->customer_id);
-        $product = EcoProduct::find($product_id);
+        //$product = EcoProduct::find($product_id);
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
-
-        if($pay->payment == "Pix"){
+        //dd($pay->payment);
+        if($pay->payment == "PIX"){
             $pay1 = "BOLETO";
             $pay2 = "Pix";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
@@ -79,34 +79,102 @@ class AsaasController extends Controller
                 'billingType'=> $pay1,
                 'dueDate'=> $due_date,
                 'value'=> $product->price,
-                'externalReference'=> $externalReference,
+                'externalReference'=> $externalReference->id,
                 'postalService'=> false,
                 'description' => "$product->course_id | $product->name | $codesale" 
               ]);
+
+                            $token = env('ASAAS_TOKEN');
+                            $client = new \GuzzleHttp\Client();
+                            $response = $client->request('GET', 'https://sandbox.asaas.com/api/v3/payments/'. $cobranca->id . '/pixQrCode', [
+                            'headers' => [
+                                'accept' => 'application/json',
+                                'content-type' => 'application/json',
+                                'access_token' => "$token"
+                            ],
+                            ]);
+                            $response = (json_decode($response->getBody()));
+                            $cobranca->pix = $response->encodedImage;
+                            $cobranca->copy = $response->payload;
+                            $cobranca->expiry = $response->expirationDate;
+
+            } else if($pay->payment == "CREDIT_CARD"){
+                    $pay1 = "CREDIT_CARD";
+                    $due_date = (now()->addDays(1)->format('Y-m-d'));
+                    //$product->price = $product->price;
+                    $card = str_replace(array(' ', "\t", "\n"), '', $pay->number);
+                    //dd($product);
+                    //dd($product->price / $pay->parcelac);
+                    $externalReference = $user->eco_sales()->create([
+                        'customer_id' => $customer,
+                        'codesale' => $codesale,
+                        'seller' => $user->seller,
+                        'installmentCount' => (float)$pay->parcelac,
+                        'installmentValue' => (float)$product->price / $pay->parcelac,
+                    ]);
+
+                    //dd($externalReference);
+
+                    $dadosAssinatura = array(
+                        "customer" => "$customer",
+                        "billingType" => "$pay1",
+                        "installmentCount" => $pay->parcelac,
+                        'installmentValue' => $product->price / $pay->parcelac,
+                        "dueDate" => $due_date,
+                        "description" => "$product->course_id $product->name",
+                        'externalReference'=> $externalReference->id,
+                        "creditCard" => array(
+                        "holderName" => "$pay->name",
+                        "number" => "$card",
+                        "expiryMonth" => "$pay->expiryMonth",
+                        "expiryYear" => "$pay->expiryYear",
+                        "ccv" => "$pay->cvc"
+                        ),
+                        "creditCardHolderInfo" => array(
+                        "name" => "$user->name $user->lastname",
+                        "email" => "$user->email",
+                        "cpfCnpj" => "$user->document",
+                        "postalCode" => "$pay->cep",
+                        "addressNumber" => "$pay->numero",
+                        "addressComplement" => null,
+                        "phone" => "$user->cellphone",
+                        "mobilePhone" => "$user->cellphone"
+                        )
+                    );
+
+                    $cobranca = $asaas->Cobranca()->create(
+                        $dadosAssinatura
+                    );
+
+
     
-            if($pay2 == "Pix"){
-                $Pix = $asaas->Pix()->create($cobranca->id);
-                if($Pix->success){
-                   $cobranca = '<img src="data:image/jpeg;base64, '.$Pix->encodedImage.'" />';
-                }
-            }
-        } else if($pay->payment == "CREDIT_CARD"){
-            $pay1 = "CREDIT_CARD";
-            $due_date = (now()->addDays(1)->format('Y-m-d'));
-            $product->price = $product->price;
-            $card = str_replace(array(' ', "\t", "\n"), '', $pay->number);
+        }else if($pay->payment == "BOLETO"){
+                    $due_date = (now()->addDays(1)->format('Y-m-d'));
+                    $externalReference = $user->eco_sales()->create([
+                        'customer_id' => $customer,
+                        'codesale' => $codesale,
+                        'seller' => $user->seller,
+                        'installmentCount' => (float)$pay->parcelac,
+                        'installmentValue' => (float)$product->price / $pay->parcelac,
+                    ]);
 
-            //dd($product->price / $pay->parcelac);
-            $externalReference = $user->eco_sales()->create([
-                'customer_id' => $customer,
-                'codesale' => $codesale,
-                'seller' => $user->seller,
-                'installmentCount' => (float)$pay->parcelac,
-                'installmentValue' => (float)$product->price / $pay->parcelac,
-            ]);
+                    $dadosAssinatura = array(
+                        "customer" => "$customer",
+                        "billingType" => "$pay->payment",
+                        "installmentCount" => $pay->parcelab,
+                        'installmentValue' => $product->price / $pay->parcelab,
+                        "dueDate" => $due_date,
+                        "description" => "$product->course_id $product->name",
+                        'externalReference'=> $externalReference->id,
+                    );
+                    $cobranca = $asaas->Cobranca()->create(
+                    $dadosAssinatura
+                );
+        }
 
-            //dd($externalReference);
-
+        //dd($cobranca);
+        if(isset($cobranca->errors)){
+            $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
             $dadosAssinatura = array(
                 "customer" => "$customer",
                 "billingType" => "$pay1",
@@ -115,67 +183,28 @@ class AsaasController extends Controller
                 "dueDate" => $due_date,
                 "description" => "$product->course_id $product->name",
                 'externalReference'=> $externalReference->id,
-                "creditCard" => array(
-                  "holderName" => "$pay->name",
-                  "number" => "$card",
-                  "expiryMonth" => "$pay->expiryMonth",
-                  "expiryYear" => "$pay->expiryYear",
-                  "ccv" => "$pay->cvc"
-                ),
-                "creditCardHolderInfo" => array(
-                  "name" => "$user->name $user->lastname",
-                  "email" => "$user->email",
-                  "cpfCnpj" => "$user->document",
-                  "postalCode" => "$pay->cep",
-                  "addressNumber" => "$pay->numero",
-                  "addressComplement" => null,
-                  "phone" => "$user->cellphone",
-                  "mobilePhone" => "$user->cellphone"
-                )
-              );
+                'postalService'=> false
+            );
 
             $cobranca = $asaas->Cobranca()->create(
                 $dadosAssinatura
             );
-    
-        }else if($pay->payment == "BOLETO"){
-            $due_date = (now()->addDays(1)->format('Y-m-d'));
-            $externalReference = $user->eco_sales()->create([
-                'customer_id' => $customer,
-                'codesale' => $codesale,
-                'seller' => $user->seller,
-                'installmentCount' => (float)$pay->parcelac,
-                'installmentValue' => (float)$product->price / $pay->parcelac,
-            ]);
 
-            $dadosAssinatura = array(
-                "customer" => "$customer",
-                "billingType" => "$pay->payment",
-                "installmentCount" => $pay->parcelab,
-                'installmentValue' => $product->price / $pay->parcelab,
-                "dueDate" => $due_date,
-                "description" => "$product->course_id $product->name",
-                'externalReference'=> $externalReference->id,
-              );
-            $cobranca = $asaas->Cobranca()->create(
-            $dadosAssinatura
-        );
-        }
-
-        //dd($cobranca);
-        if(isset($cobranca->errors)){
             $externalReference->update([
-                'pay_id' => $cobranca->errors[0]->code,
+                'pay_id' => $cobranca->id,
                 'status' => "RECUSED",
                 'body' => json_encode($cobranca),
               ]);
+
+            
+
         }else{
 
-        $externalReference->update([
-            'pay_id' => $cobranca->id,
-            'status' => "$cobranca->status",
-            'body' => json_encode($cobranca),
-          ]);
+            $externalReference->update([
+                'pay_id' => $cobranca->id,
+                'status' => "$cobranca->status",
+                'body' => json_encode($cobranca),
+            ]);
         }
         
         //dd($cobranca);

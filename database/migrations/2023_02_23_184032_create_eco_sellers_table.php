@@ -13,10 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('rd_crm_oportunities', function (Blueprint $table) {
+        Schema::create('eco_sellers', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->json('body');
+            $table->string('name');
+            $table->string('type');
+            $table->string('percent');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('rd_crm_oportunities');
+        Schema::dropIfExists('eco_sellers');
     }
 };

@@ -222,6 +222,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::get('/product/{id}/edit', [EcommerceController::class, 'edit'])->name('eco-edit');
             Route::post('/product/{id}/edit', [EcommerceController::class, 'edit_save'])->name('eco-edit-save');
             Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-product-show');
+            Route::get('/list_sales', [EcommerceController::class, 'list_sales'])->name('eco-list_sales');
+            Route::any('/list_sales/search', [EcommerceController::class, 'search_sales'])->name('eco-list_sales-search');
             
             Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     
         });
@@ -1224,6 +1226,7 @@ Route::prefix('/app/eco')->group(function () {
         return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
     })->name('eco_checkout_end');
     Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
+    Route::get('/cademi/tag', [CademiController::class, 'cademi_tag'])->name('eco-cademi_tag');
     Route::get('/rd/fluxo', [RdController::class, 'rd_fluxos']);
     Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);
     

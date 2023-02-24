@@ -134,6 +134,9 @@
                             <li class="{{ Request::routeIs('eco-shop') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/eco/shop"> Shop </a>
                             </li>
+                            <li class="{{ Request::routeIs('eco-list_sales') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/eco/list_sales"> Vendas </a>
+                            </li>
                             {{--<li class="{{ Request::routeIs('eco-detail') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/eco/detail"> Product </a>
                             </li>--}}

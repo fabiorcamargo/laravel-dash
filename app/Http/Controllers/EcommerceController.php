@@ -4,20 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Asaas\AsaasController;
 use App\Mail\SendMailUser;
+use App\Models\CademiTag;
 use App\Models\Customer;
 use App\Models\EcoProduct;
 use App\Models\EcoProductCategory;
+use App\Models\EcoSales;
+use App\Models\EcoSeller;
 use App\Models\RdCrmFlow;
+use App\Models\RdCrmOportunity;
 use App\Models\Sales;
 use App\Models\User;
 use Canducci\Cep\Cep;
 use Canducci\Cep\CepModel;
+use CodePhix\Asaas\Asaas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 
 
@@ -33,15 +39,41 @@ class EcommerceController extends Controller
                    //dd($cities);
         return json_encode($category);
     }
+
+    public function edit($id){
+
+        $product = EcoProduct::find($id);
+        $products = EcoProduct::all();
+        $categorys = EcoProductCategory::all();
+        $sellers = EcoSeller::all();
+        
+        
+        $flows = RdCrmFlow::all();
+        $seller = EcoSeller::find($product->seller);
+        $tags = CademiTag::all();
+        //dd($products[0]->image);
+        //dd(explode(",", $products[0]->image));
+        return view('pages.app.eco.edit', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products', 'product', 'categorys', 'sellers', 'flows', 'seller', 'tags'));
+    }
+
     public function add_show(){
         $categorys = EcoProductCategory::all();
+        $products = EcoProduct::all();
+        $sellers = EcoSeller::all();
         $flows = RdCrmFlow::all();
+        $tags = CademiTag::all();
         //dd($category);
-        return view('pages.app.eco.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('categorys', 'flows'));
+        return view('pages.app.eco.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('categorys', 'products', 'flows', 'sellers', 'tags'));
     }
 
     public function add(Request $request){
         
+        //dd($request->all());
+        //dd(Carbon::now()->timestamp);
+
+
+        $time = Carbon::now()->timestamp;
+
         if(json_decode($request->comment) == ""){
             $produtos = (json_decode($request->image));
         foreach($produtos as $produto){
@@ -51,11 +83,14 @@ class EcommerceController extends Controller
         }
         
         if (EcoProduct::where('name', $request->name)->first()) {
+            $request->name = $request->name . $time;
+            /*
             $produtos = (json_decode($request->image));
         foreach($produtos as $produto){
             Storage::delete('product/' . $produto);
         }
             return back()->with('success', 'Nome do Curso já existe');
+            */
         }
 
         $comments = collect(json_decode($request->comment));
@@ -98,6 +133,9 @@ class EcommerceController extends Controller
         $eco->price = $product['price'];
         $eco->percent = $product['percent'];
         $eco->specification = $product['specification'];
+        $eco->seller = $product['seller'];
+        $eco->product_url = $time;
+        $eco->product_base = $product['product_base'];
         $eco->comment = $comments;
         $eco->flow = $product['flow'];
         $eco->save();
@@ -229,6 +267,8 @@ class EcommerceController extends Controller
     public function checkout_client_post($product_id, Request $request){
 
         $product = (EcoProduct::find($product_id));
+
+        //dd($product->id);
         
         if ((User::where('email', $request->email))->first()){
             return back()->with('erro', 'Email já existe, por favor faça login com este email para continuar');
@@ -262,7 +302,10 @@ class EcommerceController extends Controller
 
         //Cria CRM no RD
         $rd = new RdController;
-        $teste = $rd->rd_client_register($user->id, $password, $product);
+        $rd->rd_client_register($user->id, $password, $product);
+       
+        $rd2 = new RdController;
+        $rd2->rd_create_opportunity($user->id, $product);
 
         //Mail::to($user->email)->send(new SendMailUser($user));
 
@@ -285,7 +328,6 @@ class EcommerceController extends Controller
 
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
-
         //Captura dados do pagamento
         $pay = (object)$request->all();
         $cep = str_replace("-","", $request->cep);
@@ -315,26 +357,96 @@ class EcommerceController extends Controller
             //Cria o cliente no gateway
             if(!($user->eco_client()->first())){
             $asaas = new AsaasController();
-            $response = $asaas->create_client($user->id, $cep);
+            $response = $asaas->create_client($user, $cep);
             }else{
             }
             
-            if($sales = $user->eco_sales()->where('codesale', $codesale)->first()){
-                
+            //Cria cobrança no gateway
+            /*
+            if($user->eco_sales()->where('codesale', $codesale)->first()){
+                $cobranca = $user->eco_sales()->where('codesale', $codesale)->first();
+
             }else{
                 $asaas = new AsaasController();
-                $cobranca = $asaas->create_payment($user->id, $product_id, $pay, $codesale);
-            }
+                $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
+            }*/
+
+            $asaas = new AsaasController();
+            $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
+
             //dd($cobranca);
+            $invoice = json_decode($cobranca->body)->invoiceUrl;
+
+            $product->cobranca = $cobranca;
+
             $status = $cobranca->status; 
+
+            $rd = new RdController;
+            $rd->rd_update_opportunity($user, $product);
+
+            if ($cobranca->status == "PENDING"){
+                //dd($cobranca);
+                $pix = json_decode($cobranca->body)->pix;
+                $copy = json_decode($cobranca->body)->copy;
+                return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pix' => $pix, 'copy' => $copy]);
+            }
             //return redirect(getRouterValue() . "/app/eco/checkout_end");
-            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status"]);
+            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice]);
             //dd($cobranca);
 
     }
 
     public function checkout_end($id, $status){
 
+    }
+
+    public function list_sales(){
+
+        $sales = EcoSales::first()->orderBy('updated_at', 'desc')->paginate(20);
+        foreach($sales as &$sale){
+            $user = User::find($sale->user_id);
+            $sale->name = $user->name . " " . $user->lastname;
+            $sale->cellphone = $user->cellphone;
+            $sale->email = $user->email;
+            $sale->seller = $user->seller;
+            $sale->venda = json_decode($sale->body);
+            //dd($sale);
+        }
+
+        //dd($sales);
+
+        return view('pages.app.eco.list_sales', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('sales'));
+    }
+
+   public function search_sales(Request $request){
+        
+        $search = $request->search ?? '';
+         
+
+        $sales = EcoSales::where(function ($query) use ($search) {
+            if ($search) {
+                $query->where('user_id', $search);
+                $query->orWhere('codesale', 'LIKE', "%{$search}%");
+                $query->orWhere('seller', 'LIKE', "%{$search}%");
+                $query->orWhere('status', 'LIKE', "%{$search}%");
+                $query->orWhere('body', 'LIKE', "%{$search}%");
+            }
+        })
+        ->paginate();
+
+        foreach($sales as &$sale){
+            $user = User::find($sale->user_id);
+            $sale->name = $user->name . " " . $user->lastname;
+            $sale->cellphone = $user->cellphone;
+            $sale->email = $user->email;
+            $sale->seller = $user->seller;
+            $sale->venda = json_decode($sale->body);
+            //dd($sale);
+        }
+
+        //dd($sales);
+
+        return view('pages.app.eco.list_sales', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('sales'));
     }
 
     public function show(){
@@ -345,7 +457,7 @@ class EcommerceController extends Controller
         return view('pages.app.eco.list', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products'));
     }
     public function shop(){
-        $products = EcoProduct::all();
+        $products = EcoProduct::where('public', 1)->get();
         foreach ($products as $product){
             //dd(array_reverse(json_decode($product->image)));
             //dd($product);
@@ -357,12 +469,7 @@ class EcommerceController extends Controller
         //dd(explode(",", $products[0]->image));
         return view('pages.app.eco.shop', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products'));
     }
-    public function edit($id){
-        $product = EcoProduct::find($id);
-        //dd($products[0]->image);
-        //dd(explode(",", $products[0]->image));
-        return view('pages.app.eco.edit', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('product'));
-    }
+   
     public function edit_save($id, Request $request){
         //dd("chegou");
         $product = EcoProduct::find($id);
@@ -378,6 +485,8 @@ class EcommerceController extends Controller
         $request->description !== null ? $product->description = $request->description : "";
         $product->tag !== $request->tag ? $product->tag = $request->tag : "";
         $product->category !== $request->category ? $product->category = $request->category : "";
+        $product->flow !== $request->flow ? $product->flow = $request->flow : "";
+        $product->seller !== $request->seller ? $product->seller = $request->seller : "";
         $request->specification !== null ? $product->specification = $request->specification : "";
         $product->price !== $request->price ? $product->price = $request->price : "";
         $product->percent !== $request->percent ? $product->percent = $request->percent : "";

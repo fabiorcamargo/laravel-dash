@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateCommentRequest;
 use App\Models\{
     Cademi,
     CademiImport,
+    CademiTag,
     User
 };
 
@@ -183,4 +184,27 @@ class CademiController extends Controller
   
     }
 
+    public function cademi_tag(){
+
+            $url = "https://profissionaliza.cademi.com.br/api/v1/tag";
+            $response = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->get("$url"));
+
+            //dd($cademi);
+        $json = $response->data->itens; 
+        //dd($json);
+        foreach($json as $tag){
+           // dd($tag->id);
+        if(CademiTag::where('tag_id', $tag->id)->first() == ""){
+          $cademi_tag = new CademiTag();
+          $cademi_tag->tag_id = $tag->id;
+          $cademi_tag->name = $tag->nome;
+          $cademi_tag->save();
+        }
+        
+        return back();
+    }
+
+}
 }

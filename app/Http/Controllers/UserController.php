@@ -711,12 +711,13 @@ class UserController extends Controller
 
         $roles = Role::all('id', 'name');
         //dd($role);
-
+/*
         if(!empty($cademi)){
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
         //dd($cademi);
         //dd($cademicourses);
         //dd($user);
+        
         $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
 //        dd($response);
         $profiler = json_decode($response->body(), true);
@@ -752,7 +753,7 @@ class UserController extends Controller
         $courses[0] = ["row" => 0, "name" => "Vazio", "perc" => "0%"];
 
         //dd($courses);
-    }
+    }*/
 
     $states = State::all('name', 'id');
     
@@ -761,9 +762,9 @@ class UserController extends Controller
            //dd($response->body()); 
 
            if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states', 'roles'));
+            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'states', 'roles'));
            }else{
-            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'states', 'roles'));
+            return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'states', 'roles'));
            }
            
        
