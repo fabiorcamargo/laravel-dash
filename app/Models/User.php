@@ -109,6 +109,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(EcoSales::class);
     }
+    public function eco_seller()
+    {
+        return $this->hasOne(EcoSeller::class);
+    }
     public function payment()
     {
         return $this->hasMany(Payment::class);

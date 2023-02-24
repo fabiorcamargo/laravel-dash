@@ -456,8 +456,17 @@ class EcommerceController extends Controller
         //dd(explode(",", $products[0]->image))
         return view('pages.app.eco.list', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products'));
     }
-    public function shop(){
-        $products = EcoProduct::where('public', 1)->get();
+    public function shop(Request $request){
+        //dd($request->public);
+        if($request->public == 1){
+            $public = 0;
+            $products = EcoProduct::all();
+        }else{
+            $public = 1;
+            $products = EcoProduct::where([['public', 1]])->get();
+        }
+        //dd($request->all());
+        
         foreach ($products as $product){
             //dd(array_reverse(json_decode($product->image)));
             //dd($product);
@@ -467,7 +476,7 @@ class EcommerceController extends Controller
         }
         //dd($products[0]->image);
         //dd(explode(",", $products[0]->image));
-        return view('pages.app.eco.shop', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products'));
+        return view('pages.app.eco.shop', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products', 'public'));
     }
    
     public function edit_save($id, Request $request){
@@ -502,5 +511,25 @@ class EcommerceController extends Controller
         //dd(explode(",", $products[0]->image));
         $sucess = "Atualizado";
         return redirect(getRouterValue() . "/app/eco/product/$product->id")->with('sucess', 'Verdade');
+    }
+
+    public function create_seller ($id, Request $request){
+        $type = $request->type;
+        //dd($type);
+        $user = User::find($id);
+        $user->eco_seller()->create([
+            "name" => $user->name . " " . $user->lastname,
+            "type" => $type,
+        ]);
+        return back();
+    }
+
+    public function delete_seller ($id){
+
+        $user = User::find($id);
+        $user->eco_seller()->update([
+            "type" => 0,
+        ]);
+        return back();
     }
 }

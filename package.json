@@ -12,6 +12,7 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
+        "@tabler/icons": "^2.5.0",
         "bootstrap": "^5.2.1",
         "card": "^2.5.4",
         "filepond": "^4.30.4",

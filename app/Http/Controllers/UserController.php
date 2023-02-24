@@ -8,6 +8,8 @@ use App\Models\Cademi;
 use App\Models\CademiCourse;
 use App\Models\CademiImport;
 use App\Models\City;
+use App\Models\EcoSallerType;
+use App\Models\EcoSeller;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\TemporaryFile;
@@ -669,26 +671,19 @@ class UserController extends Controller
 
         //dd($courses);
     }
-    /*
-    $c = CademiCourse::where('user_id', $user->id)->get();
-    foreach ($courses as $course){
-        if(str_contains($course->name, "PRE" ));
+
+    if(  EcoSeller::where([['user_id', '=', $user->id],['type', '<>', 0]])->first() ){
+                            //dd("sim");
+        $seller = "sim";
+    }else{
+        $seller = "não";
     }
+        $seller_types = EcoSallerType::all();
 
-    
-
-    dd($c[0]->course_id);
-
-    */
-//    dd($courses);
-
-    
-        
-           //dd($response->body()); 
            if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller'));
         } else {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller'));
         }
            
        

@@ -42,52 +42,6 @@
             <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4 mt-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> Usuário atualizado com sucesso! </div>
         @endif
 
-        <div id="bloquearModal" class="modal animated fadeInDown" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Bloqueio de Usuário</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                          <p class="modal-text">Você tem certeza que deseja prosseguir com o bloqueio do usuário?<br><br>Para efetuar o desbloqueio siga o procedimento:<br>1º Ative as compras do usuário na Cademi;<br>2º Clique em desbloquear aqui no sistema;</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
-                        <button type="button" href="javascript:void(0);" onClick="document.getElementById('delete_form').submit();" class="btn btn-danger">Bloquear</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="desbloquearModal" class="modal animated fadeInDown" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Desbloquear Usuário</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                        </button>
-                    </div>
-
-                    <div class="modal-body">
-                        @isset($user->cademis->first()->user)  
-                        <p class="modal-text">Siga as etapas abaixo antes de prosseguir?<br><br>1º Ative as compras do usuário na Cademi <a class="btn btn-secondary  mb-2 me-4 btn-sm" target="_blank" href="https://profissionaliza.cademi.com.br/office/usuario/perfil/compras/{{ $user->cademis->first()->user }}">Compras</a></p><p>2º Clique em desbloquear</p>
-                        @endisset
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
-                        <button type="button" href="javascript:void(0);" onClick="document.getElementById('active_form').submit();" class="btn btn-success">Desbloquear</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Content -->
         <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 layout-top-spacing">
             <div class="user-profile">
@@ -101,7 +55,52 @@
                         
                         <img src="{{ asset($user->image) }}" alt="avatar">
                         <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
-                        @if ((Auth::user()->role) == 7)
+                        @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
+                        <div id="bloquearModal" class="modal animated fadeInDown" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Bloqueio de Usuário</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                        </button>
+                                    </div>
+                
+                                    <div class="modal-body">
+                                          <p class="modal-text">Você tem certeza que deseja prosseguir com o bloqueio do usuário?<br><br>Para efetuar o desbloqueio siga o procedimento:<br>1º Ative as compras do usuário na Cademi;<br>2º Clique em desbloquear aqui no sistema;</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
+                                        <button type="button" href="javascript:void(0);" onClick="document.getElementById('delete_form').submit();" class="btn btn-danger">Bloquear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                        <div id="desbloquearModal" class="modal animated fadeInDown" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Desbloquear Usuário</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                          <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                        </button>
+                                    </div>
+                
+                                    <div class="modal-body">
+                                        @isset($user->cademis->first()->user)  
+                                        <p class="modal-text">Siga as etapas abaixo antes de prosseguir?<br><br>1º Ative as compras do usuário na Cademi <a class="btn btn-secondary  mb-2 me-4 btn-sm" target="_blank" href="https://profissionaliza.cademi.com.br/office/usuario/perfil/compras/{{ $user->cademis->first()->user }}">Compras</a></p><p>2º Clique em desbloquear</p>
+                                        @endisset
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
+                                        <button type="button" href="javascript:void(0);" onClick="document.getElementById('active_form').submit();" class="btn btn-success">Desbloquear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                                     @if($user->first == 2)
                                     <form action="{{ route('user-profile-delete', $user->id) }}" method="POST" id="delete_form" class="py-12">
                                         @method('DELETE')
@@ -122,7 +121,71 @@
                                     </form>
                                     @endif
                         @endif
-
+                        @if ($seller == "não")        
+                            @if ((Auth::user()->role) == 8)
+                            <div id="vendedorModal" class="modal animated fadeInDown" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Criar Vendedor</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                        </div>
+                                        <form action="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/seller_create"  method="POST" id="create_seller_form" class="py-12">
+                                            @csrf
+                                        <div class="modal-body">
+                                              <h6 class="modal-text mb-4">Se você realmente quer tornar esse usuário vendedor escolha o tipo de vendedor e clique em <b>Criar</b></h6>
+                                              <label for="type"> Tipo de Vendedor:</label>
+                                              <select name="type" id="type" class="form-control mb-4">
+                                                @foreach ($seller_types as $types)
+                                                <option value={{ $types->id }}>{{ $types->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        </form>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('create_seller_form').submit();" class="btn btn-primary">Criar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a data-bs-toggle="modal" data-bs-target="#vendedorModal"  class="btn btn-primary btn-lg mt-4" data-toggle="tooltip" data-placement="top" title="Tornar Vendedor"> Tornar Vendedor
+                                <x-widgets._w-svg svg="cash-banknote"/>
+                            </a>
+                            @endif
+                        @elseif ($seller == "sim") 
+                            @if ((Auth::user()->role) == 8)
+                            <div id="vendedordModal" class="modal animated fadeInDown" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Criar Vendedor</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                              <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                        </div>
+                                        <form action="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/seller_delete"  method="POST" id="delete_seller_form" class="py-12">
+                                            @csrf
+                                        <div class="modal-body">
+                                              <h6 class="modal-text mb-4">Se você realmente deseja excluir esse vendedor, apenas a função vendedor será removida o acesso como usuário permanece normal.<br><br>Para prosseguir clique em <b>Excluir</b></h6>
+                                        </div>
+                                        </form>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('delete_seller_form').submit();" class="btn btn-primary">Excluir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <a data-bs-toggle="modal" data-bs-target="#vendedordModal"  class="btn btn-warning btn-lg mt-4" data-toggle="tooltip" data-placement="top" title="Remover Vendedor"> Remover Vendedor
+                                <x-widgets._w-svg svg="cash-banknote"/>
+                            </a>
+                            @endif
+                        @endif
                     </div>
                     <div class="user-info-list">
                         
@@ -141,7 +204,7 @@
                                 <li class="contacts-block__item">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone me-3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> {{ $user->cellphone }}
                                 </li>
-                                @if ((Auth::user()->role) == 7)
+                                @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
                                 <li class="contacts-block__item">
                                     <a href="mailto:{{ $user->email2 }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail me-3"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>{{ $user->email2 }}</a>
                                 </li>
@@ -176,7 +239,7 @@
                                 
                                 
                                 <li class="contacts-block__item">
-                                    @if ((Auth::user()->role) == 7)
+                                    @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
                                     <div class="clipboard">
                                         <form class="form-horizontal">
                                             <div class="clipboard-input">
@@ -289,7 +352,7 @@
                     </div>
                 </div>
             </div>
-            @if ((Auth::user()->role) == 7)
+            @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
             <div class="summary layout-spacing pt-5">
                 <div class="widget-content widget-content-area">
                     <h3 class="">Observações</h3>

@@ -200,6 +200,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('user-profile-edit');
                 Route::post('/profile/{id}/active', [UserController::class, 'active'])->name('user-profile-active');
                 Route::delete('/profile/{id}/delete', [UserController::class, 'delete'])->name('user-profile-delete');
+
+                Route::post('/profile/{id}/seller_create', [EcommerceController::class, 'create_seller'])->name('user-profile-seller-create');
+                Route::post('/profile/{id}/seller_delete', [EcommerceController::class, 'delete_seller'])->name('user-profile-seller-delete');
                 Route::get('/charge', [TemporaryFileController::class, 'getcharge'])->name('user-get-charge');
                   
 
@@ -217,7 +220,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::prefix('/eco')->group(function () {
             Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
             Route::get('/list', [EcommerceController::class, 'show'])->name('eco-list');
-            Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
+            Route::any('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
             Route::get('/add', [EcommerceController::class, 'add_show'])->name('eco-add-show');
             Route::get('/product/{id}/edit', [EcommerceController::class, 'edit'])->name('eco-edit');
             Route::post('/product/{id}/edit', [EcommerceController::class, 'edit_save'])->name('eco-edit-save');
