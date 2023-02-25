@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     ApiController,
     CademiController,
+    ChatbotController,
     EcommerceController,
     FilepondController,
     FileUploadController,
@@ -215,7 +216,13 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                     return view('pages.app.user.reset', ['title' => 'Profissionaliza EAD | Reset de Senha', 'breadcrumb' => 'Reset de Senha', 'avatar' => "Auth::user()->id"]);
                 })->name('user-reset');
             });
+
+            Route::prefix('/group')->group(function () {
+                Route::get('/add', [ChatbotController::class, 'group_add_show'])->name('group-add-show');
+                Route::post('/add', [ChatbotController::class, 'group_add_create'])->name('group-add-create');
+            });
         });
+
 
         Route::prefix('/eco')->group(function () {
             Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');

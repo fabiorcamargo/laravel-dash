@@ -54,7 +54,7 @@
                         <div class="widget-content widget-content-area ecommerce-create-section">
                         <h4>Nome do Produto:</h4>
                         <br>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="Nome do Produto" onblur="submeter()" required>
+                        <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Nome do Produto" required>
                         </div>
                     </div>
                 </div>
