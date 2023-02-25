@@ -523,7 +523,7 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = bcrypt($request->password);
         $data['image'] = 'avatar/default.jpeg';
-        dd($data);
+        //dd($data);
         $user->update($data);
         
         
