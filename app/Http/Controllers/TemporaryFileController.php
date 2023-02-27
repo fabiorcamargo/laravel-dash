@@ -267,7 +267,7 @@ class TemporaryFileController extends Controller
     public function charge(Request $request)
     {
        
-        dd($_COOKIE['city']);
+        //dd($_COOKIE['city']);
         $data = $this->file->where('folder', $request->image)->first();
         
         $folder =  $data->folder;
