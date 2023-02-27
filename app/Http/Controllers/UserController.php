@@ -470,7 +470,7 @@ class UserController extends Controller
         } else {
             $avatar = "/default.jpeg";
         }
-
+/*
         $user = User::find(Auth::user()->id);
         if ($user->uf2 != ""){
         $state = State::where("abbr", $user->uf2)->first();
@@ -485,9 +485,9 @@ class UserController extends Controller
         }
     }else{
         $groups = null;
-    }
+    }*/
 
-        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card], compact('groups'));
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
 
     }
 
