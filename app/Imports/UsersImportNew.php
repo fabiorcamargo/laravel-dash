@@ -7,11 +7,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow
+class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHeadingRow, SkipsEmptyRows
 {
     use Importable;
     /**
