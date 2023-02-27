@@ -472,6 +472,7 @@ class UserController extends Controller
         }
 
         $user = User::find(Auth::user()->id);
+        if ($user->uf2 != ""){
         $state = State::where("abbr", $user->uf2)->first();
         $city = City::where([["name", $user->city2],["state_id", $state->id]])->first();
 
@@ -482,6 +483,9 @@ class UserController extends Controller
             $groups[$i] = ChatbotGroup::where([["city", $city->id],["group_code", $course]])->first();
             $i++;
         }
+    }else{
+        $groups = null;
+    }
 
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card], compact('groups'));
 
