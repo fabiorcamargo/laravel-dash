@@ -7,6 +7,7 @@ use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\CademiCourse;
 use App\Models\CademiImport;
+use App\Models\ChatbotGroup;
 use App\Models\City;
 use App\Models\EcoSallerType;
 use App\Models\EcoSeller;
@@ -458,7 +459,6 @@ class UserController extends Controller
             if (Cademi::where('user_id', Auth::user()->id)->first()){
             if((Auth::user()->courses != "")){
                 $card = "resources/images/Curso Liberado.jpg";
-                //dd($card);
             }
             
             }else{
@@ -471,8 +471,19 @@ class UserController extends Controller
             $avatar = "/default.jpeg";
         }
 
-        
-        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+        $user = User::find(Auth::user()->id);
+        $state = State::where("abbr", $user->uf2)->first();
+        $city = City::where([["name", $user->city2],["state_id", $state->id]])->first();
+
+        $r = str_replace(" ", "", $user->courses);
+        $courses = explode(",",  $r);
+        $i=0;
+        foreach($courses as $course){
+            $groups[$i] = ChatbotGroup::where([["city", $city->id],["group_code", $course]])->first();
+            $i++;
+        }
+
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card], compact('groups'));
 
     }
 

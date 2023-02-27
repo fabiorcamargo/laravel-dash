@@ -16,5 +16,7 @@ class ChatbotGroup extends Model
     'group_name',
     'responsavel',
     'group_link',
+    'seller',
+    'city',
     ];
 }

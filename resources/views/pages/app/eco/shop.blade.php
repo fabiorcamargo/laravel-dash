@@ -16,7 +16,7 @@
             {{--<input id="t-text" type="text" name="txt" placeholder="Search" class="form-control" required="">--}}
         </div>
         
-        @if((Auth::user()->role) == 8 || (Auth::user()->role) == 2)
+        @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
         <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 mb-4 ms-auto">
             <div class="form-check form-check-primary form-check-inline">
                 <form action="{{ getRouterValue(); }}/app/eco/shop" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
@@ -73,7 +73,7 @@
                         </div>
                         <div class="col-3">
                             <div class="badge--group">
-                                @if((Auth::user()->role) == 8 || (Auth::user()->role) == 2)
+                                @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
                                 
                                         @if($product->public == 1)
                                             <x-widgets._w-svg class="text-info" svg="eye"/>

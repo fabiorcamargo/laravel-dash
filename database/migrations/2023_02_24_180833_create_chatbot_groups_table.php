@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('periodo');
             $table->string('group_name');
             $table->string('responsavel');
+            $table->string('seller');
+            $table->string('city');
             $table->string('group_link');
             $table->timestamps();
         });

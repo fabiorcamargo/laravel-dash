@@ -1165,7 +1165,7 @@ Route::prefix('rtl')->group(function () {
  * =======================
  */
 
-Route::middleware(['auth', 'can:admin', 'can:shop'])->group(function () {
+Route::middleware(['auth', 'can:admin', 'can:e-commerce'])->group(function () {
 
     
 

@@ -145,7 +145,7 @@
                         </ul>
                     </li>
                     @endcan
-                    @can('sales')
+                    @can('e-commerce')
                     <li class="menu {{ Request::is('*/app/eco/*') ? "active" : "" }}">
                         <a href="#eco" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/eco/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">

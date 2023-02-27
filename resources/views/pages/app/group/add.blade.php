@@ -46,23 +46,24 @@
             <div class="widget-content widget-content-area blog-create-section mb-4">
                 <h5 class="mb-4">Criação de Grupos</h5>
                 <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <label>Coloque o nome do grupo com base no nome do curso.</label>
-                        <input type="text" class="form-control" name="course_name" id="course_name" placeholder="Nome" required>
-                    </div>
-                </div>
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <div class="col-xxl-12 col-md-6 mb-3">
-                            <label for="flow">Código do Curso (Código cadastrado na Cademi)</label>
+                    
+                    <div class="col-xxl-4 col-md-4 mb-3">
+                        
+                            <label for="flow">Código Cademi</label>
                             <select name="course_id" id="course_id" class="form-control mb-2" required>
                                 @foreach ($tags as $tag)
                                 <option value="{{ $tag->name }}">{{ $tag->name }}</option>
                                 @endforeach
                             </select>
                             <a href="{{ getRouterValue(); }}/app/eco/cademi/tag" class="btn btn-light-primary me-4">Atualizar</a>
-                        </div>
+                   
                     </div>
+                    <div class="col-xxl-8 col-md-8 mb-3">
+                        <label>Coloque o nome do grupo com base no nome do curso.</label>
+                        <input type="text" class="form-control" name="course_name" id="course_name" placeholder="Nome" required>
+                    </div>
+                
+                
                 </div>
                 <div class="row mb-4">
                     <div class="col-sm-12">
@@ -81,9 +82,9 @@
             
               
             <div class="widget-content widget-content-area blog-create-section">
-                <div class="row mb-4">
-                    <div class="col-sm-12">
-                        <div class="col-xxl-12 col-md-6 mb-3">
+                <div class="row mb-2">
+                   
+                        <div class="col-xxl-6 col-md-6 mb-3">
                             <label for="flow">Responsável</label>
                             <select name="responsavel" id="responsavel" class="form-control mb-2" required>
                                 @foreach ($users as $user)
@@ -91,19 +92,44 @@
                                 @endforeach
                             </select>
                         </div>
+                 
+               
+                
+                   
+                        <div class="col-xxl-6 col-md-6 mb-3">
+                            <label for="flow">Vendendor</label>
+                            <select name="seller" id="seller" class="form-control mb-2" required>
+                                @foreach ($sellers as $seller)
+                                <option value="{{ $seller->id }}">{{ $seller->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                  
+                </div>
+                <div class="row mb-2">
+                    <div class="col-sm-12">
+                        <label for="city">Cidade - Estado</label>
+                        <div class="row">
+                            <div class="mb-3">
+                                <input id="autoComplete" name="city" name="city" class="form-control" required onblur="submeter()">
+
+                            </div>
+                        </div>
                     </div>
                 </div>
+                      
                 
+                
+            </div>
+
+            <div class="widget-content widget-content-area blog-create-section mt-4">
+                <h5 class="mb-4">Informações do Grupo</h5>
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <label>Link para entrar no grupo</label>
                         <input type="text" class="form-control" name="group_link" id="group_link" placeholder="https://whats.....">
                     </div>
                 </div>
-            </div>
-
-            <div class="widget-content widget-content-area blog-create-section mt-4">
-                <h5 class="mb-4">Integração do Chatbot</h5>
                 <div class="row mb-4">
                     <div class="col-xxl-12 mb-4">
                         <label>Identificação para integração (Caso não possua deixar em branco)</label>
@@ -122,7 +148,21 @@
 
     <script type="module" src="{{asset('plugins/flatpickr/flatpickr.js')}}"></script>
     <script type="module" src="{{asset('plugins/flatpickr/custom-flatpickr2.js')}}"></script>
+    <script src="{{asset('plugins/autocomplete/autoComplete.min.js')}}"></script>
+    <script src="{{asset('plugins/autocomplete/city_autoComplete.js')}}"></script>
         @vite(['resources/assets/js/apps/blog-create.js'])
+
+        <script>
+            function submeter() {
+        
+                
+                var inpname = document.querySelector('#autoComplete').value;
+                document.cookie = "city=" + inpname + ";" + "path=/";
+                
+                console.log(inpname);
+            }
+        
+        </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
