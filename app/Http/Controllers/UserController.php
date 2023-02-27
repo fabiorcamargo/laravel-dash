@@ -325,7 +325,7 @@ class UserController extends Controller
     {
 
         
-        return view('pages.app.user.create', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.app.user.create', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
     }
 
     public function lote(Request $request)

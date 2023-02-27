@@ -98,7 +98,7 @@ class TemporaryFileController extends Controller
 
         
 
-       return view('pages.app.user.lote', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file', 'folder', 'city'));
+       return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file', 'folder', 'city'));
 
     }
     public function tmpUpload(Request $request)
@@ -295,7 +295,7 @@ class TemporaryFileController extends Controller
         //Storage::deleteDirectory("tmp/" . $folder);
         $tmp->delete();
 
-        return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
+        return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
     
 
 
@@ -314,7 +314,7 @@ class TemporaryFileController extends Controller
         }
 */
     
-       //return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file', 'folder'));
+       //return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('users', 'file', 'folder'));
 
     }
 
@@ -334,7 +334,7 @@ class TemporaryFileController extends Controller
         
    
 
-        return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('fails'));
+        return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('fails'));
 
     }
 
@@ -377,7 +377,7 @@ class TemporaryFileController extends Controller
         //Storage::deleteDirectory("tmp/" . $folder);
         $tmp->delete();
 
-        return view('pages.app.user.charge', ['title' => 'CORK Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
+        return view('pages.app.user.charge', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb'], compact('success'));
     
 }
 
