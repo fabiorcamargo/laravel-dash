@@ -110,7 +110,7 @@ class ConversionApiFB extends Controller
             
 
             $event = (new Event())
-            ->setEventName("Lead")
+            ->setEventName("ViewContent")
             ->setEventTime($tempo)
             ->setUserData($user_data)
             //->setCustomData($custom_data)
