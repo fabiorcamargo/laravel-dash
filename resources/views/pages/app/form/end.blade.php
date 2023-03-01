@@ -122,7 +122,6 @@
                                                             
                                                         <h3 class="">Profissionaliza EAD</h3>
                                                         </div>
-                                                        <p class="inv-street-addr mt-3">CNPJ: 41.769.690/0001-25</p>
                                                         <p class="inv-street-addr mt-3">Endereço: Av. Advogado Horácio Raccanello Filho, 5410 Sala 01, Maringá/PR, 87020-035</p>
                                                         
                                                     </div>
