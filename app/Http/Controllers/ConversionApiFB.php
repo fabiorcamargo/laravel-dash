@@ -75,7 +75,7 @@ class ConversionApiFB extends Controller
             //exit();
     }
 
-    public function Lead(){
+    public function ViewContent(){
 
         function geraid() {
             $data = openssl_random_pseudo_bytes(16);
