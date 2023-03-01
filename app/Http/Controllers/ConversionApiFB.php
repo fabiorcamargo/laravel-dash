@@ -34,8 +34,7 @@ class ConversionApiFB extends Controller
             $access_token = env('CONVERSIONS_API_ACCESS_TOKEN');
             $pixel_id = env('CONVERSIONS_API_PIXEL_ID');
 
-            $api = new FacebookAds;
-            $api->Api->init(null, null, $access_token);
+            $api = Api::init(null, null, $access_token);
             $api->setLogger(new CurlLogger());
 
             $user_data = (new UserData())  
