@@ -14,5 +14,6 @@ class FormCampain extends Model
         'city',
         'description',
         'redirect',
+        'chip',
     ];
 }
