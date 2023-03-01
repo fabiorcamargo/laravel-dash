@@ -73,7 +73,8 @@ class FormController extends Controller
         $user->seller = "Internet";
         $user->password = bcrypt($password);
         $user->role = "1";
-        $user->active = "1";
+        $user->active = "2";
+        $user->first = "1";
         $user->courses = "GRATUITO-AUX";
         $user->document = 99999999999;
         $user->save();
@@ -92,9 +93,8 @@ class FormController extends Controller
         $send = new ChatbotAsset;
         //$send->chatbot_send($form->chip, $numero, $msg);
 
-        $event = new ConversionApiFB;
         
-
+        $event = new ConversionApiFB;
         $eventid = $event->Lead();
 
         //dd('teste');

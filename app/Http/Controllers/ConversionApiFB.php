@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ConversionApiFB extends Controller
 {
+    
     public function geraid() {
         $data = openssl_random_pseudo_bytes(16);
     
@@ -28,6 +29,7 @@ class ConversionApiFB extends Controller
 
     public function Lead(){
 
+        if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
             $eventid = ConversionApiFB::geraid();
@@ -75,10 +77,12 @@ class ConversionApiFB extends Controller
             unset($url);
             //exit();
             return $eventid;
+        }
     }
 
     public function ViewContent(){
 
+        if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
             $eventid = ConversionApiFB::geraid();
@@ -136,4 +140,5 @@ class ConversionApiFB extends Controller
 
             return $eventid;
     }
+}
 }

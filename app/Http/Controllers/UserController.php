@@ -282,7 +282,7 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
-        $users = User::first()->orderBy('updated_at', 'desc')->paginate(20);
+        $users = User::first()->where('active', 1)->orderBy('updated_at', 'desc')->paginate(20);
         return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
 

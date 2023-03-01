@@ -175,7 +175,7 @@
                                                             </div>
                                                             </div>
                                                             <label for="defaultEmailAddress">Cidade</label>
-                                                            <input type="text" class="form-control mb-4" placeholder="Cidade" name="nome" id="nome"  autocomplete="on" required >
+                                                            <input type="text" class="form-control mb-4" placeholder="Cidade" name="city" id="city"  autocomplete="on" required >
                                                             
 
                                                             {{--<div class="form-group">
