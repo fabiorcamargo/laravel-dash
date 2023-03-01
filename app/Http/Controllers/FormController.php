@@ -22,6 +22,7 @@ class FormController extends Controller
             'city' => $request->form_city,
             'description' => $request->description,
             'redirect' => $request->redirect,
+            'chip' => $request->chip,
         ]);
         //dd($request->all());
         return back();
@@ -74,7 +75,7 @@ class FormController extends Controller
         $user->save();
 
         Auth::login($user);
-        
+
         $user->password = $password;
 
         $numero = preg_replace("/[^0-9]/", "", $request->cellphone);
