@@ -74,7 +74,7 @@ class FormController extends Controller
         $user->document = 99999999999;
         $user->save();
 
-        Auth::login($user);
+        //Auth::login($user);
 
         $user->password = $password;
 
