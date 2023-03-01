@@ -34,6 +34,9 @@ class FormController extends Controller
 
         $form = FormCampain::find($id);
 
+        $event = new ConversionApiFB;
+        $eventid = $event->ViewContent();
+
         return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));
     }
 
@@ -90,7 +93,9 @@ class FormController extends Controller
         //$send->chatbot_send($form->chip, $numero, $msg);
 
         $event = new ConversionApiFB;
-        $event->Lead();
+        
+
+        $eventid = $event->Lead();
 
         //dd('teste');
         

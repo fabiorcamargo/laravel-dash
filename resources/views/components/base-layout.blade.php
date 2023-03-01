@@ -11,7 +11,6 @@
 @php
     $isBoxed = layoutConfig()['boxed'];
     $isAltMenu = layoutConfig()['alt-menu']; 
-
 @endphp
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -32,26 +31,6 @@
         @vite(['resources/layouts/collapsible-menu/loader.js'])
     @else @vite(['resources/layouts/vertical-dark-menu/loader.js'])
     @endif
-
-    <script>
-        <!-- Meta Pixel Code -->
-        <script>
-        !function(f,b,e,v,n,t,s)
-        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-        n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];
-        s.parentNode.insertBefore(t,s)}(window, document,'script',
-        'https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '881551146233401');
-        fbq('track', 'ViewContent');
-        </script>
-        <noscript><img height="1" width="1" style="display:none"
-        src="https://www.facebook.com/tr?id=881551146233401&ev=ViewContent&noscript=1"
-        /></noscript>
-        <!-- End Meta Pixel Code -->
-    </script>
     
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{{asset('plugins/bootstrap/bootstrap.min.css')}}">

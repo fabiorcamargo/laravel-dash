@@ -73,6 +73,7 @@ class ConversionApiFB extends Controller
             unset($token);
             unset($url);
             //exit();
+            return $eventid;
     }
 
     public function ViewContent(){
@@ -123,5 +124,7 @@ class ConversionApiFB extends Controller
             unset($token);
             unset($url);
             //exit();
+
+            return $eventid;
     }
 }
