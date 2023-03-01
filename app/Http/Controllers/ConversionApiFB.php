@@ -62,7 +62,7 @@ class ConversionApiFB extends Controller
             array_push($events, $event);
 
             $request = (new EventRequest($pixel_id))
-                ->setTestEventCode('TEST78183')
+                ->setTestEventCode('TEST9910')
                 ->setEvents($events);
             $response = $request->execute();
             dd($response);
