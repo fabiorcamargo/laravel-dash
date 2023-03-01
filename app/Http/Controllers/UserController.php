@@ -22,6 +22,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 
 
+
+
 class UserController extends Controller
 {
     protected $model;
@@ -486,6 +488,9 @@ class UserController extends Controller
     }else{
         $groups = null;
     }*/
+
+        //$event = new ConversionApiFB;
+        //$event->Lead();
 
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
 

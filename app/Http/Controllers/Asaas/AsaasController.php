@@ -272,4 +272,31 @@ class AsaasController extends Controller
         
         dd($recorded->object()->data->usuario);
     }
+
+    public function get_customer(){
+        $user = auth()->user();
+
+        $filtros = array(
+            "cpfCnpj" => "05348908908"
+        );
+
+        $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
+        $clientes = $asaas->Cliente()->getAll($filtros)->data;
+
+        
+        if($clientes == null){
+            dd('vazio');
+        }else{
+            dd('cheio');
+        }
+
+        dd($clientes);
+        
+        $user->eco_client()->create([
+            'seller' => $user->seller,
+            'customer_id' => $clientes->id,
+            'body' => json_encode($clientes),
+        ]);
+        //dd($user);
+    }
 }

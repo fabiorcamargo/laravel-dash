@@ -7,6 +7,7 @@ use App\Http\Controllers\{
     EcommerceController,
     FilepondController,
     FileUploadController,
+    FormController,
     RdController,
     TemporaryFileController,
     UserController
@@ -148,6 +149,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
         Route::get('/users/cademi/verify', [ApiController::class, 'verify'])->name('cademi.verify');
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
+
+
     
 
 
@@ -202,9 +205,13 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/profile/{id}/active', [UserController::class, 'active'])->name('user-profile-active');
                 Route::delete('/profile/{id}/delete', [UserController::class, 'delete'])->name('user-profile-delete');
 
+                Route::get('/profile/{id}/pay', [UserController::class, 'profile_edit'])->name('user-profile-edit');
+
                 Route::post('/profile/{id}/seller_create', [EcommerceController::class, 'create_seller'])->name('user-profile-seller-create');
                 Route::post('/profile/{id}/seller_delete', [EcommerceController::class, 'delete_seller'])->name('user-profile-seller-delete');
                 Route::get('/charge', [TemporaryFileController::class, 'getcharge'])->name('user-get-charge');
+
+                Route::get('/customer', [AsaasController::class, 'get_customer'])->name('user-get_customer');
                   
 
                 Route::get('/newids', function () {
@@ -220,6 +227,12 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::prefix('/group')->group(function () {
                 Route::get('/add', [ChatbotController::class, 'group_add_show'])->name('group-add-show');
                 Route::post('/add', [ChatbotController::class, 'group_add_create'])->name('group-add-create');
+            });
+            Route::prefix('/form')->group(function () {
+                Route::get('/add', [FormController::class, 'add_show'])->name('fomr-add-show');
+                //Route::get('/end/{id}', [FormController::class, 'end_show'])->name('fomr-end-show');
+                //Route::post('/end/{id}', [FormController::class, 'end_post'])->name('fomr-end-post');
+                Route::post('/add', [FormController::class, 'create'])->name('form-add-create');
             });
         });
 
@@ -1241,6 +1254,13 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);
     
     
+});
+
+Route::prefix('/app/form')->group(function () {
+
+    Route::get('/end/{id}', [FormController::class, 'end_show'])->name('form-end-show');
+    Route::post('/end/{id}', [FormController::class, 'end_post'])->name('form-end-post');
+
 });
 
 });

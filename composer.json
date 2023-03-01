@@ -4,6 +4,12 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Fábio Camargo",
+            "email": "fabiorcamargo@gmail.com"
+        }
+    ],
     "require": {
         "php": "^8.0.2",
         "canducci/cep": "^3.1",
@@ -16,7 +22,8 @@
         "laravel/tinker": "^2.7",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.26",
-        "psr/simple-cache": "^2.0"
+        "psr/simple-cache": "^2.0",
+        "facebook/php-business-sdk": "^15.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

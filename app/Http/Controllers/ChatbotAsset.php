@@ -2,28 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatbotAsset as ModelsChatbotAsset;
 use Carbon\Carbon;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class ChatbotAsset extends Controller
 {
-    public function chatbot_send (){
+    public function chatbot_send ($chip, $number, $message){
 
         //dd($request->all());
-        $number = "4299162289";
-        $message = "Oi";
+        $ativo = ModelsChatbotAsset::find($chip);
+        //dd($ativo);
+        //$number = "4299162289";
+        //$message = "Oi";
 
-    $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://v5.chatpro.com.br/chatpro-3caeb4022d/api/v1/send_message', [
-        'body' => '{"number":"' . $number . '","message":"' . $message . '"}',
-        'headers' => [
-            'Authorization' => 'f7d6e4d5b650b3f7bdc2a4b319f58d9d',
-            'accept' => 'application/json',
-            'content-type' => 'application/json',
-        ],
+        $response = Http::withHeaders([
+            'Authorization' => $ativo->token
+        ])->post('https://v5.chatpro.com.br/' . $ativo->asset . '/api/v1/send_message', [
+            "number" => $number,
+            "message" => $message
         ]);
+
+
+        //dd($response->getBody());
     }
 
     public function chatbot_convert_data (Request $request){
