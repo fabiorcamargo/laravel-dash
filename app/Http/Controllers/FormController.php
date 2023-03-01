@@ -74,6 +74,8 @@ class FormController extends Controller
         $user->document = 99999999999;
         $user->save();
 
+        Auth::loginUsingId($user->id, TRUE);
+
         //Auth::login($user);
 
         $user->password = $password;
@@ -86,7 +88,8 @@ class FormController extends Controller
         $send = new ChatbotAsset;
         $send->chatbot_send($form->chip, $numero, $msg);
 
-        
+        $event = new ConversionApiFB;
+        $event->Lead();
 
         //dd('teste');
         
