@@ -71,6 +71,13 @@
                         <input type="text" class="form-control" id="redirect" name="redirect" placeholder="Nome do Produto" required>
                         </div>
                     </div>
+                    <div class="col-sm-12">
+                        <div class="widget-content widget-content-area ecommerce-create-section">
+                        <h4>Chip:</h4>
+                        <br>
+                        <input type="text" class="form-control" id="chip" name="chip" placeholder="Chip confirmação" required>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row mb-4">
