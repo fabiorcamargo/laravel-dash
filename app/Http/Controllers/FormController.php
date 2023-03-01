@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\FormCampain;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 
 class FormController extends Controller
@@ -74,9 +75,9 @@ class FormController extends Controller
         $user->document = 99999999999;
         $user->save();
 
-        Auth::loginUsingId($user->id, TRUE);
+        //Auth::loginUsingId($user->id, TRUE);
 
-        //Auth::login($user);
+        Auth::login($user);
 
         $user->password = $password;
 
