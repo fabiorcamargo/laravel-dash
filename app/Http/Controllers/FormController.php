@@ -87,7 +87,7 @@ class FormController extends Controller
         $form = FormCampain::find($id);
         //dd($form);
         $send = new ChatbotAsset;
-        $send->chatbot_send($form->chip, $numero, $msg);
+        //$send->chatbot_send($form->chip, $numero, $msg);
 
         $event = new ConversionApiFB;
         $event->Lead();

@@ -72,6 +72,6 @@ class ConversionApiFB extends Controller
             unset($pixel);
             unset($token);
             unset($url);
-            exit();
+            //exit();
     }
 }
