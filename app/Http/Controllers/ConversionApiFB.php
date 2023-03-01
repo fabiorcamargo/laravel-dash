@@ -65,7 +65,7 @@ class ConversionApiFB extends Controller
                 ->setTestEventCode('TEST9910')
                 ->setEvents($events);
             $response = $request->execute();
-            dd($response);
+            //dd($response);
 
             //header('Location: ' . $url, true, $permanent ? 301 : 302);
 
