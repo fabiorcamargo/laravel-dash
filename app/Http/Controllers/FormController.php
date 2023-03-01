@@ -61,8 +61,8 @@ class FormController extends Controller
         $user->username = $username;
         $user->name =$nome[0];
         $user->lastname =  (isset($nome[1])) ? $nome[1] : "";
-        $user->email = $request->email;
-        $user->email2 = $request->email;
+        $user->email = $username . "@profissionalizaead.com.br";
+        $user->email2 = $username . "@profissionalizaead.com.br";
         $user->cellphone = preg_replace('/[^0-9]/', '',$request->cellphone);
         $user->cellphone2 = preg_replace('/[^0-9]/', '',$request->cellphone);
         $user->secretary = "TB";
