@@ -64,10 +64,14 @@ class ConversionApiFB extends Controller
             $events = array();
             array_push($events, $event);
 
-            $request = (new EventRequest($pixel_id))
-                ->setTestEventCode('TEST9910')
-                ->setEvents($events);
-            $response = $request->execute();
+            if(env('CONVERSIONS_API_TEST') == true){
+                $request = (new EventRequest($pixel_id))
+                    ->setTestEventCode(env('CONVERSIONS_API_TEST_CODE'))
+                    ->setEvents($events);
+                }else{
+                    $request = (new EventRequest($pixel_id))
+                    ->setEvents($events);
+                }
             //dd($response);
 
             //header('Location: ' . $url, true, $permanent ? 301 : 302);
@@ -89,6 +93,7 @@ class ConversionApiFB extends Controller
 
             $access_token = env('CONVERSIONS_API_ACCESS_TOKEN');
             $pixel_id = env('CONVERSIONS_API_PIXEL_ID');
+           
 
             $api = Api::init(null, null, $access_token);
             $api->setLogger(new CurlLogger());
@@ -124,10 +129,17 @@ class ConversionApiFB extends Controller
                 
             $events = array();
             array_push($events, $event);
-
+            
+            if(env('CONVERSIONS_API_TEST') == true){
             $request = (new EventRequest($pixel_id))
-                ->setTestEventCode('TEST9910')
+                ->setTestEventCode(env('CONVERSIONS_API_TEST_CODE'))
                 ->setEvents($events);
+            }else{
+                $request = (new EventRequest($pixel_id))
+                ->setEvents($events);
+            }
+
+                
             $response = $request->execute();
             //dd($response);
 
