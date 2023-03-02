@@ -16,4 +16,9 @@ class FormCampain extends Model
         'redirect',
         'chip',
     ];
+
+    public function leads()
+    {
+        return $this->hasMany(FormLead::class);
+    }
 }

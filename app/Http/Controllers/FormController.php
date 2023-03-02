@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\FormCampain;
+use App\Models\FormLead;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -82,12 +83,17 @@ class FormController extends Controller
 
         Auth::login($user);
 
+        $form = FormCampain::find($id);
+        $form->leads()->create([
+            'user_id' => $user->id
+        ]);
+
         $user->password = $password;
 
         $numero = preg_replace("/[^0-9]/", "", $request->cellphone);
         $nome = $request->name;
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\nPara confirmar o recebimento dos dados, salve o nosso contato e nos envie um *ok*.";
-        $form = FormCampain::find($id);
+        
         //dd($form);
         $send = new ChatbotAsset;
         //$send->chatbot_send($form->chip, $numero, $msg);
@@ -98,7 +104,7 @@ class FormController extends Controller
 
         //dd('teste');
         
-        return Redirect('https://alunos.profissionalizaead.com.br/modern-dark-menu/aluno/my');
+        return Redirect('/modern-dark-menu/aluno/my');
     }
     public function code_verify(Request $request){
         //dd($request->all());
