@@ -83,6 +83,8 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
+
+                        Route::post('/form/code/send', [FormController::class, 'code_verify'])->name('form-code');
                         
                         
                         
@@ -150,7 +152,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::get('/users/cademi/verify', [ApiController::class, 'verify'])->name('cademi.verify');
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
 
-        Route::post('/form/code/send', [FormController::class, 'code_verify'])->name('form-code');
+        
         
 
 
