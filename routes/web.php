@@ -44,7 +44,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
         Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
         
-    
+        
     
      
     
@@ -149,6 +149,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
         Route::get('/users/cademi/verify', [ApiController::class, 'verify'])->name('cademi.verify');
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
+
+        Route::post('/form/code/send', [FormController::class, 'code_verify'])->name('form-code');
+        
 
 
     
@@ -1263,8 +1266,14 @@ Route::prefix('/app/form')->group(function () {
 
 });
 
+
+
+
+
 });
 }
+
+Route::get('/form/{id}', [FormController::class, 'redir'])->name('form-redirect');
 
 Route::get('/', function () {
     return Redirect::to('https://ead.profissionalizaead.com.br/');;

@@ -492,6 +492,12 @@ class UserController extends Controller
         //$event = new ConversionApiFB;
         //$event->Lead();
 
+        //dd(Auth::user()->courses);
+        if (Auth::user()->courses == "GRATUITO-AUX"){
+            $card = "resources/images/GRATUITO-AUX.jpg";
+            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);    
+        }
+
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
 
     }

@@ -8,7 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-
 class FormController extends Controller
 {
     public function add_show(){
@@ -100,6 +99,20 @@ class FormController extends Controller
         //dd('teste');
         
         return Redirect('https://alunos.profissionalizaead.com.br/modern-dark-menu/aluno/my');
+    }
+    public function code_verify(Request $request){
+        //dd($request->all());
+        $status = "error";
+        $msg = "Código de ativação inválido";
+
+        return back()->with($status, $msg);
+    }
+
+    public function redir($id){
+        //dd('test');
+        
+        return redirect("/modern-light-menu/app/form/end/$id");
+        //return redirect()->route('form-end-show', ['id' => $id]);
     }
 }
 
