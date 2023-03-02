@@ -27,7 +27,7 @@ class ConversionApiFB extends Controller
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
       }
 
-    public function Lead($fbclid){
+    public function Lead(){
 
         if (env('APP_DEBUG') == false){
             $tempo = time();
@@ -49,8 +49,7 @@ class ConversionApiFB extends Controller
             ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
             ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
             ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-            ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-            ->setFbc($fbclid);
+            ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
             //->setFbc($fbclick);
 
             $event = (new Event())
@@ -74,7 +73,7 @@ class ConversionApiFB extends Controller
                     ->setEvents($events);
                 }
 
-            $response = $request->execute();
+                $response = $request->execute();
             //dd($response);
 
             //header('Location: ' . $url, true, $permanent ? 301 : 302);
@@ -87,12 +86,11 @@ class ConversionApiFB extends Controller
         }
     }
 
-    public function ViewContent($fbclid){
+    public function ViewContent($fbclick){
 
         if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
-            //dd($page);
             $eventid = ConversionApiFB::geraid();
 
             $access_token = env('CONVERSIONS_API_ACCESS_TOKEN');
@@ -111,18 +109,17 @@ class ConversionApiFB extends Controller
                 ->setCities(array("08809a7d1404509f5ca572eea923bad7c334d16bf92bb4ffc1e576ef34572176"))
                 ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
                 ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
-                ->setFbc($fbclid)
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
-                //->setFbc($fbclick);
+                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
+                ->setFbc($fbclick);
             } else {
                 $user_data = (new UserData())  
-                ->setFbc($fbclid)
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
+                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
+                ->setFbc($fbclick);
             }
 
-            //dd($user_data);
+            
 
             $event = (new Event())
             ->setEventName("ViewContent")
@@ -136,7 +133,6 @@ class ConversionApiFB extends Controller
             $events = array();
             array_push($events, $event);
             
-            //dd($event);
             if(env('CONVERSIONS_API_TEST') == true){
             $request = (new EventRequest($pixel_id))
                 ->setTestEventCode(env('CONVERSIONS_API_TEST_CODE'))
@@ -146,7 +142,7 @@ class ConversionApiFB extends Controller
                 ->setEvents($events);
             }
 
-            //dd($request);
+                
             $response = $request->execute();
             //dd($response);
 

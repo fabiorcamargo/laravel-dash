@@ -8,6 +8,7 @@ use App\Models\FormLead;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 
 class FormController extends Controller
@@ -127,8 +128,13 @@ class FormController extends Controller
     public function redir(Request $request, $id){
         //dd('test');
         //dd($request);
+
+        
+//        dd($fbclid);
+
+
         if(!empty($request->fbclid)){
-            $fbclid = $request->fbclid;
+            $fbclid = "fb.1" . time() . "." . $request->fbclid;
         }else{
             $fbclid = null;
         }
