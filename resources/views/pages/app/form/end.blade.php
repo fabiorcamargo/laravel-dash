@@ -176,6 +176,8 @@
                                                             </div>
                                                             <label for="defaultEmailAddress">Cidade</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Cidade" name="city" id="city"  autocomplete="on" required >
+
+                                                            <input type="text" class="form-control mb-4" placeholder="Cidade" name="fbclid" id="fbclid" value="{{ $fbclid }}"  hidden>
                                                             
 
                                                             {{--<div class="form-group">

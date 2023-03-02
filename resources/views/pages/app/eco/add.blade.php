@@ -18,12 +18,16 @@
         @vite(['resources/scss/light/assets/forms/switches.scss'])
         @vite(['resources/scss/light/plugins/editors/quill/quill.snow.scss'])
         @vite(['resources/scss/light/plugins/tagify/custom-tagify.scss'])
+
+        <link rel="stylesheet" href="{{asset('plugins/filepond/filepond.min.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/filepond/FilePondPluginImagePreview.min.css')}}">
         @vite(['resources/scss/light/plugins/filepond/custom-filepond.scss'])
+        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
         
         @vite(['resources/scss/dark/assets/forms/switches.scss'])
         @vite(['resources/scss/dark/plugins/editors/quill/quill.snow.scss'])
         @vite(['resources/scss/dark/plugins/tagify/custom-tagify.scss'])
-        @vite(['resources/scss/dark/plugins/filepond/custom-filepond.scss'])
+
 
         @vite(['resources/scss/light/assets/apps/ecommerce-create.scss'])
         @vite(['resources/scss/dark/assets/apps/ecommerce-create.scss'])

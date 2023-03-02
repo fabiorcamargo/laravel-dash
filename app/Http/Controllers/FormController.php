@@ -31,19 +31,23 @@ class FormController extends Controller
         
     }
 
-    public function end_show($id){
+    public function end_show(Request $request, $id){
 
+        //dd($request->all());
+
+        $fbclid = $request->fbclid;
         $form = FormCampain::find($id);
 
         $event = new ConversionApiFB;
-        $eventid = $event->ViewContent();
+        $eventid = $event->ViewContent($request->fbclid);
 
-        return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));
+        return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'fbclid' => $fbclid], compact('form'));
     }
 
     public function end_post(Request $request, $id){
 
         //dd($request->all());
+        $fbclid = $request->$request;
 
         $faker = \Faker\Factory::create();
         $password = ($faker->randomNumber(5, false));
@@ -85,7 +89,7 @@ class FormController extends Controller
         Auth::login($user);
 
         $event = new ConversionApiFB;
-        $eventid = $event->Lead();
+        $eventid = $event->Lead($fbclid);
 
         //dd($eventid);
 
@@ -120,10 +124,17 @@ class FormController extends Controller
         return back()->with($status, $msg);
     }
 
-    public function redir($id){
+    public function redir(Request $request, $id){
         //dd('test');
+        //dd($request);
+        if(!empty($request->fbclid)){
+            $fbclid = $request->fbclid;
+        }else{
+            $fbclid = null;
+        }
         
-        return redirect("/modern-light-menu/app/form/end/$id");
+        //dd($fbclid);
+        return redirect("/modern-light-menu/app/form/end/$id?fbclid=$fbclid");
         //return redirect()->route('form-end-show', ['id' => $id]);
     }
 
