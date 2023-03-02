@@ -96,7 +96,7 @@ class FormController extends Controller
         
         //dd($form);
         $send = new ChatbotAsset;
-        //$send->chatbot_send($form->chip, $numero, $msg);
+        $send->chatbot_send($form->chip, $numero, $msg);
 
         
         $event = new ConversionApiFB;
