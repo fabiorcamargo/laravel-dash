@@ -235,7 +235,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/add', [ChatbotController::class, 'group_add_create'])->name('group-add-create');
             });
             Route::prefix('/form')->group(function () {
-                Route::get('/add', [FormController::class, 'add_show'])->name('fomr-add-show');
+                Route::get('/add', [FormController::class, 'add_show'])->name('form-add-show');
+                Route::get('/list', [FormController::class, 'list'])->name('form-list-show');
                 //Route::get('/end/{id}', [FormController::class, 'end_show'])->name('fomr-end-show');
                 //Route::post('/end/{id}', [FormController::class, 'end_post'])->name('fomr-end-post');
                 Route::post('/add', [FormController::class, 'create'])->name('form-add-create');

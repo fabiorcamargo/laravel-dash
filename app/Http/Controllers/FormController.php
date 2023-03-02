@@ -8,6 +8,7 @@ use App\Models\FormLead;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class FormController extends Controller
 {
@@ -124,6 +125,20 @@ class FormController extends Controller
         
         return redirect("/modern-light-menu/app/form/end/$id");
         //return redirect()->route('form-end-show', ['id' => $id]);
+    }
+
+
+    public function list(User $user){
+              
+        
+      $users = ($user->where('active', 2)->orderBy('updated_at', 'desc')->paginate(20));
+    //dd($user->lead());
+
+    
+//            User::first()->where('active', 1)->orderBy('updated_at', 'desc')->paginate(20);
+
+            return view('pages.app.form.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+
     }
 }
 
