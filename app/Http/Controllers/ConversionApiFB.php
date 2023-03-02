@@ -41,7 +41,7 @@ class ConversionApiFB extends Controller
             $api->setLogger(new CurlLogger());
 
             $user_data = (new UserData())  
-            ->setEmail((auth()->user()->email))
+            //->setEmail((auth()->user()->email))
             ->setPhone((auth()->user()->cellphone))
             ->setLastName((auth()->user()->lastname))
             ->setFirstName((auth()->user()->name))/*
@@ -72,6 +72,8 @@ class ConversionApiFB extends Controller
                     $request = (new EventRequest($pixel_id))
                     ->setEvents($events);
                 }
+
+            $response = $request->execute();
             //dd($response);
 
             //header('Location: ' . $url, true, $permanent ? 301 : 302);

@@ -83,6 +83,11 @@ class FormController extends Controller
 
         Auth::login($user);
 
+        $event = new ConversionApiFB;
+        $eventid = $event->Lead();
+
+        //dd($eventid);
+
         $form = FormCampain::find($id);
         $form->leads()->create([
             'user_id' => $user->id
@@ -99,13 +104,13 @@ class FormController extends Controller
         $send->chatbot_send($form->chip, $numero, $msg);
 
         
-        $event = new ConversionApiFB;
-        $eventid = $event->Lead();
+        
 
         //dd('teste');
         
         return Redirect('/modern-dark-menu/aluno/my');
     }
+
     public function code_verify(Request $request){
         //dd($request->all());
         $status = "error";
