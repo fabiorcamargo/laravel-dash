@@ -88,7 +88,7 @@ class ConversionApiFB extends Controller
 
     public function ViewContent($fbclick){
 
-        if (env('APP_DEBUG') == false){
+        if (env('APP_DEBUG') == true){
             $tempo = time();
             $page = url()->current();
             $eventid = ConversionApiFB::geraid();
@@ -110,13 +110,13 @@ class ConversionApiFB extends Controller
                 ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
                 ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                ->setFbc($fbclick);
+                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
+                //->setFbc($fbclick);
             } else {
                 $user_data = (new UserData())  
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                ->setFbc($fbclick);
+                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
+                //->setFbc($fbclick);
             }
 
             
@@ -142,7 +142,7 @@ class ConversionApiFB extends Controller
                 ->setEvents($events);
             }
 
-                
+            //dd($request);
             $response = $request->execute();
             //dd($response);
 

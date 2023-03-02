@@ -273,6 +273,7 @@
             });
             }, false);
         </script>
+
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
