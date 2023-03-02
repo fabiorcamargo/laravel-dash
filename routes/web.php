@@ -65,6 +65,7 @@ use Illuminate\Support\Facades\Route;
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::get('/avatar-correct',[TemporaryFileController::class, 'AvatarCorrect'])->name('avatar-correct');
+                    Route::post('/form/code/send', [FormController::class, 'code_verify'])->name('form-code');
 
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', [UserController::class, 'first'])->name('aluno.first');
@@ -84,7 +85,7 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
 
-                        Route::post('/form/code/send', [FormController::class, 'code_verify'])->name('form-code');
+                        
                         
                         
                         
