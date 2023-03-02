@@ -91,6 +91,7 @@ class ConversionApiFB extends Controller
         if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
+            //dd($page);
             $eventid = ConversionApiFB::geraid();
 
             $access_token = env('CONVERSIONS_API_ACCESS_TOKEN');
@@ -118,7 +119,7 @@ class ConversionApiFB extends Controller
                 ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
             }
 
-            
+            //dd($user_data);
 
             $event = (new Event())
             ->setEventName("ViewContent")
@@ -132,6 +133,7 @@ class ConversionApiFB extends Controller
             $events = array();
             array_push($events, $event);
             
+            //dd($event);
             if(env('CONVERSIONS_API_TEST') == true){
             $request = (new EventRequest($pixel_id))
                 ->setTestEventCode(env('CONVERSIONS_API_TEST_CODE'))
@@ -141,7 +143,7 @@ class ConversionApiFB extends Controller
                 ->setEvents($events);
             }
 
-                
+            //dd($request);
             $response = $request->execute();
             //dd($response);
 

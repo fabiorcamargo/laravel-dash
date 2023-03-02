@@ -129,7 +129,7 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
     public function rules(): array
             {
                 return [
-                    "username" => 'required|string',
+                    //"username" => 'required|string',
                     "email2" => 'required|string',
                     "name" => 'required|string',
                     "lastname" => 'required|string',
