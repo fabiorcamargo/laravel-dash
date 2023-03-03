@@ -10,6 +10,14 @@
         <link rel="stylesheet" href="{{asset('plugins/table/datatable/datatables.css')}}">
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+
+        <link rel="stylesheet" href="{{asset('plugins/apex/apexcharts.css')}}">
+
+        @vite(['resources/scss/light/assets/components/list-group.scss'])
+        @vite(['resources/scss/light/assets/widgets/modules-widgets.scss'])
+
+        @vite(['resources/scss/dark/assets/components/list-group.scss'])
+        @vite(['resources/scss/dark/assets/widgets/modules-widgets.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -35,6 +43,11 @@
         <h4 class="">Lista de Usuários Ativos</h4>
     </div>
 
+    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+        <x-widgets._w-total-leads value="{{ count($users) }}" title="Total de Leads"/>
+    </div>
+
+    
 
     
     <div class="row layout-top-spacing">
@@ -71,6 +84,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            
                             @foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->username }} 
