@@ -30,7 +30,15 @@ class ConversionApiFB extends Controller
       }
 
     public function Lead(){
+//dd("lead");
 
+        if(isset($_COOKIE['_fbc'])){
+        $fbc = $_COOKIE['_fbc'];
+        }
+        if(isset($_COOKIE['_fbp'])){
+        $fbp = $_COOKIE['_fbp'];
+        }
+        
         if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
@@ -51,8 +59,9 @@ class ConversionApiFB extends Controller
             ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
             ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
             ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-            ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
-            //->setFbc($fbclick);
+            ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
+            ->setFbc($fbc)
+            ->setFbp($fbp);
 
             $event = (new Event())
             ->setEventName("Lead")
@@ -89,15 +98,19 @@ class ConversionApiFB extends Controller
     }
 
     public function ViewContent(){
+//dd('view');
 
-
-        $fbc = Cookie::get('_fbc');
-        $fbp = Cookie::get('_fbp');
-
-        Storage::put('event.txt', $fbc . " " . $fbp);
+        if(isset($_COOKIE['_fbc'])){
+        $fbc = $_COOKIE['_fbc'];
+        }
+        if(isset($_COOKIE['_fbp'])){
+        $fbp = $_COOKIE['_fbp'];
+        }
+        
+        //Storage::put('event.txt', $fbc . " " . $fbp);
         //dd($fbc);
 
-        if (env('APP_DEBUG') == true){
+        if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
             $eventid = ConversionApiFB::geraid();
@@ -163,8 +176,8 @@ class ConversionApiFB extends Controller
             unset($token);
             unset($url);
             //exit();
-
-            return back();
+            
+            return;
     }
 }
 }

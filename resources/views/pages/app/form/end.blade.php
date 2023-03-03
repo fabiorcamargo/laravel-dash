@@ -178,10 +178,6 @@
                                                             </div>
                                                             <label for="defaultEmailAddress">Cidade</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Cidade" name="city" id="city"  autocomplete="on" required >
-
-                                                            
-                                                            
-
                                                             {{--<div class="form-group">
                                                                 <label for="email">Email (Opcional se preferir deixe em branco)</label>
                                                                 <input type="email" name="email" placeholder="Para receber acesso ao portal" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')">
@@ -193,18 +189,10 @@
                                                                         </div>
                                                             </div>--}}
                                                         </div>
-                                                        
                                                         <div class="col-sm-12 pt-4">
                                                             <button id="adicionar" class="btn btn-success w-100">Efetuar Cadastro</button>
                                                         </div>  
                                                     </div>
-                                                    
-                                                    
-                                            
-                                            
-                                                   
-
-                                                    
                                                 </div>
                                             </form>
                                         </div>
@@ -280,8 +268,4 @@
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
-
-@php 
-    $event = new App\Http\Controllers\ConversionApiFB;
-    $event->ViewContent();
-    @endphp
+<x-fb-event event="ViewContent"/>
