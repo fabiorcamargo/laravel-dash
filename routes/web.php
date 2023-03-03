@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     ApiController,
     CademiController,
     ChatbotController,
+    ConversionApiFB,
     EcommerceController,
     FilepondController,
     FileUploadController,
@@ -1276,7 +1277,7 @@ Route::prefix('/app/form')->group(function () {
 
 });
 }
-
+Route::get('/fb/ViewContent', [ConversionApiFB::class, 'ViewContent'])->name('fb-ViewContent');
 Route::get('/form/{id}', [FormController::class, 'redir'])->name('form-redirect');
 
 Route::get('/', function () {

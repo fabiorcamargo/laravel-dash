@@ -32,23 +32,23 @@ class FormController extends Controller
         
     }
 
-    public function end_show(Request $request, $id){
+    public function end_show($id){
 
         //dd($request->all());
 
-        $fbclid = $request->fbclid;
+        //$fbclid = $request->fbclid;
         $form = FormCampain::find($id);
 
-        $event = new ConversionApiFB;
-        $eventid = $event->ViewContent($request->fbclid);
+        //$event = new ConversionApiFB;
+        //$eventid = $event->ViewContent();
 
-        return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'fbclid' => $fbclid], compact('form'));
+        return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));
     }
 
     public function end_post(Request $request, $id){
 
         //dd($request->all());
-        $fbclid = $request->$request;
+        //$fbclid = $request->$request;
 
         $faker = \Faker\Factory::create();
         $password = ($faker->randomNumber(5, false));
@@ -90,7 +90,7 @@ class FormController extends Controller
         Auth::login($user);
 
         $event = new ConversionApiFB;
-        $eventid = $event->Lead($fbclid);
+        $eventid = $event->Lead();
 
         //dd($eventid);
 

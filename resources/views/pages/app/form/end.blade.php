@@ -91,7 +91,9 @@
                 }
             };
         
+        
             </script>
+
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -177,7 +179,7 @@
                                                             <label for="defaultEmailAddress">Cidade</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Cidade" name="city" id="city"  autocomplete="on" required >
 
-                                                            <input type="text" class="form-control mb-4" placeholder="Cidade" name="fbclid" id="fbclid" value="{{ $fbclid }}"  hidden>
+                                                            
                                                             
 
                                                             {{--<div class="form-group">
@@ -218,6 +220,7 @@
 
         </div>
     </div>
+    
     <body>
         <style>
             .demo-container {
@@ -277,3 +280,8 @@
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
+
+@php 
+    $event = new App\Http\Controllers\ConversionApiFB;
+    $event->ViewContent();
+    @endphp
