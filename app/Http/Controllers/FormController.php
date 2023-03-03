@@ -187,6 +187,7 @@ class FormController extends Controller
         $users = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $id)
          ->select('users.*')
          ->where('active', 2)
+         ->orderBy('updated_at', 'desc')
          ->paginate(20);
         
         $d =  collect(['h', 'o']);
