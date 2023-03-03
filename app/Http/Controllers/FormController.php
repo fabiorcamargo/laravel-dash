@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\ChatbotAsset as ControllersChatbotAsset;
 use App\Models\ChatbotAsset;
 use App\Models\City;
 use App\Models\FormCampain;
@@ -101,7 +102,7 @@ class FormController extends Controller
         $nome = $request->name;
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\nPara confirmar o recebimento dos dados, salve o nosso contato e nos envie um *ok*.";
 
-        $send = new ChatbotAsset;
+        $send = new ControllersChatbotAsset;
         $send->chatbot_send($form->chip, $numero, $msg);
         
         return Redirect('/modern-dark-menu/aluno/my');
