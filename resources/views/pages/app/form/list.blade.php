@@ -73,6 +73,7 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
+                                <th scope="col">Data</th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Email</th>
@@ -87,6 +88,7 @@
                             
                             @foreach ($users as $user)
                             <tr>
+                                <td>{{ $user->created_at->format('d/m/Y h:m:i') }}</td>
                                 <td>{{ $user->username }} 
                                     @if($user->first == 2)
                                     <div class="badge badge-success badge-dot"></div>

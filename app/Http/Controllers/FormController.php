@@ -34,21 +34,12 @@ class FormController extends Controller
 
     public function end_show($id){
 
-        //dd($request->all());
-
-        //$fbclid = $request->fbclid;
         $form = FormCampain::find($id);
-
-        //$event = new ConversionApiFB;
-        //$eventid = $event->ViewContent();
 
         return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));
     }
 
     public function end_post(Request $request, $id){
-
-        //dd($request->all());
-        //$fbclid = $request->$request;
 
         $faker = \Faker\Factory::create();
         $password = ($faker->randomNumber(5, false));
@@ -85,14 +76,10 @@ class FormController extends Controller
         $user->document = 99999999999;
         $user->save();
 
-        //Auth::loginUsingId($user->id, TRUE);
-
         Auth::login($user);
 
         $event = new ConversionApiFB;
-        $eventid = $event->Lead();
-
-        //dd($eventid);
+        $event->Lead();
 
         $form = FormCampain::find($id);
         $form->leads()->create([
@@ -104,15 +91,9 @@ class FormController extends Controller
         $numero = preg_replace("/[^0-9]/", "", $request->cellphone);
         $nome = $request->name;
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\nPara confirmar o recebimento dos dados, salve o nosso contato e nos envie um *ok*.";
-        
-        //dd($form);
+
         $send = new ChatbotAsset;
         $send->chatbot_send($form->chip, $numero, $msg);
-
-        
-        
-
-        //dd('teste');
         
         return Redirect('/modern-dark-menu/aluno/my');
     }
