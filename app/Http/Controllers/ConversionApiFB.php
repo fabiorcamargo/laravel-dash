@@ -50,18 +50,33 @@ class ConversionApiFB extends Controller
             $api = Api::init(null, null, $access_token);
             $api->setLogger(new CurlLogger());
 
-            $user_data = (new UserData())  
-            //->setEmail((auth()->user()->email))
-            ->setPhone((auth()->user()->cellphone))
-            ->setLastName((auth()->user()->lastname))
-            ->setFirstName((auth()->user()->name))/*
-            ->setCities(array("08809a7d1404509f5ca572eea923bad7c334d16bf92bb4ffc1e576ef34572176"))
-            ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
-            ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
-            ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
-            ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-            ->setFbc($fbc)
-            ->setFbp($fbp);
+            if(isset($_COOKIE['_fbc'])){
+                $fbc = $_COOKIE['_fbc'];
+                $fbp = $_COOKIE['_fbp'];
+                $user_data = (new UserData())  
+                //->setEmail((auth()->user()->email))
+                ->setPhone((auth()->user()->cellphone))
+                ->setLastName((auth()->user()->lastname))
+                ->setFirstName((auth()->user()->name))/*
+                ->setCities(array("08809a7d1404509f5ca572eea923bad7c334d16bf92bb4ffc1e576ef34572176"))
+                ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
+                ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
+                ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
+                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
+                ->setFbc($fbc)
+                ->setFbp($fbp);
+            }else{
+                $user_data = (new UserData())  
+                //->setEmail((auth()->user()->email))
+                ->setPhone((auth()->user()->cellphone))
+                ->setLastName((auth()->user()->lastname))
+                ->setFirstName((auth()->user()->name))/*
+                ->setCities(array("08809a7d1404509f5ca572eea923bad7c334d16bf92bb4ffc1e576ef34572176"))
+                ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
+                ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
+                ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
+                ->setClientUserAgent($_SERVER['HTTP_USER_AGENT']);
+            }
 
             $event = (new Event())
             ->setEventName("Lead")
