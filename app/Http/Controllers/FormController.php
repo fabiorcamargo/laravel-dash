@@ -130,7 +130,7 @@ class FormController extends Controller
         }
         
         //dd($fbclid);
-        return redirect("/modern-light-menu/app/form/end/$id?fbclid=$fbclid");
+        return redirect("/modern-light-menu/app/form/end/$id");
         //return redirect()->route('form-end-show', ['id' => $id]);
     }
 
