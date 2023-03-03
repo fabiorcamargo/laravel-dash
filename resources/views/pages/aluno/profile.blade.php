@@ -55,7 +55,7 @@
                         
                         <img src="{{ asset($user->image) }}" alt="avatar">
                         <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
-                        @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
+                        @if ((Auth::user()->role) >= 4)
                         <div id="bloquearModal" class="modal animated fadeInDown" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
@@ -122,7 +122,7 @@
                                     @endif
                         @endif
                         @if ($seller == "não")        
-                            @if ((Auth::user()->role) == 8)
+                            @if ((Auth::user()->role) >= 6)
                             <div id="vendedorModal" class="modal animated fadeInDown" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->

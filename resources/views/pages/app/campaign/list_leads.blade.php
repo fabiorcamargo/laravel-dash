@@ -30,7 +30,8 @@
         <nav class="breadcrumb-style-four  mb-3" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text">Home</span></a></li>
-            <li class="breadcrumb-item"><a href="#">Aluno</a></li>
+            <li class="breadcrumb-item"><a href="#">Campaign</a></li>
+            <li class="breadcrumb-item"><a href="#">Leads</a></li>
             <li class="breadcrumb-item active" aria-current="page">Lista</li>
             </ol>
             </nav>
@@ -40,23 +41,31 @@
     
     
     <div class="seperator-header layout-top-spacing">
-        <h4 class="">Lista de Usuários Ativos</h4>
+        <h4 class="">{{$campaign->name}} {{$campaign->city}}</h4>
+    </div>
+<div class="row">
+
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-8 col-8 layout-spacing">
+        <x-widgets._w-total-leads value="{{ count($users) }}" title="Total" svg="trending-up" cla="text-success"/>
     </div>
 
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-        <x-widgets._w-total-leads value="{{ count($users) }}" title="Total de Leads"/>
+
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-8 col-8 layout-spacing">
+        <x-widgets._w-total-leads value="{{ $d->o }}" title="Ontem" svg="trending-up" cla="text-success"/>
     </div>
 
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-8 col-8 layout-spacing">
+        @if($d->h > $d->o)
+            <x-widgets._w-total-leads value="{{ $d->h }}" title="Hoje" svg="trending-up" cla="text-success"/>
+        @else
+            <x-widgets._w-total-leads value="{{ $d->h }}" title="Hoje" svg="trending-down" cla="text-danger"/>
+        @endif
+    </div>
+</div>
     
 
     
     <div class="row layout-top-spacing">
-            
-        <form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="post" role="search" >
-            @csrf
-            <input type="text" placeholder="Pesquisar..." name="search" class="form-control" aria-label="Text input with dropdown button">
-            <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
-        </form>
 
         <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
             <div class="statbox widget box box-shadow">
@@ -76,7 +85,7 @@
                                 <th scope="col">Data</th>
                                 <th scope="col">Username</th>
                                 <th scope="col">Nome</th>
-                                <th scope="col">Email</th>
+                                {{--<th scope="col">Email</th>--}}
                                 <th scope="col">Telefone</th>
                                 <th scope="col">Cidade - UF</th>
                                 <th class="text-center">Image</th>
@@ -97,7 +106,7 @@
                                     @endif
                                 </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
-                                <td>{{ $user->email }}</td>
+                                {{--<td>{{ $user->email }}</td>--}}
                                 <td>{{ $user->cellphone }}</td>
                                 <td>{{ $user->city }} - {{ $user->uf }}</td>
                                 <td>

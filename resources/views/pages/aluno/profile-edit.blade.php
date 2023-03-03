@@ -105,7 +105,7 @@
                                                            
                                                         
                                                         </div>
-                                                        @if(Auth::user()->role == 7)
+                                                        @if(Auth::user()->role >= 4)
                                                         
                                                         <div class="form-group pt-4">
                                                             
@@ -114,7 +114,10 @@
 
                                                                 <option value="{{ $user->role }}">{{ $roles[$user->role-1]->name }}</option>
                                                                 @foreach ( $roles as $role )
+                                                                @if($role->id < Auth::user()->role)
                                                                 <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                @endif
+
                                                                 @endforeach
                                                                 
 
@@ -146,7 +149,7 @@
                                                                     <input type="email" class="form-control mb-3" name="email" id="email" placeholder="Email Aluno" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email }}" required>
                                                                 </div>
                                                             </div>
-                                                            @if (Auth::user()->role == 7)
+                                                            @if(Auth::user()->role >= 4)
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Email Escola</label>
@@ -161,7 +164,7 @@
                                                                     <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="off" value="{{ $user->cellphone }}" required >
                                                                 </div>
                                                             </div>
-                                                            @if (Auth::user()->role == 7)
+                                                            @if(Auth::user()->role >= 4)
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Telefone 2 (Whatsapp)</label>
@@ -192,7 +195,7 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
-                                                                    @if (Auth::user()->role == 7)
+                                                                    @if(Auth::user()->role >= 4)
                                                                     <div class="col-md-3">
                                                                         <div class="form-group">
                                                                             <label for="title">Secretaria</label>
@@ -242,7 +245,7 @@
                                                                         </div>
                                                                     </div>
                                                                     
-                                                                    @if (Auth::user()->role == 7)
+                                                                    @if(Auth::user()->role >= 4)
                                                                     <div class="col-md-6">
                                                                         <label for="title"></label>
                                                                         <div class="form-group">

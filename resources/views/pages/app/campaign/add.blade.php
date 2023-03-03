@@ -35,17 +35,12 @@
     <!-- END GLOBAL MANDATORY STYLES -->
     
     <div class="row mb-4 layout-spacing layout-top-spacing">
-
         <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
             @if (isset($success))
-           
             @endif
-
             @if (\Session::has('success'))
             <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Erro:</strong> {!! \Session::get('success') !!} </div>
-  
         @endif
-
             <div class="">
                 <form action="{{ getRouterValue(); }}/app/form/add"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
                     @csrf
@@ -79,32 +74,21 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row mb-4">
                     <div class="col-sm-12">
                         <div class="widget-content widget-content-area ecommerce-create-section">
-                        <h4>Descrição curta:</h4>
-                        <p>Deve ser uma descrição resumida fica ao lado da imagem do produto</p>
+                        <h4>Descrição:</h4>
+                        <p>É o texto que aparece no corpo da página de captura.</p>
                         <div id="quillEditor"></div>
                         </div>
                     </div>
                 </div>
-
                 <input id="description" name="description" hidden>
-
             </div>
             <div class="col-sm-12">
                 <button id="adicionar" class="btn btn-success w-100">Adicionar Produto</button>
             </div>
         </div>
-
-        <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-
-           
-           
-        </div>
-        
-        
     </div>
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->

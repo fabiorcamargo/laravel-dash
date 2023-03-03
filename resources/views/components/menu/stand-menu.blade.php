@@ -179,7 +179,39 @@
                             @endif                 
                         </ul>
                     </li>
+
                     @endcan
+
+                    @can('sales')
+
+                    <li class="menu {{ Request::is('*/campaign/*') ? "active" : "" }}">
+                        <a href="#campaign" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/campaign/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="">
+                                <x-widgets._w-svg svg="brand-meta"/>
+                                <span>Campanhas</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/campaign/*') ? "show" : "" }}" id="campaign" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('campaign-add-show') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/campaign/add"> Novo </a>
+                            </li>
+                            <li class="{{ Request::routeIs('campaign-list-campaigns') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/campaign/list"> Lista Campanhas </a>
+                            </li>
+                            
+                            @if(Request::routeIs('campaign-list-leads'))
+                            <li class="{{ Request::routeIs('campaign-list-leads') ? 'active' : '' }}">
+                                <a href="#"> Leads </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+
+                    @endcan
+
                     @can('api')
                     {{--
                     <li class="menu {{ Request::is('*/app/ecommerce/*') ? "active" : "" }}">

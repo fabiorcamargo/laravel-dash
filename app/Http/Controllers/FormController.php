@@ -6,15 +6,17 @@ namespace App\Http\Controllers;
 use App\Models\FormCampain;
 use App\Models\FormLead;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class FormController extends Controller
 {
     public function add_show(){
-        return view('pages.app.form.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
+        return view('pages.app.campaign.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
     }
 
     public function create(Request $request){
@@ -126,16 +128,76 @@ class FormController extends Controller
     }
 
 
-    public function list(User $user){
+    public function show(User $user){
               
-        
+      /* Verificar !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        $forms = FormCampain::all();
+       
+        $leads = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', 2)
+         ->select('users.*')
+         ->where('active', 2)
+         ->get();
+  
+        dd($leads); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/ 
+          
       $users = ($user->where('active', 2)->orderBy('updated_at', 'desc')->paginate(20));
     //dd($user->lead());
 
     
 //            User::first()->where('active', 1)->orderBy('updated_at', 'desc')->paginate(20);
 
-            return view('pages.app.form.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+            return view('pages.app.campaign.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+
+    }
+
+    public function list_campaigns(){
+              
+          $forms = FormCampain::paginate(20);   
+          
+          foreach ($forms as &$form){
+            
+            $leads = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $form->id)
+            ->select('users.*')
+            ->where('active', 2)
+            ->count();
+            $form->leads = $leads;
+            //dd($leads);
+          }
+
+          //dd($forms);
+      
+  //            User::first()->where('active', 1)->orderBy('updated_at', 'desc')->paginate(20);
+  
+              return view('pages.app.campaign.list_campaigns', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('forms'));
+  
+      }
+
+      public function list_leads($id){
+              
+        $campaign = FormCampain::find($id);
+        $users = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $id)
+         ->select('users.*')
+         ->where('active', 2)
+         ->paginate(20);
+        
+        $d =  collect(['h', 'o']);
+        $d->h = 0;
+        $d->o = 0;
+        foreach($users as $user){
+        $date = Carbon::parse($user->created_at);
+        if ($date->isToday() == true){
+        $d->h++;
+        $hoje = $d->h;
+        }
+        if ($date->isYesterday() == true){
+            $d->o++;
+            $ontem = $d->o;
+        }
+        }
+
+        //dd($ontem);
+
+        return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign], compact('users', 'd'));
 
     }
 }

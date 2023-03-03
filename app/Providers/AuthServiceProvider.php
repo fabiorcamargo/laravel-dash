@@ -34,27 +34,26 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('edit', function(User $user) {
             return $user->role == 2 || $user->role == 3 || $user->role == 4 || $user->role == 5 || $user->role == 6 || $user->role == 7 || $user->role == 8;
         });
-        Gate::define('sales', function ($user) {
-            return $user->role == 2 || $user->role == 8;
+        Gate::define('sales', function (User $user) {
+            return $user->role == 2 || $user->role == 6 || $user->role == 7 || $user->role == 8;
         });
-        Gate::define('e-commerce', function ($user) {
-            return $user->role == 3 || $user->role == 8;
+        Gate::define('e-commerce', function (User $user) {
+            return $user->role == 3 || $user->role == 6 || $user->role == 7 || $user->role == 8;
         });
-        Gate::define('secretary', function ($user) {
-            return $user->role == 4 || $user->role == 7 || $user->role == 8;
+        Gate::define('secretary', function (User $user) {
+            return $user->role == 4 || $user->role == 6 || $user->role == 7 || $user->role == 8;
         });
-        Gate::define('finance', function ($user) {
-            return $user->role == 5 || $user->role == 8;
+        Gate::define('finance', function (User $user) {
+            return $user->role == 5 || $user->role == 6 || $user->role == 7 || $user->role == 8;
         });
-        Gate::define('manager', function ($user) {
-            return $user->role == 6 || $user->role == 8;
+        Gate::define('manager', function (User $user) {
+            return $user->role == 6 || $user->role == 7 || $user->role == 8;
         });
-        Gate::define('admin', function ($user) {
+        Gate::define('admin', function (User $user) {
             return $user->role == 7 || $user->role == 8;
         });
-        Gate::define('api', function ($user) {
+        Gate::define('api', function (User $user) {
             return $user->role == 8 ;
-        });
-        
+        });    
     }
 }
