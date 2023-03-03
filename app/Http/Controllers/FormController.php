@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\ChatbotAsset;
+use App\Models\City;
 use App\Models\FormCampain;
 use App\Models\FormLead;
+use App\Models\State;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -16,15 +18,20 @@ use PhpParser\Node\Expr\Cast\Object_;
 class FormController extends Controller
 {
     public function add_show(){
-        return view('pages.app.campaign.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
+        $states = State::all('abbr', 'id');
+        $assets = ChatbotAsset::all();
+        return view('pages.app.campaign.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('states', 'assets'));
     }
 
     public function create(Request $request){
 
         //dd($request->all());
+        $city = City::find($request->city);
+        $uf = State::find($request->state);
+        //dd($uf);
         FormCampain::create([
             'name' => $request->form_name,
-            'city' => $request->form_city,
+            'city' => $city->name . " - " . $uf->abbr,
             'description' => $request->description,
             'redirect' => $request->redirect,
             'chip' => $request->chip,

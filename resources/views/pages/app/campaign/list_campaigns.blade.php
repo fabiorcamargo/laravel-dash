@@ -51,11 +51,11 @@
 
     <div class="row layout-top-spacing">
             
-        <form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="post" role="search" >
+        {{--<form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="post" role="search" >
             @csrf
             <input type="text" placeholder="Pesquisar..." name="search" class="form-control" aria-label="Text input with dropdown button">
             <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
-        </form>
+        </form>--}}
 
         <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
             <div class="statbox widget box box-shadow">
@@ -84,7 +84,7 @@
                             
                             @foreach ($forms as $form)
                             <tr>
-                                <td>{{ $form->created_at->format('d/m/Y h:m:i') }}</td>
+                                <td>{{ $form->created_at->format('d/m/y') }}</td>
                                 <td>{{ $form->name }}</td>
                                 <td>{{ $form->city }}</td>
                                 <td>{{ $form->leads }}</td>
@@ -95,12 +95,12 @@
                                             <a href="{{ getRouterValue(); }}/app/campaign/show/{{ $form->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                             </a>
-                                            <a href="{{ getRouterValue(); }}/app/user/profile/{{ $form->id }}/edit" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Editar">
+                                            {{--<a href="{{ getRouterValue(); }}/app/user/profile/{{ $form->id }}/edit" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                                             </a>
                                             <a href="{{ getRouterValue(); }}/app/user/profile/{{ $form->id }}/edit" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Pagamentos">
                                                 <x-widgets._w-svg svg="cash-banknote"/>
-                                            </a>
+                                            </a>--}}
                                         </div>
                                 </td>
                             </tr>
