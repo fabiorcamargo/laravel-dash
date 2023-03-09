@@ -108,7 +108,7 @@ class FormController extends Controller
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\nPara confirmar o recebimento dos dados, salve o nosso contato e nos envie um *ok*.";
 
         $send = new ControllersChatbotAsset;
-        //$send->chatbot_send($form->chip, $numero, $msg);
+        $send->chatbot_send($form->chip, $numero, $msg);
 
         $event = new ConversionApiFB;
         $event->Lead();

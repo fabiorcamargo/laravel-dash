@@ -40,7 +40,7 @@ class ConversionApiFB extends Controller
         $fbp = $_COOKIE['_fbp'];
         }
         
-        if (env('APP_DEBUG') == true){
+        if (env('APP_DEBUG') == false){
             $tempo = time();
 
             $page = url()->current();
