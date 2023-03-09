@@ -309,7 +309,7 @@
                                         <div class="row">
                                                                                                         
                                             <div class="col-md-12 mx-auto">
-
+                                                @if($product->comments != null)
                                                 @foreach ($product->comments as $comment)
                                                 <div class="media mb-4">
                                                     <div class="avatar me-sm-4 mb-sm-0 me-0 mb-3">
@@ -331,7 +331,7 @@
                                                     </div>
                                                 </div>
                                                 @endforeach
-                                                
+                                                @endif
                                                 
                                             </div>
                                             

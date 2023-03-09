@@ -156,6 +156,7 @@
                                                     <div class="row">
                                                         
                                                         <div class="col-md-6">
+                                                           <p hidden> {{ Cookie::get('fbid') }} </p>
                                                             <h4 class="pb-4">Dados Pessoais</h4>
                                                             <label for="defaultEmailAddress">Nome Completo</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
@@ -167,19 +168,17 @@
                                                             </div>
                                                 
                                                             <div class="form-group">
-                                                            <label for="defaultEmailAddress">Telefone com Whatsapp</label>
-                                                            <input type="text" class="ph-number form-control mb-4" placeholder="Digite apenas os números" name="cellphone" id="cellphone"  autocomplete="on" required >
-                                                            <div class="valid-feedback feedback-pos">
-                                                                Celular válido!
+                                                                <label for="defaultEmailAddress">Telefone com Whatsapp</label>
+                                                                <input type="text" class="ph-number form-control mb-4" placeholder="Digite apenas os números" name="cellphone" id="cellphone"  autocomplete="on" required >
+                                                                <div class="valid-feedback feedback-pos">
+                                                                    Celular válido!
+                                                                </div>
+                                                                <div class="invalid-feedback feedback-pos">
+                                                                    Por favor coloque um Telefone válido com DDD e 9º dígito.
+                                                                </div>
                                                             </div>
-                                                            <div class="invalid-feedback feedback-pos">
-                                                                Por favor coloque um Telefone válido com DDD e 9º dígito.
-                                                            </div>
-                                                            </div>
-                                                            <label for="defaultEmailAddress">Cidade</label>
-                                                            <input type="text" class="form-control mb-4" placeholder="Cidade" name="city" id="city"  autocomplete="on" required >
-                                                            {{--<div class="form-group">
-                                                                <label for="email">Email (Opcional se preferir deixe em branco)</label>
+                                                            <div class="form-group">
+                                                                <label for="email">Email (Opcional)</label>
                                                                 <input type="email" name="email" placeholder="Para receber acesso ao portal" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')">
                                                                         <div class="valid-feedback feedback-pos">
                                                                             Email Válido!
@@ -187,7 +186,10 @@
                                                                         <div class="invalid-feedback feedback-pos">
                                                                             Por favor coloque um email válido.
                                                                         </div>
-                                                            </div>--}}
+                                                            </div>
+                                                            <label for="defaultEmailAddress">Cidade</label>
+                                                            <input type="text" class="form-control mb-4" placeholder="Cidade" name="city" id="city"  autocomplete="on" required >
+                                                            
                                                         </div>
                                                         <div class="col-sm-12 pt-4">
                                                             <button id="adicionar" class="btn btn-success w-100">Efetuar Cadastro</button>
@@ -239,6 +241,13 @@
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
         <script src="{{asset('plugins/card/dist/card.js')}}"></script>
+
+        <script>
+            fbq('track', 'PageView', {"eventID": "{{ Cookie::get('fbid') }}"});
+            
+
+    </script>
+
         <script>
             var c = new Card({
                 form: document.querySelector('#form'),
@@ -268,4 +277,4 @@
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
-<x-fb-event event="ViewContent"/>
+<x-fb-event event="PageView"/>

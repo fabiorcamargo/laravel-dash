@@ -46,14 +46,15 @@ class EcommerceController extends Controller
         $products = EcoProduct::all();
         $categorys = EcoProductCategory::all();
         $sellers = EcoSeller::all();
-        
-        
         $flows = RdCrmFlow::all();
-        $seller = EcoSeller::find($product->seller);
+        $seller = EcoSeller::where("user_id", $product->seller)->first();
         $tags = CademiTag::all();
+        $comments = json_decode($product->comment);
+        //dd($comments->img);
+        //dd($comments);
         //dd($products[0]->image);
         //dd(explode(",", $products[0]->image));
-        return view('pages.app.eco.edit', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products', 'product', 'categorys', 'sellers', 'flows', 'seller', 'tags'));
+        return view('pages.app.eco.edit', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products', 'product', 'categorys', 'sellers', 'flows', 'seller', 'tags', 'comments'));
     }
 
     public function add_show(){
@@ -74,13 +75,14 @@ class EcommerceController extends Controller
 
         $time = Carbon::now()->timestamp;
 
+        /*
         if(json_decode($request->comment) == ""){
             $produtos = (json_decode($request->image));
         foreach($produtos as $produto){
             Storage::delete('product/' . $produto);
         }
             return back()->with('success', 'Formato dos comentários inválido');
-        }
+        }*/
         
         if (EcoProduct::where('name', $request->name)->first()) {
             $request->name = $request->name . $time;
@@ -92,9 +94,10 @@ class EcommerceController extends Controller
             return back()->with('success', 'Nome do Curso já existe');
             */
         }
-
+/*
         $comments = collect(json_decode($request->comment));
- 
+        dd($comments);
+        if($comments !== ""){
         foreach($comments as &$comment){
                 $data = Http::get("https://xsgames.co/randomusers/avatar.php?g=$comment->gender");
                 $uri = (json_encode($data->transferStats->getEffectiveUri()));
@@ -113,22 +116,23 @@ class EcommerceController extends Controller
             Storage::put("product/$request->name/avatar/$comment->name.jpg", $contents, ['visibility' => 'public', 'directory_visibility' => 'public']);
             $comment->img = "product/$request->name/avatar/$comment->name.jpg";
         }
+    }*/
 
-        $comments = json_encode($comments);
+        //$comments = json_encode($comments);
         $product = $request->all();
-        $product['image'] = json_encode(array_reverse(Storage::disk('product')->Files($product['name'])));
+        //$product['image'] = json_encode(array_reverse(Storage::disk('product')->Files($product['course_name'])));
         $product['price'] = (float)str_replace(",", ".", $product['price']);
         $product['public'] = ($request->public ? "1" : "0");
         $product['percent'] = (float)$request->percent/100;
 
         $eco = new EcoProduct;
         $eco->course_id = $product['course_id'];
-        $eco->name = $product['name'];
+        $eco->name = $product['course_name'];
         $eco->description = $product['description'];
         $eco->specification = $product['specification'];
         $eco->tag = $product['tag'];
         $eco->category = $product['category'];
-        $eco->image = $product['image'];
+        //$eco->image = $product['image'];
         $eco->public = $product['public'];
         $eco->price = $product['price'];
         $eco->percent = $product['percent'];
@@ -136,13 +140,13 @@ class EcommerceController extends Controller
         $eco->seller = $product['seller'];
         $eco->product_url = $time;
         $eco->product_base = $product['product_base'];
-        $eco->comment = $comments;
+        //$eco->comment = $comments;
         $eco->flow = $product['flow'];
         $eco->save();
 
         //dd($eco);
 
-        return redirect(getRouterValue() . "/app/eco/product/$eco->id");
+        return redirect(getRouterValue() . "/app/eco/product/$eco->id/edit");
 
         
         
@@ -505,10 +509,6 @@ class EcommerceController extends Controller
         $product->save();
 
         
-
-        
-        //dd($products[0]->image);
-        //dd(explode(",", $products[0]->image));
         $sucess = "Atualizado";
         return redirect(getRouterValue() . "/app/eco/product/$product->id")->with('sucess', 'Verdade');
     }
@@ -532,4 +532,93 @@ class EcommerceController extends Controller
         ]);
         return back();
     }
+
+    public function comment_edit ($id, $i){
+        $product = EcoProduct::find($id);
+        $comments = json_decode($product->comment);
+        $n = 0;
+        //dd($comments);
+        foreach($comments as $comment){
+            if($i == $n){
+                return view('pages.app.eco.edit_comment', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('comment', 'id', 'i'));
+            }
+
+        $n++;
+        }
+
+        
+        return back();
+    }
+
+    public function comment_save (Request $request, $id, $i){
+        //dd($request->all());
+        $product = EcoProduct::find($id);
+        $comments = json_decode($product->comment);
+        $n = 0;
+        //dd($comments);
+        foreach($comments as &$comment){
+            if($i == $n){
+                $request->name !== null ? $comment->name = $request->name : "";
+                $request->gender !== null ? $comment->gender = $request->gender : "";
+                $request->star !== null ? $comment->star = $request->star : "";
+                $request->comment !== null ? $comment->comment = $request->comment : "";
+            }
+        $n++;
+        }
+
+        //dd($comments);
+        $product->comment = json_encode($comments);
+        $product->save();
+        return redirect(getRouterValue() . "/app/eco/product/$id/edit");
+        
+    }
+
+    public function comment_add (Request $request, $id){
+        //dd($request->all());
+        $comment_clean = strip_tags($request->comment);
+        //dd($cleaner_input);
+        $product = EcoProduct::find($id);
+        $comments = json_decode($product->comment);
+
+        
+        //dd($product);
+                $data = Http::get("https://xsgames.co/randomusers/avatar.php?g=$request->gender");
+                $uri = (json_encode($data->transferStats->getEffectiveUri()));
+                $img = (json_decode($uri));
+
+                $comment = (object)[
+                    'name' => $request->name,
+                    'gender' => $request->gender,
+                    'star' => $request->star,
+                    'comment' => $comment_clean,
+                    'img' => $img,
+                ]; 
+
+        
+
+        $contents = file_get_contents($comment->img);
+            Storage::makeDirectory('directory', 0775);
+            Storage::put("product/$product->id/avatar/$comment->name.jpg", $contents, ['visibility' => 'public', 'directory_visibility' => 'public']);
+            $comment->img = "product/$product->id/avatar/$comment->name.jpg";
+
+        
+        if(isset($comments)){
+               $row = count($comments);
+               $comments[$row] = ($comment);
+               $product->comment = json_encode($comments);
+               //dd($product);
+               $product->save();
+               return redirect(getRouterValue() . "/app/eco/product/$id/edit");
+        }else{
+            $product->comment = "[" . json_encode($comment) . "]";
+            //dd($product);
+            $product->save();
+            return redirect(getRouterValue() . "/app/eco/product/$id/edit");
+        }
+
+        
+        
+    }
+
+
 }

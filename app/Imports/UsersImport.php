@@ -84,7 +84,7 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
 
            $user->username = $row['username'];
            $user->email = $email;
-           $user->email2 = $row['email2'];
+           $user->email2 = strtolower($row['email2']);
            $user->name = $row['name'];
            $user->lastname = $row['lastname'];
            $user->password = $password;

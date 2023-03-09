@@ -55,6 +55,7 @@ class ApiController extends Controller
                 {
                 
                   $data = json_decode($request->getContent(), true);
+
                   $arr = (object)$data['event']['usuario'];
                   //dd($arr->id);
 

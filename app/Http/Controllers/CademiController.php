@@ -127,12 +127,12 @@ class CademiController extends Controller
                 $import->status = "success";
                 $import->course = $course;
                 $import->code = "CODD-$course-$user->username";
-                $import->msg = $cademi->data[0]->status;
+                $import->msg = "success";
                 $import->body = json_encode($cademi);
                 $import->save();
             }
     }        
-        
+        //sleep(1);
         return $cademi;
     }
 
@@ -144,6 +144,9 @@ class CademiController extends Controller
             'Authorization' => env('CADEMI_TOKEN_API')
         ])->get("$url"));
         //dd($cademi);
+		if(!isset($cademi->success)){
+			return;
+		}
         if ($cademi->success == true){
             if(Cademi::where('email', $cademi->data->usuario->email)->first() == null){
                 $response = $user->cademis()->create([
@@ -166,9 +169,10 @@ class CademiController extends Controller
                                                     $user->first = 2;
                                                     $user->save();
                 }
-                                    }
+			return $response;
+                }
         //dd($response);
-        return $response;
+       
     }
 
 

@@ -17,12 +17,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\CademiImport;
+use App\Models\EcoProduct;
 use App\Models\User;
 use App\Models\ProductImage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+
+use Illuminate\Support\Arr;
 
 class TemporaryFileController extends Controller
 {
@@ -399,35 +402,75 @@ public function AvatarCorrect()
             
     }
     
-
+    
 }
 
-        public function img_product_upload(Request $request)
+            public function correct_img_product(){
+                $products = EcoProduct::all();
+                foreach($products as &$product){
+                    $img = json_decode($product->image);
+                    foreach($img as &$im){
+                        //dd($im);
+                        $im = str_replace($product->name, $product->id, $im);
+                        //dd($im);
+                    }
+                    $product->image = json_encode($img);
+                    $product->save();
+                }
+                dd($products);
+            }
+
+             public function img_product_upload(Request $request, $id)
             {
-
-                $produto = ($_COOKIE['name']);
-
+                $product = EcoProduct::find($id);
+                //dd($request->all());
                     if($request->hasFile('image')){
                         $image = $request->file('image');
                         $file_name = $image->getClientOriginalName();
-                        $file = $image->storePubliclyAs('/' . $produto , $file_name, ['visibility'=>'public', 'disk'=>'product']);
-                    }
-
+                        //dd($file_name);
+                        $image->storePubliclyAs('/' . $product->id , $file_name, ['visibility'=>'public', 'disk'=>'product']);
                 
-                    return [$produto . '/' .$file_name,];
+                        if($product->image == ""){
+                            $img = [$product->id . '/' .$file_name,];
+                        }else{
+                        $img = json_decode($product->image);
+                        $i=0;
+                        foreach($img as $im){
+                            if($im == $product->id . '/' . $file_name){
+                                return response('Nome da foto no banco de dados já existe', 200);
+                            }
+                            $i++;
+                        }
+                        $img[$i] = $product->id . '/' . $file_name;
+                    }
+                    $product->image = json_encode($img);
+                    $product->save();
+                }
+                //dd($product);
+                
+                return response('Upload realizado com sucesso', 200);
                 }
 
-                public function img_product_delete(Request $request)
+                public function img_product_delete(Request $request, $id)
                 {
-    
-                    $produto = ($_COOKIE['name']);
-                    $delete = Storage::deleteDirectory('product/' . $produto);
+
+                    $product = EcoProduct::find($id);
+                    $images = json_decode($product->image);
+                    if($request->hasFile('image')){
+                        $image = $request->file('image');
+                        $file_name = $image->getClientOriginalName();
+
+                    foreach($images as $image){
+                        if( $image->str_contains($file_name)){
+                        $img = $image;
+                        }
+                        Storage::deleteDirectory('product/' . $img);
+                }
+
+                
                      
-                        return [$delete];
                     }
         
 
-    }
-
-
-
+                }
+            }

@@ -27,7 +27,7 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
 
         $user = new User();
             $user->username = $row['username'];
-            $user->email = $row['email'];
+            $user->email = strtolower($row['email']);
             $user->name = $row['username'];
             $user->lastname = $row['username'];
             $user->password = Hash::make($row['password']);

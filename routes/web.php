@@ -125,8 +125,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         
         Route::post('/tmp-upload',[TemporaryFileController::class, 'FilepondUpload'])->name('tmp-upload');
         Route::delete('/tmp-delete',[TemporaryFileController::class, 'FilepondDelete'])->name('tmp-delete');
-        Route::post('/img_product_upload',[TemporaryFileController::class, 'img_product_upload'])->name('img_product_upload');
-        Route::delete('/img_product_delete',[TemporaryFileController::class, 'img_product_delete'])->name('img_product_delete');
+        Route::post('/img_product_upload/{id}',[TemporaryFileController::class, 'img_product_upload'])->name('img_product_upload');
+        Route::delete('/img_product_delete{id}',[TemporaryFileController::class, 'img_product_delete'])->name('img_product_delete');
+
 
         
         Route::get('/users/{id}/comments/create', [CommentController::class, 'create'])->name('comments.create');
@@ -152,6 +153,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::get('/users/{id}/cademi', [CademiController::class, 'store'])->name('cademi.store');
         Route::post('/users/cademi/lote', [CademiController::class, 'lote'])->name('cademi.lote');
         Route::get('/users/cademi/verify', [ApiController::class, 'verify'])->name('cademi.verify');
+        Route::get('/users/corr/email', [UserController::class, 'corr_email'])->name('cademi.corr_email');
+        
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
 
         
@@ -252,6 +255,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
 
         Route::prefix('/eco')->group(function () {
+            Route::get('/img/correct', [TemporaryFileController::class, 'correct_img_product'])->name('eco-img-correct');
             Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
             Route::get('/list', [EcommerceController::class, 'show'])->name('eco-list');
             Route::any('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
@@ -261,6 +265,13 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-product-show');
             Route::get('/list_sales', [EcommerceController::class, 'list_sales'])->name('eco-list_sales');
             Route::any('/list_sales/search', [EcommerceController::class, 'search_sales'])->name('eco-list_sales-search');
+            Route::get('/comment/add', function () {
+                return view('pages.app.eco.add_comment', ['title' => 'Profissionaliza EAD | Novo Comentário', 'breadcrumb' => '']);
+            })->name('eco-comment_add-show');
+            Route::post('/comment/add/{id}', [EcommerceController::class, 'comment_add'])->name('eco-comment_add');
+            Route::get('/comment/{id}/{comment}', [EcommerceController::class, 'comment_edit'])->name('eco-comment_edit');
+            Route::post('/comment/{id}/{comment}', [EcommerceController::class, 'comment_save'])->name('eco-comment_save');
+
             
             Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     
         });

@@ -42,12 +42,8 @@
     t.src=v;s=b.getElementsByTagName(e)[0];
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '881551146233401');
-    fbq('track', 'PageView');
+    fbq('init', '{{ env('CONVERSIONS_API_PIXEL_ID') }}');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=881551146233401&ev=PageView&noscript=1"
-    /></noscript>
     <!-- End Meta Pixel Code -->
     
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">

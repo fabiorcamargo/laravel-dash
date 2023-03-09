@@ -5,7 +5,9 @@
     }elseif($event == "Lead"){
     $event = new App\Http\Controllers\ConversionApiFB;
     $event->Lead();
-    }else{
+    }elseif($event == "PageView"){
+    $event = new App\Http\Controllers\ConversionApiFB;
+    $event->PageView();
 
     };
     @endphp

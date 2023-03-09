@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Expr\Cast\Object_;
+use Illuminate\Support\Str;
 
 class FormController extends Controller
 {
@@ -44,6 +45,10 @@ class FormController extends Controller
 
     public function end_show($id){
 
+        $fbclid = ((string) Str::uuid());
+        //dd($fbclid);
+        Cookie::queue('fbid', $fbclid, 0);
+
         $form = FormCampain::find($id);
 
         return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));
@@ -72,7 +77,7 @@ class FormController extends Controller
         $user->username = $username;
         $user->name =$nome[0];
         $user->lastname =  (isset($nome[1])) ? $nome[1] : "";
-        $user->email = $username . "@profissionalizaead.com.br";
+        $user->email = $request->email;
         $user->email2 = $username . "@profissionalizaead.com.br";
         $user->cellphone = preg_replace('/[^0-9]/', '',$request->cellphone);
         $user->cellphone2 = preg_replace('/[^0-9]/', '',$request->cellphone);
@@ -84,12 +89,12 @@ class FormController extends Controller
         $user->first = "1";
         $user->courses = "GRATUITO-AUX";
         $user->document = 99999999999;
+        //dd($user);
         $user->save();
 
         Auth::login($user);
 
-        $event = new ConversionApiFB;
-        $event->Lead();
+        
 
         $form = FormCampain::find($id);
         $form->leads()->create([
@@ -103,7 +108,10 @@ class FormController extends Controller
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\nPara confirmar o recebimento dos dados, salve o nosso contato e nos envie um *ok*.";
 
         $send = new ControllersChatbotAsset;
-        $send->chatbot_send($form->chip, $numero, $msg);
+        //$send->chatbot_send($form->chip, $numero, $msg);
+
+        $event = new ConversionApiFB;
+        $event->Lead();
         
         return Redirect('/modern-dark-menu/aluno/my');
     }
@@ -117,20 +125,11 @@ class FormController extends Controller
     }
 
     public function redir(Request $request, $id){
-        //dd('test');
-        //dd($request);
 
-        
-//        dd($fbclid);
-
-
-        if(!empty($request->fbclid)){
-            $fbclid = "fb.1" . time() . "." . $request->fbclid;
-        }else{
-            $fbclid = null;
-        }
-        
+        //$fbclid = ((string) Str::uuid());
         //dd($fbclid);
+        //Cookie::queue('fbclid', $fbclid, 60);
+
         return redirect("/modern-light-menu/app/form/end/$id");
         //return redirect()->route('form-end-show', ['id' => $id]);
     }

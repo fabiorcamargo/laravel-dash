@@ -831,5 +831,14 @@ class UserController extends Controller
            echo("Fim");
         }
         
+        public function corr_email(){
+            $users = User::all();
+            foreach($users as $user){
+                $user->email = strtolower($user->email);
+                $user->email2 = strtolower($user->email2);
+                $user->save();
+            }
+
+        }
        
     }

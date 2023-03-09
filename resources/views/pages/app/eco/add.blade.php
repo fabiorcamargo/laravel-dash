@@ -58,7 +58,7 @@
                         <div class="widget-content widget-content-area ecommerce-create-section">
                         <h4>Nome do Produto:</h4>
                         <br>
-                        <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Nome do Produto" required>
+                        <input type="text" class="form-control" id="course_name" name="course_name" onchange="submeter()" placeholder="Nome do Produto" required>
                         </div>
                     </div>
                 </div>
@@ -103,6 +103,7 @@
                 <input id="specification" name="specification" hidden>
 
                 <div class="row md-4">
+                    {{--}}
                     <div class="col-md-8 md-4" style="padding-bottom: 15pt">
                         <div class="widget-content widget-content-area ecommerce-create-section">
                             <h4>Carregar imagens:</h4>
@@ -117,26 +118,11 @@
                                     data-allow-reorder="true"
                                     data-max-file-size="1MB"
                                     data-max-files="5"
-                                    accept="image/*" oninput="show()">
+                                    accept="image/*" hidden oninput="show()">
                             </div>
                         </div>
                         
-                    </div>
-
-                    <div class="col text-center">
-                        <div class="widget-content widget-content-area ecommerce-create-section">
-                        <div class="switch form-switch-custom switch-inline form-switch-primary">
-                            
-                            <h4 class="switch-label" for="showPublicly">Público</h4>
-                            <input class="switch-input" type="checkbox" role="switch" id="public" name="public" checked>
-                            
-                            <p>Quando habilitado exibe no shop</p>
-                    
-                            
-                    
-                        </div>
-                        </div>
-                    </div>
+                    </div>--}}
                     
                 </div>
 
@@ -224,6 +210,12 @@
                             <div class="col-xxl-12 col-lg-6 col-md-12 md-3">
                                 <label for="tags">Tags (Separadas por vírgula)</label>
                                 <input id="tag" name="tag" class="product-tags" value="">
+                            </div>
+                            <div class="col-xxl-12 col-lg-6 col-md-12 md-3 mt-4">
+                                <div class="switch form-switch-custom switch-inline form-switch-primary">
+                                <label for="tags">Público</label>
+                                <input class="switch-input" type="checkbox" role="switch" id="public" name="public" checked>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -323,10 +315,10 @@
         function submeter() {
 
             
-            var inpname = document.getElementById('name').value;
+            var inpname = document.getElementById('course_name').value;
             document.cookie = "name=" + inpname + ";" + "path=/";
             console.log(inpname);
-            const inputElement = document.querySelector('input[type="file"]');
+            const inputElement = document.getElementById('product-images');
             const pond = FilePond.create(inputElement);
      
             FilePond.setOptions({
@@ -337,7 +329,6 @@
                 headers: {
                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
-                
             }
             
             });
