@@ -189,12 +189,13 @@ class FormController extends Controller
          ->orderBy('updated_at', 'desc')
          ->paginate(20);
 
-         $uss = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $id)
+        $uss = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $id)
          ->select('users.*')
          ->where('active', 2)
          ->orderBy('updated_at', 'desc')
          ->get();
         
+        $total = count($uss);
         
         $d =  collect(['h', 'o']);
         $d->h = 0;
@@ -213,7 +214,7 @@ class FormController extends Controller
 
         //dd($ontem);
 
-        return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign], compact('users', 'd'));
+        return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign, 'total' => $total], compact('users', 'd'));
 
     }
 }

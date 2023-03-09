@@ -46,7 +46,7 @@
 <div class="row">
 
     <div class="col-xl-2 col-lg-4 col-md-4 col-sm-8 col-8 layout-spacing">
-        <x-widgets._w-total-leads value="{{ count($users) }}" title="Total" svg="trending-up" cla="text-success"/>
+        <x-widgets._w-total-leads value="{{ $total }}" title="Total" svg="trending-up" cla="text-success"/>
     </div>
 
 
