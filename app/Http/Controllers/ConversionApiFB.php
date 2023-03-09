@@ -217,7 +217,7 @@ return;
 
 public function PageView(){
 
-    if (env('APP_DEBUG') == true){
+    if (env('APP_DEBUG') == false){
         $tempo = time();
         $page = url()->current();
         $eventid = Cookie::get('fbid');
