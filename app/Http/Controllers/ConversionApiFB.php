@@ -31,15 +31,7 @@ class ConversionApiFB extends Controller
       }
 
     public function Lead(){
-//dd("lead");
 
-        if(isset($_COOKIE['_fbc'])){
-        $fbc = $_COOKIE['_fbc'];
-        }
-        if(isset($_COOKIE['_fbp'])){
-        $fbp = $_COOKIE['_fbp'];
-        }
-        
         if (env('APP_DEBUG') == false){
             $tempo = time();
 
@@ -56,8 +48,7 @@ class ConversionApiFB extends Controller
             $api = Api::init(null, null, $access_token);
             $api->setLogger(new CurlLogger());
 
-            if(isset($_COOKIE['_fbc'])){
-                $fbc = $_COOKIE['_fbc'];
+            if(isset($_COOKIE['_fbp'])){
                 $fbp = $_COOKIE['_fbp'];
                 $user_data = (new UserData())  
                 ->setEmail((auth()->user()->email))
@@ -69,7 +60,7 @@ class ConversionApiFB extends Controller
                 ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
                 ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                ->setFbc($fbc)
+                ->setFbc($fbp . "." . $eventid)
                 ->setFbp($fbp);
             }else{
                 $user_data = (new UserData())  
@@ -132,8 +123,7 @@ class ConversionApiFB extends Controller
             $api->setLogger(new CurlLogger());
 
             if (Auth::check()) {
-                if(isset($_COOKIE['_fbc'])){
-                    $fbc = $_COOKIE['_fbc'];
+                if(isset($_COOKIE['_fbp'])){
                     $fbp = $_COOKIE['_fbp'];
                     $user_data = (new UserData())  
                     ->setEmail((auth()->user()->email))
@@ -145,7 +135,7 @@ class ConversionApiFB extends Controller
                     ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
                     ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
                     ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                    ->setFbc($fbc)
+                    ->setFbc($fbp . "." . $eventid)
                     ->setFbp($fbp);
                     }else{
                     $user_data = (new UserData())  
@@ -161,13 +151,12 @@ class ConversionApiFB extends Controller
                     }
                 
             } else {
-                if(isset($_COOKIE['_fbc'])){
-                    $fbc = $_COOKIE['_fbc'];
+                if(isset($_COOKIE['_fbp'])){
                     $fbp = $_COOKIE['_fbp'];
                     $user_data = (new UserData())  
                     ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
                     ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                    ->setFbc($fbc)
+                    ->setFbc($fbp . "." . $eventid)
                     ->setFbp($fbp);
                 }else{
                     $user_data = (new UserData())  
@@ -217,7 +206,7 @@ return;
 
 public function PageView(){
 
-    if (env('APP_DEBUG') == true){
+    if (env('APP_DEBUG') == false){
         $tempo = time();
         $page = url()->current();
         $eventid = Cookie::get('fbid');
@@ -229,8 +218,7 @@ public function PageView(){
         $api->setLogger(new CurlLogger());
 
         if (Auth::check()) {
-            if(isset($_COOKIE['_fbc']) && isset($_COOKIE['_fbc'])){
-                $fbc = $_COOKIE['_fbc'];
+            if(isset($_COOKIE['_fbp'])){
                 $fbp = $_COOKIE['_fbp'];
                 $user_data = (new UserData())  
                 ->setEmail((auth()->user()->email))
@@ -243,7 +231,7 @@ public function PageView(){
                 ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
                 ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                ->setFbc($fbc)
+                ->setFbc($fbp . "." . $eventid)
                 ->setFbp($fbp);
                 }else{
                 $user_data = (new UserData())  
@@ -259,13 +247,12 @@ public function PageView(){
                 }
             
         } else {
-            if(isset($_COOKIE['_fbc']) && isset($_COOKIE['_fbc'])){
-                $fbc = $_COOKIE['_fbc'];
+            if(isset($_COOKIE['_fbp'])){
                 $fbp = $_COOKIE['_fbp'];
                 $user_data = (new UserData())  
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
                 ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
-                ->setFbc($fbc)
+                ->setFbc($fbp . "." . $eventid)
                 ->setFbp($fbp);
             }else{
                 $user_data = (new UserData())  

@@ -146,7 +146,6 @@
         <x-widgets._w-support title="Suporte"/>
     </div>
     @endif
-
     
     @if (str_contains(url()->previous(), 'form/end'))   
     <p> {{ Cookie::get('fbid1') }} </p>
@@ -188,11 +187,9 @@
                                             ],
                                             "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
                                             "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
-                                            @isset($_COOKIE['_fbc'])
-                                            ,"fbc": "{{$_COOKIE['_fbc']}}"
-                                            @endisset
                                             @isset($_COOKIE['_fbp'])
-                                            ,"fbp": "{{$_COOKIE['_fbp']}}"
+                                            ,"fbp": "{{$_COOKIE['_fbp']}}",
+                                            "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
                                             @endisset
                                         },
                                     }

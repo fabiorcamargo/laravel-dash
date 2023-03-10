@@ -156,8 +156,8 @@
                                                     <div class="row">
                                                         
                                                         <div class="col-md-6">
-                                                           <p hidden> {{ Cookie::get('fbid') }} {{ Cookie::get('fbtime') }}</p>
-
+                                                           <p hidden>{{ Cookie::get('fbid') }} {{ Cookie::get('fbtime') }}</p>
+                                                        
                                                             <h4 class="pb-4">Dados Pessoais</h4>
                                                             <label for="defaultEmailAddress">Nome Completo</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
@@ -256,11 +256,10 @@
                                     {
                                         "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
                                         "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
-                                        @isset($_COOKIE['_fbc'])
-                                        ,"fbc": "{{$_COOKIE['_fbc']}}"
-                                        @endisset
+
                                         @isset($_COOKIE['_fbp'])
-                                        ,"fbp": "{{$_COOKIE['_fbp']}}"
+                                        ,"fbp": "{{$_COOKIE['_fbp']}}",
+                                        "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
                                         @endisset
                                     }
                                 }
