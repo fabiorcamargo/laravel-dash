@@ -40,7 +40,7 @@ class ConversionApiFB extends Controller
         $fbp = $_COOKIE['_fbp'];
         }
         
-        if (env('APP_DEBUG') == true){
+        if (env('APP_DEBUG') == false){
             $tempo = time();
 
             $page = url()->current();
@@ -120,7 +120,7 @@ class ConversionApiFB extends Controller
 
     public function ViewContent(){
 
-        if (env('APP_DEBUG') == true){
+        if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
             $eventid = ConversionApiFB::geraid();
@@ -217,7 +217,7 @@ return;
 
 public function PageView(){
 
-    if (env('APP_DEBUG') == true){
+    if (env('APP_DEBUG') == false){
         $tempo = Cookie::get('fbtime');
         $page = url()->current();
         $eventid = Cookie::get('fbid');
