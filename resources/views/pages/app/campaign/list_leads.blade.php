@@ -49,6 +49,9 @@
         <x-widgets._w-total-leads value="{{ $total }}" title="Total" svg="trending-up" cla="text-success"/>
     </div>
 
+    <div class="col-xl-2 col-lg-4 col-md-4 col-sm-8 col-8 layout-spacing">
+        <x-widgets._w-total-leads value="{{ $d->t }}" title="- 3 Dias" svg="trending-up" cla="text-success"/>
+    </div>
 
     <div class="col-xl-2 col-lg-4 col-md-4 col-sm-8 col-8 layout-spacing">
         <x-widgets._w-total-leads value="{{ $d->o }}" title="Ontem" svg="trending-up" cla="text-success"/>

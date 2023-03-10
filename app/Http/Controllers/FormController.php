@@ -197,19 +197,25 @@ class FormController extends Controller
         
         $total = count($uss);
         
-        $d =  collect(['h', 'o']);
+        $d =  collect(['h', 'o', 't']);
         $d->h = 0;
         $d->o = 0;
+        $d->t = 0;
         foreach($uss as $us){
         $date = Carbon::parse($us->created_at);
         if ($date->isToday() == true){
-        $d->h++;
-        $hoje = $d->h;
+            $d->h++;
+            $hoje = $d->h;
         }
         if ($date->isYesterday() == true){
             $d->o++;
             $ontem = $d->o;
         }
+        if ($date->subDays(3) == true){
+            $d->t++;
+            $tres = $d->t;
+        }
+        //dd($d);
         }
 
         //dd($ontem);
