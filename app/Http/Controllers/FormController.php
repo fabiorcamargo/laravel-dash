@@ -48,10 +48,6 @@ class FormController extends Controller
         $fbclid = ((string) Str::uuid());
         Cookie::queue('fbid', $fbclid, 0);
 
-        $tempo = time();
-        Cookie::queue('fbtime', $tempo, 0);
-
-
         $form = FormCampain::find($id);
 
         return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));

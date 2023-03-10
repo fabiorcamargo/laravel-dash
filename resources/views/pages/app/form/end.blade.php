@@ -249,7 +249,7 @@
                             [
                                 {
                                     "event_name": "PageView",
-                                    "event_time": "{{ Cookie::get('fbtime') }}",
+                                    "event_time": "{{ time() }}",
                                     "action_source": "website",
                                     "event_source_url": "{{ url()->current() }}",
                                     "user_data":
