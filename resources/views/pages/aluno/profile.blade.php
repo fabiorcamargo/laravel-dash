@@ -239,7 +239,7 @@
                                 
                                 
                                 <li class="contacts-block__item">
-                                    @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
+                                    @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
                                     <div class="clipboard">
                                         <form class="form-horizontal">
                                             <div class="clipboard-input">
@@ -352,7 +352,7 @@
                     </div>
                 </div>
             </div>
-            @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
+            @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
             <div class="summary layout-spacing pt-5">
                 <div class="widget-content widget-content-area">
                     <h3 class="">Observações</h3>
