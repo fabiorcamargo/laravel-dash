@@ -211,14 +211,14 @@ class FormController extends Controller
             $d->o++;
             $ontem = $d->o;
         }
-        if ($date == Carbon::now()->subDays(3)){
+        if ($date->format('d/m/y') == Carbon::parse('Now -2 days')->format('d/m/y')){
             $d->t++;
             $tres = $d->t;
         }
-        //dd($d);
+        
         }
 
-        //dd($ontem);
+        //dd($d);
 
         return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign, 'total' => $total], compact('users', 'd'));
 
