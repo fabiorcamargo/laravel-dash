@@ -291,13 +291,15 @@ public function PageView(){
         $request = (new EventRequest($pixel_id))
             ->setTestEventCode(env('CONVERSIONS_API_TEST_CODE'))
             ->setEvents($events);
+            $response = $request->execute();
         }else{
             $request = (new EventRequest($pixel_id))
             ->setEvents($events);
+            $response = $request->execute();
         }
 
         //dd($request);
-        $response = $request->execute();
+        
         //dd($response);
 
         //header('Location: ' . $url, true, $permanent ? 301 : 302);
