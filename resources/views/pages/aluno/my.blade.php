@@ -161,43 +161,43 @@
         @if (str_contains(url()->previous(), 'form/end'))
         <script>
                     fbq("track", "Lead", {
-                "data":
-                [
-                    {
-                        "event_name": "Lead",
-                        "event_time": "{{ Cookie::get('fbtime') }}",
-                        "action_source": "website",
-                        "event_source_url": "{{ Cookie::get('fbpage') }}",
-                        "user_data":
-                        {
-                            "em":
-                            [
-                                "{{Hash::make(Auth::user()->email)}}"
-                            ],
-                            "ph":
-                            [
-                                "{{Hash::make(Auth::user()->cellphone)}}"
-                            ],
-                            "fn":
-                            [
-                                "{{Hash::make(Auth::user()->name)}}"
-                            ],
-                            "ln":
-                            [
-                                "{{Hash::make(Auth::user()->lastname)}}"
-                            ],
-                            "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
-                            "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}",
-                            @isset($_COOKIE['_fbc'])
-                            "fbc": "{{$_COOKIE['_fbc']}}",
-                            @endisset
-                            @isset($_COOKIE['_fbp'])
-                            "fbp": "{{$_COOKIE['_fbp']}}"
-                            @endisset
-                        }
-                    }
-                ]
-            }, {eventID: "{{ Cookie::get('fbid') }}"});
+                                "data":
+                                [
+                                    {
+                                        "event_name": "Lead",
+                                        "event_time": "{{ Cookie::get('fbtime') }}",
+                                        "action_source": "website",
+                                        "event_source_url": "{{ Cookie::get('fbpage') }}",
+                                        "user_data":
+                                        {
+                                            "em":
+                                            [
+                                                "{{Hash::make(Auth::user()->email)}}"
+                                            ],
+                                            "ph":
+                                            [
+                                                "{{Hash::make(Auth::user()->cellphone)}}"
+                                            ],
+                                            "fn":
+                                            [
+                                                "{{Hash::make(Auth::user()->name)}}"
+                                            ],
+                                            "ln":
+                                            [
+                                                "{{Hash::make(Auth::user()->lastname)}}"
+                                            ],
+                                            "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
+                                            "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
+                                            @isset($_COOKIE['_fbc'])
+                                            ,"fbc": "{{$_COOKIE['_fbc']}}"
+                                            @endisset
+                                            @isset($_COOKIE['_fbp'])
+                                            ,"fbp": "{{$_COOKIE['_fbp']}}"
+                                            @endisset
+                                        },
+                                    }
+                                ]
+                            } , {"eventID": "{{ Cookie::get('fbid') }}"});
         </script>
         @endif
     </x-slot>

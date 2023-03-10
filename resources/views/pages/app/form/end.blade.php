@@ -156,7 +156,8 @@
                                                     <div class="row">
                                                         
                                                         <div class="col-md-6">
-                                                           <p hidden> {{ Cookie::get('fbid') }} </p>
+                                                           <p hidden> {{ Cookie::get('fbid') }} {{ Cookie::get('fbtime') }}</p>
+
                                                             <h4 class="pb-4">Dados Pessoais</h4>
                                                             <label for="defaultEmailAddress">Nome Completo</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
@@ -243,9 +244,28 @@
         <script src="{{asset('plugins/card/dist/card.js')}}"></script>
 
         <script>
-            fbq('track', 'PageView', {"eventID": "{{ Cookie::get('fbid') }}"});
-            
-
+            fbq('track', 'PageView', {
+                            "data":
+                            [
+                                {
+                                    "event_name": "PageView",
+                                    "event_time": "{{ Cookie::get('fbtime') }}",
+                                    "action_source": "website",
+                                    "event_source_url": "{{ url()->current() }}",
+                                    "user_data":
+                                    {
+                                        "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
+                                        "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
+                                        @isset($_COOKIE['_fbc'])
+                                        ,"fbc": "{{$_COOKIE['_fbc']}}"
+                                        @endisset
+                                        @isset($_COOKIE['_fbp'])
+                                        ,"fbp": "{{$_COOKIE['_fbp']}}"
+                                        @endisset
+                                    }
+                                }
+                            ]
+                        } , {"eventID": "{{ Cookie::get('fbid') }}"});
     </script>
 
         <script>

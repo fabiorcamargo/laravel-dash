@@ -40,7 +40,7 @@ class ConversionApiFB extends Controller
         $fbp = $_COOKIE['_fbp'];
         }
         
-        if (env('APP_DEBUG') == false){
+        if (env('APP_DEBUG') == true){
             $tempo = time();
 
             $page = url()->current();
@@ -120,7 +120,7 @@ class ConversionApiFB extends Controller
 
     public function ViewContent(){
 
-        if (env('APP_DEBUG') == false){
+        if (env('APP_DEBUG') == true){
             $tempo = time();
             $page = url()->current();
             $eventid = ConversionApiFB::geraid();
@@ -217,8 +217,8 @@ return;
 
 public function PageView(){
 
-    if (env('APP_DEBUG') == false){
-        $tempo = time();
+    if (env('APP_DEBUG') == true){
+        $tempo = Cookie::get('fbtime');
         $page = url()->current();
         $eventid = Cookie::get('fbid');
 
@@ -229,14 +229,15 @@ public function PageView(){
         $api->setLogger(new CurlLogger());
 
         if (Auth::check()) {
-            if(isset($_COOKIE['_fbc'])){
+            if(isset($_COOKIE['_fbc']) && isset($_COOKIE['_fbc'])){
                 $fbc = $_COOKIE['_fbc'];
                 $fbp = $_COOKIE['_fbp'];
                 $user_data = (new UserData())  
                 ->setEmail((auth()->user()->email))
                 ->setPhone((auth()->user()->cellphone))
+                ->setFirstName((auth()->user()->name))
                 ->setLastName((auth()->user()->lastname))
-                ->setFirstName((auth()->user()->name))/*
+                /*
                 ->setCities(array("08809a7d1404509f5ca572eea923bad7c334d16bf92bb4ffc1e576ef34572176"))
                 ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
                 ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
@@ -258,7 +259,7 @@ public function PageView(){
                 }
             
         } else {
-            if(isset($_COOKIE['_fbc'])){
+            if(isset($_COOKIE['_fbc']) && isset($_COOKIE['_fbc'])){
                 $fbc = $_COOKIE['_fbc'];
                 $fbp = $_COOKIE['_fbp'];
                 $user_data = (new UserData())  
