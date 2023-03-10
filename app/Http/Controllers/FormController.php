@@ -211,7 +211,7 @@ class FormController extends Controller
             $d->o++;
             $ontem = $d->o;
         }
-        if ($date->subDays(3) == true){
+        if ($date == Carbon::now()->subDays(3)){
             $d->t++;
             $tres = $d->t;
         }
