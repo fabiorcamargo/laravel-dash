@@ -243,29 +243,35 @@
         <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
         <script src="{{asset('plugins/card/dist/card.js')}}"></script>
 
-        <script>
-            fbq('track', 'PageView', {
-                            "data":
-                            [
-                                {
-                                    "event_name": "PageView",
-                                    "event_time": "{{ time() }}",
-                                    "action_source": "website",
-                                    "event_source_url": "{{ url()->current() }}",
-                                    "user_data":
-                                    {
-                                        "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
-                                        "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
-
-                                        @isset($_COOKIE['_fbp'])
-                                        ,"fbp": "{{$_COOKIE['_fbp']}}",
-                                        "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
-                                        @endisset
-                                    }
+                            <script>
+                            fbq("track", "ViewContent",
+                                                
+                            {
+                                "event_name": "ViewContent",
+                                "event_time": "{{ time() }}",
+                                "action_source": "website",
+                                "event_source_url": "{{ url()->current() }}",
+                                "event_id": "{{ Cookie::get('fbid') }}",
+                                "user_data": {
+                                    "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
+                                    "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}",
+                                    "ct": [
+                                        "{{Hash::make($form->city)}}"
+                                    ]
+                                    @isset($_COOKIE['_fbp'])
+                                    ,"fbp": "{{$_COOKIE['_fbp']}}",
+                                    "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
+                                    @endisset
+                                },
+                                "custom_data": {
+                                    "content_ids": "{{$form->id}}",
+                                    "content_category": "GRATUITO",
+                                    "content_name": "{{$form->name}}"
                                 }
-                            ]
-                        } , {"eventID": "{{ Cookie::get('fbid') }}"});
-    </script>
+                            }
+
+                            )
+                            </script>
 
         <script>
             var c = new Card({

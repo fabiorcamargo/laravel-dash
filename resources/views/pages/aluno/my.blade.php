@@ -160,13 +160,11 @@
         @if (str_contains(url()->previous(), 'form/end'))
         <script>
                     fbq("track", "Lead", {
-                                "data":
-                                [
-                                    {
                                         "event_name": "Lead",
                                         "event_time": "{{ Cookie::get('fbtime') }}",
                                         "action_source": "website",
                                         "event_source_url": "{{ Cookie::get('fbpage') }}",
+                                        "event_id": "{{ Cookie::get('fbid') }}",
                                         "user_data":
                                         {
                                             "em":
@@ -193,8 +191,7 @@
                                             @endisset
                                         },
                                     }
-                                ]
-                            } , {"eventID": "{{ Cookie::get('fbid') }}"});
+                                );
         </script>
         @endif
     </x-slot>
