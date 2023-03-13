@@ -3,6 +3,7 @@
 use App\Http\Controllers\{
     ApiController,
     CademiController,
+    ChatbotAsset,
     ChatbotController,
     ConversionApiFB,
     EcommerceController,
@@ -44,6 +45,7 @@ use Illuminate\Support\Facades\Route;
         Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
         Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
         Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
+        Route::get('/test', [ChatbotAsset::class, 'queue_send']);
         
         
     

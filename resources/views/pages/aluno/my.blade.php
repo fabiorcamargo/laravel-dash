@@ -164,7 +164,7 @@
                                         "event_time": "{{ Cookie::get('fbtime') }}",
                                         "action_source": "website",
                                         "event_source_url": "{{ Cookie::get('fbpage') }}",
-                                        "event_id": "{{ Cookie::get('fbid') }}",
+                                        "eventID": "{{ Cookie::get('fbid1') }}",
                                         "user_data":
                                         {
                                             "em":
@@ -187,7 +187,7 @@
                                             "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
                                             @isset($_COOKIE['_fbp'])
                                             ,"fbp": "{{$_COOKIE['_fbp']}}",
-                                            "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
+                                            "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid1') }}"
                                             @endisset
                                         },
                                     }

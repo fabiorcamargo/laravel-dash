@@ -20,8 +20,9 @@ class ChatbotSend implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(ChatbotAsset $chatbot)
+    public function __construct()
     {
+        $chatbot = new ChatbotAsset;
         $this->chatbot = $chatbot;
     }
 
@@ -32,7 +33,6 @@ class ChatbotSend implements ShouldQueue
      */
     public function handle()
     {
-        $send = new ControllersChatbotAsset;
-        $send->chatbot_send();
+        $this->chatbot->queue_send();
     }
 }

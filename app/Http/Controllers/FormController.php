@@ -49,6 +49,7 @@ class FormController extends Controller
         Cookie::queue('fbid', $fbclid, 0);
 
         $form = FormCampain::find($id);
+        Cookie::queue('fbcity', $form->city, 0);
 
         return view('pages.app.form.end', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form'));
     }
@@ -59,6 +60,8 @@ class FormController extends Controller
         $password = ($faker->randomNumber(5, false));
         $faker = \Faker\Factory::create();
         $username = "GRA" . $faker->randomNumber(5, false);
+
+        $form = FormCampain::find($id);
 
         if(User::where('username', $username)->first()){
             $faker = \Faker\Factory::create();
@@ -76,10 +79,12 @@ class FormController extends Controller
         $user->username = $username;
         $user->name =$nome[0];
         $user->lastname =  (isset($nome[1])) ? $nome[1] : "";
-        $user->email = $request->email;
+        $user->email = $request->email !== "" ? $request->email : $username . "@profissionalizaead.com.br";
         $user->email2 = $username . "@profissionalizaead.com.br";
         $user->cellphone = preg_replace('/[^0-9]/', '',$request->cellphone);
         $user->cellphone2 = preg_replace('/[^0-9]/', '',$request->cellphone);
+        $user->city = $form->city;
+        $user->city2 = $form->city;
         $user->secretary = "TB";
         $user->seller = "Internet";
         $user->password = bcrypt($password);
@@ -92,10 +97,7 @@ class FormController extends Controller
         $user->save();
 
         Auth::login($user);
-
         
-
-        $form = FormCampain::find($id);
         $form->leads()->create([
             'user_id' => $user->id
         ]);
@@ -107,11 +109,13 @@ class FormController extends Controller
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\nPara confirmar o recebimento dos dados, salve o nosso contato e nos envie um *ok*.";
 
         $send = new ControllersChatbotAsset;
-        $send->chatbot_send($form->chip, $numero, $msg);
+        //$send->chatbot_send($form->chip, $numero, $msg);
 
         $event = new ConversionApiFB;
         $event->Lead();
         
+        
+
         return Redirect('/modern-dark-menu/aluno/my');
     }
 

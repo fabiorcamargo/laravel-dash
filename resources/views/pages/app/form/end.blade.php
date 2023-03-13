@@ -251,7 +251,7 @@
                                 "event_time": "{{ time() }}",
                                 "action_source": "website",
                                 "event_source_url": "{{ url()->current() }}",
-                                "event_id": "{{ Cookie::get('fbid') }}",
+                                "eventID": "{{ Cookie::get('fbid') }}",
                                 "user_data": {
                                     "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
                                     "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}",

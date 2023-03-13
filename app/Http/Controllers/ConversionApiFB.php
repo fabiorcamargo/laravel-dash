@@ -15,6 +15,7 @@ use FacebookAds\Object\ServerSide\EventRequest;
 use FacebookAds\Object\ServerSide\UserData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -37,10 +38,9 @@ class ConversionApiFB extends Controller
 
             $page = url()->current();
             $eventid = ((string) Str::uuid());
-            Cookie::queue('fbid', $eventid, 0);
+            Cookie::queue('fbid1', $eventid, 0);
             Cookie::queue('fbtime', $tempo, 0);
             Cookie::queue('fbpage', $page, 0);
-
 
             $access_token = env('CONVERSIONS_API_ACCESS_TOKEN');
             $pixel_id = env('CONVERSIONS_API_PIXEL_ID');
@@ -51,11 +51,12 @@ class ConversionApiFB extends Controller
             if(isset($_COOKIE['_fbp'])){
                 $fbp = $_COOKIE['_fbp'];
                 $user_data = (new UserData())  
-                ->setEmail((auth()->user()->email))
-                ->setPhone((auth()->user()->cellphone))
-                ->setLastName((auth()->user()->lastname))
-                ->setFirstName((auth()->user()->name))/*
-                ->setCities(array("08809a7d1404509f5ca572eea923bad7c334d16bf92bb4ffc1e576ef34572176"))
+                ->setEmail(((auth()->user()->email)))
+                ->setPhone(((auth()->user()->cellphone)))
+                ->setLastName(((auth()->user()->lastname)))
+                ->setFirstName(((auth()->user()->name)))
+                ->setCities(array((auth()->user()->city)))
+                /*
                 ->setStates(array("0510eddd781102030eb8860671503a28e6a37f5346de429bdd47c0a37c77cc7d"))
                 ->setCountryCodes(array("885036a0da3dff3c3e05bc79bf49382b12bc5098514ed57ce0875aba1aa2c40d"))*/
                 ->setClientIpAddress($_SERVER['REMOTE_ADDR'])

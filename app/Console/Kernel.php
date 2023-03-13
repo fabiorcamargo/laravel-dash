@@ -2,6 +2,8 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\ChatbotAsset;
+use App\Jobs\ChatbotSend;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -14,8 +16,10 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected function schedule(Schedule $schedule)
-    {
-        // $schedule->command('inspire')->hourly();
+    {   
+        //$chatbot = new ChatbotAsset;
+        //$schedule->call(fn() => $chatbot->queue_send())
+        //->everyMinute();
     }
 
     /**
