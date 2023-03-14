@@ -101,7 +101,7 @@
                             
                             @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->created_at->format('d/m/y h:i') }}</td>
+                                <td>{{ $user->created_at->format('d/m/y H:i') }}</td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
                                 <td>{{ $user->username }} 
                                     @if($user->first == 2)
