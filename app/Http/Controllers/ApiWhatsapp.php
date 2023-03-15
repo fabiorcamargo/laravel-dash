@@ -16,5 +16,7 @@ class ApiWhatsapp extends Controller
         ]);
         
         Storage::put('whatsapp_api.txt', json_encode($data));
+
+        return response("HAPPY", 200);
     }
 }

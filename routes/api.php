@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiWhatsapp;
 use App\Http\Controllers\ChatbotAsset;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
@@ -38,8 +39,8 @@ Route::any('rd', function (Request $request) {
     return response('',200);
 	});
 
-Route::prefix('wp_api')->group(function () {
-    Route::prefix('msg')->group(function () {
-    Route::post('receive', [ApiWhatsapp::class, 'msg_receive'])->name('wp_api.msg_receive'); 
+    Route::prefix('wp_api')->group(function () {
+        Route::prefix('msg')->group(function () {
+        Route::post('receive', [ApiWhatsapp::class, 'msg_receive'])->name('wp_api.msg_receive'); 
+        });
     });
-});
