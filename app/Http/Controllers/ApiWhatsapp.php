@@ -10,13 +10,17 @@ class ApiWhatsapp extends Controller
 {
     public function msg_receive(Request $request){
         
-        $data = $request->all();
+        //$data = $request->all();
+        $data = (json_decode($request->getContent()));
+        //dd($data->hub_challenge);
         WhatsappApi::create([
             'body' => json_encode($data)
         ]);
         
         Storage::put('whatsapp_api.txt', json_encode($data));
 
-        return response("HAPPY", 200);
+
+
+        return response("$data->hub_challenge", 200);
     }
 }
