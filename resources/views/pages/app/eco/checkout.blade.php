@@ -119,8 +119,7 @@
 
                                                     <div class="col-sm-6 col-12 mr-auto">
                                                         <div class="d-flex">
-                                                            
-                                                        <h3 class="">Profissionaliza EAD</h3>
+                                                        <h4 class=""><img src="{{Vite::asset('resources/images/logo2.svg')}}" class="navbar-logo logo-light pe-3" width="80" alt="logo">Profissionaliza EAD</h4> 
                                                         </div>
                                                         <p class="inv-street-addr mt-3">CNPJ: 41.769.690/0001-25</p>
                                                         <p class="inv-street-addr mt-3">Endereço: Av. Advogado Horácio Raccanello Filho, 5410 Sala 01, Maringá/PR, 87020-035</p>
@@ -130,9 +129,9 @@
                                                     
 
                                                     
-                                                    <div class="col-sm-6 text-sm-end">
+                                                   {{--}}<div class="col-sm-6 text-sm-end">
                                                         <p class="inv-list-number mt-sm-3 pb-sm-2 mt-4"><span class="inv-title">Identificação : </span> <span class="inv-number">#0001</span></p>
-                                                    </div>                                                                
+                                                    </div>     --}}                                       
                                                 </div>
                                                 
                                             </div>
@@ -158,8 +157,8 @@
                                                     <div class="row">
                                                         
                                                         <div class="col-md-6">
-                                                            <h4 class="pb-4">Dados Pessoais</h4>
-                                                            <label for="defaultEmailAddress">Nome Completo</label>
+                                                            <h5 class="pb-4">Para prosseguir insira as informações abaixo:</h5>
+                                                            {{--<label for="defaultEmailAddress">Nome Completo</label>--}}
                                                             <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
                                                             <div class="valid-feedback feedback-pos">
                                                                 Celular válido!
@@ -169,7 +168,7 @@
                                                             </div>
                                                 
                                                             <div class="form-group">
-                                                            <label for="defaultEmailAddress">Telefone com Whatsapp</label>
+                                                            {{--<label for="defaultEmailAddress">Telefone com Whatsapp</label>--}}
                                                             <input type="text" class="ph-number form-control mb-4" placeholder="Digite apenas os números" name="cellphone" id="cellphone"  autocomplete="on" required >
                                                             <div class="valid-feedback feedback-pos">
                                                                 Celular válido!
@@ -180,7 +179,7 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label for="email">Email</label>
+                                                                {{--<label for="email">Email</label>--}}
                                                                 <input type="email" name="email" placeholder="Para receber acesso ao portal" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
                                                                         <div class="valid-feedback feedback-pos">
                                                                             Email Válido!

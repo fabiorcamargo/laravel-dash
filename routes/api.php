@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiWhatsapp;
 use App\Http\Controllers\ChatbotAsset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,3 +37,9 @@ Route::any('rd', function (Request $request) {
     Storage::put('rd.txt', $data);
     return response('',200);
 	});
+
+Route::prefix('wp_api')->group(function () {
+    Route::prefix('msg')->group(function () {
+    Route::post('receive', [ApiWhatsapp::class, 'msg_receive'])->name('wp_api.msg_receive'); 
+    });
+});

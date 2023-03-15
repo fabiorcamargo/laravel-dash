@@ -100,9 +100,21 @@
                                         </div>
                                         <p class="inv-street-addr mt-3">CNPJ: 41.769.690/0001-25</p>
                                         <p class="inv-street-addr mt-3">Endereço: Av. Advogado Horácio Raccanello Filho, 5410 Sala 01, Maringá/PR, 87020-035</p>
-                                    </div>       
+                                    </div> 
+                                          
                                 </div>
                             </div>
+                            <div class="content-section pt-4">
+                                <div class="widget-content widget-content-area br-8 ">
+                                    @php
+                                    $images = json_decode($product->image);
+                                    @endphp
+                                    <div class="d-flex">
+                                        <h4 class=""><img src="{{asset("/product/$images[0]")}}" class="navbar-logo logo-light pe-3" width="80" alt="logo">{{ $product->name }}</h4>
+                                    </div>
+                                </div>
+                            </div>
+                           
                                         
                             <div class="content-section pt-4">
                                 <form action="{{ getRouterValue(); }}/app/eco/checkout/{{ $product->id }}/end/{{ $user->id }}" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
@@ -115,7 +127,8 @@
                                             @if (\Session::has('success'))
                                                 <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> {!! \Session::get('success') !!} </div>
                                             @endif
-                                            <h4>Escolha uma forma de pagamento</h4>
+
+                                            <h5 class="pt-4">Escolha uma forma de pagamento</h5>
                                             <div class="form-check form-check-primary form-check-inline pt-4">
                                                 <input class="form-check-input" type="radio" name="radio-checked" id="PIX" onchange="mypix()" checked>
                                                 <label class="form-check-label" for="PIX">
