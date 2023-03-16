@@ -586,7 +586,7 @@ body.layout-dark {
             -webkit-justify-content: flex-end;
             justify-content: flex-end;
             -webkit-flex-direction: column;
-            flex-direction: column;
+            flex-direction: column-reverse;
 
             &.active-chat {
               display: block;

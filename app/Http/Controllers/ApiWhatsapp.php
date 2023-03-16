@@ -48,15 +48,6 @@ class ApiWhatsapp extends Controller
         
         
         Storage::put('whatsapp_api.txt', json_encode($data));
-
-
-        /*if($data["hub_mode"] == "subscribe" && $data["hub_verify_token"] == "HAPPY"){
-            return response($data["hub_challenge"], 200);
-        }else{
-            return response('', 200);
-        }*/
-
-
         
     }
 

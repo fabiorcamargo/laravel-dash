@@ -113,7 +113,7 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-        @vite(['resources/assets/js/apps/chat.js'])
+        @vite(['resources/assets/js/apps/chat2.js'])
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
