@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Whatsapp_client;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,9 +14,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('whatsapp_apis', function (Blueprint $table) {
+        Schema::create('whatsapp_msgs', function (Blueprint $table) {
             $table->id();
-            $table->string('phone');
+            $table->foreignIdFor(Whatsapp_client::class);
+            $table->string('msg_id');
             $table->json('body');
             $table->timestamps();
         });
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('whatsapp_apis');
+        Schema::dropIfExists('whatsapp_msgs');
     }
 };

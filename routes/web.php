@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\{
     ApiController,
+    ApiWhatsapp,
     CademiController,
     ChatbotAsset,
     ChatbotController,
@@ -282,9 +283,11 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::get('/calendar', function () {
                 return view('pages.app.calendar', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
             })->name('calendar');
-            Route::get('/chat', function () {
+
+            /*Route::get('/chat', function () {
                 return view('pages.app.chat', ['title' => 'Chat Application | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
-            })->name('chat');
+            })->name('chat');*/
+            Route::get('/chat', [ApiWhatsapp::class, 'chat_show'])->name('chat-show');    
             Route::get('/contacts', function () {
                 return view('pages.app.contacts', ['title' => 'Contact Profile | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
             })->name('contacts');
