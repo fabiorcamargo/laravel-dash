@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FormCampain;
 use App\Models\User;
 use App\Models\Whatsapp_client;
 use App\Models\Whatsapp_msg;
 use App\Models\WhatsappApi;
+use App\Models\WhatsappTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use App\Exceptions\InvalidOrderException;
+use App\Models\FormLead;
 
 class ApiWhatsapp extends Controller
 {
+    
     public function msg_receive(Request $request){
         
         $data = $request->input('entry');
@@ -75,5 +80,146 @@ class ApiWhatsapp extends Controller
         //dd(($chats[0]->body->entry[0]->changes[0]->value->contacts[0]->profile->name));
         return view('pages.app.chat.show', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('clients'));
     }
+
+    public function wp_msg_send() {
+
+    }
+
+    public function wp_msg_form_send($id) {
+        $form = FormCampain::find($id);
+        $templates = WhatsappTemplate::all();
+        $model = new User;
+        $fillable = ($model->getFillable());
+        return view('pages.app.campaign.msg_form', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form', 'templates', 'fillable'));
+
+    }
+
+    public function wp_msg_template_create(){
+        return view('pages.app.campaign.msg_template_create', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
+    public function wp_msg_template_post(Request $request){
+        $data = (object)($request->all());
+        //dd($data);
+        $template = WhatsappTemplate::create([
+            'name' => $data->name,
+            'msg' => $data->msg,
+            'img' => (float)$data->img,
+            'button' => (float)$data->button,
+            'variables' => (float)$data->variables
+        ]);
+
+        if($template->id != null)
+        $status = [
+            'status'=>'success', 
+            'msg'=>"Template criado com sucesso"
+        ];
+        //dd($template);
+       
+        return redirect()
+        ->back()
+        ->withInput()
+        ->with($status['status'], $status['msg']);
+}
+        public function wp_templates ($id){
+         $variable = WhatsappTemplate::find($id)->variable;
+         return $variable;
+        }
+
+        public function bulk_send(Request $request, $id){
+            $data = (object)$request->all();
+            dd($data);
+            $campaign = FormCampain::find($id);
+            $template = WhatsappTemplate::find($data->templates);
+            $leads = FormLead::all();
+            
+            $model = new User;
+            $fillables = ($model->getFillable());
+            //dd($fillables[0]);
+            //dd($template->variables);
+            
+            //ApiWhatsapp::template_msg_send($template, $data);
+            
+            dd($leads[20]->user->get($data->version_compare));
+            foreach($leads as $lead){
+                for ($i=1; $i < $template->variables; $i++) {
+                    $n = "variavel$i";
+                    foreach($fillables as $fillable){
+                        
+                        if($fillable == $data->$n){
+                           
+                            dd($data->$n);
+                           
+                        }
+                        
+                        
+                        //dd($lead->user->get([$data->$n]));
+                }
+                }
+            }
+   
+            //dd($dados_lead);
+            dd($template);
+
+
+        }
+
+        public function template_msg_send($template, $data){
+
+            
+            //dd($data->variavel1);
+            for ($i=1; $i < $template->variables; $i++) { 
+                $var[$i] = ["type" => $data->variavel1];
+            }
+
+            dd($var);
+
+            $data = '{
+                "messaging_product": "whatsapp",
+                "recipient_type": "individual",
+                "to": "5544988605751",
+                "type": "template",
+                "template": {
+                    "name": "' . $template->name .'",
+                    "language": {
+                        "code": "pt_BR"
+                    },
+                    "components": [
+                        {
+                            "type": "header",
+                            "parameters": [
+                                {
+                                    "type": "image",
+                                    "image": {
+                                        "link": "https://alunos.profissionalizaead.com.br/product/Bg/Curso%20Gratuito.png"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            "type": "body",
+                            "parameters": [
+
+                                {
+                                    "type": "text",
+                                    "text": "Lilly"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "GRA4561"
+                                },
+                                {
+                                    "type": "text",
+                                    "text": "Telêmaco Borba - PR"
+                                }
+                                
+                            ]
+                        }
+                    ]
+                }
+            }';
+        
+
+        }
 }
 

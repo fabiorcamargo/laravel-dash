@@ -13,6 +13,9 @@
         <link rel="stylesheet" href="{{asset('plugins/sweetalerts2/sweetalerts2.css')}}">
 
 
+        @vite(['resources/scss/light/plugins/editors/quill/quill.snow.scss'])
+        @vite(['resources/scss/dark/plugins/editors/quill/quill.snow.scss'])
+
         @vite(['resources/scss/light/assets/components/tabs.scss'])
         @vite(['resources/scss/light/assets/elements/alert.scss'])        
         @vite(['resources/scss/light/plugins/sweetalerts2/custom-sweetalert.scss'])
@@ -255,8 +258,10 @@
                                                                     </div>
                                                                     <div class="col-md-8">
                                                                         <div class="form-group">
-                                                                            <label for="profession">Observações</label>
-                                                                            <input type="text" name="observation" id="observation" class="form-control mb-8" value="{{$user->observation}}">
+                                                                            <h4>Observações:</h4>
+                                                                            <div id="quillEditor"></div>
+                                                                            <input id="observation" name="observation"  hidden>
+                                                                            {{--<input type="text" name="observation" id="observation" class="form-control mb-8" value="{{$user->observation}}">--}}
                                                                         </div>
                                                                     </div>
                                                                     
@@ -781,6 +786,8 @@
         <script src="{{asset('plugins/notification/snackbar/snackbar.min.js')}}"></script>
         <script src="{{asset('plugins/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
+        <script src="{{asset('plugins/editors/quill/quill.js')}}"></script>
+
         @vite(['resources/assets/js/users/account-settings.js'])
 
 <script type="text/javascript">
@@ -830,6 +837,27 @@
 
     }</script>
 
+<script>
+            
+    var options = {
+        placeholder: 'Coloque a descrição do produto',
+        theme: 'snow'
+        };
+
+        var editor = new Quill('#quillEditor', options);
+        var justHtmlContent = document.getElementById('observation');
+
+        editor.clipboard.dangerouslyPasteHTML(0, <?php echo json_encode($user->observation); ?>);
+
+        editor.on('text-change', function() {
+        var delta = editor.getContents();
+        var text = editor.getText();
+        var justHtml = editor.root.innerHTML;
+        justHtmlContent.value = justHtml;
+        });
+
+        
+</script>
         
         
         

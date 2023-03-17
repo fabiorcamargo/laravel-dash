@@ -359,7 +359,7 @@
                     <div class="order-summary">
 
                         <div class="summary-list summary-income">
-                            <p>{{$user->observation}}</p>
+                            <p>{!!$user->observation!!}</p>
                             {{--
                             <div class="summery-info">
 

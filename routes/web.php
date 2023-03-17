@@ -18,6 +18,8 @@ use App\Http\Controllers\{
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
+use App\Models\WhatsappApi;
+use App\Models\WhatsappTemplate;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -45,6 +47,7 @@ use Illuminate\Support\Facades\Route;
 
         Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
         Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
+        Route::get('/wp/templates/{id}', [ApiWhatsapp::class, 'wp_templates'])->name('wp-templates');
         Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
         Route::get('/test', [ChatbotAsset::class, 'queue_send']);
         
@@ -253,6 +256,11 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/list', [FormController::class, 'list_campaigns'])->name('campaign-list-campaigns');
                 Route::get('/show/{id}', [FormController::class, 'list_leads'])->name('campaign-list-leads');
                 Route::get('/add', [FormController::class, 'add_show'])->name('campaign-add-show');
+                Route::get('/msg/template/create', [ApiWhatsapp::class, 'wp_msg_template_create'])->name('campaign-msg-template-create');
+                Route::post('/msg/template/create', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
+                Route::post('/msg/template/bulk/send', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
+                Route::get('/msg/send/wp/{id}', [ApiWhatsapp::class, 'wp_msg_form_send'])->name('campaign-msg-wp-send');
+                Route::post('/msg/send/pro/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-bulk-send');
             });
         });
 

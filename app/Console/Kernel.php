@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         //$chatbot = new ChatbotAsset;
         //$schedule->call(fn() => $chatbot->queue_send())
         //->everyMinute();
+        
     }
 
     /**

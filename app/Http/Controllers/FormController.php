@@ -226,5 +226,7 @@ class FormController extends Controller
         return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign, 'total' => $total], compact('users', 'd'));
 
     }
+
+    
 }
 

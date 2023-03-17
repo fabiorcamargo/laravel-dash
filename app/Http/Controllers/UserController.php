@@ -357,7 +357,7 @@ class UserController extends Controller
             } else {
                 $user->password = bcrypt($request->password);
             }
-            if(Auth::user()->role == 7){
+            if(Auth::user()->role == 4 || Auth::user()->role == 6 || Auth::user()->role == 7 || Auth::user()->role == 8){
             $user->email2 = $request->email2;
             $de = array('(',')',' ','-');
             $para = array('','','','');
@@ -367,6 +367,7 @@ class UserController extends Controller
             $de = array('.','-');
             $para = array('','');
             $user->document = str_replace($de, $para, $request->document);
+            //dd($user);
             if( $request->ouro == "on"){
                 $user->ouro = 1;
                 }else{
@@ -382,6 +383,7 @@ class UserController extends Controller
         }
            // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
         }else{
+            //dd('n');
             $user = $this->user->find(Auth::user()->id);
             $user->first = 1;
         }
