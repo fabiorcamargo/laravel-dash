@@ -78,7 +78,7 @@
 
                                         <!-- Email Address -->
                                         <div>
-                                            <x-label for="email" :value="__('Id ou Email')" />
+                                            <x-label for="email" :value="__('Id do Aluno')" />
 
                                             <x-input id="login" class="form-control" type="text" name="login" :value="old('login')" required autofocus />
                                         </div>
