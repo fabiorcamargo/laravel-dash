@@ -13,6 +13,8 @@ class Whatsapp_msg extends Model
         'whatsapp_client_id',
         'msg_id',
         'body',
+        'send',
+        'type',
     ];
 
     public function wp_client()

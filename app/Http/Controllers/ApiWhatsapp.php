@@ -8,69 +8,95 @@ use App\Models\Whatsapp_client;
 use App\Models\Whatsapp_msg;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
+use App\Http\Controllers\Whatsapp\WhatsappManipulation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Exceptions\InvalidOrderException;
+use App\Http\Controllers\WhatsappManipulation as ControllersWhatsappManipulation;
 use App\Models\FormLead;
+use App\Models\Whatsapp_msg_type;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Http;
+use stdClass;
 
 class ApiWhatsapp extends Controller
 {
     
     public function msg_receive(Request $request){
         
-        $data = $request->input('entry');
-        $body_contact = $request->input('entry.0.changes.0.value.contacts');
-        $phone = $request->input('entry.0.changes.0.value.contacts.0.wa_id');
-        $name = $request->input('entry.0.changes.0.value.contacts.0.profile.name');
-        $body_msg = $request->input('entry.0.changes.0.value.messages.0');
-        $msg_id = $request->input('entry.0.changes.0.value.messages.0.id');
-		//dd($body_msg);
-        //$data = (json_decode($request->getContent()));
-        //dd($data->hub_challenge);
-        //$phone2 = (str_replace("55","", $phone));
-        //$phone2 = (substr($phone2, 0, 2) . 9 . substr($phone2, 2, 10));
-        //dd(User::where('cellphone', 'like', "%$phone2%")->first());
+        //Type: text, reaction, image, sticker, errors, location, contacts, button, interactive { list_reply }, interactive { button_reply }, system(For update profile)
+
+
+
+        $data = json_encode($request->all());
+        $data = json_decode($data);
+        //dd($data);
+
+        $body = new stdClass;
+        $body->contact = isset($data->entry[0]->changes[0]->value->contacts) ? $data->entry[0]->changes[0]->value->contacts : "";
+        $body->message = isset($data->entry[0]->changes[0]->value->messages) ? $data->entry[0]->changes[0]->value->messages : "";
+        $body->statuses = isset($data->entry[0]->changes[0]->value->statuses) ? $data->entry[0]->changes[0]->value->statuses : "";
+
+
+        //dd($body->message[0]->type);
+
+        $phone = $body->contact[0]->wa_id;
+        $name = $body->contact[0]->profile->name;
+        $msg_id = $body->message[0]->id;
+
+        //dd($msg_id, $name, $phone);
 
         WhatsappApi::create([
             'body'=>json_encode($request->all())
         ]);
-
-        if(Whatsapp_client::where('phone', $phone)->first()){
-            $client = Whatsapp_client::where('phone', $phone)->first();
-        }else{
-        $client = Whatsapp_client::create([
-            'name' => $name,
-            'phone' => $phone,
-            'body' => json_encode($body_contact)
-        ]);
-    }
+        
+        $client = (new ControllersWhatsappManipulation)->client($phone, $name);
         //dd($client);
 
-        $client->wp_msg()->create([
+        $status = $client->wp_msg()->create([
             'msg_id' => $msg_id,
-            'body' => json_encode($body_msg),
+            'body' => json_encode($body->message),
+            'send' => 0,
+            'type' => $body->message[0]->type
         ]);
         
         
         Storage::put('whatsapp_api.txt', json_encode($data));
+
+        return  response("Msg: $status->id criada com sucesso!", 200);
         
     }
 
     public function chat_show(){
         $clients = Whatsapp_client::all()->reverse();
+        $types = Whatsapp_msg_type::all();
+        //dd($types);
         //dd($clients);
-        
+        $i=0;
         foreach($clients as &$client){
             $client->message = $client->wp_msg()->get()->reverse();
+          
             foreach($client->message as $message){
                 $data = json_decode($message->body);
-                $message->id = $data->id;
-                $message->from = $data->from;
-                if(isset($data->text)){
-                $message->body = $data->text->body;
+                
+                $message->id = $message->id;
+                $message->from = $data[0]->from;
+                foreach($types as $type){
+                  $message->type == "text" ? $message->body = $data[0]->text->body : "";
+                  $message->type == "reaction" ? $message->body = $data[0]->reaction->emoji : "";
+                  $message->type == "image" ? $message->body = $data[0]->image->sha256 : "";
+                  $message->type == "sticker" ? $message->body = $data[0]->sticker->sha256 : "";
+                  $message->type == "unknown" ? $message->body = $data[0]->errors[0]->details : "";
+                  $message->type == "button" ? $message->body = "Button: " . $data[0]->button->text : "";
+                  $message->type == "list_reply" ? $message->body = $data[0]->interactive->list_reply->title : "";
+                  $message->type == "button_reply" ? $message->body = $data[0]->interactive->button_reply->title : "";
+                  $message->type == "order" ? $message->body = json_encode($data[0]->order) : "";
+                  $message->type == "system" ? $message->body = $data[0]->system->body : "";
+                  //dd($message);
                 }
-                //$message->date = $data->timestamp;
-                //dd(json_decode($message->body));
+                if(isset($data[0]->text)){
+                $message->body = $data[0]->text->body;
+                }
             }
             }
 
@@ -128,7 +154,7 @@ class ApiWhatsapp extends Controller
 
         public function bulk_send(Request $request, $id){
             $data = (object)$request->all();
-            dd($data);
+            //dd($data);
             $campaign = FormCampain::find($id);
             $template = WhatsappTemplate::find($data->templates);
             $leads = FormLead::all();
@@ -140,86 +166,142 @@ class ApiWhatsapp extends Controller
             
             //ApiWhatsapp::template_msg_send($template, $data);
             
-            dd($leads[20]->user->get($data->version_compare));
+           //dd($leads);
             foreach($leads as $lead){
-                for ($i=1; $i < $template->variables; $i++) {
-                    $n = "variavel$i";
-                    foreach($fillables as $fillable){
-                        
-                        if($fillable == $data->$n){
-                           
-                            dd($data->$n);
-                           
-                        }
-                        
-                        
-                        //dd($lead->user->get([$data->$n]));
-                }
-                }
+               $user = ($lead->user()->first());
+               $var[0] = $template->name;
+               $var[1] = "55" . $user->cellphone;
+               $var[2] = $user->name;
+               $var[3] = $user->username;
+               $var[4] = $campaign->city;
+               //dd($var);
+               ApiWhatsapp::template_msg_send($var);
             }
-   
-            //dd($dados_lead);
-            dd($template);
+
 
 
         }
 
-        public function template_msg_send($template, $data){
-
+        public function template_msg_send($var){
             
-            //dd($data->variavel1);
-            for ($i=1; $i < $template->variables; $i++) { 
-                $var[$i] = ["type" => $data->variavel1];
-            }
-
-            dd($var);
-
-            $data = '{
+            $payload = '{
                 "messaging_product": "whatsapp",
                 "recipient_type": "individual",
-                "to": "5544988605751",
+                "to": "' . $var[1] . '",
                 "type": "template",
                 "template": {
-                    "name": "' . $template->name .'",
-                    "language": {
-                        "code": "pt_BR"
-                    },
-                    "components": [
+                  "name": "' . $var[0] . '",
+                  "language": {
+                    "code": "pt_BR"
+                  },
+                  "components": [
+                    {
+                      "type": "header",
+                      "parameters": [
                         {
-                            "type": "header",
-                            "parameters": [
-                                {
-                                    "type": "image",
-                                    "image": {
-                                        "link": "https://alunos.profissionalizaead.com.br/product/Bg/Curso%20Gratuito.png"
-                                    }
-                                }
-                            ]
+                          "type": "image",
+                          "image": {
+                            "link": "https://alunos.profissionalizaead.com.br/product/Bg/Curso%20Gratuito.png"
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "body",
+                      "parameters": [
+                        {
+                          "type": "text",
+                          "text": "' . $var[2] . '"
                         },
                         {
-                            "type": "body",
-                            "parameters": [
-
-                                {
-                                    "type": "text",
-                                    "text": "Lilly"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "GRA4561"
-                                },
-                                {
-                                    "type": "text",
-                                    "text": "Telêmaco Borba - PR"
-                                }
-                                
-                            ]
+                          "type": "text",
+                          "text": "' . $var[3] . '"
+                        },
+                        {
+                          "type": "text",
+                          "text": "' . $var[4] . '"
                         }
-                    ]
+                      ]
+                    }
+                  ]
                 }
-            }';
-        
+              }';
 
+              //dd(json_decode($payload, true));
+
+            //dd($data);
+            //$response = ApiWhatsapp::msg_send($payload);
+
+
+            $url = "https://graph.facebook.com/v15.0/112150361820278/messages";
+            $response = json_decode(Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer EAAgBfS7NZCFgBAFHX9Q9DsUfZAHzN59ZBBHOzo7Y5x7k0QKZAjZCduM2iJfHeV4Dlz8biRwkBovaORZAWLbUJ8ZB4z2EA2397kNa6qWmyQIKaIXKh0cDQNn0WqCgnYzWswZCexHm51onjBrfEt5HAIZB5cDWnqAMCxYCo1uwsJugGIcXILbf03MUShh3kV1ZAnaTD9Dey63qZBFpgZDZD'
+            ])->post("$url", json_decode($payload, true)));
+    
+            //dd($response);
+            $phone = $response->contacts[0]->wa_id;
+            $msg_id = $response->messages[0]->id;
+
+            //dd($msg_id);
+
+            $phone_t[0] = $phone;
+            $phone_t[1] = (str_replace("55","", $phone));
+            $phone_t[2] = (substr($phone_t[1], 0, 2) . 9 . substr($phone_t[1], 2, 10));
+            $phone_t[3] = (substr($phone_t[1], 0, 2) . substr($phone_t[1], 3, 10));
+
+            $i = 0;
+            foreach($phone_t as $ph){
+                //dd($ph);
+                if(User::where('cellphone', 'like', "%$ph%")->first()){
+
+                    $user = (User::where('cellphone', 'like', "%$ph%")->first());
+
+                    //dd($user);
+
+                    if(Whatsapp_client::where('user_id', $user->id)->first()){
+                        $client = Whatsapp_client::where('phone', $phone)->first();
+                    }else{
+                    $client = Whatsapp_client::create([
+                        'user_id' => $user->id,
+                        'name' => $var[2],
+                        'phone' => $phone,
+                        'body' => json_encode($response)
+                    ]);
+                }
+            }
+            
+            //dd($client);
+
+
+            
+        }
+            //dd($client);
+    
+            $client->wp_msg()->create([
+                'msg_id' => $msg_id,
+                'body' => json_encode($response),
+            ]);
+            echo("Eviado " . $msg_id . "<br>");
+            sleep(2);
+            //dd($client);
+
+            //return json_encode($response,true);
+
+            //return $response;
+
+        }
+
+        public function msg_send($payload){
+
+
+/*
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => 'Bearer EAAgBfS7NZCFgBAFHX9Q9DsUfZAHzN59ZBBHOzo7Y5x7k0QKZAjZCduM2iJfHeV4Dlz8biRwkBovaORZAWLbUJ8ZB4z2EA2397kNa6qWmyQIKaIXKh0cDQNn0WqCgnYzWswZCexHm51onjBrfEt5HAIZB5cDWnqAMCxYCo1uwsJugGIcXILbf03MUShh3kV1ZAnaTD9Dey63qZBFpgZDZD'
+            ])->post('https://graph.facebook.com/v15.0/112150361820278/messages/', $payload);
+            $data = json_decode($response->body());
+            dd($data->id);*/
         }
 }
 

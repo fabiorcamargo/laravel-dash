@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            EcoProductsCategorySeeder::class,
+            WhatsappMsgType::class,
         ]);
     }
 }
