@@ -41,6 +41,7 @@ Route::any('rd', function (Request $request) {
 
     Route::prefix('wp_api')->group(function () {
         Route::prefix('msg')->group(function () {
-        Route::any('receive', [ApiWhatsapp::class, 'msg_receive'])->name('wp_api.msg_receive'); 
+        Route::any('receive', [ApiWhatsapp::class, 'msg_receive'])->name('wp_api.msg_receive');
+        Route::get('correct', [ApiWhatsapp::class, 'correct_type_msg'])->name('wp_api.msg_receive'); 
         });
     });

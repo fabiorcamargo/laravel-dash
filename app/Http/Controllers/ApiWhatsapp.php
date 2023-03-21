@@ -21,7 +21,17 @@ use stdClass;
 
 class ApiWhatsapp extends Controller
 {
-    
+    public function correct_type_msg()
+    {
+      $msgs = Whatsapp_msg::all();
+      foreach($msgs as &$msg){
+        $msg->type = (json_decode($msg->body)->type);
+        $msg->save();
+      }
+      //$msgs->update();
+      dd($msgs);
+      
+    }
     public function msg_receive(Request $request){
         
         //Type: text, reaction, image, sticker, errors, location, contacts, button, interactive { list_reply }, interactive { button_reply }, system(For update profile)
