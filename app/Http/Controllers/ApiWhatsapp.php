@@ -25,37 +25,27 @@ class ApiWhatsapp extends Controller
     public function msg_receive(Request $request){
         
         //Type: text, reaction, image, sticker, errors, location, contacts, button, interactive { list_reply }, interactive { button_reply }, system(For update profile)
-
-
-
         $data = json_encode($request->all());
         $data = json_decode($data);
-        //dd($data);
 
         $body = new stdClass;
         $body->contact = isset($data->entry[0]->changes[0]->value->contacts) ? $data->entry[0]->changes[0]->value->contacts : "";
         $body->message = isset($data->entry[0]->changes[0]->value->messages) ? $data->entry[0]->changes[0]->value->messages : "";
         $body->statuses = isset($data->entry[0]->changes[0]->value->statuses) ? $data->entry[0]->changes[0]->value->statuses : "";
 
-
-        //dd($body->message[0]->type);
-
         $phone = $body->contact[0]->wa_id;
         $name = $body->contact[0]->profile->name;
         $msg_id = $body->message[0]->id;
-
-        //dd($msg_id, $name, $phone);
 
         WhatsappApi::create([
             'body'=>json_encode($request->all())
         ]);
         
         $client = (new ControllersWhatsappManipulation)->client($phone, $name);
-        //dd($client);
 
         $status = $client->wp_msg()->create([
             'msg_id' => $msg_id,
-            'body' => json_encode($body->message),
+            'body' => json_encode($body->message, true),
             'send' => 0,
             'type' => $body->message[0]->type
         ]);
