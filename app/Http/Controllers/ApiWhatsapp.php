@@ -26,7 +26,7 @@ class ApiWhatsapp extends Controller
       $msgs = Whatsapp_msg::all();
       foreach($msgs as &$msg){
         $msg->type = (json_decode($msg->body)->type);
-        $msg->send = 0;
+        //$msg->send = 0;
         $msg->save();
       }
       //$msgs->update();
@@ -86,7 +86,7 @@ class ApiWhatsapp extends Controller
                 foreach($types as $type){
                   $message->type == "text" ? $message->body = $data->text->body : "";
                   $message->type == "reaction" ? $message->body = $data->reaction->emoji : "";
-                  $message->type == "image" ? $message->body = $data->image->sha256 : "";
+                  $message->type == "image" ? $message->body = $key    = hash('sha256', $data->image->sha256) : "";
                   $message->type == "sticker" ? $message->body = $data->sticker->sha256 : "";
                   $message->type == "unknown" ? $message->body = $data->errors->details : "";
                   $message->type == "button" ? $message->body = "Button: " . $data->button->text : "";
@@ -113,7 +113,6 @@ class ApiWhatsapp extends Controller
         $model = new User;
         $fillable = ($model->getFillable());
         return view('pages.app.campaign.msg_form', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('form', 'templates', 'fillable'));
-
     }
 
     public function wp_msg_template_create(){
@@ -121,8 +120,9 @@ class ApiWhatsapp extends Controller
     }
 
     public function wp_msg_template_post(Request $request){
+
         $data = (object)($request->all());
-        //dd($data);
+
         $template = WhatsappTemplate::create([
             'name' => $data->name,
             'msg' => $data->msg,
@@ -136,17 +136,16 @@ class ApiWhatsapp extends Controller
             'status'=>'success', 
             'msg'=>"Template criado com sucesso"
         ];
-        //dd($template);
        
         return redirect()
         ->back()
         ->withInput()
         ->with($status['status'], $status['msg']);
-}
+    }
         public function wp_templates ($id){
          $variable = WhatsappTemplate::find($id)->variable;
          return $variable;
-        }
+    }
 
         public function bulk_send(Request $request, $id){
             $data = (object)$request->all();
@@ -228,63 +227,26 @@ class ApiWhatsapp extends Controller
             //dd($data);
             //$response = ApiWhatsapp::msg_send($payload);
 
-
             $url = "https://graph.facebook.com/v15.0/112150361820278/messages";
             $response = json_decode(Http::withHeaders([
                 'Content-Type' => 'application/json',
-                'Authorization' => 'Bearer EAAgBfS7NZCFgBAFHX9Q9DsUfZAHzN59ZBBHOzo7Y5x7k0QKZAjZCduM2iJfHeV4Dlz8biRwkBovaORZAWLbUJ8ZB4z2EA2397kNa6qWmyQIKaIXKh0cDQNn0WqCgnYzWswZCexHm51onjBrfEt5HAIZB5cDWnqAMCxYCo1uwsJugGIcXILbf03MUShh3kV1ZAnaTD9Dey63qZBFpgZDZD'
+                'Authorization' => env('WHATSAPP_API_TOKEN')
             ])->post("$url", json_decode($payload, true)));
     
-            //dd($response);
             $phone = $response->contacts[0]->wa_id;
             $msg_id = $response->messages[0]->id;
+            $name = $var[2];
 
-            //dd($msg_id);
-
-            $phone_t[0] = $phone;
-            $phone_t[1] = (str_replace("55","", $phone));
-            $phone_t[2] = (substr($phone_t[1], 0, 2) . 9 . substr($phone_t[1], 2, 10));
-            $phone_t[3] = (substr($phone_t[1], 0, 2) . substr($phone_t[1], 3, 10));
-
-            $i = 0;
-            foreach($phone_t as $ph){
-                //dd($ph);
-                if(User::where('cellphone', 'like', "%$ph%")->first()){
-
-                    $user = (User::where('cellphone', 'like', "%$ph%")->first());
-
-                    //dd($user);
-
-                    if(Whatsapp_client::where('user_id', $user->id)->first()){
-                        $client = Whatsapp_client::where('phone', $phone)->first();
-                    }else{
-                    $client = Whatsapp_client::create([
-                        'user_id' => $user->id,
-                        'name' => $var[2],
-                        'phone' => $phone,
-                        'body' => json_encode($response)
-                    ]);
-                }
-            }
-            
-            //dd($client);
-
-
-            
-        }
-            //dd($client);
-    
+            $client = (new ControllersWhatsappManipulation)->client($phone, $name);  
+           
             $client->wp_msg()->create([
                 'msg_id' => $msg_id,
                 'body' => json_encode($response),
             ]);
+
             echo("Eviado " . $msg_id . "<br>");
             sleep(2);
-            //dd($client);
 
-            //return json_encode($response,true);
-
-            //return $response;
 
         }
 
