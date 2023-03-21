@@ -72,22 +72,22 @@ class ApiWhatsapp extends Controller
                 $data = json_decode($message->body);
                 
                 $message->id = $message->id;
-                $message->from = $data[0]->from;
+                $message->from = $data->from;
                 foreach($types as $type){
-                  $message->type == "text" ? $message->body = $data[0]->text->body : "";
-                  $message->type == "reaction" ? $message->body = $data[0]->reaction->emoji : "";
-                  $message->type == "image" ? $message->body = $data[0]->image->sha256 : "";
-                  $message->type == "sticker" ? $message->body = $data[0]->sticker->sha256 : "";
-                  $message->type == "unknown" ? $message->body = $data[0]->errors[0]->details : "";
-                  $message->type == "button" ? $message->body = "Button: " . $data[0]->button->text : "";
-                  $message->type == "list_reply" ? $message->body = $data[0]->interactive->list_reply->title : "";
-                  $message->type == "button_reply" ? $message->body = $data[0]->interactive->button_reply->title : "";
-                  $message->type == "order" ? $message->body = json_encode($data[0]->order) : "";
-                  $message->type == "system" ? $message->body = $data[0]->system->body : "";
+                  $message->type == "text" ? $message->body = $data->text->body : "";
+                  $message->type == "reaction" ? $message->body = $data->reaction->emoji : "";
+                  $message->type == "image" ? $message->body = $data->image->sha256 : "";
+                  $message->type == "sticker" ? $message->body = $data->sticker->sha256 : "";
+                  $message->type == "unknown" ? $message->body = $data->errors->details : "";
+                  $message->type == "button" ? $message->body = "Button: " . $data->button->text : "";
+                  $message->type == "list_reply" ? $message->body = $data->interactive->list_reply->title : "";
+                  $message->type == "button_reply" ? $message->body = $data->interactive->button_reply->title : "";
+                  $message->type == "order" ? $message->body = json_encode($data->order) : "";
+                  $message->type == "system" ? $message->body = $data->system->body : "";
                   //dd($message);
                 }
-                if(isset($data[0]->text)){
-                $message->body = $data[0]->text->body;
+                if(isset($data->text)){
+                $message->body = $data->text->body;
                 }
             }
             }
