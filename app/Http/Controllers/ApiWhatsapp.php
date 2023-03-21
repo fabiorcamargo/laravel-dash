@@ -26,6 +26,7 @@ class ApiWhatsapp extends Controller
       $msgs = Whatsapp_msg::all();
       foreach($msgs as &$msg){
         $msg->type = (json_decode($msg->body)->type);
+        $msg->send = 0;
         $msg->save();
       }
       //$msgs->update();
@@ -54,7 +55,6 @@ class ApiWhatsapp extends Controller
         
         $client = (new ControllersWhatsappManipulation)->client($phone, $name);
 
-        //dd(json_encode($body->message[0], true));
         $status = $client->wp_msg()->create([
             'msg_id' => $msg_id,
             'body' => json_encode($body->message[0], true),
@@ -94,18 +94,12 @@ class ApiWhatsapp extends Controller
                   $message->type == "button_reply" ? $message->body = $data->interactive->button_reply->title : "";
                   $message->type == "order" ? $message->body = json_encode($data->order) : "";
                   $message->type == "system" ? $message->body = $data->system->body : "";
-                  //dd($message);
                 }
                 if(isset($data->text)){
                 $message->body = $data->text->body;
                 }
             }
             }
-
-            //dd($clients);
-
-        //dd($chats[0]->body->entry[0]->changes[0]->value->contacts[0]->profile->name);
-        //dd(($chats[0]->body->entry[0]->changes[0]->value->contacts[0]->profile->name));
         return view('pages.app.chat.show', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('clients'));
     }
 
