@@ -29,7 +29,7 @@ class ApiWhatsapp extends Controller
         $msg->save();
       }
       //$msgs->update();
-      dd($msgs);
+      //dd($msgs);
       
     }
     public function msg_receive(Request $request){
