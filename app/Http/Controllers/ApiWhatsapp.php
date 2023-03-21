@@ -37,15 +37,17 @@ class ApiWhatsapp extends Controller
         $name = $body->contact[0]->profile->name;
         $msg_id = $body->message[0]->id;
 
+        
         WhatsappApi::create([
             'body'=>json_encode($request->all())
         ]);
         
         $client = (new ControllersWhatsappManipulation)->client($phone, $name);
 
+        //dd(json_encode($body->message[0], true));
         $status = $client->wp_msg()->create([
             'msg_id' => $msg_id,
-            'body' => json_encode($body->message, true),
+            'body' => json_encode($body->message[0], true),
             'send' => 0,
             'type' => $body->message[0]->type
         ]);
