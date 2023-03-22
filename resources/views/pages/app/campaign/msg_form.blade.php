@@ -70,7 +70,7 @@
         </div>
 
         <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <form action="{{ getRouterValue(); }}/app/campaign/msg/send/pro/{{$form->id}}"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
+            <form action="{{ getRouterValue(); }}/app/campaign/msg/send/wp/{{$form->id}}"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
                 @csrf
             <div class="widget-content widget-content-area blog-create-section mb-4">
                 <h5 class="mb-4">Sistema de envio de Mensagens</h5>

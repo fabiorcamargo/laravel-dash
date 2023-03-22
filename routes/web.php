@@ -260,6 +260,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/msg/template/create', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
                 Route::post('/msg/template/bulk/send', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
                 Route::get('/msg/send/wp/{id}', [ApiWhatsapp::class, 'wp_msg_form_send'])->name('campaign-msg-wp-send');
+                Route::post('/msg/send/wp/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-wp-send');
                 Route::post('/msg/send/pro/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-bulk-send');
             });
         });
