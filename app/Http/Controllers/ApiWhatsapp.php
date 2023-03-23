@@ -193,7 +193,9 @@ class ApiWhatsapp extends Controller
                $username = $user->username;
                $city = $campaign->city;
                //dd($var);
-               ApiWhatsapp::template_msg_send($template, $username, $name, $phone, $city);
+               $response = ApiWhatsapp::template_msg_send($template, $username, $name, $phone, $city);
+               print_r("Enviado " . $response . "<br>");
+               sleep(3);
             }
 
 
@@ -272,7 +274,7 @@ class ApiWhatsapp extends Controller
             ]);
             }
 
-            echo("Eviado " . $msg_id . "<br>");
+            return ($msg_id);
             sleep(2);
 
 

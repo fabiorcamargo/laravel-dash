@@ -24,7 +24,7 @@
         </div>
 
         <div class="card-bottom-section">
-            <a href="https://wa.me/554491322034?text=Suporte" class="btn">Ajuda</a>
+            <a href="https://wa.me/554484233200?text=Suporte" class="btn">Ajuda</a>
         </div>
     </div>
 </div>
