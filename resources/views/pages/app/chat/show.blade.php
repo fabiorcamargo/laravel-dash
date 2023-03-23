@@ -84,12 +84,9 @@
                                             <span>Today, 6:48 AM</span>
                                         </div>
                                         @foreach ($client->message as $message)
-                                            <div class="bubble you">
+                                            <div class="{{$message->bubble}}">
                                                 {{$message->body}}
-                                            </div> <p>{{$message->created_at->format("d/m/y h:i")}}</p>
-                                            <div class="bubble me">
-                                                Hey!
-                                            </div>   
+                                            </div> <p>{{$message->created_at->format("d/m/y h:i")}}</p>  
                                         @endforeach
                                     </div>
                                     @endforeach

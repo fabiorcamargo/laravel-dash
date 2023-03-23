@@ -105,8 +105,13 @@ class ApiWhatsapp extends Controller
                 $data = json_decode($message->body);
                 
                 $message->id = $message->id;
-                $message->from = $data->from;
+                //dd($data->contacts[0]->input);
+                if(isset($data->contacts[0]->input)){
+                $message->bubble = "bubble me";
+                }else{
+                $message->bubble = "bubble you";
                 foreach($types as $type){
+                  //dd($data);
                   $message->type == "text" ? $message->body = $data->text->body : "";
                   $message->type == "reaction" ? $message->body = $data->reaction->emoji : "";
                   $message->type == "image" ? $message->body = $key    = hash('sha256', $data->image->sha256) : "";
@@ -121,6 +126,7 @@ class ApiWhatsapp extends Controller
                 if(isset($data->text)){
                 $message->body = $data->text->body;
                 }
+              }
             }
             }
         return view('pages.app.chat.show', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('clients'));
