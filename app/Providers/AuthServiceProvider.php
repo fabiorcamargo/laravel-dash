@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Controllers\ApiWhatsapp;
 use App\Models\User;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -55,5 +57,19 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('api', function (User $user) {
             return $user->role == 8 ;
         });    
+
+        ResetPassword::createUrlUsing(function (User $user, string $token) {
+            //dd($token . " / " . $user->username);
+            $phone = $user->cellphone;
+            $name = $user->name;
+            $text = 'Segue o link para redefinição de senha ' . 'https://alunos.profissionalizaead.com.br/reset-password/'.$token.'?username='.$user->username;
+
+            $whatsapp = new ApiWhatsapp;
+            $whatsapp->msg_send($phone, $name, $text);
+            return 'https://alunos.profissionalizaead.com.br/reset-password/'.$token.'?username='.$user->username;
+        });
     }
+
+
+
 }
