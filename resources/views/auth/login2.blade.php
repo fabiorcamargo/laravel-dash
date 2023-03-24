@@ -137,7 +137,7 @@
                                         </a>
                                     </div>
                                 </div>
-    
+                                
                                 <div class="col-sm-5 col-12">
                                     <div class="mb-4">
                                         <a class="btn  btn-social-login w-100" href="{{ route('password.request') }}">
@@ -145,8 +145,8 @@
                                             <span class="btn-text-inner">Whatsapp</span>
                                         </a>
                                     </div>
-                                </div>
-                                -->
+                                </div>-->
+                                
                                 
                             </div>
                             

@@ -39,7 +39,7 @@ class ApiWhatsapp extends Controller
         //Type: text, reaction, image, sticker, errors, location, contacts, button, interactive { list_reply }, interactive { button_reply }, system(For update profile)
         $data = json_encode($request->all());
         $data = json_decode($data);
-
+        dd($data);
         //dd($data->entry[0]->changes[0]->value->messages[0]->context);
         $body = new stdClass;
         $body->contact = isset($data->entry[0]->changes[0]->value->contacts) ? $data->entry[0]->changes[0]->value->contacts : "";
@@ -108,6 +108,7 @@ class ApiWhatsapp extends Controller
                 //dd($data->contacts[0]->input);
                 if(isset($data->contacts[0]->input)){
                 $message->bubble = "bubble me";
+                //$message->body = 
                 }else{
                 $message->bubble = "bubble you";
                 foreach($types as $type){
