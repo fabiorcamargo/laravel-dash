@@ -136,16 +136,16 @@
                                             <span class="btn-text-inner">Email</span>
                                         </a>
                                     </div>
-                                </div>
+                                </div> -->
                                 
-                                <div class="col-sm-5 col-12">
+                                <div class="col-sm-12 col-12">
                                     <div class="mb-4">
-                                        <a class="btn  btn-social-login w-100" href="{{ route('password.request') }}">
+                                        <a class="btn  btn-social-login w-100" href="https://wa.me/554484233200?text=Suporte+preciso+recuperar+minha+senha">
                                             <img src="{{Vite::asset('resources/images/whatsapp.svg')}}" alt="" class="img-fluid">
-                                            <span class="btn-text-inner">Whatsapp</span>
+                                            <span class="btn-text-inner">Falar com o Suporte</span>
                                         </a>
                                     </div>
-                                </div>-->
+                                </div>
                                 
                                 
                             </div>
