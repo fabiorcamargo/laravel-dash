@@ -41,6 +41,7 @@
                             <th scope="col">Desconto</th>
                             <th scope="col">Exibição</th>
                             <th class="text-center dt-no-sorting">Ação</th>
+                            <th scope="col">Data</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,6 +98,7 @@
                                 </div>
                                 </form>
                             </td>
+                            <td>{{ ($product->created_at)->format('d/m/Y') }}</td>
                         </tr>
                         @endforeach
                         
