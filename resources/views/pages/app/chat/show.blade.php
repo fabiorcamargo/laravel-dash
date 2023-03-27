@@ -35,10 +35,11 @@
                                         </div>
                                         <div class="f-body">
                                             <div class="meta-info">
-                                                <span class="user-name" data-name="Nia Hillyer">{{$client->name}}</span>
-                                                <span class="user-meta-time">2:09 PM</span>
+                                                <span class="user-name" data-name="{{$client->name}}">{{$client->name}}</span>
+                                                
                                             </div>
-                                            <span class="preview">{{ $client->message[0]->body }}</span>
+                                                <span class="user-meta-time">{{($client->created_at)->format('d/m/y h:m')}}</span>
+                                            {{--<span class="preview">{{ $client->message[0]->body }}</span>--}}
                                         </div>
                                     </div>
                                 </div>
@@ -86,7 +87,8 @@
                                         @foreach ($client->message as $message)
                                             <div class="{{$message->bubble}}">
                                                 {{$message->body}}
-                                            </div> <p>{{$message->created_at->format("d/m/y h:i")}}</p>  
+                                                <p><br>{{$message->created_at->format("h:m")}}</p>  
+                                            </div> 
                                         @endforeach
                                     </div>
                                     @endforeach
