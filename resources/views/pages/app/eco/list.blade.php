@@ -15,6 +15,9 @@
 
         @vite(['resources/scss/light/plugins/tagify/custom-tagify.scss'])
         @vite(['resources/scss/dark/plugins/tagify/custom-tagify.scss'])
+
+        @vite(['resources/scss/light/assets/elements/alert.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])
         <!--  END CUSTOM STYLE FILE  -->
         
         <style>
@@ -27,8 +30,16 @@
 
     <div class="row layout-top-spacing">
 
+
         <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
+            <!-- Session Status -->
+        <x-auth-session-status class="mb-2 text-success" :status="session('status')" />
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-2 text-danger" :errors="$errors" />
+
             <div class="widget-content widget-content-area br-8">
+                
                 <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>

@@ -544,7 +544,8 @@ class EcommerceController extends Controller
         //dd($product);
         
         $product->delete();
-        return back();
+        $status = "Produto deletado com sucesso!";
+        return back()->with('status', __($status));
     }
 
     public function comment_edit ($id, $i){
