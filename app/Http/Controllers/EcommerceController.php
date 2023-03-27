@@ -533,6 +533,18 @@ class EcommerceController extends Controller
         return back();
     }
 
+
+    public function delete_product ($id){
+
+        //dd($id);
+
+        $product = EcoProduct::find($id);
+        //dd($product);
+        
+        $product->delete();
+        return back();
+    }
+
     public function comment_edit ($id, $i){
         $product = EcoProduct::find($id);
         $comments = json_decode($product->comment);

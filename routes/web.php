@@ -269,6 +269,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::prefix('/eco')->group(function () {
             Route::get('/img/correct', [TemporaryFileController::class, 'correct_img_product'])->name('eco-img-correct');
             Route::post('/add', [EcommerceController::class, 'add'])->name('eco-post-product');
+            Route::delete('/delete/{id}', [EcommerceController::class, 'delete_product'])->name('eco-delete-product');
             Route::get('/list', [EcommerceController::class, 'show'])->name('eco-list');
             Route::any('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
             Route::get('/add', [EcommerceController::class, 'add_show'])->name('eco-add-show');

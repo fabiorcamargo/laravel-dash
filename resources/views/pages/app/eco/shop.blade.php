@@ -16,24 +16,24 @@
             {{--<input id="t-text" type="text" name="txt" placeholder="Search" class="form-control" required="">--}}
         </div>
         @isset(Auth::user()->role)
-        @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
-        <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 mb-4 ms-auto">
-            <div class="form-check form-check-primary form-check-inline">
-                <form action="{{ getRouterValue(); }}/app/eco/shop" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
-                    @csrf
-                    <input type="text" name="public" id="public" value="{{$public}}" hidden>
-                         <button type="send" class="btn btn-dark  mb-2">
-                            @if($public == 0)
-                            <x-widgets._w-svg svg="eye"/>
-                            @elseif($public ==1)
-                            <x-widgets._w-svg svg="eye-off"/>
-                            @endif
-                            <span class="btn-text-inner">Não listados</span>
-                        </button>
-                </form>
+            @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
+            <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 mb-4 ms-auto">
+                <div class="form-check form-check-primary form-check-inline">
+                    <form action="{{ getRouterValue(); }}/app/eco/shop" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
+                        @csrf
+                        <input type="text" name="public" id="public" value="{{$public}}" hidden>
+                            <button type="send" class="btn btn-dark  mb-2">
+                                @if($public == 0)
+                                <x-widgets._w-svg svg="eye"/>
+                                @elseif($public ==1)
+                                <x-widgets._w-svg svg="eye-off"/>
+                                @endif
+                                <span class="btn-text-inner">Não listados</span>
+                            </button>
+                    </form>
+                </div>
             </div>
-        </div>
-        @endif
+            @endif
         @endisset
             {{--
             <select class="form-select form-select" aria-label="Default select example">
@@ -75,18 +75,18 @@
                         <div class="col-3">
                             <div class="badge--group">
                                 @isset(Auth::user()->role)
-                                @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
-                                
-                                        @if($product->public == 1)
-                                            <x-widgets._w-svg class="text-info" svg="eye"/>
-                                        @elseif($product->public == 0)
-                                            <x-widgets._w-svg class="text-warning" svg="eye-off"/>
-                                        @endif
-                                
-                                @else
-                                        <div class="badge badge-danger badge-dot"></div>
-                                        <div class="badge badge-info badge-dot"></div>
-                                @endif
+                                    @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
+                                    
+                                            @if($product->public == 1)
+                                                <x-widgets._w-svg class="text-info" svg="eye"/>
+                                            @elseif($product->public == 0)
+                                                <x-widgets._w-svg class="text-warning" svg="eye-off"/>
+                                            @endif
+                                    
+                                    @else
+                                            <div class="badge badge-danger badge-dot"></div>
+                                            <div class="badge badge-info badge-dot"></div>
+                                    @endif
                                 @endisset
                             </div>
                         </div>
