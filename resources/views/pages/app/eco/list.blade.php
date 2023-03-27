@@ -8,8 +8,13 @@
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
         <link rel="stylesheet" href="{{asset('plugins/table/datatable/datatables.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/tagify/tagify.css')}}">
+
         @vite(['resources/scss/light/plugins/table/datatable/dt-global_style.scss'])
         @vite(['resources/scss/dark/plugins/table/datatable/dt-global_style.scss'])
+
+        @vite(['resources/scss/light/plugins/tagify/custom-tagify.scss'])
+        @vite(['resources/scss/dark/plugins/tagify/custom-tagify.scss'])
         <!--  END CUSTOM STYLE FILE  -->
         
         <style>
@@ -57,7 +62,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>{{ $product->tag }}</td>
+                            @php $tags = json_decode($product->tag) @endphp
+                            <td >
+                                @foreach ($tags as $tag)
+                                <span class="badge badge-dark ">{{$tag->value}}</span>
+                                @endforeach
+                            </td>
                             <td>{{ $product->category }}</td>
                             <td>R$ {{ $product->price }}</td>
                             <td>{{ $product->percent *100 }}%</td>
@@ -101,8 +111,11 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script type="module" src="{{asset('plugins/global/vendors.min.js')}}"></script>
+        <script src="{{asset('plugins/tagify/tagify.min.js')}}"></script>
         @vite(['resources/assets/js/custom.js'])
         <script type="module" src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
+
+
         <script type="module">
             let ecommerceList = $('#ecommerce-list').DataTable({
                 headerCallback:function(e, a, t, n, s) {

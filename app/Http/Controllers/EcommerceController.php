@@ -456,6 +456,8 @@ class EcommerceController extends Controller
     public function show(){
         
         $products = EcoProduct::all();
+
+        
         //dd($products[0]->image);
         //dd(explode(",", $products[0]->image))
         return view('pages.app.eco.list', ['title' => 'Shop | Profissionaliza EAD', 'breadcrumb' => 'Lista Produtos'], compact('products'));
