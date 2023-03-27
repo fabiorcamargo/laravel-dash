@@ -44,6 +44,8 @@
 
             <div class="widget-content widget-content-area br-8">
                 
+                @isset(Auth::user()->role)
+                @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
                 <div class="col-md-12 col-sm-12 col-12 text-end">
                     <div class="product-share">
                         <a href="{{ getRouterValue(); }}/app/eco/product/{{ $product->id }}/edit" class="btn btn-light-success btn-icon btn-rounded" data-toggle="tooltip" data-placement="top" title="Edit">
@@ -51,6 +53,8 @@
                         </a>
                     </div>
                 </div>
+                @endif
+                @endisset
 
                 <div class="row justify-content-center pt-5 pb-5">
                     <div class="col-xxl-5 col-xl-6 col-lg-7 col-md-7 col-sm-9 col-12 pt">
