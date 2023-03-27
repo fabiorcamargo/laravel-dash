@@ -15,7 +15,7 @@
         <div class="col-lg-3 col-md-3 col-sm-3 mb-4">
             {{--<input id="t-text" type="text" name="txt" placeholder="Search" class="form-control" required="">--}}
         </div>
-        
+        @isset(Auth::user())
         @if((Auth::user()->role) == 8 || (Auth::user()->role) == 3)
         <div class="col-xl-2 col-lg-3 col-md-3 col-sm-3 mb-4 ms-auto">
             <div class="form-check form-check-primary form-check-inline">
@@ -34,6 +34,7 @@
             </div>
         </div>
         @endif
+        @endisset
             {{--
             <select class="form-select form-select" aria-label="Default select example">
                 <option selected="">All Category</option>
