@@ -1312,6 +1312,10 @@ Route::prefix('/app/form')->group(function () {
 Route::get('/fb/ViewContent', [ConversionApiFB::class, 'ViewContent'])->name('fb-ViewContent');
 Route::get('/form/{id}', [FormController::class, 'redir'])->name('form-redirect');
 
+Route::get('/politica-de-privacidade', function () {
+    return Redirect::to('https://ead.profissionalizaead.com.br/mod/page/view.php?id=18448');;
+});
+
 Route::get('/', function () {
     return Redirect::to('https://ead.profissionalizaead.com.br/');;
 });
