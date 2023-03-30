@@ -54,7 +54,14 @@
                     </div>
                 </form>
             </div>
-            
+            <div class="clipboard">
+                <form class="form-horizontal">
+                    <div class="clipboard-input">
+                        <input type="text" class="form-control inative" id="copy-basic-input-name" value="{{$form->name}}" readonly>
+                        <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click" title="Copied" data-clipboard-target="#copy-basic-input-name"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-copy"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></div>
+                    </div>
+                </form>
+            </div>
             @foreach ($fillable as $var)
             <div class="clipboard">
                 <form class="form-horizontal">
@@ -99,20 +106,32 @@
                         </div>
                         
                         <div class="col-xxl-6 col-md-6 mb-3">
+                            
                         <div class="card">
                             <img src="http://127.0.0.1:5173/resources/images/grid-blog-style-2.jpeg" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <p class="card-text" id="message"></p>
-                                <a href="#" class="btn btn-secondary mt-3">Sim</a>
-                                <a href="#" class="btn btn-secondary mt-3">Não</a>
+                                <div id="but"></div>
                             </div>
                         </div>
                         </div>
+                        <div class="col-sm-12">
+                            <button id="adicionar" class="btn btn-success w-100">Enviar</button>
+                        </div>
+                </div>
+                <div class="col-sm-6 mb-2">
+                    <form action="{{ route('campaign-msg-template-send-test') }}" method="POST" id="send_test" class="py-12">
+                        @csrf
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="phone_test" id="phone_test" placeholder="5542991622889" aria-label="Telefone Teste">
+                            <input type="submit" class="btn btn-primary" value="Testar">
+                        </div>
+                    </form>
+                    </div>
                 </div>
             </div>
-            <div class="col-sm-12">
-                <button id="adicionar" class="btn btn-success w-100">Enviar</button>
-            </div>
+
+            
             </form>
         </div>
 
@@ -152,6 +171,7 @@
                 }
 
                 const sel = document.getElementById("app");
+                const but = document.getElementById("but");
                 var x = document.getElementById("templates");
 
                 var node = document.getElementById("variavel1");
@@ -164,6 +184,8 @@
                 t.forEach(t => {
                     if(t['id'] == x.value){
                         console.log(t['variables']);
+                        console.log(t['button']);
+                        var b = t['button'];
                         var n = t['variables'];
                         
                     }
@@ -177,6 +199,16 @@
                             inp.setAttribute("id", "variavel" + i);
                             inp.setAttribute("placeholder", "Variável " + i);
                             sel.appendChild(inp);
+                        }
+
+                        for (var i = 1; i <= b; i++) {
+                        console.log(b+'button');
+                        var bt = document.createElement("a");
+                            bt.setAttribute("class", "btn btn-secondary mt-3");
+                            bt.setAttribute("name", "button" + i);
+                            bt.setAttribute("id", "button" + i);
+                            bt.innerText = 'Button' + i;
+                            but.appendChild(bt);
                         }
                     
                 });

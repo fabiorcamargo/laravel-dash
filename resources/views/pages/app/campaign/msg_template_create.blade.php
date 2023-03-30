@@ -41,20 +41,25 @@
                         <div class="widget-content widget-content-area ecommerce-create-section">
                             <h4>Nome do Template</h4>
                             <br>
-                            <input type="text" class="form-control mb-4" id="name" name="name" placeholder="Nome do Produto" required>
+                            <input type="text" class="form-control mb-4" id="name" name="name" placeholder="Nome do Template (O mesmo utilizado na API do Whatsapp)" required>
                             <div class="row mb-4">
                                 <div class="col-xxl-2 col-md-2 mb-2">
-                                    <label for="title">Possui Imagem</label>
-                                    <select name="img" id="img" class="form-control mb-2" required>
-                                        <option value="0">Não</option>
-                                        <option value="1">Sim</option>
+                                    <label for="title">Header</label>
+                                    <select name="header" id="header" class="form-control mb-2" required>
+                                        <option value="0">Imagem</option>
+                                        <option value="1">Vídeo</option>
+                                        <option value="2">Documento</option>
+                                        <option value="3">Localização</option>
+                                        <option value="4">Texto</option>
                                     </select>
                                 </div>
                                 <div class="col-xxl-2 col-md-2 mb-2">
                                     <label for="title">Possui Botões</label>
                                     <select name="button" id="button" class="form-control mb-2" required>
                                         <option value="0">Não</option>
-                                        <option value="1">Sim</option>
+                                        <option value="1">1 Botão</option>
+                                        <option value="2">2 Botões</option>
+                                        <option value="3">3 Botões</option>
                                     </select>
                                 </div>
                                 <div class="col-xxl-2 col-md-2 mb-2">

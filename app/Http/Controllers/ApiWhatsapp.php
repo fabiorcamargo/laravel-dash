@@ -61,6 +61,9 @@ class ApiWhatsapp extends Controller
         ]);
         
         $client = (new ControllersWhatsappManipulation)->client($phone, $name);
+        $client->quality = 5;
+        $client->save();
+        //dd($client);
 
         if($body->context->id !== ""){
           $status = $client->wp_msg()->create([
@@ -69,6 +72,7 @@ class ApiWhatsapp extends Controller
             'send' => 3,
             'type' => $body->message[0]->type
         ]);
+        
 
         $text = "😄 Muito obrigado pela confirmação, em breve você receberá o endereço e horários disponíveis para retirada do seu código de acesso.";
         sleep(5);
@@ -151,32 +155,44 @@ class ApiWhatsapp extends Controller
 
     public function wp_msg_template_post(Request $request){
 
-        $data = (object)($request->all());
+      //dd($request->all());
 
+        $data = (object)($request->all());
+        //dd((integer)$data->button);
         $template = WhatsappTemplate::create([
             'name' => $data->name,
             'msg' => $data->msg,
-            'img' => (float)$data->img,
-            'button' => (float)$data->button,
-            'variables' => (float)$data->variables
+            'header' => (integer)$data->header,
+            'button' => (integer)$data->button,
+            'variables' => (integer)$data->variables
         ]);
 
-        if($template->id != null)
+        if($template->id != null){
         $status = [
             'status'=>'success', 
             'msg'=>"Template criado com sucesso"
         ];
-       
         return redirect()
         ->back()
         ->withInput()
         ->with($status['status'], $status['msg']);
+      }
+
     }
+
         public function wp_templates ($id){
          $variable = WhatsappTemplate::find($id)->variable;
          return $variable;
     }
 
+        public function send_test(Request $request, $id){
+          $data = (object)$request->all();
+          dd($data);
+          $campaign = FormCampain::find($id);
+          $template = WhatsappTemplate::find($data->templates);
+
+
+        }
         public function bulk_send(Request $request, $id){
             $data = (object)$request->all();
             //dd($data);
@@ -246,7 +262,15 @@ class ApiWhatsapp extends Controller
                         },
                         {
                           "type": "text",
+                          "text": "Curso Gratuíto foi aprovado"
+                        },
+                        {
+                          "type": "text",
                           "text": "' . $city . '"
+                        },
+                        {
+                          "type": "text",
+                          "text": "essa semana"
                         }
                       ]
                     }

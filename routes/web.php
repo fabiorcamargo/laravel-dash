@@ -259,6 +259,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/msg/template/create', [ApiWhatsapp::class, 'wp_msg_template_create'])->name('campaign-msg-template-create');
                 Route::post('/msg/template/create', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
                 Route::post('/msg/template/bulk/send', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
+                Route::post('/msg/template/send_test', [ApiWhatsapp::class, 'send_test'])->name('campaign-msg-template-send-test');
                 Route::get('/msg/send/wp/{id}', [ApiWhatsapp::class, 'wp_msg_form_send'])->name('campaign-msg-wp-send');
                 Route::post('/msg/send/wp/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-wp-send');
                 Route::post('/msg/send/pro/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-bulk-send');

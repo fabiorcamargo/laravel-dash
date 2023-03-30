@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('msg');
-            $table->boolean('img');
-            $table->boolean('button');
+            $table->boolean('header');
+            $table->integer('button');
             $table->integer('variables');
             $table->timestamps();
         });

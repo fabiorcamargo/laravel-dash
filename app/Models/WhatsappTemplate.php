@@ -12,7 +12,7 @@ class WhatsappTemplate extends Model
         'id',
         'name',
         'msg',
-        'img',
+        'header',
         'button',
         'variables'
     ];

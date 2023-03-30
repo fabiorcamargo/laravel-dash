@@ -18,12 +18,6 @@
 
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/widgets/modules-widgets.scss'])
-
-        @vite(['resources/scss/light/assets/components/modal.scss'])
-        @vite(['resources/scss/light/assets/apps/contacts.scss'])
-
-        @vite(['resources/scss/dark/assets/components/modal.scss'])
-        @vite(['resources/scss/dark/assets/apps/contacts.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -74,45 +68,6 @@
             <x-widgets._w-total-leads value="{{ $d->h }}" title="Hoje" svg="trending-down" cla="text-danger"/>
         @endif
     </div>
-</div>
-
-<div class="widget-content searchable-container list">
-
-    <div class="row">
-            
-    <div class="searchable-items list">
-
-        <div class="items">
-            <div class="item-content">
-                <div class="user-profile">
-                    <div class="n-chk align-self-center text-center">
-                        <div class="form-check form-check-primary me-0 mb-0">
-                            <input class="form-check-input inbox-chkbox contact-chkbox" type="checkbox">
-                        </div>
-                    </div>
-                    <img src="{{Vite::asset('resources/images/profile-5.jpeg')}}" alt="avatar">
-                    <div class="user-meta-info">
-                        <p class="user-name" data-name="Alan Green">Alan Green</p>
-                        <p class="user-work" data-occupation="Web Developer">Web Developer</p>
-                    </div>
-                </div>
-                <div class="user-email">
-                    <p class="info-title">Email: </p>
-                    <p class="usr-email-addr" data-email="alan@mail.com">alan@mail.com</p>
-                </div>
-                <div class="user-location">
-                    <p class="info-title">Location: </p>
-                    <p class="usr-location" data-location="Boston, USA">Boston, USA</p>
-                </div>
-                <div class="user-phone">
-                    <p class="info-title">Phone: </p>
-                    <p class="usr-ph-no" data-phone="+1 (070) 123-4567">+1 (070) 123-4567</p>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
 </div>
     
 
@@ -189,12 +144,6 @@
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
         <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
-
-        @vite(['resources/assets/js/custom.js'])
-        <script src="{{asset('plugins/jquery-ui/jquery-ui.min.js')}}"></script>
-        @vite(['resources/assets/js/apps/contact.js'])
-
-        
 
     </x-slot>
     <script>
