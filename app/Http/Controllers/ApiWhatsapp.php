@@ -15,8 +15,10 @@ use App\Exceptions\InvalidOrderException;
 use App\Http\Controllers\WhatsappManipulation as ControllersWhatsappManipulation;
 use App\Models\FormLead;
 use App\Models\Whatsapp_msg_type;
+use App\Models\WhatsappBulkStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use stdClass;
 
 class ApiWhatsapp extends Controller
@@ -184,7 +186,7 @@ class ApiWhatsapp extends Controller
          $variable = WhatsappTemplate::find($id)->variable;
          return $variable;
     }
-
+    
         public function send_test(Request $request, $id){
           $data = (object)$request->all();
           dd($data);
@@ -193,7 +195,18 @@ class ApiWhatsapp extends Controller
 
 
         }
+        public function bk_send(Request $request, $id){
+          $campaign = FormCampain::find($id);
+          $template = WhatsappTemplate::find($request->templates);
+          $leads = $campaign->leads()->get();
+
+          //dd($leads);
+  
+            dispatch(new \App\Jobs\WhatsappBulkTemplate($leads, $template, $campaign));
+          
+        }
         public function bulk_send(Request $request, $id){
+          
             $data = (object)$request->all();
             //dd($data);
             $campaign = FormCampain::find($id);
@@ -225,65 +238,68 @@ class ApiWhatsapp extends Controller
 
         }
 
-        public function template_msg_send($template, $username, $name, $phone, $city){
-            
+        public function template_msg_send($template, $lead, $campaign){
+            //$template = WhatsappTemplate::find($template);
+            $user = User::find($lead->user_id);
             $payload = '{
-                "messaging_product": "whatsapp",
-                "recipient_type": "individual",
-                "to": "' . $phone . '",
-                "type": "template",
-                "template": {
+              "messaging_product": "whatsapp",
+              "recipient_type": "individual",
+              "to": "55' . $user->cellphone . '",
+              "type": "template",
+              "template": {
                   "name": "' . $template->name . '",
                   "language": {
-                    "code": "pt_BR"
+                      "code": "pt_BR"
                   },
                   "components": [
-                    {
-                      "type": "header",
-                      "parameters": [
-                        {
-                          "type": "image",
-                          "image": {
-                            "link": "https://alunos.profissionalizaead.com.br/product/Bg/Curso%20Gratuito.png"
-                          }
-                        }
-                      ]
-                    },
-                    {
-                      "type": "body",
-                      "parameters": [
-                        {
-                          "type": "text",
-                          "text": "' . $name . '"
-                        },
-                        {
-                          "type": "text",
-                          "text": "' . $username . '"
-                        },
-                        {
-                          "type": "text",
-                          "text": "Curso Gratuíto foi aprovado"
-                        },
-                        {
-                          "type": "text",
-                          "text": "' . $city . '"
-                        },
-                        {
-                          "type": "text",
-                          "text": "essa semana"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              }';
+                      {
+                          "type": "header",
+                          "parameters": [
+                              {
+                                  "type": "image",
+                                  "image": {
+                                      "link": "https://alunos.profissionalizaead.com.br/product/Bg/Curso%20Gratuito.png"
+                                  }
+                              }
+                          ]
+                      },
+                      {
+                          "type": "body",
+                          "parameters": [
+                              {
+                                  "type": "text",
+                                  "text": "' . $user->name . '"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "' . $user->username .'"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "Curso Gratuíto foi aprovada"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "' . $campaign->city . '"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "essa semana"
+                              }
+                              ]
+                      }
+                          ]
+                      }
+          }';
 
+          //Storage::put('wp_send1.txt',  $payload); 
               //dd($payload);
               //dd(json_decode($payload, true));
 
             //dd($data);
             //$response = ApiWhatsapp::msg_send($payload);
 
+            
             $url = "https://graph.facebook.com/v15.0/" . env('WHATSAPP_PHONE_NUMBER_ID') . "/messages";
             $response = json_decode(Http::withHeaders([
                 'Content-Type' => 'application/json',
@@ -295,7 +311,7 @@ class ApiWhatsapp extends Controller
             $msg_id = $response->messages[0]->id;
             //$name = $name;
 
-            $client = (new ControllersWhatsappManipulation)->client($phone, $name);  
+            $client = (new ControllersWhatsappManipulation)->client($phone, $user->name);  
             if($template->button == 1){
             $client->wp_msg()->create([
                 'msg_id' => $msg_id,
@@ -305,7 +321,14 @@ class ApiWhatsapp extends Controller
             ]);
             }
 
-            return ($msg_id);
+            WhatsappBulkStatus::create([
+              'user_id' => $user->id,
+              'template' => $template->id,
+              'body' => json_encode($response),
+              'wamid' => $msg_id,
+            ]);
+
+            return (json_encode($response));
             sleep(2);
 
 

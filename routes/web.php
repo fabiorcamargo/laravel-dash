@@ -18,6 +18,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
+use App\Jobs\WhatsappBulkTemplate;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
 use Illuminate\Support\Facades\Redirect;
@@ -261,7 +262,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/msg/template/bulk/send', [ApiWhatsapp::class, 'wp_msg_template_post'])->name('campaign-msg-template-post');
                 Route::post('/msg/template/send_test', [ApiWhatsapp::class, 'send_test'])->name('campaign-msg-template-send-test');
                 Route::get('/msg/send/wp/{id}', [ApiWhatsapp::class, 'wp_msg_form_send'])->name('campaign-msg-wp-send');
-                Route::post('/msg/send/wp/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-wp-send');
+                Route::post('/msg/send/wp/{id}', [ApiWhatsapp::class, 'bk_send'])->name('campaign-msg-wp-send');
                 Route::post('/msg/send/pro/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-bulk-send');
             });
         });
