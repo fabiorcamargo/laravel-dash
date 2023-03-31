@@ -244,7 +244,9 @@ class ApiWhatsapp extends Controller
 
         public function template_msg_send($template, $lead, $campaign){
             //$template = WhatsappTemplate::find($template);
+            if(User::find($lead->user_id)){
             $user = User::find($lead->user_id);
+            
             $payload = '{
               "messaging_product": "whatsapp",
               "recipient_type": "individual",
@@ -296,7 +298,7 @@ class ApiWhatsapp extends Controller
                       }
           }';
 
-          //Storage::put('wp_send1.txt',  $payload); 
+          storage::put('wp_send1.txt',  $payload); 
               //dd($payload);
               //dd(json_decode($payload, true));
 
@@ -305,15 +307,33 @@ class ApiWhatsapp extends Controller
 
             
             $url = "https://graph.facebook.com/v15.0/" . env('WHATSAPP_PHONE_NUMBER_ID') . "/messages";
-            $response = json_decode(Http::withHeaders([
+            $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => env('WHATSAPP_API_TOKEN')
-            ])->post("$url", json_decode($payload, true)));
+            ])->post("$url", json_decode($payload, true));
     
             //dd($response);
-            $phone = $response->contacts[0]->wa_id;
-            $msg_id = $response->messages[0]->id;
-            //$name = $name;
+            
+
+            if($response->status() !== 200){
+                WhatsappBulkStatus::create([
+                    'user_id' => $user->id,
+                    'template' => $template->id,
+                    'body' => $response->body(),
+                    'wamid' => "Não enviado",
+                  ]);
+                  return;
+            }
+            
+            $phone = $response->object()->contacts[0]->wa_id;
+            $msg_id = $response->object()->messages[0]->id;
+
+            WhatsappBulkStatus::create([
+                'user_id' => $user->id,
+                'template' => $template->id,
+                'body' => $response->body(),
+                'wamid' => $msg_id,
+              ]);
 
             $client = (new ControllersWhatsappManipulation)->client($phone, $user->name);  
             if($template->button == 1){
@@ -325,16 +345,11 @@ class ApiWhatsapp extends Controller
             ]);
             }
 
-            WhatsappBulkStatus::create([
-              'user_id' => $user->id,
-              'template' => $template->id,
-              'body' => json_encode($response),
-              'wamid' => $msg_id,
-            ]);
+            
 
-            return (json_encode($response));
+            return ($response->body());
             //sleep(2);
-
+        }
 
         }
 
