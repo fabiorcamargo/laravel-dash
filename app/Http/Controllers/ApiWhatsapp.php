@@ -304,7 +304,7 @@ class ApiWhatsapp extends Controller
                       }
           }';
 
-          storage::put('wp_send1.txt',  $payload); 
+          //storage::put('wp_send1.txt',  $payload); 
               //dd($payload);
               //dd(json_decode($payload, true));
 
@@ -325,6 +325,7 @@ class ApiWhatsapp extends Controller
                 WhatsappBulkStatus::create([
                     'user_id' => $user->id,
                     'template' => $template->id,
+                    'campaign' => $campaign->id,
                     'body' => $response->body(),
                     'wamid' => "Não enviado",
                   ]);
@@ -337,6 +338,7 @@ class ApiWhatsapp extends Controller
             WhatsappBulkStatus::create([
                 'user_id' => $user->id,
                 'template' => $template->id,
+                'campaign' => $campaign->id,
                 'body' => $response->body(),
                 'wamid' => $msg_id,
               ]);

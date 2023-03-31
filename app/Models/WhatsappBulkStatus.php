@@ -13,6 +13,7 @@ class WhatsappBulkStatus extends Model
         'user_id',
         'template',
         'body',
-        'wamid'
+        'wamid',
+        'campaign'
     ];
 }
