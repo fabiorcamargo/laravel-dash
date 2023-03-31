@@ -47,8 +47,4 @@ class WhatsappBulkTemplate implements ShouldQueue
             sleep(5);
         }
     }
-    public function chunkSize(): int
-    {
-        return 5;
-    }
 }
