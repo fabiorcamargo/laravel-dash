@@ -87,7 +87,7 @@
                                         @foreach ($client->message as $message)
                                             <div class="{{$message->bubble}}">
                                                 {{$message->body}}
-                                                <p><br>{{$message->created_at->format("h:m")}}</p>  
+                                                <p><br>{{$message->updated_at->format("h:m")}}</p>  
                                             </div> 
                                         @endforeach
                                     </div>

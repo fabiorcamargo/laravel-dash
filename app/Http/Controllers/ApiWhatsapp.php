@@ -124,7 +124,7 @@ class ApiWhatsapp extends Controller
                   $message->type == "image" ? $message->body = $key    = hash('sha256', $data->image->sha256) : "";
                   $message->type == "sticker" ? $message->body = $data->sticker->sha256 : "";
                   $message->type == "unknown" ? $message->body = $data->errors->details : "";
-                  $message->type == "button" ? $message->body = "Button: " . $data->button->text : "";
+                  //$message->type == "button" ? $message->body = "Button: " . $data->button->text : "";
                   $message->type == "list_reply" ? $message->body = $data->interactive->list_reply->title : "";
                   $message->type == "button_reply" ? $message->body = $data->interactive->button_reply->title : "";
                   $message->type == "order" ? $message->body = json_encode($data->order) : "";
