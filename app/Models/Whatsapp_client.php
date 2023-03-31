@@ -21,4 +21,9 @@ class Whatsapp_client extends Model
     {
         return $this->hasMany(Whatsapp_msg::class);
     }
+
+    public function client_get(): HasMany
+    {
+        return $this->HasMany(WhatsappBulkStatus::class, 'user_id', 'user_id');
+    }
 }

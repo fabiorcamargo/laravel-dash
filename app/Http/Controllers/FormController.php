@@ -9,6 +9,7 @@ use App\Models\FormCampain;
 use App\Models\FormLead;
 use App\Models\State;
 use App\Models\User;
+use App\Models\Whatsapp_client;
 use App\Models\WhatsappBulkStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -185,7 +186,30 @@ class FormController extends Controller
       }
 
       public function list_leads($id){
-              
+        $send = collect(['total', 'error', 'success', 'confirm']);
+        $send->total = (WhatsappBulkStatus::where('campaign', $id)
+        ->get());
+        $send->error = (WhatsappBulkStatus::where('wamid', 'Não enviado')
+        ->where('campaign', $id)
+        ->get());
+        $send->success = (WhatsappBulkStatus::where('wamid',"!=", 'Não enviado')
+        ->where('campaign', $id)
+        ->get());
+
+        $send->confirm = (Whatsapp_client::where('quality', '!=', '')->get());
+        
+
+
+        //$send->confirm = WhatsappBulkStatus::client_get();
+
+        //$send->confirm = Whatsapp_client::where('quality', '!=', '')->get();
+        
+
+
+        //dd($send);
+
+
+
         $campaign = FormCampain::find($id);
         $users = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $id)
          ->select('users.*')
@@ -224,7 +248,7 @@ class FormController extends Controller
 
         //dd($d);
 
-        return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign, 'total' => $total], compact('users', 'd'));
+        return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign, 'total' => $total], compact('users', 'd', 'send'));
 
     }
 
