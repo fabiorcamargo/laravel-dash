@@ -245,7 +245,10 @@ class ApiWhatsapp extends Controller
         public function template_msg_send($template, $lead, $campaign){
             //$template = WhatsappTemplate::find($template);
             if(User::find($lead->user_id)){
-                if(WhatsappBulkStatus::where('user_id', $lead->user_id)->first() && WhatsappBulkStatus::where('template', $template->id)->first()){
+                if(WhatsappBulkStatus::where('user_id', $lead->user_id)
+                ->where('template', $template->id)
+                ->first())
+                {
                     return;
                 }
             $user = User::find($lead->user_id);

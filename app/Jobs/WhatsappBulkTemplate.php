@@ -27,6 +27,10 @@ class WhatsappBulkTemplate implements ShouldQueue
      *
      * @return void
      */
+
+    public $failOnTimeout = false;
+    public $timeout = 120000;
+
     public function __construct($leads, $template, $campaign) 
     {
         $this->leads = $leads;
@@ -44,7 +48,7 @@ class WhatsappBulkTemplate implements ShouldQueue
         foreach($this->leads as $lead){
             $bulk = new ApiWhatsapp;
             $response = $bulk->template_msg_send($this->template, $lead, $this->campaign);
-            sleep(5);
+            sleep(1);
         }
     }
 }
