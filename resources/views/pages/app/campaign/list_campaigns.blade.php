@@ -18,6 +18,9 @@
 
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/widgets/modules-widgets.scss'])
+
+        @vite(['resources/scss/light/assets/elements/alert.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -36,12 +39,16 @@
             </nav>
     </div>
     <!-- /BREADCRUMB -->
-
-    
-    
+     
     <div class="seperator-header layout-top-spacing">
-        <h4 class="">Lista de Usuários Ativos</h4>
+        <h4 class="">Lista de Campanhas</h4>
     </div>
+
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-2 text-success" :status="session('status')" />
+
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-2 text-danger" :errors="$errors" />
 
     <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
         <x-widgets._w-total-leads value="{{ count($forms) }}" title="Total de Campanhas"/>

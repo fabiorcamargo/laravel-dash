@@ -41,6 +41,13 @@
     </div>
     <!-- /BREADCRUMB -->
 
+
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+    
     <div class="row mb-4 layout-spacing layout-top-spacing">
         <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12">
             <div class="widget-content widget-content-area blog-create-section mb-4">

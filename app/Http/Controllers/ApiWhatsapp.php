@@ -195,16 +195,20 @@ class ApiWhatsapp extends Controller
 
 
         }
+
         public function bk_send(Request $request, $id){
           $campaign = FormCampain::find($id);
           $template = WhatsappTemplate::find($request->templates);
           $leads = $campaign->leads()->get();
-
-          //dd($leads);
   
             dispatch(new \App\Jobs\WhatsappBulkTemplate($leads, $template, $campaign));
-          
+
+            $status = "Mensagens encaminhadas para fila";
+
+            return redirect("/modern-dark-menu/app/campaign/list")
+            ->with('status', __($status));
         }
+
         public function bulk_send(Request $request, $id){
           
             $data = (object)$request->all();
@@ -329,7 +333,7 @@ class ApiWhatsapp extends Controller
             ]);
 
             return (json_encode($response));
-            sleep(2);
+            //sleep(2);
 
 
         }
