@@ -253,7 +253,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                
             });
             Route::prefix('campaign')->group(function () {
+
                 Route::post('/add', [FormController::class, 'create'])->name('campaign-add');
+                Route::get('/correct_campaign', [FormController::class, 'correct_campaign'])->name('campaign-correct-campaign');
                 Route::get('/list', [FormController::class, 'list_campaigns'])->name('campaign-list-campaigns');
                 Route::get('/show/{id}', [FormController::class, 'list_leads'])->name('campaign-list-leads');
                 Route::get('/add', [FormController::class, 'add_show'])->name('campaign-add-show');

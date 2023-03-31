@@ -9,6 +9,7 @@ use App\Models\FormCampain;
 use App\Models\FormLead;
 use App\Models\State;
 use App\Models\User;
+use App\Models\WhatsappBulkStatus;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -225,6 +226,14 @@ class FormController extends Controller
 
         return view('pages.app.campaign.list_leads', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'campaign' => $campaign, 'total' => $total], compact('users', 'd'));
 
+    }
+
+    public function correct_campaign(){
+        $bulks = WhatsappBulkStatus::all();
+        foreach($bulks as $bulk){
+            $bulk->campaign = 1;
+            $bulk->save();
+        }
     }
 
     
