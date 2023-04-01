@@ -144,7 +144,7 @@
                                 <th scope="col">Username</th>
                                 {{--<th scope="col">Email</th>--}}
                                 <th scope="col">Telefone</th>
-                                <th class="text-center">Image</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -162,6 +162,7 @@
                                 </td>
                                 {{--<td>{{ $user->email }}</td>--}}
                                 <td>{{ $user->cellphone }}</td>
+                                {{--}}
                                 <td>
                                     <div class="d-flex">
                                         <div class="usr-img-frame mr-2 rounded-circle">
@@ -169,6 +170,8 @@
                                         </div>
                                     </div>
                                 </td>
+                                --}}
+                                {{--<td>{{ $user->quality }}</td>--}}
                             </tr>
                             @endforeach
                             

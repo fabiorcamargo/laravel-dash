@@ -255,6 +255,8 @@ class FormController extends Controller
          ->where('active', 2)
          ->orderBy('updated_at', 'desc')
          ->get();
+
+         //dd($users);
          
 
         $uss = User::leftJoin('form_leads', 'users.id', '=', 'form_leads.user_id')->where('form_campain_id', $id)
