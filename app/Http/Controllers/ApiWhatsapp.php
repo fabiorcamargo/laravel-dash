@@ -417,7 +417,7 @@ class ApiWhatsapp extends Controller
                 "type": "text",
                 "text": {
                     "preview_url": false,
-                    "body": "📊Nesse programa você foi contemplado gratuitamente com o *Curso de Assistente Administrativo* e uma bolsa parcial para os programas abaixo👇conforme a sua preferência. \n \n _Lembrando que você pode optar somente pelo *Curso Gratuito* sem custo algum ou vínculos._ \n \n Dentre os programas com incentivo estão: \n - Idiomas \n - Informática \n - Aprendiz Bancário \n - CPA10(AMBIMA) \n - Auxiliar de Creche \n - Preparatório Militar \n - Conclusão do Ensino Fundamental/Médio (ENCCEJA) \n - Mais opções apresentadas presencialmente."
+                    "body": "📊Nesse programa você foi contemplado gratuitamente com o *Curso de Assistente Administrativo* e uma bolsa parcial para os programas abaixo👇conforme a sua preferência. \n \n _Lembrando que você pode optar somente pelo *Curso Gratuito* sem custo algum ou vínculos._ \n \n Dentre os programas com incentivo estão: \n - Idiomas \n - Informática \n - Aprendiz Bancário \n - CPA10(AMBIMA) \n - Auxiliar de Creche \n - Preparatório Militar \n - Conclusão do Ensino Fundamental/Médio (ENCCEJA) \n - Mais opções apresentadas presencialmente. \n \n Atenciosamente Profissionaliza EAD"
                 }
                 
             }';
