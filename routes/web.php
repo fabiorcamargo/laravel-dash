@@ -78,6 +78,7 @@ use Illuminate\Support\Facades\Route;
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', [UserController::class, 'first'])->name('aluno.first');
                         
+                        Route::post('/users/cpf_send', [UserController::class, 'cpf_send'])->name('user.cpf-send');
                       
                         Route::get('/second', function () {
                             return view('pages.aluno.second', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste']);
@@ -164,7 +165,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
 
-        Route::post('/users/cpf_send', [UserController::class, 'cpf_send'])->name('user.cpf-send');
+        
 
         
         
