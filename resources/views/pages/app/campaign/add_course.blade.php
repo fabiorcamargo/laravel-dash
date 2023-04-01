@@ -86,9 +86,9 @@
                                 <label for="flow">Selecione o período de Matrícula</label>
                                 <div class="input-group mb-3">
                                     <span class="input-group-text">Início</span>
-                                    <input id="inicio" name="inicio"  class="form-control flatpickr flatpickr-input active" type="text" placeholder="Data inicial.." required>
+                                    <input id="start" name="start"  class="form-control flatpickr flatpickr-input active" type="text" placeholder="Data inicial.." required>
                                     <span class="input-group-text">Fim</span>
-                                    <input id="fim" name='fim' class="form-control flatpickr flatpickr-input active" type="text" placeholder="Data final.." required>
+                                    <input id="end" name='end' class="form-control flatpickr flatpickr-input active" type="text" placeholder="Data final.." required>
                                 </div>
                             </div>
                         </div>

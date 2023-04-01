@@ -15,6 +15,7 @@ class FormCampaignCode extends Model
         'form_campains_id',
         'course',
         'code',
+        'start_date',
         'end_date'
     ];
 }

@@ -119,6 +119,15 @@
                         
                         <div class="info-box-3-content-wrapper">
                         <div class="mb-3"><h3>Código de Liberação Pendente</h4></div>
+                            @if(Auth::user()->document == 99999999999)
+                            <form action="{{ getRouterValue(); }}/users/cpf_send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
+                                @csrf    
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Inserir CPF" aria-label="Inserir CPF" aria-describedby="button-addon2">
+                                    <button type="send" class="btn btn-primary" type="button" id="button-addon2">Enviar</button>
+                                </div>
+                            </form>
+                            @endif
                         <div class="info-box-3-content">O Código de liberação será fornecido pessoalmente por um consultor credenciado do Projeto. Você receberá uma mensagem informando o endereço, dia e horário para comparecer.<br><br>
                             O prazo médio é de 5 dias úteis.<br><br>
                         
@@ -157,6 +166,8 @@
         @vite(['resources/assets/js/authentication/2-Step-Verification.js'])
         {{-- <script src="{{asset('plugins/apex/custom-apexcharts.js')}}"></script> --}}
         @vite(['resources/assets/js/widgets/modules-widgets.js'])
+        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
         @if (str_contains(url()->previous(), 'form/end'))
         <script>
                     fbq("track", "Lead", {

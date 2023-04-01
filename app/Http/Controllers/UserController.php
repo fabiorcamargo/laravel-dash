@@ -842,5 +842,25 @@ class UserController extends Controller
             }
 
         }
+
+        public function cpf_send(Request $request){
+            //dd($request->all());
+
+            $de = array('.','-');
+            $para = array('','');
+            $cpf = str_replace($de, $para, $request->cpf);
+
+            //dd($cpf);
+
+            $user = Auth::user();
+            $user->document = $cpf;
+            $user->save();
+
+            $status = "success";
+            $msg = "CPF atualizado com sucesso";
+
+            return back()->with($status, $msg);
+
+        }
        
     }

@@ -164,6 +164,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
 
+        Route::post('/users/cpf_send', [UserController::class, 'cpf_send'])->name('user.cpf-send');
+
         
         
 

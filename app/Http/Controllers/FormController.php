@@ -43,27 +43,20 @@ class FormController extends Controller
     }
 
     public function add_course_create(Request $request){
-        dd($request->all());
 
+        $start = (Carbon::parse($request->start));
+        $end = (Carbon::parse($request->end));
         FormCampaignCode::create([
-            'name' => $request->name,
+            'name' => $request->title,
             'form_campains_id' => $request->campaign,
-            'course' => $request->campaign,
-            'code' => $request->course,
-            'end_date' => $request->date,
+            'course' => $request->course,
+            'code' => $request->code,
+            'start_date' => $start,
+            'end_date' => $end,
         ]);
-        
-        $campaign = FormCampain::all();
 
-        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
-        $ouro = new OuroModerno;
-        $payload ="";
-        $data = "";
-        $courses = ($ouro->request($payload, $url, $data, "get")->object())->data;
-
-        //dd($courses);
-        
-        return view('pages.app.campaign.add_course', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('campaign', 'courses'));
+        $status = "Código de liberação criado com sucesso!";
+        return back()->with('status', __($status));
     }
 
     public function create(Request $request){
@@ -162,6 +155,32 @@ class FormController extends Controller
 
     public function code_verify(Request $request){
         //dd($request->all());
+        $liberations = FormCampaignCode::all();
+        $code = $request[1] . $request[2] . $request[3] . $request[4];
+        //dd($code);
+        $user = Auth::user();
+        if ($user->document == 99999999999){
+            $status = "error";
+            $msg = "Atualize seu CPF para prosseguir com a liberção";
+
+        return back()->with($status, $msg);
+        }
+
+        foreach($liberations as $liberation){
+            //dd($code . " | " . $campaign->code);
+            if($code == $liberation->code){
+                $status = new OuroModerno;
+                //$status->criar_aluno($liberation);
+                //dd($liberation);
+                $status = "error";
+                $msg = "A liberação estará disponível dia  03/04/2023";
+
+        return back()->with($status, $msg);
+            }
+            //dd("n");
+        }
+
+
         $status = "error";
         $msg = "Código de ativação inválido";
 

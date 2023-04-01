@@ -201,6 +201,9 @@
                             <li class="{{ Request::routeIs('campaign-list-campaigns') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/campaign/list"> Lista Campanhas </a>
                             </li>
+                            <li class="{{ Request::routeIs('campaign-list-campaigns') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/campaign/add_course"> Código </a>
+                            </li>
                             <li class="{{ Request::routeIs('campaign-msg-template-create') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/campaign/msg/template/create"> Novo Template </a>
                             </li>

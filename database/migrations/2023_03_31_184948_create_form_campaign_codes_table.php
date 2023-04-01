@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('form_campains_id');
             $table->string('course');
             $table->string('code');
+            $table->date('start_date');
             $table->date('end_date');
             $table->timestamps();
         });
