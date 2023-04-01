@@ -120,7 +120,7 @@
                         <div class="info-box-3-content-wrapper">
                         <div class="mb-3"><h3>Código de Liberação Pendente</h4></div>
                             @if(Auth::user()->document == 99999999999)
-                            <form action="{{ getRouterValue(); }}/users/cpf_send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
+                            <form action="{{ getRouterValue(); }}/aluno/cpf_send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
                                 @csrf    
                                 <div class="input-group mb-3">
                                     <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Inserir CPF" aria-label="Inserir CPF" aria-describedby="button-addon2">
