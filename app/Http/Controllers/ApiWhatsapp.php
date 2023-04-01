@@ -76,7 +76,7 @@ class ApiWhatsapp extends Controller
         ]);
         
 
-        $text = "😄 Muito obrigado pela confirmação, em breve você receberá o endereço e horários disponíveis para retirada do seu código de acesso.";
+        $text = "😄Olá \n \n Estou passando para informar o local e horários para retirada do *código de acesso* de seu *Curso Gratuito*.\n \n🏢LOCAL: *ACITEL(Associação Comercial de Telêmaco Borba - PR), Rua Vice Pref. Reginaldo Nocera, 250 - Centro* \n \n 📆DATA: *01/04/2023 (SÁBADO)* \n \n HORÁRIOS: *10:00hs* ou *11:00hs* ou *13:00hs* ou *14:00hs* (Escolha apenas um) \n \n *_Somente amanhã_* \n \n Lembrando que o curso é gratuito sem custo ou vínculo algum com outros produtos. \n \n • Menores de 18 anos deverão comparecer acompanhados de um responsável maior • \n \n 📊Nesse programa você foi contemplado gratuitamente com o *Curso de Assistente Administrativo* e uma bolsa parcial para os programas abaixo👇conforme a sua preferência. \n \n _Lembrando que você pode optar somente pelo *Curso Gratuito* sem custo algum ou vínculos._ \n \n Dentre os programas com incentivo estão: \n - Idiomas \n - Informática \n - Aprendiz Bancário \n - CPA10(AMBIMA) \n - Auxiliar de Creche \n - Preparatório Militar \n - Conclusão do Ensino Fundamental/Médio (ENCCEJA) \n - Mais opções apresentadas presencialmente. \n \n Atenciosamente Profissionaliza EAD";
         sleep(5);
         $status = ApiWhatsapp::msg_send($phone, $name, $text);
         return  response("Msg: $status criada com sucesso!", 200);
