@@ -15,6 +15,7 @@ class Whatsapp_client extends Model
         'name',
         'phone',
         'body',
+        'quality'
     ];
 
     public function wp_msg(): HasMany

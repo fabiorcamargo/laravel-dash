@@ -38,7 +38,7 @@
                                                 <span class="user-name" data-name="{{$client->name}}">{{$client->name}}</span>
                                                 
                                             </div>
-                                                <span class="user-meta-time">{{($client->updated_at)->format('d/m/y h:m')}}</span>
+                                                <span class="user-meta-time">{{($client->message[0]->updated_at->format('d/m/y H:i'))}}</span>
                                             {{--<span class="preview">{{ $client->message[0]->body }}</span>--}}
                                         </div>
                                     </div>

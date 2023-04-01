@@ -93,6 +93,12 @@
                         <label>Campanha: {{$form->city}} | {{$form->name}}</label>
                     </div>
                 </div>
+                <div class="col-xxl-12 col-lg-6 col-md-12 md-3 mt-4">
+                    <div class="switch form-switch-custom switch-inline form-switch-primary">
+                        <label for="tags">Eviar somente para interações</label>
+                        <input class="switch-input" type="checkbox" role="switch" id="interact" name="interact">
+                    </div>
+                </div>
             </div>
             
               

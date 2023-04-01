@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\ChatbotAsset as ControllersChatbotAsset;
 use App\Models\ChatbotAsset;
 use App\Models\City;
+use App\Models\FormCampaignCode;
 use App\Models\FormCampain;
 use App\Models\FormLead;
 use App\Models\State;
@@ -25,6 +26,44 @@ class FormController extends Controller
         $states = State::all('abbr', 'id');
         $assets = ChatbotAsset::all();
         return view('pages.app.campaign.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('states', 'assets'));
+    }
+
+    public function add_show_course_create(){
+        $campaign = FormCampain::all();
+
+        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
+        $ouro = new OuroModerno;
+        $payload ="";
+        $data = "";
+        $courses = ($ouro->request($payload, $url, $data, "get")->object())->data;
+
+        //dd($courses);
+        
+        return view('pages.app.campaign.add_course', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('campaign', 'courses'));
+    }
+
+    public function add_course_create(Request $request){
+        dd($request->all());
+
+        FormCampaignCode::create([
+            'name' => $request->name,
+            'form_campains_id' => $request->campaign,
+            'course' => $request->campaign,
+            'code' => $request->course,
+            'end_date' => $request->date,
+        ]);
+        
+        $campaign = FormCampain::all();
+
+        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
+        $ouro = new OuroModerno;
+        $payload ="";
+        $data = "";
+        $courses = ($ouro->request($payload, $url, $data, "get")->object())->data;
+
+        //dd($courses);
+        
+        return view('pages.app.campaign.add_course', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('campaign', 'courses'));
     }
 
     public function create(Request $request){

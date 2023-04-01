@@ -19,4 +19,9 @@ class FormLead extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function interact()
+    {
+        return $this->hasMany(Whatsapp_client::class, 'user_id', 'user_id');
+    }
+
 }

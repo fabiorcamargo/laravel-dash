@@ -63,7 +63,7 @@ class ApiWhatsapp extends Controller
         ]);
         
         $client = (new ControllersWhatsappManipulation)->client($phone, $name);
-        $client->quality = 5;
+        $client->quality = 6 ? $client->quality = 6 : $client->quality = 5;
         $client->save();
         //dd($client);
 
@@ -197,11 +197,23 @@ class ApiWhatsapp extends Controller
         }
 
         public function bk_send(Request $request, $id){
+            //dd($request->all());
           $campaign = FormCampain::find($id);
           $template = WhatsappTemplate::find($request->templates);
+          
+          //dd($qualities);
           $leads = $campaign->leads()->get();
+          //dd($leads);
   
+          if($request->interact == "on"){
+            //dd('s');
+            $leads = Whatsapp_client::where('quality', '!=', '')->get();
+            dispatch(new \App\Jobs\WhatsappBulk($leads));
+          }else{
+            dd('n');
             dispatch(new \App\Jobs\WhatsappBulkTemplate($leads, $template, $campaign));
+          }
+            
 
             $status = "Mensagens encaminhadas para fila";
 
@@ -360,6 +372,81 @@ class ApiWhatsapp extends Controller
         }
 
         }
+
+        public function bulk_msg_send($lead){
+            
+            $payload = '{
+                "messaging_product": "whatsapp",    
+                "recipient_type": "individual",
+                "to": "' . $lead->phone . '",
+                "type": "text",
+                "text": {
+                    "preview_url": false,
+                    "body": "😄Boa noite \n \n Estou passando para informar o local e horários para retirada do *código de acesso* de seu *Curso Gratuito*.\n \n🏢LOCAL: *ACITEL(Associação Comercial de Telêmaco Borba - PR), Rua Vice Pref. Reginaldo Nocera, 250 - Centro* \n \n 📆DATA: *01/04/2023 (SÁBADO)* \n \n HORÁRIOS: *10:00hs* ou *11:00hs* ou *13:00hs* ou *14:00hs* (Escolha apenas um) \n \n *_Somente amanhã_* \n \n Lembrando que o curso é gratuito sem custo ou vínculo algum com outros produtos. \n \n • Menores de 18 anos deverão comparecer acompanhados de um responsável maior •"
+                }
+                
+            }';
+
+          //storage::put('wp_send1.txt',  $payload); 
+              //dd($payload);
+              //dd(json_decode($payload, true));
+
+            //dd($data);
+            //$response = ApiWhatsapp::msg_send($payload);
+
+            $url = "https://graph.facebook.com/v15.0/" . env('WHATSAPP_PHONE_NUMBER_ID') . "/messages";
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => env('WHATSAPP_API_TOKEN')
+            ])->post("$url", json_decode($payload, true));
+    
+            //dd($response);
+            $lead->quality = 6;
+            $lead->save();
+
+            return ($response->body());
+            //sleep(2);
+        }
+
+        public function bulk_msg_send2($lead){
+            
+            $payload = '{
+                "messaging_product": "whatsapp",    
+                "recipient_type": "individual",
+                "to": "' . $lead->phone . '",
+                "type": "text",
+                "text": {
+                    "preview_url": false,
+                    "body": "📊Nesse programa você foi contemplado gratuitamente com o *Curso de Assistente Administrativo* e uma bolsa parcial para os programas abaixo👇conforme a sua preferência. \n \n _Lembrando que você pode optar somente pelo *Curso Gratuito* sem custo algum ou vínculos._ \n \n Dentre os programas com incentivo estão: \n - Idiomas \n - Informática \n - Aprendiz Bancário \n - CPA10(AMBIMA) \n - Auxiliar de Creche \n - Preparatório Militar \n - Conclusão do Ensino Fundamental/Médio (ENCCEJA) \n - Mais opções apresentadas presencialmente."
+                }
+                
+            }';
+
+          //storage::put('wp_send1.txt',  $payload); 
+              //dd($payload);
+              //dd(json_decode($payload, true));
+
+            //dd($data);
+            //$response = ApiWhatsapp::msg_send($payload);
+
+            $url = "https://graph.facebook.com/v15.0/" . env('WHATSAPP_PHONE_NUMBER_ID') . "/messages";
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => env('WHATSAPP_API_TOKEN')
+            ])->post("$url", json_decode($payload, true));
+    
+            //dd($response);
+            
+            $phone = $response->object()->contacts[0]->wa_id;
+            $msg_id = $response->object()->messages[0]->id;
+            $status = Whatsapp_client::where('phone', $phone)->first();
+            $status->quality = 6;
+
+            return ($response->body());
+            //sleep(2);
+        }
+
+
 
         public function msg_send($phone, $name, $text){
 
