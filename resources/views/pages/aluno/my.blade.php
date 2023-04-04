@@ -137,7 +137,7 @@
      
         @endif
         
-        @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto'))
+        @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') || $card)
         <div class="row">
             <div class="mb-3"><h5>Olá {{Auth::user()->name}}</h5></div>
             <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
