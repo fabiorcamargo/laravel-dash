@@ -148,7 +148,7 @@
         @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
         <div class="row">
             <div class="mb-3"><h5>Acesso Cursos Ouro</h5></div>
-            <p>Seu acesso deverá ser feito sempre pelo sistema.</p>
+            <p>Após a troca de senha retorne ao sistema para acessar.</p>
             <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <x-widgets._w-card-ouro title="Acesse seu curso" card={{$ouro}}/>
             </div>
