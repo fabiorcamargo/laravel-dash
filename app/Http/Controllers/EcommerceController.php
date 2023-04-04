@@ -24,8 +24,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-
-
+use Illuminate\Support\Facades\Cookie;
 
 class EcommerceController extends Controller
 
@@ -156,6 +155,10 @@ class EcommerceController extends Controller
     }
 
     public function product_show($id){
+
+        $fbclid = ((string) Str::uuid());
+        Cookie::queue('fbid', $fbclid, 0);
+
         $product = (EcoProduct::find($id));
         if($product->perc > 15 || $product->percent < 30){
             $product->perc = "<span class='badge badge-light-success mb-3'>" . $product->percent*100 . "% off</span>";

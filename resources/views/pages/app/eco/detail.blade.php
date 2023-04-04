@@ -449,5 +449,5 @@
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
+    <x-fb-event event="ViewContent"/>
 </x-base-layout>
-<x-fb-event event="ViewContent"/>
