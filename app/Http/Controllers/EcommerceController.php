@@ -601,9 +601,9 @@ class EcommerceController extends Controller
 
         
         //dd($product);
-                $data = Http::get("https://xsgames.co/randomusers/avatar.php?g=$request->gender");
-                $uri = (json_encode($data->transferStats->getEffectiveUri()));
-                $img = (json_decode($uri));
+                //$data = Http::get("https://xsgames.co/randomusers/avatar.php?g=$request->gender");
+                //$uri = (json_encode($data->transferStats->getEffectiveUri()));
+                $img = 'https://alunos.profissionalizaead.com.br/avatar/default.jpeg';
 
                 $comment = (object)[
                     'name' => $request->name,
@@ -618,7 +618,8 @@ class EcommerceController extends Controller
         $contents = file_get_contents($comment->img);
             Storage::makeDirectory('directory', 0775);
             Storage::put("product/$product->id/avatar/$comment->name.jpg", $contents, ['visibility' => 'public', 'directory_visibility' => 'public']);
-            $comment->img = "product/$product->id/avatar/$comment->name.jpg";
+            //$comment->img = "product/$product->id/avatar/$comment->name.jpg";
+            $comment->img = "https://alunos.profissionalizaead.com.br/avatar/default.jpeg";
 
         
         if(isset($comments)){
