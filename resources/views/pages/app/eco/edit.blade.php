@@ -235,7 +235,7 @@
                         <div class="switch form-switch-custom switch-inline form-switch-primary">
                             <h4 class="switch-label inline" for="showPublicly">Público</h4>
                         </div>
-                            <a href="{{ getRouterValue(); }}/app/eco/comment/add?id={{$product->id}}" class="btn btn-success btn-icon mb-2 me-4 btn-rounded">
+                            <a href="{{ getRouterValue(); }}/app/eco/comment/add/?id={{$product->id}}" class="btn btn-success btn-icon mb-2 me-4 btn-rounded">
                                 <x-widgets._w-svg svg="message-plus"/>
                             </a>
                     </div>

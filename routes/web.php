@@ -287,7 +287,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-product-show');
             Route::get('/list_sales', [EcommerceController::class, 'list_sales'])->name('eco-list_sales');
             Route::any('/list_sales/search', [EcommerceController::class, 'search_sales'])->name('eco-list_sales-search');
-            Route::get('/comment/add', function () {
+            Route::get('/comment/add/', function () {
                 return view('pages.app.eco.add_comment', ['title' => 'Profissionaliza EAD | Novo Comentário', 'breadcrumb' => '']);
             })->name('eco-comment_add-show');
             Route::post('/comment/add/{id}', [EcommerceController::class, 'comment_add'])->name('eco-comment_add');
