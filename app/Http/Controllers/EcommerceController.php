@@ -554,7 +554,7 @@ class EcommerceController extends Controller
 
     public function comment_edit ($id, $i){
         $product = EcoProduct::find($id);
-        $comments = json_decode($product->comment);
+        $comments = json_decode($product->comment) !== null ? json_decode($product->comment) : "";
         $n = 0;
         //dd($comments);
         foreach($comments as $comment){
@@ -565,7 +565,6 @@ class EcommerceController extends Controller
         $n++;
         }
 
-        
         return back();
     }
 
