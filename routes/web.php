@@ -291,6 +291,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 return view('pages.app.eco.add_comment', ['title' => 'Profissionaliza EAD | Novo Comentário', 'breadcrumb' => '']);
             })->name('eco-comment_add-show');
             Route::post('/post_comment/add/{id}', [EcommerceController::class, 'comment_add'])->name('eco-comment_add');
+            Route::delete('/delete_comment/{id}/{comment}', [EcommerceController::class, 'comment_delete'])->name('eco-comment-delete');
             Route::get('/comment/{id}/{comment}', [EcommerceController::class, 'comment_edit'])->name('eco-comment_edit');
             Route::post('/comment/{id}/{comment}', [EcommerceController::class, 'comment_save'])->name('eco-comment_save');
             

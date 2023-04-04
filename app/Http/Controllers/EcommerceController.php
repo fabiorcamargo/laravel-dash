@@ -49,8 +49,9 @@ class EcommerceController extends Controller
         $flows = RdCrmFlow::all();
         $seller = EcoSeller::where("user_id", $product->seller)->first();
         $tags = CademiTag::all();
-        $comments = json_decode($product->comment);
-        //dd($comments->img);
+        $comments = (json_decode($product->comment));
+   
+        //dd($comments[0]->img);
         //dd($comments);
         //dd($products[0]->image);
         //dd(explode(",", $products[0]->image));
@@ -555,7 +556,7 @@ class EcommerceController extends Controller
     public function comment_edit ($id, $i){
         $product = EcoProduct::find($id);
         //dd($id);
-        $comments = json_decode($product->comment) != "" ? json_decode($product->comment) : "";
+        $comments = json_decode($product->comment) != "" ? (json_decode($product->comment)) : "";
         $n = 0;
         //dd($comments);
         foreach($comments as $comment){
@@ -570,9 +571,10 @@ class EcommerceController extends Controller
     }
 
     public function comment_save (Request $request, $id, $i){
-        //dd($request->all());
+        $request = (object)$request->all();
+        //dd($request);
         $product = EcoProduct::find($id);
-        $comments = json_decode($product->comment);
+        $comments = (json_decode($product->comment));
         $n = 0;
         //dd($comments);
         foreach($comments as &$comment){
@@ -630,7 +632,7 @@ class EcommerceController extends Controller
                $product->save();
                return redirect(getRouterValue() . "/app/eco/product/$id/edit");
         }else{
-            $product->comment = "[" . json_encode($comment) . "]";
+            $product->comment = json_encode($comment);
             //dd($product);
             $product->save();
             return redirect(getRouterValue() . "/app/eco/product/$id/edit");
@@ -638,6 +640,21 @@ class EcommerceController extends Controller
 
         
         
+    }
+
+    public function comment_delete($id, $i){
+        $product = EcoProduct::find($id);
+        //dd($id);
+        $comments = json_decode($product->comment) != "" ? collect(json_decode($product->comment)) : "";
+        $n = 0;
+        //dd($comments);
+        
+        $comments->forget($i);
+        $c = ($comments->flatten());
+        $product->comment = json_encode($c);
+        //dd($product);
+        $product->save();
+        return back();
     }
 
 
