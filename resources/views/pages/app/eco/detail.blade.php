@@ -419,6 +419,35 @@
         <script src="{{asset('plugins/splide/splide.min.js')}}"></script>
         <script src="{{asset('plugins/splide/custom-splide.js')}}"></script>
         @vite(['resources/assets/js/apps/ecommerce-details.js'])
+
+        <script>
+            fbq("track", "ViewContent",
+                                
+            {
+                "event_name": "ViewContent",
+                "event_time": "{{ time() }}",
+                "action_source": "website",
+                "event_source_url": "{{ url()->current() }}",
+                "eventID": "{{ Cookie::get('fbid') }}",
+                "user_data": {
+                    "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
+                    "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}",
+                    @isset($_COOKIE['_fbp'])
+                    ,"fbp": "{{$_COOKIE['_fbp']}}",
+                    "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
+                    @endisset
+                },
+                "custom_data": {
+                    "content_ids": "product_{{$product->id}}",
+                    "content_category": "{{json_decode($product->tag)[0]->value}}",
+                    "content_name": "{{$product->name}}"
+                }
+            }
+
+            )
+            </script>
+
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
+<x-fb-event event="ViewContent"/>

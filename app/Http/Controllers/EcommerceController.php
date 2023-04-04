@@ -168,7 +168,8 @@ class EcommerceController extends Controller
         $product->oprice = number_format(($product->price / (1-$product->percent)),0);
         $product->image = json_decode($product->image);
         $product->comments = json_decode($product->comment);
-        //dd($product);
+        
+        //dd(json_decode($product->tag)[0]->value);
 
         
 
