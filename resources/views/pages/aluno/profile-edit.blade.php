@@ -142,7 +142,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Sobrenome</label>
-                                                                    <input type="text" class="form-control mb-3" name="lastname" id="lastname" placeholder="Sobrenome" value="{{ $user->lastname }}">
+                                                                    <input type="text" class="form-control mb-3" name="lastname" id="lastname" placeholder="Sobrenome" value="{{ $user->lastname }}" required>
                                                                 </div>
                                                             </div>
                                                             

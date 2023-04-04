@@ -83,8 +83,7 @@
                     <div class="row mb-4">
                         <div class="col-sm-12">
                             <h4>Comentário:</h4>
-                            <div id="quillEditor"></div>
-                            <input id="comment" name="comment" hidden>
+                            <textarea class="form-control" id="comment" name="comment" rows="4"></textarea>
                         </div>
                     </div>
               

@@ -80,8 +80,9 @@
                     <div class="row mb-4">
                         <div class="col-sm-12">
                             <h4>Comentário:</h4>
-                            <div id="quillEditor"></div>
-                            <input id="comment" name="comment" hidden>
+                            
+                            <textarea class="form-control" id="comment" name="comment" rows="4">{{$comment->comment}}</textarea>
+                            
                         </div>
                     </div>
               
@@ -119,27 +120,7 @@
         
         </script>
 
-        <script>
-                    
-            var options = {
-                placeholder: 'Coloque a descrição do produto',
-                theme: 'snow'
-                };
 
-                var editor = new Quill('#quillEditor', options);
-                var justHtmlContent = document.getElementById('comment');
-
-                editor.clipboard.dangerouslyPasteHTML(0, <?php echo json_encode($comment->comment); ?>);
-
-                editor.on('text-change', function() {
-                var delta = editor.getContents();
-                var text = editor.getText();
-                var justHtml = editor.root.innerHTML;
-                justHtmlContent.value = justHtml;
-                });
-
-                
-        </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
