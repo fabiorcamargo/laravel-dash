@@ -293,7 +293,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             
             Route::get('/comment/{id}/{comment}', [EcommerceController::class, 'comment_edit'])->name('eco-comment_edit');
             Route::post('/comment/{id}/{comment}', [EcommerceController::class, 'comment_save'])->name('eco-comment_save');
-            Route::post('/comment/add/{id}', [EcommerceController::class, 'comment_add'])->name('eco-comment_add');
+            Route::post('/post_comment/add/{id}', [EcommerceController::class, 'comment_add'])->name('eco-comment_add');
 
             
             Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     

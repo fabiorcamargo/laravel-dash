@@ -44,7 +44,7 @@
     <div class="row mb-4 layout-spacing layout-top-spacing">
 
         <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <form action="{{ getRouterValue(); }}/app/eco/comment/add/{{$id}}/"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
+            <form action="{{ getRouterValue(); }}/app/eco/post_comment/add/{{$id}}/"  method="post" enctype="multipart/form-data" name="form1" class="was-validated">
                 @csrf
             <div class="widget-content widget-content-area blog-create-section mb-4">
                 <h5 class="mb-4">Editar Comentário</h5>
