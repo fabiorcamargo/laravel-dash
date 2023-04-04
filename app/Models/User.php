@@ -126,4 +126,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(FormLead::class);
     }
+    public function client_ouro(): HasMany
+    {
+        return $this->hasMany(OuroClient::class);
+    }
 }

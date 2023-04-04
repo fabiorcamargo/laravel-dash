@@ -13,14 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('form_campaign_codes', function (Blueprint $table) {
+        Schema::create('ouro_clients', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('form_campains_id');
-            $table->string('course');
-            $table->string('code');
-            $table->date('start_date');
-            $table->date('end_date');
+            $table->foreignId('user_id')->constrained('users');
+            $table->string('ouro_id');
+            $table->string('nome');
+            $table->string('usuario');
+            $table->string('senha');
+            $table->string('login_auto')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('form_campaign_codes');
+        Schema::dropIfExists('ouro_clients');
     }
 };

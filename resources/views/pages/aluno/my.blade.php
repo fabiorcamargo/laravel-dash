@@ -46,14 +46,11 @@
         
 
         <div class="row">
-            @if (\Session::has('error'))
-                <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('error') !!} </div>
-    
-            @endif
-            @if (\Session::has('success'))
-                <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('success') !!} </div>
-    
-            @endif
+            <!-- Session Status -->
+            <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+
+            <!-- Validation Errors -->
+            <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
             
         </div>
 
@@ -140,13 +137,23 @@
      
         @endif
         
-        
+        @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto'))
         <div class="row">
-            <div class="mb-3"><h3>Olá {{Auth::user()->name}}</h4></div>
+            <div class="mb-3"><h5>Olá {{Auth::user()->name}}</h5></div>
             <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <x-widgets._w-card-cademi title="Acesse seu curso" card={{$card}}/>
             </div>
         </div>
+        @endif
+        @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
+        <div class="row">
+            <div class="mb-3"><h5>Acesso Cursos Ouro</h5></div>
+            <p>Seu acesso deverá ser feito sempre pelo sistema.</p>
+            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                <x-widgets._w-card-ouro title="Acesse seu curso" card={{$ouro}}/>
+            </div>
+        </div>
+        @endif
     </div>
         
     

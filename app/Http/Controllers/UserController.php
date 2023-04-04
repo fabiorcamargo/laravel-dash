@@ -11,6 +11,7 @@ use App\Models\ChatbotGroup;
 use App\Models\City;
 use App\Models\EcoSallerType;
 use App\Models\EcoSeller;
+use App\Models\OuroClient;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\TemporaryFile;
@@ -474,6 +475,8 @@ class UserController extends Controller
         } else {
             $avatar = "/default.jpeg";
         }
+
+//        dd(Auth::user()->client_ouro()->first()->login_auto);
 /*
         $user = User::find(Auth::user()->id);
         if ($user->uf2 != ""){
@@ -495,9 +498,12 @@ class UserController extends Controller
         //$event->Lead();
 
         //dd(Auth::user()->courses);
-        if (Auth::user()->courses == "GRATUITO-AUX"){
+        if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2){
             $card = "resources/images/GRATUITO-AUX.jpg";
-            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);    
+            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+        }else{  
+            $ouro = "resources/images/Curso Liberado.jpg";
+            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card, 'ouro' => $ouro]);    
         }
 
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
@@ -859,7 +865,8 @@ class UserController extends Controller
             $status = "success";
             $msg = "CPF atualizado com sucesso";
 
-            return back()->with($status, $msg);
+            $status = "CPF atualizado com sucesso";
+            return back()->with('status', __($status));;
 
         }
        

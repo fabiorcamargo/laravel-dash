@@ -35,7 +35,7 @@ class FormController extends Controller
         $ouro = new OuroModerno;
         $payload ="";
         $data = "";
-        $courses = ($ouro->request($payload, $url, $data, "get")->object())->data;
+        $courses = ($ouro->req($payload, $url, "GET")->data);
 
         //dd($courses);
         
@@ -44,13 +44,20 @@ class FormController extends Controller
 
     public function add_course_create(Request $request){
 
-        $start = (Carbon::parse($request->start));
-        $end = (Carbon::parse($request->end));
+        //dd($request->all());
+
+        $format = 'd/m/Y';
+
+        $start = Carbon::createFromFormat($format, $request->start);
+        $end = Carbon::createFromFormat($format, $request->end);
+        $course = explode("|", $request->course);
+        
         FormCampaignCode::create([
             'name' => $request->title,
             'form_campains_id' => $request->campaign,
-            'course' => $request->course,
-            'code' => $request->code,
+            'liberation' => $request->code,
+            'course_code' => $course[0],
+            'course_name' => $course[1],
             'start_date' => $start,
             'end_date' => $end,
         ]);
@@ -162,30 +169,36 @@ class FormController extends Controller
         if ($user->document == 99999999999){
             $status = "error";
             $msg = "Atualize seu CPF para prosseguir com a liberção";
-
+            
         return back()->with($status, $msg);
         }
 
         foreach($liberations as $liberation){
-            //dd($code . " | " . $campaign->code);
-            if($code == $liberation->code){
+            //dd($liberation->liberation);
+            if($code == $liberation->liberation){
                 $status = new OuroModerno;
-                //$status->criar_aluno($liberation);
-                //dd($liberation);
-                $status = "error";
-                $msg = "A liberação estará disponível dia  03/04/2023";
-
-        return back()->with($status, $msg);
+                if(($status->avalia_liberacao($liberation))){
+                    //dd("passou");
+                    $status = new OuroModerno;
+                    $ouro = $status->criar_aluno_auth($liberation);
+                    $status = $status->criar_matricula($liberation, $ouro);
+                    $user->active = 1;
+                    $user->save();
+                    return back()->with('status', __($status));
+                }else{
+                    $status = "error";
+                    $msg = "Fora da validade, validade do código de " . Carbon::parse($liberation->start_date)->format('d/m/y') . " até " . Carbon::parse($liberation->end_date)->format('d/m/y');
+                    return back()->withErrors(__($msg));
+                }
             }
-            //dd("n");
         }
-
 
         $status = "error";
         $msg = "Código de ativação inválido";
-
-        return back()->with($status, $msg);
+        return back()->withErrors(__($msg));
     }
+
+
 
     public function redir(Request $request, $id){
 

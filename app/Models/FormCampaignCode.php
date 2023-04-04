@@ -13,8 +13,9 @@ class FormCampaignCode extends Model
         'id',
         'name',
         'form_campains_id',
-        'course',
-        'code',
+        'liberation',
+        'course_code',
+        'course_name',
         'start_date',
         'end_date'
     ];
