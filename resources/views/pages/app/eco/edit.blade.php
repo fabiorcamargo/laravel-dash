@@ -106,9 +106,17 @@
                                     <label class="switch-label" for="in-stock">In Stock</label>
                                 </div>
                             </div> --}}
+                            <div class="col-xxl-12 col-md-6 mb-1">
+                                <label for="flow">Liberação Boleto</label>
+                                <select name="course_b" id="course_b" class="form-control mb-2" required>
+                                    @foreach ($tags as $tag)
+                                    <option value="{{ $tag->name }}">{{ $tag->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div class="col-xxl-12 col-md-6 mb-3">
-                                <label for="flow">Código do Produto</label>
-                                <select name="course_id" id="course_id" class="form-control mb-2" required>
+                                <label for="flow">Liberação Cartão</label>
+                                <select name="course_c" id="course_c" class="form-control mb-2" required>
                                     @foreach ($tags as $tag)
                                     <option value="{{ $tag->name }}">{{ $tag->name }}</option>
                                     @endforeach

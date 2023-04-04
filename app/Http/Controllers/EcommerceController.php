@@ -126,7 +126,9 @@ class EcommerceController extends Controller
         $product['percent'] = (float)$request->percent/100;
 
         $eco = new EcoProduct;
-        $eco->course_id = $product['course_id'];
+        $eco->course_id = $product['course_c'];
+        $eco->course_b = $product['course_b'];
+        $eco->course_c = $product['course_c'];
         $eco->name = $product['course_name'];
         $eco->description = $product['description'];
         $eco->specification = $product['specification'];
@@ -506,7 +508,9 @@ class EcommerceController extends Controller
         $product->price !== $request->price ? $product->price = $request->price : "";
         $product->percent !== $request->percent ? $product->percent = $request->percent : "";
         $product->public !== $request->public ? $product->public = $request->public : "";
-        $product->course_id !== $request->course_id ? $product->course_id = $request->course_id : "";
+        $product->course_id !== $request->course_c ? $product->course_c = $request->course_c : "";
+        $product->course_c !== $request->course_c ? $product->course_c = $request->course_c : "";
+        $product->course_b !== $request->course_b ? $product->course_b = $request->course_b : "";
 
         $product->save();
 
