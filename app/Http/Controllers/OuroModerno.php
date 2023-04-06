@@ -97,6 +97,7 @@ class OuroModerno extends Controller
         $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
         $type = "POST";
         $user = User::find(Auth::user()->id);
+        $user->client_ouro()->delete();
         $payload = [
           'token' => env('OURO_POST_TOKEN'),
           'nome' => "$user->name $user->lastname",
