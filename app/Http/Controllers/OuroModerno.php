@@ -114,7 +114,8 @@ class OuroModerno extends Controller
           'complemento' => 'outro',
           'bairro' => 'centro',
           'cep' => '87020035',
-          'login_info' => 'EMAIL'
+          'login_info' => 'EMAIL',
+          'senha_inicial' => 0
         ];
         //dd($payload);
         $request = OuroModerno::req($payload, $url, $type);
