@@ -408,7 +408,7 @@
             </div>
             
         </div>
-
+        <x-fb-event event="ViewContent" object={{$product}}/>
     </div>
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
@@ -443,11 +443,9 @@
                     "content_name": "{{$product->name}}"
                 }
             }
-
             )
             </script>
 
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
-    <x-fb-event event="ViewContent"/>
 </x-base-layout>

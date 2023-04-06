@@ -120,7 +120,7 @@
                             <form action="{{ getRouterValue(); }}/aluno/cpf_send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
                                 @csrf    
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Inserir CPF" aria-label="Inserir CPF" aria-describedby="button-addon2">
+                                    <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Inserir CPF" aria-label="Inserir CPF" aria-describedby="button-addon2" required>
                                     <button type="send" class="btn btn-primary" type="button" id="button-addon2">Enviar</button>
                                 </div>
                             </form>

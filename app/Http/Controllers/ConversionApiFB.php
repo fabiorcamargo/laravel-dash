@@ -110,15 +110,17 @@ class ConversionApiFB extends Controller
         }
     }
 
-    public function ViewContent(){
+    public function ViewContent($object){
 
-        if (env('APP_DEBUG') == false){
+        dd($object->name);
+        if (env('APP_DEBUG') == true){
             $tempo = time();
             $page = url()->current();
-            $eventid = ConversionApiFB::geraid();
+            $eventid = Cookie::get('fbid');
 
             $access_token = env('CONVERSIONS_API_ACCESS_TOKEN');
             $pixel_id = env('CONVERSIONS_API_PIXEL_ID');
+            
 
             $api = Api::init(null, null, $access_token);
             $api->setLogger(new CurlLogger());
@@ -158,7 +160,9 @@ class ConversionApiFB extends Controller
                     ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
                     ->setClientUserAgent($_SERVER['HTTP_USER_AGENT'])
                     ->setFbc($fbp . "." . $eventid)
-                    ->setFbp($fbp);
+                    ->setFbp($fbp)
+                    
+                    ;
                 }else{
                     $user_data = (new UserData())  
                     ->setClientIpAddress($_SERVER['REMOTE_ADDR'])
@@ -166,6 +170,11 @@ class ConversionApiFB extends Controller
             }
 
         }
+            
+            $customdata = (new CustomData())
+            ->setContentName($object->name)
+            ->setContentIds("product_{{$object->id}}")
+            ->setContentCategory(json_decode($object->tag)[0]->value);
 
             $event = (new Event())
             ->setEventName("ViewContent")
@@ -174,7 +183,9 @@ class ConversionApiFB extends Controller
             //->setCustomData($custom_data)
             //->setActionSource("website")
             ->setEventSourceUrl($page)
-            ->setEventId($eventid);
+            ->setEventId($eventid)
+            ->setCustomData($customdata);
+
                 
             $events = array();
             array_push($events, $event);
@@ -190,7 +201,7 @@ class ConversionApiFB extends Controller
 
             //dd($request);
             $response = $request->execute();
-            //dd($response);
+            //dd($response['events_received']);
 
             //header('Location: ' . $url, true, $permanent ? 301 : 302);
 
@@ -199,7 +210,7 @@ class ConversionApiFB extends Controller
             unset($url);
             //exit();
             
-            return;
+            return ("Evento recebido: " . $response['events_received'] . " | id: " . $response['fbtrace_id']);
             
 }
 return;
