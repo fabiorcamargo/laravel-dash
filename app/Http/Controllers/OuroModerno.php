@@ -116,7 +116,7 @@ class OuroModerno extends Controller
           'cep' => '87020035',
           'login_info' => 'EMAIL'
         ];
-        dd($payload);
+        //dd($payload);
         $request = OuroModerno::req($payload, $url, $type);
         if($request->status !== "true" || $request->data->id == 0){
           $msg = "Não liberado contatar suporte!";
