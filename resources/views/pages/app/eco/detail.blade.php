@@ -28,6 +28,7 @@
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
         
         <!--  END CUSTOM STYLE FILE  -->
+        <x-fb-microdata object={!!$product!!}/>
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
 
