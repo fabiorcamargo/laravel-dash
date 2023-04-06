@@ -162,16 +162,16 @@ class FormController extends Controller
 
     public function code_verify(Request $request){
         //dd($request->all());
+        $user = Auth::user();
+        if ($user->document == 99999999999){
+        $cpf = new UserCpf;
+        $cpf->cpf_send($request);
+        }
+
         $liberations = FormCampaignCode::all();
         $code = $request[1] . $request[2] . $request[3] . $request[4];
         //dd($code);
         $user = Auth::user();
-        if ($user->document == 99999999999){
-            $status = "error";
-            $msg = "Atualize seu CPF para prosseguir com a liberção";
-            
-            return back()->withErrors(__($msg));
-        }
 
         foreach($liberations as $liberation){
             //dd($liberation->liberation);

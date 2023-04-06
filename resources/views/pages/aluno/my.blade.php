@@ -47,10 +47,9 @@
 
         <div class="row">
             <!-- Session Status -->
-            <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
-
+            <x-auth-session-status class="mb-4 text-success" :status="session('status')"/>
             <!-- Validation Errors -->
-            <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+            <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors"/>
             
         </div>
 
@@ -67,7 +66,13 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <h2>Código de Verificação</h2>
+                                                <h5>Para prosseguir com a liberação do seu curso insira as informações abaixo:</h5>
+                                                @if(Auth::user()->document == 99999999999)
+                                                    <p>Insira um CPF válido</p>
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Apenas os números" aria-label="Inserir CPF" aria-describedby="button-addon2" required>
+                                                    </div>
+                                                @endif
                                                 <p>Insira o código recebido para ativar o seu curso.</p>
                                             </div>
                                             <div class="col-sm-2 col-3 ms-auto">
@@ -115,21 +120,12 @@
                         </div>
                         
                         <div class="info-box-3-content-wrapper">
-                        <div class="mb-3"><h3>Código de Liberação Pendente</h4></div>
-                            @if(Auth::user()->document == 99999999999)
-                            <form action="{{ getRouterValue(); }}/aluno/cpf_send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
-                                @csrf    
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Inserir CPF" aria-label="Inserir CPF" aria-describedby="button-addon2" required>
-                                    <button type="send" class="btn btn-primary" type="button" id="button-addon2">Enviar</button>
-                                </div>
-                            </form>
-                            @endif
-                        <div class="info-box-3-content">O Código de liberação será fornecido pessoalmente por um consultor credenciado do Projeto. Você receberá uma mensagem informando o endereço, dia e horário para comparecer.<br><br>
-                            O prazo médio é de 5 dias úteis.<br><br>
-                        
-                        <a data-bs-toggle="modal" data-bs-target="#CodeModal"  class="btn btn-primary w-100" data-toggle="tooltip" data-placement="top" title="Bloquear"> Inserir Código </a>
-                        </div>
+                            <div class="mb-3"><h4>Código de Liberação Pendente</h4></div>
+                            <div class="info-box-3-content">O Código de liberação será fornecido pessoalmente por um consultor credenciado do Projeto. Você receberá uma mensagem informando o endereço, dia e horário para comparecer.<br><br>
+                                O prazo médio é de 5 dias úteis.<br><br>
+                            
+                            <a data-bs-toggle="modal" data-bs-target="#CodeModal"  class="btn btn-primary w-100" data-toggle="tooltip" data-placement="top" title="Bloquear"> Inserir Código </a>
+                            </div>
                         </div>
                     
                 </div>
@@ -141,7 +137,6 @@
             @isset($ouro)
                 <div class="row">
                     <div class="mb-3"><h5>Acesso Cursos Ouro</h5></div>
-                    <p>Após a troca de senha retorne ao sistema para acessar.</p>
                     <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                         <x-widgets._w-card-ouro title="Acesse seu curso" card={{$ouro}}/>
                     </div>

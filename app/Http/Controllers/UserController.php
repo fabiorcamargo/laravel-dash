@@ -850,14 +850,11 @@ class UserController extends Controller
         }
 
         public function cpf_send(Request $request){
-            //dd($request->all());
             
             $de = array('.','-');
             $para = array('','');
             $cpf = str_replace($de, $para, $request->cpf);
-
-            //dd($cpf);
-
+            
             $this->validate($request, [
                 'cpf' => 'required|cpf',
             ]);
