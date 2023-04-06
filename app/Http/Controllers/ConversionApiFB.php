@@ -110,9 +110,9 @@ class ConversionApiFB extends Controller
         }
     }
 
-    public function ViewContent($object){
+    public function ViewContent($data){
 
-        dd($object->name);
+        $object =json_decode($data);
         if (env('APP_DEBUG') == true){
             $tempo = time();
             $page = url()->current();
@@ -172,8 +172,8 @@ class ConversionApiFB extends Controller
         }
             
             $customdata = (new CustomData())
-            ->setContentName($object->name)
-            ->setContentIds("product_{{$object->id}}")
+            ->setContentName("product_$object->name")
+            ->setContentIds("product_$object->id")
             ->setContentCategory(json_decode($object->tag)[0]->value);
 
             $event = (new Event())

@@ -1,7 +1,6 @@
     @php 
     if($event == "ViewContent"){
     $event = new App\Http\Controllers\ConversionApiFB;
-    echo($object);
     $event->ViewContent($object);
     }elseif($event == "Lead"){
     $event = new App\Http\Controllers\ConversionApiFB;

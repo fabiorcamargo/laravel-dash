@@ -408,7 +408,7 @@
             </div>
             
         </div>
-        <x-fb-event event="ViewContent" object={{$product}}/>
+        
     </div>
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
@@ -449,3 +449,4 @@
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
+<x-fb-event event="ViewContent" object={!!$product!!}/>
