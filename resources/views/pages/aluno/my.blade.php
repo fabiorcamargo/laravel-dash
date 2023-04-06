@@ -145,7 +145,9 @@
             </div>
         </div>
         @endif
+
         @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
+        @isset($ouro)
         <div class="row">
             <div class="mb-3"><h5>Acesso Cursos Ouro</h5></div>
             <p>Após a troca de senha retorne ao sistema para acessar.</p>
@@ -153,6 +155,7 @@
                 <x-widgets._w-card-ouro title="Acesse seu curso" card={{$ouro}}/>
             </div>
         </div>
+        @endisset
         @endif
     </div>
         

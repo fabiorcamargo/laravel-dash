@@ -36,7 +36,7 @@ class OuroModerno extends Controller
                   $response = curl_exec($curl);
                   curl_close($curl);
         if(curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200){
-          return;
+          return true;
         }else{
           $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/token/" . env('OURO_UNIDADE');
                   curl_setopt_array($curl, array(
@@ -55,16 +55,21 @@ class OuroModerno extends Controller
                   ));
                   $response = curl_exec($curl);
                   curl_close($curl);
-
-                  $path = base_path('.env');
-                  $content = file_get_contents($path);
-                  if (file_exists($path)) {
-                      $ini = [env('OURO_POST_TOKEN')];
-                      $fim = [json_decode($response)->data->token];
-                      file_put_contents($path, str_replace($ini, $fim, $content));
+                  if(curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200){
+                    $path = base_path('.env');
+                    $content = file_get_contents($path);
+                    if (file_exists($path)) {
+                        $ini = [env('OURO_POST_TOKEN')];
+                        $fim = [json_decode($response)->data->token];
+                        file_put_contents($path, str_replace($ini, $fim, $content));
+                    }
+                    return true;
+                  }else{
+                    return false;
                   }
-                  return;
+                   
                 }
+                return false;
 
     }
 
@@ -93,7 +98,7 @@ class OuroModerno extends Controller
     
     public function criar_aluno_auth($liberation){
 
-        OuroModerno::check_token();
+        dd(OuroModerno::check_token());
         $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
         $type = "POST";
         $user = User::find(Auth::user()->id);
