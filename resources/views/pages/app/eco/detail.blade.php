@@ -423,7 +423,6 @@
 
         <script>
             fbq("track", "ViewContent",
-                                
             {
                 "event_name": "ViewContent",
                 "event_time": "{{ time() }}",
@@ -432,7 +431,7 @@
                 "eventID": "{{ Cookie::get('fbid') }}",
                 "user_data": {
                     "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
-                    "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}",
+                    "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
                     @isset($_COOKIE['_fbp'])
                     ,"fbp": "{{$_COOKIE['_fbp']}}",
                     "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
