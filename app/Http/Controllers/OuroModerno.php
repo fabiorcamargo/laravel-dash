@@ -98,7 +98,10 @@ class OuroModerno extends Controller
     
     public function criar_aluno_auth($liberation){
 
-        dd(OuroModerno::check_token());
+        if(OuroModerno::check_token() == false){
+          $msg = "Por favor insira o código novamente";
+          return back()->withErrors(__($msg));
+        }
         $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
         $type = "POST";
         $user = User::find(Auth::user()->id);
