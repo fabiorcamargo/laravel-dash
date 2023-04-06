@@ -113,7 +113,7 @@ class ConversionApiFB extends Controller
     public function ViewContent($data){
 
         $object =json_decode($data);
-        if (env('APP_DEBUG') == true){
+        if (env('APP_DEBUG') == false){
             $tempo = time();
             $page = url()->current();
             $eventid = Cookie::get('fbid');
