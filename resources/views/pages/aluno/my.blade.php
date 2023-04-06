@@ -136,6 +136,18 @@
             </div>
      
         @endif
+
+        @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
+            @isset($ouro)
+                <div class="row">
+                    <div class="mb-3"><h5>Acesso Cursos Ouro</h5></div>
+                    <p>Após a troca de senha retorne ao sistema para acessar.</p>
+                    <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+                        <x-widgets._w-card-ouro title="Acesse seu curso" card={{$ouro}}/>
+                    </div>
+                </div>
+            @endisset
+        @endif
         
         @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') || $card)
         <div class="row">
@@ -146,17 +158,6 @@
         </div>
         @endif
 
-        @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
-        @isset($ouro)
-        <div class="row">
-            <div class="mb-3"><h5>Acesso Cursos Ouro</h5></div>
-            <p>Após a troca de senha retorne ao sistema para acessar.</p>
-            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <x-widgets._w-card-ouro title="Acesse seu curso" card={{$ouro}}/>
-            </div>
-        </div>
-        @endisset
-        @endif
     </div>
         
     
