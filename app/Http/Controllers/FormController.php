@@ -170,7 +170,7 @@ class FormController extends Controller
             $status = "error";
             $msg = "Atualize seu CPF para prosseguir com a liberção";
             
-        return back()->with($status, $msg);
+            return back()->withErrors(__($msg));
         }
 
         foreach($liberations as $liberation){
