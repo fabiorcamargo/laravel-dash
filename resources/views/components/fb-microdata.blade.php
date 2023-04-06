@@ -3,7 +3,7 @@
 <meta property="og:title" content="{{$object->name}}">
 <meta property="og:description" content="{{$object->description}}">
 <meta property="og:url" content="{{url()->current()}}">
-<meta property="og:image" content="{{env('URL_CATALOG_IMG') . ($object->image[0])}}">
+<meta property="og:image" content="{{env('URL_CATALOG_PRODUCT_IMG') . ($object->image[0])}}">
 <meta property="product:brand" content="Profissionaliza EAD">
 <meta property="product:availability" content="in stock">
 <meta property="product:condition" content="new">
