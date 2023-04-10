@@ -75,9 +75,11 @@
                             <tr>
                                 <td>{{ $user->username }} 
                                     @if($user->first == 2)
-                                    <div class="badge badge-success badge-dot"></div>
+                                    <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
                                     @elseif($user->first == 3)
-                                    <div class="badge badge-danger badge-dot"></div>
+                                    <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
+                                    @else
+                                    <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
                                     @endif
                                 </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>

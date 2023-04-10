@@ -10,6 +10,7 @@ use App\Models\EcoProduct;
 use App\Models\EcoProductCategory;
 use App\Models\EcoSales;
 use App\Models\EcoSeller;
+use App\Models\Flow;
 use App\Models\RdCrmFlow;
 use App\Models\RdCrmOportunity;
 use App\Models\Sales;
@@ -309,14 +310,12 @@ class EcommerceController extends Controller
 
         $user->password = $password;
 
-        
-
         //Cria CRM no RD
-        $rd = new RdController;
-        $rd->rd_client_register($user->id, $password, $product);
+        //$rd = new RdController;
+        //$rd->rd_client_register($user->id, $password, $product);
        
-        $rd2 = new RdController;
-        $rd2->rd_create_opportunity($user->id, $product);
+        //$rd2 = new RdController;
+        //$rd2->rd_create_opportunity($user->id, $product);
 
         //Mail::to($user->email)->send(new SendMailUser($user));
 

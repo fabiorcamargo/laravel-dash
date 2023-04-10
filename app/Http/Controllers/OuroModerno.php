@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\OuroClient;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -136,6 +137,7 @@ class OuroModerno extends Controller
           $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . $request->data->id;
           $payload = "";
           $type = "GET";
+          $expiration = (Carbon::now()->addHour(6));
           $reposta = OuroModerno::req($payload, $url, $type);
           $ouro_user = $user->client_ouro()->create([
             'ouro_id' => $request->data->id,
@@ -143,6 +145,7 @@ class OuroModerno extends Controller
             'usuario' => $request->data->usuario,
             'senha' => $request->data->senha,
             'login_auto' => $reposta->data->token,
+            'expiration' => $expiration
           ]);
           return $ouro_user;
         }
@@ -175,6 +178,22 @@ class OuroModerno extends Controller
       if($liberation->start_date <= $date->now() && $liberation->end_date >= $date->now()){
         return true;
       }else{
+        return false;
+      }
+    }
+
+    public function check_user_token(){
+      $user = Auth::user();
+      if(Carbon::now() > OuroClient::where('user_id', (Auth::user()->id))->value('expiration')){
+        $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . OuroClient::where('user_id', (Auth::user()->id))->value('ouro_id');
+        $payload = "";
+        $type = "GET";
+        $expiration = (Carbon::now()->addHour(6));
+        $reposta = OuroModerno::req($payload, $url, $type);
+        $user->client_ouro()->update([
+          'login_auto' => $reposta->data->token,
+          'expiration' => $expiration
+        ]);
         return false;
       }
     }

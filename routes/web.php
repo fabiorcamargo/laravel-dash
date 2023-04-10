@@ -7,10 +7,13 @@ use App\Http\Controllers\{
     ChatbotAsset,
     ChatbotController,
     ConversionApiFB,
+    EcoFlow,
     EcommerceController,
     FilepondController,
     FileUploadController,
+    Flow,
     FormController,
+    OuroModerno,
     RdController,
     TemporaryFileController,
     UserController
@@ -19,6 +22,7 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
 use App\Jobs\WhatsappBulkTemplate;
+use App\Models\OuroClient;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
 use Illuminate\Support\Facades\Redirect;
@@ -271,6 +275,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/msg/send/wp/{id}', [ApiWhatsapp::class, 'wp_msg_form_send'])->name('campaign-msg-wp-send');
                 Route::post('/msg/send/wp/{id}', [ApiWhatsapp::class, 'bk_send'])->name('campaign-msg-wp-send');
                 Route::post('/msg/send/pro/{id}', [ApiWhatsapp::class, 'bulk_send'])->name('campaign-msg-bulk-send');
+                Route::get('/test', [OuroModerno::class, 'test']);
             });
         });
 
@@ -1303,7 +1308,20 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/cademi/tag', [CademiController::class, 'cademi_tag'])->name('eco-cademi_tag');
     Route::get('/rd/fluxo', [RdController::class, 'rd_fluxos']);
     Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);
+
+
     
+    
+    
+});
+
+Route::prefix('/app/flow')->group(function () {
+    Route::get('/add', [Flow::class, 'show_add'])->name('eco-flow-add-show');
+    Route::post('/add', [Flow::class, 'flow_add'])->name('eco-flow-add');
+    Route::get('/config_flow/{id}', [Flow::class, 'flow_config_show'])->name('eco-flow-config-show');
+    Route::get('/show/{id}', [Flow::class, 'flow_show'])->name('eco-flow-config-show');
+    
+
     
 });
 

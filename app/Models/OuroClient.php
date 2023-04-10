@@ -18,6 +18,7 @@ class OuroClient extends Model
         'usuario',
         'senha',
         'login_auto',
+        'expiration'
     ];
 
     public function matricula_ouro(): HasMany

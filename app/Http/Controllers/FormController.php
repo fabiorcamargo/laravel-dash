@@ -170,8 +170,6 @@ class FormController extends Controller
 
         $liberations = FormCampaignCode::all();
         $code = $request[1] . $request[2] . $request[3] . $request[4];
-        //dd($code);
-        $user = Auth::user();
 
         foreach($liberations as $liberation){
             //dd($liberation->liberation);

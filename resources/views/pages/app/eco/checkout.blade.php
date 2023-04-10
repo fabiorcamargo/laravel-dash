@@ -92,6 +92,7 @@
             };
         
             </script>
+            <x-fb-microdata object={!!$product!!}/>
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -158,7 +159,7 @@
                                                         
                                                         <div class="col-md-6">
                                                             <h5 class="pb-4">Para prosseguir insira as informações abaixo:</h5>
-                                                            {{--<label for="defaultEmailAddress">Nome Completo</label>--}}
+                                                            <label for="defaultEmailAddress">Nome Completo</label>
                                                             <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
                                                             <div class="valid-feedback feedback-pos">
                                                                 Celular válido!
@@ -168,7 +169,7 @@
                                                             </div>
                                                 
                                                             <div class="form-group">
-                                                            {{--<label for="defaultEmailAddress">Telefone com Whatsapp</label>--}}
+                                                            <label for="defaultEmailAddress">Telefone com Whatsapp</label>
                                                             <input type="text" class="ph-number form-control mb-4" placeholder="Digite apenas os números" name="cellphone" id="cellphone"  autocomplete="on" required >
                                                             <div class="valid-feedback feedback-pos">
                                                                 Celular válido!
@@ -179,7 +180,7 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                {{--<label for="email">Email</label>--}}
+                                                                <label for="email">Email</label>
                                                                 <input type="email" name="email" placeholder="Para receber acesso ao portal" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
                                                                         <div class="valid-feedback feedback-pos">
                                                                             Email Válido!
@@ -327,6 +328,32 @@
             });
             }, false);
         </script>
+
+        <script>
+            fbq("track", "AddToWishlist",
+            {
+                "event_name": "AddToWishlist",
+                "event_time": "{{ time() }}",
+                "action_source": "website",
+                "event_source_url": "{{ url()->current() }}",
+                "eventID": "{{ Cookie::get('fbid') }}",
+                "user_data": {
+                    "client_ip_address": "{{$_SERVER['REMOTE_ADDR']}}",
+                    "client_user_agent": "{{$_SERVER['HTTP_USER_AGENT']}}"
+                    @isset($_COOKIE['_fbp'])
+                    ,"fbp": "{{$_COOKIE['_fbp']}}",
+                    "fbc": "{{$_COOKIE['_fbp']}}.{{ Cookie::get('fbid') }}"
+                    @endisset
+                },
+                "custom_data": {
+                    "content_ids": "product_{{$product->id}}",
+                    "content_category": "{{json_decode($product->tag)[0]->value}}",
+                    "content_name": "{{$product->name}}"
+                }
+            }
+            )
+        </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
+<x-fb-event event="AddToWishlist" object={!!$product!!}/>

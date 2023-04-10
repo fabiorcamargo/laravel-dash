@@ -498,6 +498,15 @@ class UserController extends Controller
         //$event->Lead();
 
         //dd(Auth::user()->courses);
+        
+        if(Auth::user()->client_ouro->first()){
+            //dd('s');
+            $ouro = new OuroModerno;
+            $ouro->check_user_token();
+        }else{
+            //dd('n');
+        }
+
         if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2){
             $card = "resources/images/GRATUITO-AUX.jpg";
             return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
