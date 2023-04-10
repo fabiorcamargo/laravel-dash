@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('ouro_clients', function (Blueprint $table) {
-            $table->dateTime('expiration');
+            $table->dateTime('expiration')->nullable();
         });
     }
 
