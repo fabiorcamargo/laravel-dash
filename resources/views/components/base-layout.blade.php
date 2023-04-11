@@ -33,7 +33,7 @@
     @endif
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{env('GOOGLE_TAG_ANALYTICS_ID')}}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id="{{env('GOOGLE_TAG_ANALYTICS_ID')}}></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
