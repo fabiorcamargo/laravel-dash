@@ -19,7 +19,7 @@ class Flow extends Controller
             $steps[$i] = array("name" => "Etapa $i", "order" => "$i");
         }
         $json = (json_encode($steps));
-        dd(json_decode($json,true)[1]);
+        //dd(json_decode($json,true)[1]);
 
         $flow = ModelsFlow::create([
             'name' => $request->name,
