@@ -157,7 +157,7 @@ class RdController extends Controller
     }
 
     public function rd_update_opportunity($user, $product){
-
+/*
       $flow = RdCrmFlow::where("name", $product->flow)->first();
       $opportunity = RdCrmOportunity::where(["user_id" => $user->id, "product" => $product->id])->first();
       $body = json_decode($opportunity->body);
@@ -188,7 +188,7 @@ class RdController extends Controller
           $user->rd()->update([
               'product' => $product->id,
               'body' => $json
-          ]);
+          ]);*/
       //dd(json_decode($response->getBody()));
   }
 
