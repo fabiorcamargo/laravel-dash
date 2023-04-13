@@ -19,7 +19,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    <meta name="facebook-domain-verification" content="ba30vae8y5ydyhox0nuqbo6swan5ci" />
+    
     <title>{{ $pageTitle }}</title>
     <link rel="icon" type="image/x-icon" href="{{Vite::asset('resources/images/favicon.ico')}}"/>
     @vite(['resources/scss/layouts/vertical-light-menu/light/loader.scss'])
