@@ -391,8 +391,8 @@ class EcommerceController extends Controller
 
             $status = $cobranca->status; 
 
-            $rd = new RdController;
-            $rd->rd_update_opportunity($user, $product);
+           // $rd = new RdController;
+           // $rd->rd_update_opportunity($user, $product);
 
             if ($cobranca->status == "PENDING"){
                 //dd($cobranca);
