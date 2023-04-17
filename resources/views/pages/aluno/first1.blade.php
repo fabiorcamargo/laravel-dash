@@ -8,8 +8,7 @@
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
         <link rel="stylesheet" href="{{asset('plugins/stepper/bsStepper.min.css')}}">
-        @vite(['resources/scss/light/plugins/stepper/custom-bsStepper.scss'])
-        @vite(['resources/scss/dark/plugins/stepper/custom-bsStepper.scss'])
+
         
         @vite(['resources/scss/light/assets/pages/knowledge_base.scss'])
         @vite(['resources/scss/dark/assets/pages/knowledge_base.scss'])
@@ -231,9 +230,11 @@
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
 
+        @vite(['resources/assets/js/pages/knowledge-base.js'])
+
         <script src="{{asset('plugins/stepper/bsStepper.min.js')}}"></script>
         <script src="{{asset('plugins/stepper/custom-bsStepper.min.js')}}"></script>
-        @vite(['resources/assets/js/pages/knowledge-base.js'])
+
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
    
