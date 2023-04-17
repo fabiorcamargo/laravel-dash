@@ -1,4 +1,4 @@
-<x-base-layout :scrollspy="true">
+<x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
         {{$title}} 
@@ -21,7 +21,7 @@
     <!-- END GLOBAL MANDATORY STYLES -->
 
     <x-slot:scrollspyConfig>
-        data-bs-spy="scroll" data-bs-target="" data-bs-offset="100"
+        data-bs-spy="scroll" data-bs-target="" data-bs-offset="100" 
     </x-slot>
     
 
@@ -230,13 +230,15 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
+        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
 
         <script src="{{asset('plugins/stepper/bsStepper.min.js')}}"></script>
         <script src="{{asset('plugins/stepper/custom-bsStepper.min.js')}}"></script>
 
-        @vite(['resources/assets/js/pages/knowledge-base.js'])
-        <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
+        
+
+        
    
         
 
