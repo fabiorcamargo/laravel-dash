@@ -387,7 +387,7 @@
                     </div>
                 </div>
             </div>
-            @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
+            @if ((Auth::user()->role) == 8)
             <div class="user-profile mt-4">
                 <div class="widget-content widget-content-area">
 
