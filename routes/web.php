@@ -246,6 +246,16 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/reset', function () {
                     return view('pages.app.user.reset', ['title' => 'Profissionaliza EAD | Reset de Senha', 'breadcrumb' => 'Reset de Senha', 'avatar' => "Auth::user()->id"]);
                 })->name('user-reset');
+
+                Route::get('/ouro/show/{id}', [OuroModerno::class, 'bulk_user_show'])->name('user-ouro-show');
+                Route::get('/ouro/create', [OuroModerno::class, 'bulk_user_create_show'])->name('user-ouro-create-show');
+                Route::post('/ouro/create', [OuroModerno::class, 'bulk_user_create'])->name('user-ouro-create');
+
+                Route::post('/ouro/course/liberation/{id}', [OuroModerno::class, 'ouro_create_liberation'])->name('ouro-create-liberation');
+
+                Route::post('/ouro/send', [OuroModerno::class, 'bulk_user_send'])->name('user-ouro-create');
+                Route::get('/ouro/get/courses', [OuroModerno::class, 'get_courses_list'])->name('user-ouro-get-courses');
+
             });
 
             Route::prefix('/group')->group(function () {
@@ -260,7 +270,6 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                
             });
             Route::prefix('campaign')->group(function () {
-
                 Route::post('/add', [FormController::class, 'create'])->name('campaign-add');
                 Route::get('/add_course', [FormController::class, 'add_show_course_create'])->name('campaign-add-course');
                 Route::post('/add_course', [FormController::class, 'add_course_create'])->name('campaign-add-course');

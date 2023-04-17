@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\OuroBulk;
 use App\Models\OuroClient;
+use App\Models\OuroList;
 use App\Models\User;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -10,6 +12,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
 use stdClass;
 
 class OuroModerno extends Controller
@@ -196,6 +199,69 @@ class OuroModerno extends Controller
         ]);
         return false;
       }
+    }
+
+    public function bulk_user_create_show(){
+      return view('pages.app.user.lote_ouro', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início']);
+}
+
+    public function bulk_user_create(Request $request){
+            $file = $request->file;
+            $name = $file->getClientOriginalName();
+            $path = ($file->getPath());
+            $ouros = Excel::toCollection(new OuroBulk, $file);
+            foreach($ouros[0] as &$ouro){
+            //dd($ouro['username']);
+            if(User::where('username', $ouro['username'])->first()){
+              $ouro['exist'] = true;
+            }else{
+              $ouro['exist'] = false;
+            }
+          }
+          $status = "Fluxo criado com sucesso";
+          return back()->with('status', __($status));        
+    }
+    public function bulk_user_ouro($ouro){
+
+    }
+
+    public function bulk_user_show($id){
+
+      $user = User::find($id);
+      //dd($user);
+      $client_ouro = (User::find($id)->client_ouro()->first());
+      $course_ouro = ($client_ouro->matricula_ouro()->get());
+      return view('pages.app.user.list_ouro', ['title' => 'Profissionaliza EAD Ouro - Lista de Cursos', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
+    public function get_courses_list(){
+      $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
+      $ouro = new OuroModerno;
+      $payload ="";
+      $data = "";
+      $courses = ($ouro->req($payload, $url, "GET")->data);
+
+      foreach($courses as $course){
+        if(OuroList::where('course_id', $course->id)->first()){
+        }else{
+          OuroList::create([
+            'course_id' => $course->id,
+            'name' => $course->nome,
+            'modulo' => $course->modulo,
+            'aulas' => $course->aulas,
+            'carga' => $course->carga,
+            'descricao' => $course->descricao
+          ]);
+        }
+      }
+    }
+
+    public function ouro_create_liberation(Request $request, $id){
+       $user = (User::find($id));
+       
+      dd($id);
+       dd($request->ouro_course);
+       
     }
 
 }

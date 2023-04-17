@@ -23,7 +23,7 @@
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text">Home</span></a></li>
             <li class="breadcrumb-item"><a href="#">Aluno</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Lista</li>
+            <li class="breadcrumb-item active" aria-current="page">Lista Cursos Ouro</li>
             </ol>
             </nav>
     </div>
@@ -32,18 +32,18 @@
     
     
     <div class="seperator-header layout-top-spacing">
-        <h4 class="">Lista de Usuários Ativos</h4>
+        <h4 class="">Lista de Cursos</h4>
     </div>
 
 
     
     <div class="row layout-top-spacing">
             
-        <form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="post" role="search" >
+        {{--<form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="post" role="search" >
             @csrf
             <input type="text" placeholder="Pesquisar..." name="search" class="form-control" aria-label="Text input with dropdown button">
             <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
-        </form>
+        </form>--}}
 
         <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
             <div class="statbox widget box box-shadow">
@@ -71,7 +71,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            {{--@foreach ($users as $user)
                             <tr>
                                 <td>{{ $user->username }} 
                                     @if($user->first == 2)
@@ -107,7 +107,7 @@
                                             <a href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                             </a>
-                                            <a href="{{ getRouterValue(); }}/app/user/ouro/show/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ouro">
+                                            <a href="{{ getRouterValue(); }}/app/user/ouro/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ouro">
                                                 <x-widgets._w-svg svg="apps-filled"/> 
                                             </a>
                                             <a href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}/edit" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Editar">
@@ -119,14 +119,14 @@
                                         </div>
                                 </td>
                             </tr>
-                            @endforeach
+                            @endforeach--}}
                             
                         </tbody>
                     </table>
                     
                     <div class="row">
                         <div class="col-md-12">
-                            {{ $users->appends($_POST)->links('pagination::bootstrap-5') }}
+                            {{-- $users->appends($_POST)->links('pagination::bootstrap-5') --}}
 
                         </div>
                     </div>

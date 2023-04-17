@@ -56,6 +56,41 @@
                         <img src="{{ asset($user->image) }}" alt="avatar">
                         <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
                         @if ((Auth::user()->role) >= 4)
+                        <div id="OuroModal" class="modal animated fadeInDown" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <form action="{{ route('ouro-create-liberation', $user->id) }}" method="POST" id="delete_form" class="py-12">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Liberação Ouro Moderno</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                        </div>
+
+                    
+                                        <div class="modal-body">
+                                            <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                <label for="course">Cursos Ouro Moderno</label>
+                                                <select name="ouro_course" id="ouro_course" class="form-control" required>
+                                                    <option value="">Selecione o Curso</option>
+                                                    @foreach ($ouro_lists as $ouro_list)
+                                                       <option value="{{ $ouro_list->course_id }}">{{ $ouro_list->course_id }} | {{ $ouro_list->name }} | {{ $ouro_list->modulo }} Mod | {{ $ouro_list->aulas }} Aulas | {{ $ouro_list->carga }}hs</option>
+                                                    @endforeach
+                                                </select>
+                                                </div>
+                                            
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('delete_form').submit();" class="btn btn-success">Liberar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
                         <div id="bloquearModal" class="modal animated fadeInDown" role="dialog">
                             <div class="modal-dialog">
                                 <!-- Modal content-->
@@ -352,6 +387,84 @@
                     </div>
                 </div>
             </div>
+            @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
+            <div class="user-profile mt-4">
+                <div class="widget-content widget-content-area">
+
+                    <div class="d-flex justify-content-between">
+                        <h3 class="md-2">Cursos Ouro Moderno</h3>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button data-bs-toggle="modal" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
+                            <x-widgets._w-svg svg="apps-filled"/>
+                            </button>
+                        </div>
+                        
+                    </div>
+                    @if($client_ouro)
+                    <div id="toggleAccordion" class="accordion mt-4">
+                        @foreach ($course_ouro as $course)
+                            <div class="card">
+                                <div class="card-header" id="...">
+                                    <section class="mb-0 mt-0">
+                                        <div role="menu" class="collapsed" data-bs-toggle="collapse" data-bs-target="#defaultAccordion{{ $course['row'] }}" aria-expanded="false" aria-controls="defaultAccordion{{ $course['row'] }}">
+                                            <p class="text-success"> {{ $course['ouro_course_id'] }}   |  {{ $course['name'] }} </p>  <div class="icons"><svg> ... </svg></div>
+                                        </div>
+                                    </section>
+                                </div>
+                                {{--}}
+                                        <div id="defaultAccordion{{ $course['row'] }}" class="collapse" aria-labelledby="..." data-bs-parent="#toggleAccordion">
+                                            <div class="card-body">
+                                            
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>{{ $course['name'] }}</td>
+                                                                <td>                                                    
+                                                                    <div class="progress br-30">
+                                                                        <div class="progress-bar br-30 bg-secondary" role="progressbar" style="width: {{ $course['perc'] }}" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                                    </div>
+                                                                </td>
+                                                                <td><p class="text-secondary">{{ $course['perc'] }}</p></td>
+                                                               
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Aula</th>
+                                                                <th>Finalizada em</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @isset($course['aula'])
+                                                               @foreach ($course['aula'] as $aula)
+                                                                <tr>
+                                                                    <td>{{$aula['nome']}}</td>
+                                                                    <td><p class="text-secondary">{{$aula['data']}}</p></td>
+                                                                </tr>
+                                                                @endforeach
+                                                            @endisset
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>    --}}
+                                
+                            </div>
+                                
+                            
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </div>
+            @endif
+            
             @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
             <div class="summary layout-spacing pt-5">
                 <div class="widget-content widget-content-area">

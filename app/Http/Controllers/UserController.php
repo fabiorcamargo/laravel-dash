@@ -12,6 +12,7 @@ use App\Models\City;
 use App\Models\EcoSallerType;
 use App\Models\EcoSeller;
 use App\Models\OuroClient;
+use App\Models\OuroList;
 use App\Models\Role;
 use App\Models\State;
 use App\Models\TemporaryFile;
@@ -641,12 +642,12 @@ class UserController extends Controller
             if(Auth::user()->id != $id){
                 return back();
             }
-
         }
         //dd("ok");
         $user = User::find($id);
 
         $cademi = Cademi::where('user_id', $user->id)->first();
+    
         $i = 0;
         $n = 0;
         if(!empty($cademi)){
@@ -724,10 +725,24 @@ class UserController extends Controller
     }
         $seller_types = EcoSallerType::all();
 
+
+        if($user->client_ouro()->first()){
+            $client_ouro = $user->client_ouro()->first();
+            $course_ouro = ($client_ouro->matricula_ouro()->get());
+
+            //dd($course_ouro);
+        }else{
+            $client_ouro = "";
+            $course_ouro = "";
+        }
+
+        $ouro_lists = OuroList::all();
+        //dd($courses_ouro_list);
+
            if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_lists'));
         } else {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_lists'));
         }
            
        
@@ -826,6 +841,8 @@ class UserController extends Controller
         //dd($user);
         //dd($cademi);
         //dd($courses);
+
+
 
         return view('pages.app.user.listcourses', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
 
