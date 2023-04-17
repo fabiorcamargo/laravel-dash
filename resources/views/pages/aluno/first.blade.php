@@ -233,8 +233,9 @@
 
         <script src="{{asset('plugins/stepper/bsStepper.min.js')}}"></script>
         <script src="{{asset('plugins/stepper/custom-bsStepper.min.js')}}"></script>
+
         @vite(['resources/assets/js/pages/knowledge-base.js'])
-        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
         <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
    
         
