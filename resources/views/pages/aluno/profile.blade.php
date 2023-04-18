@@ -7,13 +7,18 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
-        
+        <link rel="stylesheet" type="text/css" href="{{asset('plugins/tagify/tagify.css')}}">
+        @vite(['resources/scss/light/plugins/tagify/custom-tagify.scss'])
+        @vite(['resources/scss/dark/plugins/tagify/custom-tagify.scss'])
+
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/users/user-profile.scss'])
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/users/user-profile.scss'])
         @vite(['resources/scss/light/plugins/clipboard/custom-clipboard.scss'])
         @vite(['resources/scss/dark/plugins/clipboard/custom-clipboard.scss'])
+
+        
 
         @vite(['resources/scss/dark/assets/components/modal.scss'])
 
@@ -38,6 +43,12 @@
     <!-- /BREADCRUMB -->
 
     <div class="row layout-spacing ">
+        <!-- Session Status -->
+    <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+
         @if (session('sucess'))
             <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4 mt-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> Usuário atualizado com sucesso! </div>
         @endif
@@ -60,7 +71,7 @@
                             <div class="modal-dialog">
                                 <!-- Modal content-->
                                 <div class="modal-content">
-                                    <form action="{{ route('ouro-create-liberation', $user->id) }}" method="POST" id="delete_form" class="py-12">
+                                    <form action="{{ route('ouro-create-liberation', $user->id) }}" method="POST" id="liberation_form" class="py-12">
                                         @csrf
                                         <div class="modal-header">
                                             <h5 class="modal-title">Liberação Ouro Moderno</h5>
@@ -72,19 +83,55 @@
                     
                                         <div class="modal-body">
                                             <div class="col-xxl-12 col-md-12 mb-4 mt-4">
-                                                <label for="course">Cursos Ouro Moderno</label>
-                                                <select name="ouro_course" id="ouro_course" class="form-control" required>
-                                                    <option value="">Selecione o Curso</option>
-                                                    @foreach ($ouro_lists as $ouro_list)
-                                                       <option value="{{ $ouro_list->course_id }}">{{ $ouro_list->course_id }} | {{ $ouro_list->name }} | {{ $ouro_list->modulo }} Mod | {{ $ouro_list->aulas }} Aulas | {{ $ouro_list->carga }}hs</option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                    <label for="users-list-tags mt-4">Liberação de Combos</label>
+                                                    <input name='users-list-tags'>
                                                 </div>
-                                            
+                                            </div>
+                                            <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                    <label for="course_list mt-4">Liberação de Cursos</label>
+                                                    <input name='course_list'>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="modal-footer">
                                             {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
-                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('delete_form').submit();" class="btn btn-success">Liberar</button>
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('liberation_form').submit();" class="btn btn-success">Liberar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="OuroComboModal" class="modal animated fadeInDown" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <form action="{{ route('user-ouro-combo-create') }}" method="POST" id="combo_create" class="py-12">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Liberação Ouro Moderno</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                        </div>
+
+                    
+                                        <div class="modal-body">
+                                            <div class="col-xxl-12 col-md-12 mb-4">
+                                                <h5 for="combo_name">Nome do Combo</h5>
+                                                <input type="text" class="form-control inative" id="combo_name" name="combo_name" value="">
+                                            </div>
+                                            <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                <label for="course_list mt-4">Lista de Cursos</label>
+                                                <input name='course_list'>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="modal-footer">
+                                            {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('combo_create').submit();" class="btn btn-success">Liberar</button>
                                         </div>
                                     </form>
                                 </div>
@@ -394,9 +441,12 @@
                     <div class="d-flex justify-content-between">
                         <h3 class="md-2">Cursos Ouro Moderno</h3>
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button data-bs-toggle="modal" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
+                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
                             <x-widgets._w-svg svg="apps-filled"/>
-                            </button>
+                            </a>
+                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroComboModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Criar Combo">
+                                <x-widgets._w-svg svg="text-plus"/>
+                            </a>
                         </div>
                         
                     </div>
@@ -770,6 +820,165 @@
     <x-slot:footerFiles>
         <script src="{{asset('plugins/clipboard/clipboard.min.js')}}"></script>
         <script type="module" src="{{asset('plugins/clipboard/custom-clipboard.min.js')}}"></script>
+
+        <script src="{{asset('plugins/tagify/tagify.min.js')}}"></script>
+
+
+
+        <script>
+                        /**
+            * 
+            * Users List
+            *  
+            **/ 
+
+
+            // https://www.mockaroo.com/
+
+
+            var inputElm = document.querySelector('input[name=course_list]');
+
+            function tagTemplate(tagData){
+            return `
+            <tag title="${tagData.info}"
+            contenteditable='false'
+            spellcheck='false'
+            tabIndex="-1"
+            class="tagify__tag ${tagData.class ? tagData.class : ""}"
+            ${this.getAttributes(tagData)}>
+            <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+            <div>
+            <div class='tagify__tag__avatar-wrap'>
+                <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+            </div>
+            <span class='tagify__tag-text'>${tagData.name}</span>
+            </div>
+            </tag>
+            `
+            }
+            
+
+            function suggestionItemTemplate(tagData){
+            return `
+            <div ${this.getAttributes(tagData)}
+            class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+            tabindex="0"
+            role="option">
+            ${ tagData.avatar ? `
+            <div class='tagify__dropdown__item__avatar-wrap'>
+            <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+            </div>` : ''
+            }
+            <strong>${tagData.name}</strong>
+            <span>${tagData.info}</span>
+            </div>
+            `
+            }
+
+            // initialize Tagify on the above input node reference
+            var usrList = new Tagify(inputElm, {
+            tagTextProp: 'name', // very important since a custom template is used with this property as text
+            enforceWhitelist: true,
+            skipInvalid: true, // do not remporarily add invalid tags
+            dropdown: {
+            closeOnSelect: false,
+            enabled: 0,
+            classname: 'users-list',
+            searchKeys: ['value', 'name', 'info']  // very important to set by which keys to search for suggesttions when typing
+            },
+            templates: {
+            tag: tagTemplate,
+            dropdownItem: suggestionItemTemplate
+            },
+            whitelist: [
+                @foreach ($ouro_courses as $ouro_course)
+                        {
+                        "value": "{{$ouro_course->course_id}}",
+                        "name": "{{$ouro_course->name}}",
+                        "info": "Id: {{$ouro_course->course_id}} | M: {{$ouro_course->modulo}} | A: {{$ouro_course->aulas}} | hs: {{$ouro_course->carga}}  "
+                        },
+                @endforeach
+            ]
+            })
+
+        </script>
+
+        <script>
+            /**
+        * 
+        * Users List
+        *  
+        **/ 
+
+
+        // https://www.mockaroo.com/
+
+
+        var inputElm = document.querySelector('input[name=users-list-tags]');
+
+function tagTemplate(tagData){
+    return `
+        <tag title="${tagData.email}"
+                contenteditable='false'
+                spellcheck='false'
+                tabIndex="-1"
+                class="tagify__tag ${tagData.class ? tagData.class : ""}"
+                ${this.getAttributes(tagData)}>
+            <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+            <div>
+                <div class='tagify__tag__avatar-wrap'>
+                    <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+                </div>
+                <span class='tagify__tag-text'>${tagData.name}</span>
+            </div>
+        </tag>
+    `
+}
+
+function suggestionItemTemplate(tagData){
+    return `
+        <div ${this.getAttributes(tagData)}
+            class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+            tabindex="0"
+            role="option">
+            ${ tagData.avatar ? `
+            <div class='tagify__dropdown__item__avatar-wrap'>
+                <img onerror="this.style.visibility='hidden'" src="${tagData.avatar}">
+            </div>` : ''
+            }
+            <strong>${tagData.name}</strong>
+            <span>${tagData.email}</span>
+        </div>
+    `
+}
+
+// initialize Tagify on the above input node reference
+var usrList = new Tagify(inputElm, {
+    tagTextProp: 'name', // very important since a custom template is used with this property as text
+    enforceWhitelist: true,
+    skipInvalid: true, // do not remporarily add invalid tags
+    dropdown: {
+        closeOnSelect: false,
+        enabled: 0,
+        classname: 'users-list',
+        searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+    },
+    templates: {
+        tag: tagTemplate,
+        dropdownItem: suggestionItemTemplate
+    },
+    whitelist: [
+        @foreach($ouro_combos as $ouro_combo)
+        {
+            "value": "{{$ouro_combo->id}}",
+            "name": "{{$ouro_combo->name}}",
+            "email": "{{json_encode($ouro_combo->courses)}}"
+        },
+        @endforeach
+    ]
+})
+
+        </script>
         
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->

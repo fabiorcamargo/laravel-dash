@@ -255,6 +255,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                 Route::post('/ouro/send', [OuroModerno::class, 'bulk_user_send'])->name('user-ouro-create');
                 Route::get('/ouro/get/courses', [OuroModerno::class, 'get_courses_list'])->name('user-ouro-get-courses');
+                Route::post('/ouro/combo/create', [OuroModerno::class, 'combo_create'])->name('user-ouro-combo-create');
 
             });
 

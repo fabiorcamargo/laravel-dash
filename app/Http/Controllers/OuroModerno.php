@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\OuroBulk;
 use App\Models\OuroClient;
+use App\Models\OuroCombo;
 use App\Models\OuroList;
 use App\Models\User;
 use Carbon\Carbon;
@@ -262,6 +263,24 @@ class OuroModerno extends Controller
       dd($id);
        dd($request->ouro_course);
        
+    }
+
+    public function combo_create(Request $request){
+      
+      $comb = array();
+      $combo = json_decode($request->combo_list);
+      $i = 0;
+      foreach($combo as $c){
+        $comb[$i] = $c->value;
+        $i++;
+      }
+      OuroCombo::create([
+        'name' => $request->combo_name,
+        'courses' => json_encode($comb)
+      ]);
+
+      $status = "Combo criado com sucesso";
+      return back()->with('status', __($status));   
     }
 
 }

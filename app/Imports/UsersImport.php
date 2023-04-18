@@ -52,7 +52,23 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
 
         $s = count($row);
 
-        $user = User::where('username', $row['username'])->first();
+        if(User::where('username', $row['username'])->first()){
+            $user = User::where('username', $row['username'])->first();
+        }else{
+            $user = User::create([
+            'username' => $row['username'],
+            'email' => $row['email2'],
+            'name' => 'aluno',
+            'lastname' => 'aluno',
+            'password' => 'xp12b1',
+            'role' => 1,
+            'secretary' => "NÃO",
+            'document' => 99999999999,
+            'active' => 0,
+            'image' => 'avatar/default.jpeg'
+            ]);
+        }
+        
         $r = str_replace(" ", "", $row['courses']);
         $courses = explode(",",  $r);
 
