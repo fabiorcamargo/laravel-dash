@@ -85,8 +85,8 @@
                             data-max-file-size="1MB"
                             data-max-files="5"
                             accept="image/*">
-                            </div>
                         </div>
+                    </div>
                         
                     </div>
             </div>

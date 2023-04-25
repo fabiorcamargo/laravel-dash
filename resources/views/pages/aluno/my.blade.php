@@ -26,6 +26,15 @@
         
 
         @vite(['resources/scss/light/assets/elements/infobox.scss', 'resources/scss/dark/assets/elements/infobox.scss'])
+
+        <!-- Basic stylesheet -->
+        <link rel="stylesheet" href={{asset("plugins/owl-carousel/owl.carousel.css")}}>
+        <!-- Default Theme -->
+        <link rel="stylesheet" href={{asset("plugins/owl-carousel/owl.theme.css")}}>
+        <!-- You can use latest version of jQuery  -->
+
+        <!-- Include js plugin -->
+        <script src={{asset("plugins/owl-carousel/owl.carousel.js")}}></script>
        
 
         
@@ -132,7 +141,7 @@
             </div>
      
         @endif
-
+{{--}}
         @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
             @isset($ouro)
                 <div class="row">
@@ -151,16 +160,45 @@
                 <x-widgets._w-card-cademi title="Acesse seu curso" card={{$card}}/>
             </div>
         </div>
+        @endif --}}
+        
+        <div id="owl-demo" class="mt-4">
+
+            @if(!(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto')) || !(Auth::user()->client_ouro()->first()) && !(Auth::user()->client_ouro()->first()->matricula_ouro()->get()))
+                <div class="me-2">
+                    <x-widgets._w-card-cademi title="Acesse seu curso" card="resources/images/em-breve.jpg"/>
+                </div>
+            @endif
+
+            @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto'))
+                <div class="me-2">
+                    <x-widgets._w-card-cademi title="Acesse seu curso" card={{$card}}/>
+                </div>
+            @endif
+            
+            @if(Auth::user()->client_ouro()->first() && $courses = Auth::user()->client_ouro()->first()->matricula_ouro()->get())
+                @foreach ($courses as $course)
+                    <div class="me-2">
+                        <x-widgets._w-card-ouro title="{{$course->name}}" card="{{$course->get_course()->first()->img}}"/>
+                    </div>
+                @endforeach
+            @endif
+            
+        </div>
+
+        @if(Auth::user()->active == 1)
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing mt-4">
+            <x-widgets._w-support title="Suporte"/>
+        </div>
         @endif
+        
 
     </div>
+
+    
         
     
-    @if(Auth::user()->active == 1)
-    <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
-        <x-widgets._w-support title="Suporte"/>
-    </div>
-    @endif
+   
     
     @if (str_contains(url()->previous(), 'form/end'))   
     <p> {{ Cookie::get('fbid1') }} </p>
@@ -174,6 +212,23 @@
         @vite(['resources/assets/js/widgets/modules-widgets.js'])
         <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
         <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
+
+        <script>
+           $(document).ready(function() {
+ 
+            $("#owl-demo").owlCarousel({
+
+                autoPlay: 2000, //Set AutoPlay to 3 seconds
+
+                items : 3,
+                itemsDesktop : [2000,3],
+                itemsDesktopSmall : [1500,3]
+
+            });
+
+            });
+
+        </script>
         @if (str_contains(url()->previous(), 'form/end'))
         <script>
                     fbq("track", "Lead", {

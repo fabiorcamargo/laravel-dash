@@ -82,6 +82,20 @@ class User extends Authenticatable
         return $users;
     }
 
+    public function getUsersBySecretary(string|null $search = null, $secretary = null)
+    {
+        $users = $this->where(function ($query) use ($search, $secretary) {
+            if ($secretary) {
+                $query->where('secretary', $secretary);
+                $query->andWhere('username', $search);
+            }
+
+        })
+        ->paginate();
+
+        return $users;
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);

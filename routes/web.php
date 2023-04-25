@@ -254,14 +254,24 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/ouro/course/liberation/{id}', [OuroModerno::class, 'ouro_create_liberation'])->name('ouro-create-liberation');
 
                 Route::post('/ouro/send', [OuroModerno::class, 'bulk_user_send'])->name('user-ouro-create');
-                Route::get('/ouro/get/courses', [OuroModerno::class, 'get_courses_list'])->name('user-ouro-get-courses');
                 Route::post('/ouro/combo/create', [OuroModerno::class, 'combo_create'])->name('user-ouro-combo-create');
 
+            });
+
+            Route::prefix('/ouro')->group(function () {
+                Route::get('/show', [OuroModerno::class, 'show_list_courses'])->name('ouro-show');
+                Route::post('/img/up/{id}', [OuroModerno::class, 'img_up'])->name('ouro-img-up');
+                Route::delete('/img/rm/{id}', [OuroModerno::class, 'img_rm'])->name('ouro-img-rm');
+                Route::post('/combo/edit/{id}', [OuroModerno::class, 'combo_edit'])->name('user-ouro-combo-edit');
+                Route::delete('/combo/delete/{id}', [OuroModerno::class, 'combo_delete'])->name('user-ouro-combo-delete');
+                Route::get('/get/courses', [OuroModerno::class, 'get_courses_list'])->name('user-ouro-get-courses');
             });
 
             Route::prefix('/group')->group(function () {
                 Route::get('/add', [ChatbotController::class, 'group_add_show'])->name('group-add-show');
                 Route::post('/add', [ChatbotController::class, 'group_add_create'])->name('group-add-create');
+                
+
             });
             Route::prefix('/form')->group(function () {
                 

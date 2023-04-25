@@ -7,6 +7,7 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
+        <link rel="stylesheet" href="{{asset('plugins/table/datatable/datatables.css')}}">
         <link rel="stylesheet" type="text/css" href="{{asset('plugins/tagify/tagify.css')}}">
         @vite(['resources/scss/light/plugins/tagify/custom-tagify.scss'])
         @vite(['resources/scss/dark/plugins/tagify/custom-tagify.scss'])
@@ -84,8 +85,8 @@
                                         <div class="modal-body">
                                             <div class="col-xxl-12 col-md-12 mb-4 mt-4">
                                                 <div class="col-xxl-12 col-md-12 mb-4 mt-4">
-                                                    <label for="users-list-tags mt-4">Liberação de Combos</label>
-                                                    <input name='users-list-tags'>
+                                                    <label for="users_list_tags mt-4">Liberação de Combos</label>
+                                                    <input name='users_list_tags'>
                                                 </div>
                                             </div>
                                             <div class="col-xxl-12 col-md-12 mb-4 mt-4">
@@ -98,40 +99,6 @@
                                         <div class="modal-footer">
                                             {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
                                             <button type="button" href="javascript:void(0);" onClick="document.getElementById('liberation_form').submit();" class="btn btn-success">Liberar</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="OuroComboModal" class="modal animated fadeInDown" role="dialog">
-                            <div class="modal-dialog">
-                                <!-- Modal content-->
-                                <div class="modal-content">
-                                    <form action="{{ route('user-ouro-combo-create') }}" method="POST" id="combo_create" class="py-12">
-                                        @csrf
-                                        <div class="modal-header">
-                                            <h5 class="modal-title">Liberação Ouro Moderno</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                            </button>
-                                        </div>
-
-                    
-                                        <div class="modal-body">
-                                            <div class="col-xxl-12 col-md-12 mb-4">
-                                                <h5 for="combo_name">Nome do Combo</h5>
-                                                <input type="text" class="form-control inative" id="combo_name" name="combo_name" value="">
-                                            </div>
-                                            <div class="col-xxl-12 col-md-12 mb-4 mt-4">
-                                                <label for="course_list mt-4">Lista de Cursos</label>
-                                                <input name='course_list'>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="modal-footer">
-                                            {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
-                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('combo_create').submit();" class="btn btn-success">Liberar</button>
                                         </div>
                                     </form>
                                 </div>
@@ -443,9 +410,6 @@
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
                             <x-widgets._w-svg svg="apps-filled"/>
-                            </a>
-                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroComboModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Criar Combo">
-                                <x-widgets._w-svg svg="text-plus"/>
                             </a>
                         </div>
                         
@@ -815,6 +779,8 @@
             </div>
         </div>
     </div> --}}
+
+    
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
@@ -895,7 +861,7 @@
                         {
                         "value": "{{$ouro_course->course_id}}",
                         "name": "{{$ouro_course->name}}",
-                        "info": "Id: {{$ouro_course->course_id}} | M: {{$ouro_course->modulo}} | A: {{$ouro_course->aulas}} | hs: {{$ouro_course->carga}}  "
+                        "info": "Id: {{$ouro_course->course_id}} | M: {{$ouro_course->modulo}} | A: {{$ouro_course->aulas}} | hs: {{$ouro_course->carga}}"
                         },
                 @endforeach
             ]
@@ -914,7 +880,7 @@
         // https://www.mockaroo.com/
 
 
-        var inputElm = document.querySelector('input[name=users-list-tags]');
+        var inputElm = document.querySelector('input[name=users_list_tags]');
 
 function tagTemplate(tagData){
     return `
@@ -947,7 +913,7 @@ function suggestionItemTemplate(tagData){
             </div>` : ''
             }
             <strong>${tagData.name}</strong>
-            <span>${tagData.email}</span>
+            <span>${tagData.courses}</span>
         </div>
     `
 }
@@ -961,7 +927,7 @@ var usrList = new Tagify(inputElm, {
         closeOnSelect: false,
         enabled: 0,
         classname: 'users-list',
-        searchKeys: ['name', 'email']  // very important to set by which keys to search for suggesttions when typing
+        searchKeys: ['name', 'courses']  // very important to set by which keys to search for suggesttions when typing
     },
     templates: {
         tag: tagTemplate,
@@ -972,7 +938,7 @@ var usrList = new Tagify(inputElm, {
         {
             "value": "{{$ouro_combo->id}}",
             "name": "{{$ouro_combo->name}}",
-            "email": "{{json_encode($ouro_combo->courses)}}"
+            "courses": @json($ouro_combo->courses, JSON_PRETTY_PRINT)
         },
         @endforeach
     ]

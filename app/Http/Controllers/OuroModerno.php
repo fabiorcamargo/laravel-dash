@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
@@ -155,8 +156,71 @@ class OuroModerno extends Controller
         }
     }
 
+    public function criar_aluno($id){
+
+      if(OuroModerno::check_token() == false){
+        $msg = "Por favor insira o código novamente";
+
+        return back()->withErrors(__($msg));
+      }
+      $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
+      $type = "POST";
+      $user = User::find($id);
+      $payload = [
+        'token' => env('OURO_POST_TOKEN'),
+        'nome' => "$user->name $user->lastname",
+        'doc_cpf' => 25798847004,
+        'senha' => '123456',
+        'data_nascimento' => '1986-11-13',
+        'email' => "$user->username@profissionalizaead.com.br",
+        'fone' => '00000000',
+        'doc_rg' => '00000000',
+        'celular' => '000000000',
+        'pais' => 'BR',
+        'uf' => "$user->uf2",
+        'cidade' => "$user->city2",
+        'endereco' => 'rua',
+        'complemento' => 'outro',
+        'bairro' => 'centro',
+        'cep' => '87020035',
+        'login_info' => 'EMAIL',
+        'senha_inicial' => 0
+      ];
+      //dd($payload);
+      $request = OuroModerno::req($payload, $url, $type);
+      if($request->status !== "true" || $request->data->id == 0){
+        $msg = "Erro na requisição: $request->info";
+        //dd($request);
+        return back()->withErrors(__($msg));
+      }else{
+        sleep(1);
+        $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . $request->data->id;
+        $payload = "";
+        $type = "GET";
+        $expiration = (Carbon::now()->addHour(6));
+        $reposta = OuroModerno::req($payload, $url, $type);
+        $ouro_user = $user->client_ouro()->create([
+          'ouro_id' => $request->data->id,
+          'nome' => $request->data->nome,
+          'usuario' => $request->data->usuario,
+          'senha' => $request->data->senha,
+          'login_auto' => $reposta->data->token,
+          'expiration' => $expiration
+        ]);
+        //dd($request);
+        return $ouro_user;
+      }
+  }
+
     public function criar_matricula($liberation, $ouro){
           //dd($liberation);
+
+          if(OuroModerno::check_token() == false){
+            $msg = "Por favor insira o código novamente";
+    
+            return back()->withErrors(__($msg));
+          }
+
           $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/matricula/$ouro->ouro_id";
           $payload = [
             'token' => env('OURO_POST_TOKEN'),
@@ -164,13 +228,18 @@ class OuroModerno extends Controller
           ];
           $type = "POST";
           $request = OuroModerno::req($payload, $url, $type);
-          $response = $ouro->matricula_ouro()->create([
-            'ouro_id' => $ouro->ouro_id,
-            'ouro_course_id' => $request->data->id,
-            'code' => $liberation->course_code,
-            'name' => $liberation->course_name,
-            'data_fim' => $request->data->data_fim,
-          ]);
+          $libs = (explode(",", $liberation->course_code));
+
+          foreach($libs as $lib){
+            $course = (OuroList::where('course_id', $lib)->first());
+            $ouro->matricula_ouro()->create([
+              'ouro_id' => $ouro->ouro_id,
+              'ouro_course_id' => $course->course_id,
+              'code' => $request->data->id,
+              'name' => $course->name,
+              'data_fim' => $request->data->data_fim,
+            ]);
+          }
 
           $msg = "Curso liberado com sucesso acompanhe a data de finalização para não perder o prazo!";
           return $msg;
@@ -194,6 +263,7 @@ class OuroModerno extends Controller
         $type = "GET";
         $expiration = (Carbon::now()->addHour(6));
         $reposta = OuroModerno::req($payload, $url, $type);
+        //dd($reposta);
         $user->client_ouro()->update([
           'login_auto' => $reposta->data->token,
           'expiration' => $expiration
@@ -236,6 +306,7 @@ class OuroModerno extends Controller
     }
 
     public function get_courses_list(){
+      
       $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
       $ouro = new OuroModerno;
       $payload ="";
@@ -255,18 +326,95 @@ class OuroModerno extends Controller
           ]);
         }
       }
+      $status = "Lista atualizada com sucesso!";
+      return back()->with('status', __($status));
     }
 
     public function ouro_create_liberation(Request $request, $id){
-       $user = (User::find($id));
        
-      dd($id);
-       dd($request->ouro_course);
+      $user = (User::find($id));
+
+      if($request->users_list_tags && $request->course_list){
+        $combos = collect(json_decode($request->users_list_tags));
+        $cb = (($combos->implode('courses', ',')));
+        $de = array('[','"',"]");
+        $para = array('','','');
+        $cb = (str_replace($de, $para, $cb));
+
+        $courses = collect(json_decode($request->course_list));
+        $cs = json_encode((explode(",", $courses->implode('value', ','))));
+        $de = array('[','"',"]");
+        $para = array('','','');
+        $cs = (str_replace($de, $para, $cs));
+
+        $data = ($cb . "," . $cs);
+        $liberation = (object)['course_code' => $data, 'course_name' => $combos->implode('name', ', ') . ", " . $courses->implode('name', ', ')];
+
+        //dd($liberation->course_code);
+      } else if($request->users_list_tags){
+        $combos = collect(json_decode($request->users_list_tags));
+        $cb = (($combos->implode('courses', ',')));
+        $de = array('[','"',"]");
+        $para = array('','','');
+        $cb = (str_replace($de, $para, $cb));
+        $liberation = (object)['course_code' => $cb, 'course_name' => $combos->implode('name', ', ')];
+
+        //dd($liberation);
+      } else if($request->course_list){
+        $courses = collect(json_decode($request->course_list));
+        $cs = json_encode((explode(",", $courses->implode('value', ','))));
+        $de = array('[','"',"]");
+        $para = array('','','');
+        $cs = (str_replace($de, $para, $cs));
+        $liberation = (object)['course_code' => $cs, 'course_name' => $courses->implode('name', ', ')];
+
+        //dd($liberation);
+      }
+      
+      
+      
+      /*$data = ($cs . $cb);
+
+      $de = array('[','"',"]");
+      $para = array('','','');
+      $data = (str_replace($de, $para, $data));
+
+      $liberation = ['course_code' => $data, 'name' => $combos->implode('name', ', ')];
+      dd($liberation);*/
+
+      if(!$user->client_ouro()->first()){
+        $aluno = OuroModerno::criar_aluno($id);
+      }else{
+        $aluno = $user->client_ouro()->first();
+      }
+
+      //$aluno = $user->client_ouro()->delete();
+      //$aluno->matricula_ouro->first()->delete();
+
+      //dd($aluno);
+
+      OuroModerno::criar_matricula($liberation, $aluno);
+
+      $status = "Cursos Liberados com Sucesso";
+      return back()->with('status', __($status)); 
+
+
        
     }
 
     public function combo_create(Request $request){
-      
+      //dd($request->all());
+
+      foreach($request->all() as $key => $r){
+        if($r == null){
+          $error = "Campo $key está vazio!!!";
+          return back()
+          ->withErrors([$key => __($error)]);
+        }
+      }
+
+      dd('n');
+
       $comb = array();
       $combo = json_decode($request->combo_list);
       $i = 0;
@@ -276,11 +424,71 @@ class OuroModerno extends Controller
       }
       OuroCombo::create([
         'name' => $request->combo_name,
-        'courses' => json_encode($comb)
+        'courses' => json_encode($comb),
+        'days' => $request->combo_days
       ]);
 
       $status = "Combo criado com sucesso";
       return back()->with('status', __($status));   
+    }
+
+    public function combo_edit(Request $request, $id){
+      foreach($request->all() as $key=>$r){
+        //dd($key);
+        if(str_contains($key, "course_list")){
+          $course_list = $r;
+        }
+      }
+      $comb = array();
+      $combo = json_decode($course_list);
+      $i = 0;
+      foreach($combo as $c){
+        $comb[$i] = $c->value;
+        $i++;
+      }
+      $ouro = OuroCombo::find($id);
+      $ouro->name = $request->combo_name;
+      $ouro->courses = json_encode($comb);
+      $ouro->days = (int)$request->combo_days;
+      $ouro->update();
+      
+      $status = "Combo atualizado com sucesso";
+      return back()->with('status', __($status));   
+    }
+
+    public function combo_delete(Request $request, $id){
+      $ouro = OuroCombo::find($id);
+      $ouro->delete();
+      
+      $status = "Combo excluído com sucesso";
+      return back()->with('status', __($status));   
+    }
+
+    public function show_list_courses (){
+      $products = OuroList::all();
+      $combos = OuroCombo::all();
+
+      return view('pages.app.ouro.list', ['title' => 'Ouro | Profissionaliza EAD', 'breadcrumb' => 'Lista Cursos Ouro'], compact('products', 'combos'));
+    }
+
+    public function img_up(Request $request, $id){
+
+      $product = OuroList::find($id);
+                    if($request->hasFile('image')){
+                        $image = $request->file('image');
+                        $file_name = $image->getClientOriginalName();
+  
+                        $image->storePubliclyAs("/ouro/$product->id" , $file_name, ['visibility'=>'public', 'disk'=>'product']);
+                            $img = "/product/ouro/$product->id" . '/' .$file_name;
+                            $product->img = $img;
+                            $product->save();
+                    }
+
+                       return "$img";
+    }
+
+    public function img_rm(Request $request, $id){
+      dd($request->all());
     }
 
 }

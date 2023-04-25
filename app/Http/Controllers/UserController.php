@@ -300,19 +300,28 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        
-        if(str_contains(url()->previous(), "school")){
-            $url = "pages.app.user.listschool";
-        } else {
-            $url = "pages.app.user.list";
+        //dd($request->input());
+        $query  = User::query();
+        if ($request->has('secretary')) {
+            $query->where('secretary', 'LIKE', '%' . $request->secretary . '%');
         }
-        $users = $this->user
-                        ->getUsers(
-                            search: $request->search ?? ''
-                        );
-                        
-                        
-    return view($url, ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+        if ($request->has('search')) {
+            $query->where('username', 'LIKE', '%' . $request->search . '%');
+        }
+
+        
+
+        foreach ($request->input() as $nome => $valor) {
+            if($nome != "_token"){
+                if ($valor) { 
+                    $query->where($nome, 'LIKE', '%' . $valor . '%');
+                }
+            }
+        }
+
+        $users = $query->paginate();
+
+        return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'secretary' => $request->secretary], compact('users'));
 
  }
 
@@ -532,7 +541,7 @@ class UserController extends Controller
                 ->create();
         
         $data = $request->all();
-        dd($data);
+        //dd($data);
         $data['password'] = bcrypt($request->password);
         $de = array('.','-');
         $para = array('','');

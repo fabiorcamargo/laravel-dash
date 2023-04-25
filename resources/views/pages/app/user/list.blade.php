@@ -32,30 +32,128 @@
     
     
     <div class="seperator-header layout-top-spacing">
-        <h4 class="">Lista de Usuários Ativos</h4>
+        {{--<h4 class="">Lista de Usuários Ativos</h4>--}}
     </div>
 
 
     
     <div class="row layout-top-spacing">
             
-        <form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="post" role="search" >
-            @csrf
-            <input type="text" placeholder="Pesquisar..." name="search" class="form-control" aria-label="Text input with dropdown button">
-            <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
-        </form>
+        
 
         <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
+            
             <div class="statbox widget box box-shadow">
+                
                 <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Lista de Alunos</h4>
+                    
+                    <div class="row dt--top-section">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12 mt-2 md-2">
+                        
+                        </div>
+                       
+                        <div class="col-12 col-sm-4 d-flex justify-content-sm-start justify-content-center">
+                            <h3 class="col-12">Lista de Alunos</h3>
+                            
+                        </div>
+                        
+                        <div class="col-12 col-sm-4 d-flex justify-content-sm-start justify-content-center">
+                           
+                        </div>
+                        <div class="col-12 col-sm-4 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3">
+                            
+                            {{--@foreach(app('request')->input() as $key =>$value)
+                                @if($key != "_token")
+                                    {{"&$key=$value"}}
+                                @endif
+                            @endforeach--}}
+
+
+                            <form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="GET" role="search">
+                              
+                                <div class="input-group mb-3 ms-auto">
+                                    <input type="text" class="form-control" name="username" placeholder="Id do Aluno" aria-label="Id do Aluno" aria-describedby="button-addon2">
+                                        <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <x-widgets._w-svg svg="filter"/> 
+                                            </button>
+                                    <div class="dropdown-menu">
+                                        <div class="card">
+                                            <div class="card-header" id="...">
+                                                
+                                                    <div role="menu" class="collapsed" data-bs-toggle="collapse" data-bs-target="#defaultAccordion" aria-expanded="false" aria-controls="defaultAccordion">
+                                                        <div class="input-group mb-3 ms-auto">
+                                                            <input type="text" class="form-control" name="name" placeholder="Nome" aria-label="Nome" aria-describedby="button-addon2">
+                                                            <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                                        </div>
+                                                        <div class="input-group mb-3 ms-auto">
+                                                            <input type="text" class="form-control" name="lastname" placeholder="Sobrenome" aria-label="Sobrenome" aria-describedby="button-addon2">
+                                                            <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                                        </div>
+                                                        <div class="input-group mb-3 ms-auto">
+                                                            <input type="text" class="form-control" name="city" placeholder="Cidade" aria-label="Cidade" aria-describedby="button-addon2">
+                                                            <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                                        </div>
+                                                        <div class="input-group mb-3 ms-auto">
+                                                            <input type="text" class="form-control" name="uf" placeholder="UF" aria-label="UF" aria-describedby="button-addon2">
+                                                            <button type="submit" class="btn btn-primary" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></button>
+                                                        </div>
+                                                    </div>
+                                                
+                                            </div>
+                                        </div>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{Request::url()}}?{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">Limpar</a>
+                                </div>
+                                </div>
+                                    @foreach (app('request')->input() as $key => $filter)
+                                        <input type="text" name="{{$key}}" id="{{$key}}" value="{{$filter}}" hidden>
+                                    @endforeach
+                            </form>
+                        </div>
+                        <div class="col-12 col-sm-12 widget-content widget-content-area">
+                                    <div class="btn-group mb-4 mr-2">
+                                            @if (app('request')->input('secretary') == "")
+                                                <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    Secretaria<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </button>
+                                            @else
+                                                <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    {{app('request')->input('secretary')}}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                                </button>
+                                            @endif
+                                        <div class="dropdown-menu">
+                                            <a href="{{ getRouterValue(); }}/app/user/search?secretary=MGA{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">MGA</a>
+                                            <a href="{{ getRouterValue(); }}/app/user/search?secretary=TB{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">TB</a>
+                                            <a href="{{ getRouterValue(); }}/app/user/search?secretary=UMU{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">UMU</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a href="{{Request::url()}}?{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">Limpar</a>
+                                        </div>
+                                    </div>
+                                    <div class="btn-group mb-4 mr-2">
+                                        @if (app('request')->input('payment') == "")
+                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Pagamento<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </button>
+                                        @else
+                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                {{app('request')->input('payment')}}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                                            </button>
+                                        @endif
+                                    <div class="dropdown-menu">
+                                        <a href="{{ getRouterValue(); }}/app/user/search?payment=CARTÃO @foreach(app('request')->input() as $key =>$value) @if($key != "_token"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">CARTÃO</a>
+                                        <a href="{{ getRouterValue(); }}/app/user/search?payment=BOLETO{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">BOLETO</a>
+                                        <a href="{{ getRouterValue(); }}/app/user/search?payment=PIX{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">PIX</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
+                                    </div>
+                                </div>
+        
                         </div>
                     </div>
                 </div>
                 <div class="widget-content widget-content-area">
-
+                    
                     <div class="table-responsive">
                         <table class="table table-bordered">
                             <thead>
