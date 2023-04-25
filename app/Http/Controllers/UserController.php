@@ -508,20 +508,33 @@ class UserController extends Controller
         if(Auth::user()->client_ouro->first()){
             //dd('s');
             $ouro = new OuroModerno;
-            $ouro->check_user_token();
+            $ouro_status = $ouro->check_user_token();
+            //dd($ouro_status);
+            $msg = "Usuário inválido favor contatar suporte!!!";
         }else{
-            //dd('n');
         }
 
         if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2){
             $card = "resources/images/GRATUITO-AUX.jpg";
-            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+            if($ouro_status == "false"){
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card])->withErrors(__($msg));
+            }else{
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+            }
+            
         }else{  
             $ouro = "resources/images/Curso Liberado.jpg";
-            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card, 'ouro' => $ouro]);    
+            if($ouro_status == "false"){
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card, 'ouro' => $ouro])->withErrors(__($msg));    
+            }else{
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card, 'ouro' => $ouro]);    
+            }
         }
-
-        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+        if($ouro_status == "false"){
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card])->withErrors(__($msg));
+        }else{
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+        }
 
     }
 

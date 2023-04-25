@@ -173,11 +173,11 @@
                             <tr>
                                 <td>{{ $user->username }} 
                                     @if($user->first == 2)
-                                    <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
+                                        <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
                                     @elseif($user->first == 3)
-                                    <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
+                                        <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
                                     @else
-                                    <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
+                                        <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
                                     @endif
                                 </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
@@ -193,11 +193,11 @@
                                 </td>
 
                                 @if ($user->payment == "CARTÃO")
-                                <td class="text-center"><span class="shadow-none badge badge-success">Cartão</span></td>
+                                    <td class="text-center"><span class="shadow-none badge badge-success">Cartão</span></td>
                                 @elseif ($user->payment == "BOLETO")
-                                <td class="text-center"><span class="shadow-none badge badge-primary">Boleto</span></td>
+                                    <td class="text-center"><span class="shadow-none badge badge-primary">Boleto</span></td>
                                 @else
-                                <td class="text-center"><span class="shadow-none badge badge-dark">Vazio</span></td>
+                                    <td class="text-center"><span class="shadow-none badge badge-dark">Vazio</span></td>
                                 @endif
 
                                 <td class="text-center">
