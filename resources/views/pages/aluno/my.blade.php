@@ -164,7 +164,7 @@
         
         <div id="owl-demo" class="mt-4">
 
-            @if(!(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto')) || /*!(Auth::user()->client_ouro()->first()) && !(Auth::user()->client_ouro()->first()->matricula_ouro()->get())*/)
+            @if(!(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto')) /*|| !(Auth::user()->client_ouro()->first()) && !(Auth::user()->client_ouro()->first()->matricula_ouro()->get())*/)
                 <div class="me-2">
                     <x-widgets._w-card-cademi title="Acesse seu curso" card="resources/images/em-breve.jpg"/>
                 </div>
