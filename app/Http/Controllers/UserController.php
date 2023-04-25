@@ -308,22 +308,17 @@ class UserController extends Controller
         if ($request->has('search')) {
             $query->where('username', 'LIKE', '%' . $request->search . '%');
         }
-
-        
-
         foreach ($request->input() as $nome => $valor) {
-            if($nome != "_token"){
+            if($nome != "_token" && $nome != "page"){
                 if ($valor) { 
                     $query->where($nome, 'LIKE', '%' . $valor . '%');
                 }
             }
         }
-
         $users = $query->paginate();
-
+        //dd($users);
         return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'secretary' => $request->secretary], compact('users'));
-
- }
+    }
 
     public function resp(Request $request)
     {

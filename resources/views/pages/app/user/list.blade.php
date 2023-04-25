@@ -224,8 +224,8 @@
                     
                     <div class="row">
                         <div class="col-md-12">
-                            {{ $users->appends($_POST)->links('pagination::bootstrap-5') }}
-
+                            {{ $users->appends($_GET)->links('pagination::bootstrap-5') }}
+                            
                         </div>
                     </div>
                              
