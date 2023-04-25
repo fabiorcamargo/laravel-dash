@@ -426,7 +426,7 @@ class OuroModerno extends Controller
         }
       }
 
-      dd('n');
+      //dd('n');
 
       $comb = array();
       $combo = json_decode($request->combo_list);
