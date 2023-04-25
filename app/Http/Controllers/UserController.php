@@ -512,6 +512,7 @@ class UserController extends Controller
             //dd($ouro_status);
             $msg = "Usuário inválido favor contatar suporte!!!";
         }else{
+            $ouro_status = "true";
         }
 
         if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2){
