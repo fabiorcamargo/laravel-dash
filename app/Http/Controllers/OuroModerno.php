@@ -137,6 +137,7 @@ class OuroModerno extends Controller
         if($request->status !== "true" || $request->data->id == 0){
           $msg = "Não liberado contatar suporte!";
           return back()->withErrors(__($msg));
+          exit();
         }else{
           sleep(1);
           $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . $request->data->id;
@@ -192,6 +193,7 @@ class OuroModerno extends Controller
         $msg = "Erro na requisição: $request->info";
         //dd($request);
         return back()->withErrors(__($msg));
+        exit();
       }else{
         sleep(1);
         $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . $request->data->id;
@@ -219,6 +221,7 @@ class OuroModerno extends Controller
             $msg = "Por favor insira o código novamente";
     
             return back()->withErrors(__($msg));
+            exit();
           }
 
           $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/matricula/$ouro->ouro_id";
@@ -290,7 +293,8 @@ class OuroModerno extends Controller
             }
           }
           $status = "Fluxo criado com sucesso";
-          return back()->with('status', __($status));        
+          return back()->with('status', __($status)); 
+          exit();       
     }
     public function bulk_user_ouro($ouro){
 
@@ -328,6 +332,7 @@ class OuroModerno extends Controller
       }
       $status = "Lista atualizada com sucesso!";
       return back()->with('status', __($status));
+      exit();
     }
 
     public function ouro_create_liberation(Request $request, $id){
@@ -398,7 +403,7 @@ class OuroModerno extends Controller
       $status = "Cursos Liberados com Sucesso";
       return back()->with('status', __($status)); 
 
-
+      exit();
        
     }
 
@@ -410,6 +415,7 @@ class OuroModerno extends Controller
           $error = "Campo $key está vazio!!!";
           return back()
           ->withErrors([$key => __($error)]);
+          exit();
         }
       }
 
@@ -429,7 +435,8 @@ class OuroModerno extends Controller
       ]);
 
       $status = "Combo criado com sucesso";
-      return back()->with('status', __($status));   
+      return back()->with('status', __($status));  
+      exit(); 
     }
 
     public function combo_edit(Request $request, $id){
@@ -453,7 +460,8 @@ class OuroModerno extends Controller
       $ouro->update();
       
       $status = "Combo atualizado com sucesso";
-      return back()->with('status', __($status));   
+      return back()->with('status', __($status));  
+      exit(); 
     }
 
     public function combo_delete(Request $request, $id){
@@ -461,7 +469,8 @@ class OuroModerno extends Controller
       $ouro->delete();
       
       $status = "Combo excluído com sucesso";
-      return back()->with('status', __($status));   
+      return back()->with('status', __($status)); 
+      exit();  
     }
 
     public function show_list_courses (){
