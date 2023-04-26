@@ -147,23 +147,6 @@
                                         <div class="dropdown-divider"></div>
                                         <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
                                     </div>
-                                    <div class="btn-group mb-4 mr-2">
-                                        @if (app('request')->input('payment') == "")
-                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Pagamento<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{app('request')->input('payment')}}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            </button>
-                                        @endif
-                                    <div class="dropdown-menu">
-                                        <a href="{{ getRouterValue(); }}/app/user/search?payment=CARTÃO @foreach(app('request')->input() as $key =>$value) @if($key != "_token"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">CARTÃO</a>
-                                        <a href="{{ getRouterValue(); }}/app/user/search?payment=BOLETO{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">BOLETO</a>
-                                        <a href="{{ getRouterValue(); }}/app/user/search?payment=PIX{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">PIX</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
-                                    </div>
                                 </div>
         
                         </div>
