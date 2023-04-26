@@ -10,6 +10,7 @@ class OuroCombo extends Model
     use HasFactory;
     protected $fillable = [
     'name',
-    'courses'
+    'courses',
+    'days'
 ];
 }

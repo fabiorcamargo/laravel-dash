@@ -425,7 +425,7 @@ class OuroModerno extends Controller
           exit();
         }
       }
-      //dd($request->all());
+      //dd((int)$request->combo_days);
       //dd('n');
 
       $comb = array();
