@@ -425,7 +425,7 @@ class OuroModerno extends Controller
           exit();
         }
       }
-      dd($request->all());
+      //dd($request->all());
       //dd('n');
 
       $comb = array();
