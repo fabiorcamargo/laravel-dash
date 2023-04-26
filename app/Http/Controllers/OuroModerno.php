@@ -415,7 +415,7 @@ class OuroModerno extends Controller
     }
 
     public function combo_create(Request $request){
-      //dd($request->all());
+      
 
       foreach($request->all() as $key => $r){
         if($r == null){
@@ -425,7 +425,7 @@ class OuroModerno extends Controller
           exit();
         }
       }
-
+      dd($request->all());
       //dd('n');
 
       $comb = array();
@@ -439,7 +439,7 @@ class OuroModerno extends Controller
       OuroCombo::create([
         'name' => $request->combo_name,
         'courses' => json_encode($comb),
-        'days' => $request->combo_days
+        'days' => (int)$request->combo_days
       ]);
 
       $status = "Combo criado com sucesso";
