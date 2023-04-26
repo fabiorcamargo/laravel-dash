@@ -429,8 +429,9 @@ class OuroModerno extends Controller
       //dd('n');
 
       $comb = array();
-      $combo = json_decode($request->combo_list);
+      $combo = json_decode($request->course_list);
       $i = 0;
+      //dd($combo);
       foreach($combo as $c){
         $comb[$i] = $c->value;
         $i++;
