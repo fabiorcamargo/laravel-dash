@@ -158,8 +158,8 @@
                         <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th scope="col">Username</th>
-                                <th scope="col">Nome</th>
+                                <th scope="col">Aluno</th>
+                                {{--<th scope="col">Nome</th>--}}
                                 <th scope="col">Email</th>
                                 {{--<th scope="col">Telefone</th>--}}
                                 <th scope="col">Cidade - UF</th>
@@ -192,7 +192,7 @@
                                         </div>
                                     </a>
                                 </td>
-                                <td>{{ $user->name }} {{ $user->lastname }}</td>
+                                {{--<td>{{ $user->name }} {{ $user->lastname }}</td>--}}
                                 <td>{{ $user->email }}</td>
                                 {{--<td>{{ $user->cellphone }}</td>--}}
                                 <td>{{ $user->city }} - {{ $user->uf }}</td>
