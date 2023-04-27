@@ -179,17 +179,17 @@
                                                 <img alt="avatar" src="{{ asset($user->image) }}" class="rounded-circle">
                                             </div>
                                             <div class="media-body align-self-center">
+                                                <p>{{ $user->name }} {{ $user->lastname }}</p>
                                                 {{ $user->username }} 
-                                    @if($user->first == 2)
-                                        <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
-                                    @elseif($user->first == 3)
-                                        <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
-                                    @else
-                                        <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
-                                    @endif
+                                                    @if($user->first == 2)
+                                                        <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
+                                                    @elseif($user->first == 3)
+                                                        <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
+                                                    @else
+                                                        <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
+                                                    @endif
                                             </div>
                                         </div>
-                                    
                                     </a>
                                 </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
