@@ -481,83 +481,83 @@
             </div>
             @endif
             
-            @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
-            <div class="summary layout-spacing pt-5">
-                <div class="widget-content widget-content-area">
-                    <h3 class="">Observações</h3>
-                    <div class="order-summary">
-
-                        <div class="summary-list summary-income">
-                            <p>{!!$user->observation!!}</p>
-                            {{--
-                            <div class="summery-info">
-
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
-                                </div>
-
-                                <div class="w-summary-details">
-
-                                    <div class="w-summary-info">
-                                        <h6>Income <span class="summary-count">$92,600 </span></h6>
-                                        <p class="summary-average">90%</p>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="summary-list summary-profit">
-
-                            <div class="summery-info">
-
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
-                                </div>
-                                
-                                <div class="w-summary-details">
-
-                                    <div class="w-summary-info">
-                                        <h6>Profit <span class="summary-count">$37,515</span></h6>
-                                        <p class="summary-average">65%</p>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="summary-list summary-expenses">
-
-                            <div class="summery-info">
-
-                                <div class="w-icon">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-                                </div>
-                                <div class="w-summary-details">
-
-                                    <div class="w-summary-info">
-                                        <h6>Expenses <span class="summary-count">$55,085</span></h6>
-                                        <p class="summary-average">42%</p>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                        --}}
-
-                    </div>
-                </div>
-            </div>
-            @endif
+            
             
         </div>
+        @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
+        <div class="summary layout-spacing pt-4">
+            <div class="widget-content widget-content-area">
+                <h3 class="">Observações</h3>
+                <div class="order-summary">
 
+                    <div class="summary-list summary-income">
+                        <p>{!!$user->observation!!}</p>
+                        {{--
+                        <div class="summery-info">
+
+                            <div class="w-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-bag"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+                            </div>
+
+                            <div class="w-summary-details">
+
+                                <div class="w-summary-info">
+                                    <h6>Income <span class="summary-count">$92,600 </span></h6>
+                                    <p class="summary-average">90%</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="summary-list summary-profit">
+
+                        <div class="summery-info">
+
+                            <div class="w-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                            </div>
+                            
+                            <div class="w-summary-details">
+
+                                <div class="w-summary-info">
+                                    <h6>Profit <span class="summary-count">$37,515</span></h6>
+                                    <p class="summary-average">65%</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="summary-list summary-expenses">
+
+                        <div class="summery-info">
+
+                            <div class="w-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+                            </div>
+                            <div class="w-summary-details">
+
+                                <div class="w-summary-info">
+                                    <h6>Expenses <span class="summary-count">$55,085</span></h6>
+                                    <p class="summary-average">42%</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    --}}
+
+                </div>
+            </div>
+        </div>
+        @endif
         
         
     </div>
