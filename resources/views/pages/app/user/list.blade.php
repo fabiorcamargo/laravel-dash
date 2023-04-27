@@ -160,11 +160,11 @@
                             <tr>
                                 <th scope="col">Aluno</th>
                                 {{--<th scope="col">Nome</th>--}}
-                                <th scope="col">Email</th>
+                                {{--<th scope="col">Email</th>--}}
                                 {{--<th scope="col">Telefone</th>--}}
                                 <th scope="col">Cidade - UF</th>
                                 {{--<th class="text-center">Image</th>--}}
-                                <th class="text-center">Pagamento</th>
+                                {{--<th class="text-center">Pagamento</th>--}}
                                 <th class="text-center dt-no-sorting">Ação</th>
                             </tr>
                         </thead>
@@ -180,7 +180,8 @@
                                             </div>
                                             <div class="media-body align-self-center">
                                                 <h6 class="mb-0">{{ $user->name }} {{ $user->lastname }}</h6>
-                                                {{ $user->username }} 
+                                                <h6 class="mb-0">{{ $user->username }}</h6>
+                                                <h6 class="mb-0">{{ $user->email }}</h6>
                                                     @if($user->first == 2)
                                                         <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
                                                     @elseif($user->first == 3)
@@ -188,12 +189,19 @@
                                                     @else
                                                         <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
                                                     @endif
+                                                    @if ($user->payment == "CARTÃO")
+                                                        <div class="shadow-none badge badge-success">Cartão</div>
+                                                    @elseif ($user->payment == "BOLETO")
+                                                        <div class="shadow-none badge badge-primary">Boleto</div>
+                                                    @else
+                                                        <div class="shadow-none badge badge-dark">Vazio</div>
+                                                    @endif
                                             </div>
                                         </div>
                                     </a>
                                 </td>
                                 {{--<td>{{ $user->name }} {{ $user->lastname }}</td>--}}
-                                <td>{{ $user->email }}</td>
+                                {{--<td>{{ $user->email }}</td>--}}
                                 {{--<td>{{ $user->cellphone }}</td>--}}
                                 <td>{{ $user->city }} - {{ $user->uf }}</td>
                                 {{--}}
@@ -204,14 +212,14 @@
                                         </div>
                                     </div>
                                 </td>--}}
-
+                                {{--}}
                                 @if ($user->payment == "CARTÃO")
                                     <td class="text-center"><span class="shadow-none badge badge-success">Cartão</span></td>
                                 @elseif ($user->payment == "BOLETO")
                                     <td class="text-center"><span class="shadow-none badge badge-primary">Boleto</span></td>
                                 @else
                                     <td class="text-center"><span class="shadow-none badge badge-dark">Vazio</span></td>
-                                @endif
+                                @endif--}}
 
                                 <td class="text-center">
                                         <div class="action-btns">
