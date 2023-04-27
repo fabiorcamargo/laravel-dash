@@ -163,7 +163,7 @@
                                 <th scope="col">Email</th>
                                 {{--<th scope="col">Telefone</th>--}}
                                 <th scope="col">Cidade - UF</th>
-                                <th class="text-center">Image</th>
+                                {{--<th class="text-center">Image</th>--}}
                                 <th class="text-center">Pagamento</th>
                                 <th class="text-center dt-no-sorting">Ação</th>
                             </tr>
@@ -171,7 +171,15 @@
                         <tbody>
                             @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->username }} 
+                                
+                                <td>
+                                    <a href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
+                                        <div class="media">
+                                            <div class="avatar me-2">
+                                                <img alt="avatar" src="{{ asset($user->image) }}" class="rounded-circle">
+                                            </div>
+                                            <div class="media-body align-self-center">
+                                                {{ $user->username }} 
                                     @if($user->first == 2)
                                         <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
                                     @elseif($user->first == 3)
@@ -179,18 +187,23 @@
                                     @else
                                         <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
                                     @endif
+                                            </div>
+                                        </div>
+                                    
+                                    </a>
                                 </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
                                 <td>{{ $user->email }}</td>
                                 {{--<td>{{ $user->cellphone }}</td>--}}
                                 <td>{{ $user->city }} - {{ $user->uf }}</td>
+                                {{--}}
                                 <td>
                                     <div class="d-flex">
                                         <div class="usr-img-frame mr-2 rounded-circle">
                                             <span><img src="{{ asset($user->image) }}" class="rounded-circle profile-img" alt="avatar"></span>
                                         </div>
                                     </div>
-                                </td>
+                                </td>--}}
 
                                 @if ($user->payment == "CARTÃO")
                                     <td class="text-center"><span class="shadow-none badge badge-success">Cartão</span></td>
