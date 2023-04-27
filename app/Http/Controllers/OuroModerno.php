@@ -231,8 +231,17 @@ class OuroModerno extends Controller
           ];
           $type = "POST";
           $request = OuroModerno::req($payload, $url, $type);
+			
+			if(!isset($request->data->id)){
+            $msg = "Por favor refaça a liberação";
+    
+            return false;
+            exit();	
+          }
+		//dd($request->data->id);
           $libs = (explode(",", $liberation->course_code));
 
+			
           foreach($libs as $lib){
             $course = (OuroList::where('course_id', $lib)->first());
             $ouro->matricula_ouro()->create([
@@ -245,7 +254,7 @@ class OuroModerno extends Controller
           }
 
           $msg = "Curso liberado com sucesso acompanhe a data de finalização para não perder o prazo!";
-          return $msg;
+          return true;
 
     }
 
@@ -405,14 +414,22 @@ class OuroModerno extends Controller
 
       //dd($aluno);
 
-      OuroModerno::criar_matricula($liberation, $aluno);
+      $return = OuroModerno::criar_matricula($liberation, $aluno);
 
+      if($return == true){
       $status = "Cursos Liberados com Sucesso";
       return back()->with('status', __($status)); 
 
       exit();
+      }else{
+          $msg = "Por favor refaça a liberação";
+  
+          return back()->withErrors(__($msg));
+          exit();	
+        }
+      }
        
-    }
+    
 
     public function combo_create(Request $request){
       

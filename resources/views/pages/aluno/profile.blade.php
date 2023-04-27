@@ -401,17 +401,19 @@
                     </div>
                 </div>
             </div>
-            @if ((Auth::user()->role) == 8)
+            
             <div class="user-profile mt-4">
                 <div class="widget-content widget-content-area">
 
                     <div class="d-flex justify-content-between">
                         <h3 class="md-2">Cursos Ouro Moderno</h3>
+                        @if ((Auth::user()->role) >= 4)
                         <div class="btn-group" role="group" aria-label="Basic example">
                             <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
                             <x-widgets._w-svg svg="apps-filled"/>
                             </a>
                         </div>
+                        @endif
                         
                     </div>
                     @if($client_ouro)
@@ -475,7 +477,7 @@
                         @endforeach
                     </div>
                 </div>
-                @endif
+               
             </div>
             @endif
             
