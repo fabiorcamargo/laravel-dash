@@ -508,4 +508,17 @@ class OuroModerno extends Controller
       dd($request->all());
     }
 
+    public function correct_img_course(){
+      $lists = OuroList::all();
+
+      foreach($lists as &$list){
+        if($list->img == null || $list->img == "resources/images/Curso Liberado.jpg"){
+          $list->update([
+            "img" => "/product/ouro/Curso Liberado.jpg"
+          ]);
+        }
+      }
+
+    }
+
 }

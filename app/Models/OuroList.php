@@ -15,7 +15,8 @@ class OuroList extends Model
     'modulo',
     'aulas',
     'carga',
-    'descricao'
+    'descricao',
+    'img',
 ];
     
 }
