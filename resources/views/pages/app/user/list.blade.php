@@ -161,7 +161,7 @@
                                 <th scope="col">Username</th>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Email</th>
-                                <th scope="col">Telefone</th>
+                                {{--<th scope="col">Telefone</th>--}}
                                 <th scope="col">Cidade - UF</th>
                                 <th class="text-center">Image</th>
                                 <th class="text-center">Pagamento</th>
@@ -182,7 +182,7 @@
                                 </td>
                                 <td>{{ $user->name }} {{ $user->lastname }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ $user->cellphone }}</td>
+                                {{--<td>{{ $user->cellphone }}</td>--}}
                                 <td>{{ $user->city }} - {{ $user->uf }}</td>
                                 <td>
                                     <div class="d-flex">
