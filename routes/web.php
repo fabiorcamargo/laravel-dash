@@ -1367,7 +1367,7 @@ Route::get('/politica-de-privacidade', function () {
 });
 
 Route::get('/', function () {
-    return Redirect::to('https://ead.profissionalizaead.com.br/');;
+    return Redirect::to(env('APP_HOME_URL'));
 });
 
 require __DIR__.'/auth.php';
