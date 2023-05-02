@@ -200,7 +200,6 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td>
-                                    
                                     <a class="media" href="{{ getRouterValue(); }}/app/user/profile/{{ app('request')->input('ouro') != "" ? $user->user_id : $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
                                         <div class="media">
                                             <div class="avatar me-2">
@@ -230,9 +229,13 @@
                                                     @if ($user->client_ouro()->first() || $user->ouro_id !== null)
                                                     <span class="btn btn-light-info position-relative btn-icon btn-rounded mb-2 me-4">
                                                         <img src="{{Vite::asset('resources/images/ouro.svg')}}" class="" style="width: 20px;" alt="logo">
-                                                        @if(!app('request')->input('ouro'))
+                                                        
+                                                        @if(app('request')->input('ouro') == null || app('request')->input('ouro') == 10)
                                                         <span class="badge badge-danger counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
+                                                        @else
+                                                        <span class="badge badge-danger counter">{{\App\Models\OuroCourse::where('ouro_client_id', $user->id)->get()->count()}}</span>
                                                         @endif
+
                                                     </span>
                                                     @endif
                                             </div>
