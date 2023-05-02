@@ -163,7 +163,7 @@
                                         @endif
                                         <div class="dropdown-menu">
                                             <a href="{{ getRouterValue(); }}/app/user/search?ouro=Sim @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "ouro"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">SIM</a>
-                                            <a href="{{ getRouterValue(); }}/app/user/search?ouro=Não @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "ouro"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">NÃO</a>
+                                            {{--<a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">NÃO</a>--}}
                                             
                                             <div class="dropdown-divider"></div>
                                             <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
@@ -194,6 +194,7 @@
                             @foreach ($users as $user)
                             <tr>
                                 <td>
+                                    
                                     <a class="media" href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
                                         <div class="media">
                                             <div class="avatar me-2">
@@ -221,7 +222,9 @@
                                                     @if ($user->client_ouro()->first() || $user->ouro_id !== null)
                                                     <span class="btn btn-light-info position-relative btn-icon btn-rounded mb-2 me-4">
                                                         <img src="{{Vite::asset('resources/images/ouro.svg')}}" class="" style="width: 20px;" alt="logo">
+                                                        @if(!app('request')->input('ouro'))
                                                         <span class="badge badge-danger counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
+                                                        @endif
                                                     </span>
                                                     @endif
                                             </div>
