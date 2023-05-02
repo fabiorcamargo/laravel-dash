@@ -19,8 +19,10 @@ use App\Models\State;
 use App\Models\TemporaryFile;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 
@@ -300,7 +302,7 @@ class UserController extends Controller
 
     public function search(Request $request)
     {
-        //dd($request->input());
+        //dd($request->input('ouro'));
         $query  = User::query();
         if ($request->has('secretary')) {
             $query->where('secretary', 'LIKE', '%' . $request->secretary . '%');
@@ -308,8 +310,23 @@ class UserController extends Controller
         if ($request->has('search')) {
             $query->where('username', 'LIKE', '%' . $request->search . '%');
         }
+        if ($request->has('ouro')) {
+            if($request->input('ouro') == "Sim"){
+                    $query->join('ouro_clients', function (JoinClause $join) {
+                        $join->on('users.id', '=', 'ouro_clients.user_id');
+                    })
+                    ->get();
+
+                }else{
+                    $query
+                        ->leftJoin('ouro_clients', 'users.id', '=', 'ouro_clients.user_id')->where('user_id', '=', NULL)
+                        ->get();
+
+            }
+        
+    }
         foreach ($request->input() as $nome => $valor) {
-            if($nome != "_token" && $nome != "page"){
+            if($nome != "_token" && $nome != "page" && $nome != "ouro"){
                 if ($valor) { 
                     $query->where($nome, 'LIKE', '%' . $valor . '%');
                 }

@@ -538,4 +538,23 @@ class OuroModerno extends Controller
 
     }
 
+    public function show_list_alunos(){
+      $users = OuroClient::paginate(20);
+      //dd($ouro_list);
+      return view('pages.app.ouro.listouro', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
+    }
+
+    public function search(Request $request)
+    {
+        //dd($request->input());
+        $query  = OuroClient::query();
+        if ($request->has('secretary')) {
+            $query->where('secretary', 'LIKE', '%' . $request->secretary . '%');
+        }
+       
+        $users = $query->paginate();
+        //dd($users);
+        return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'secretary' => $request->secretary], compact('users'));
+    }
+
 }

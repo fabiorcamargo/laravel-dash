@@ -259,6 +259,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             });
 
             Route::prefix('/ouro')->group(function () {
+                Route::get('/list', [OuroModerno::class, 'show_list_alunos'])->name('ouro-list');
+                Route::any('/search', [OuroModerno::class, 'search'])->name('ouro-search');
                 Route::get('/show', [OuroModerno::class, 'show_list_courses'])->name('ouro-show');
                 Route::post('/img/up/{id}', [OuroModerno::class, 'img_up'])->name('ouro-img-up');
                 Route::delete('/img/rm/{id}', [OuroModerno::class, 'img_rm'])->name('ouro-img-rm');

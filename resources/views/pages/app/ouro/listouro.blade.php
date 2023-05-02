@@ -52,15 +52,13 @@
                         
                         </div>
                        
-                        <div class="col-12 col-sm-4 d-flex justify-content-sm-start justify-content-center">
-                            <h3 class="col-12">Lista de Alunos</h3>
+                        <div class="col-12 col-md-6 col-sm-12 d-flex justify-content-sm-start justify-content-center">
+                            <h3 class="col-12">Lista de Alunos Ouro Moderno</h3>
                             
                         </div>
                         
-                        <div class="col-12 col-sm-4 d-flex justify-content-sm-start justify-content-center">
-                           
-                        </div>
-                        <div class="col-12 col-sm-4 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3">
+                        
+                        <div class="col-12 col-md-6 col-sm-12 d-flex justify-content-sm-end justify-content-center mt-sm-0 mt-3">
                             
                             {{--@foreach(app('request')->input() as $key =>$value)
                                 @if($key != "_token")
@@ -69,7 +67,7 @@
                             @endforeach--}}
 
 
-                            <form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="GET" role="search">
+                            {{--<form action="{{ getRouterValue(); }}/app/user/search" name="search" class="input-group mb-3" aria-label="Text input with dropdown button" method="GET" role="search">
                               
                                 <div class="input-group mb-3 ms-auto">
                                     <input type="text" class="form-control" name="username" placeholder="Id do Aluno" aria-label="Id do Aluno" aria-describedby="button-addon2">
@@ -106,13 +104,10 @@
                                     <a href="{{Request::url()}}?{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">Limpar</a>
                                 </div>
                                 </div>
-                                {{--}}
                                     @foreach (app('request')->input() as $key => $filter)
-                                        @if($key == $filter)
-                                            <input type="text" name="{{$key}}" id="{{$key}}" value="{{$filter}}">
-                                        @endif
-                                    @endforeach--}}
-                            </form>
+                                        <input type="text" name="{{$key}}" id="{{$key}}" value="{{$filter}}" hidden>
+                                    @endforeach
+                            </form>--}}
                         </div>
                         <div class="col-12 col-sm-12 widget-content widget-content-area">
                                     <div class="btn-group mb-4 mr-2">
@@ -126,9 +121,9 @@
                                                 </button>
                                             @endif
                                         <div class="dropdown-menu">
-                                            <a href="{{ getRouterValue(); }}/app/user/search?secretary=MGA @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "secretary"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">MGA</a>
-                                            <a href="{{ getRouterValue(); }}/app/user/search?secretary=TB @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "secretary"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">TB</a>
-                                            <a href="{{ getRouterValue(); }}/app/user/search?secretary=UMU @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "secretary"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">UMU</a>
+                                            <a href="{{ getRouterValue(); }}/app/ouro/list?secretary=MGA{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">MGA</a>
+                                            <a href="{{ getRouterValue(); }}/app/ouro/list?secretary=TB{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">TB</a>
+                                            <a href="{{ getRouterValue(); }}/app/ouro/list?secretary=UMU{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">UMU</a>
                                             <div class="dropdown-divider"></div>
                                             <a href="{{Request::url()}}?{{app('request')->input('payment') != null ? "&payment=" . app('request')->input('payment') : ""}}" class="dropdown-item">Limpar</a>
                                         </div>
@@ -143,32 +138,14 @@
                                                 {{app('request')->input('payment')}}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
                                             </button>
                                         @endif
-                                        <div class="dropdown-menu">
-                                            <a href="{{ getRouterValue(); }}/app/user/search?payment=CARTÃO @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "payment"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">CARTÃO</a>
-                                            <a href="{{ getRouterValue(); }}/app/user/search?payment=BOLETO @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "payment"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">BOLETO</a>
-                                            <a href="{{ getRouterValue(); }}/app/user/search?payment=PIX @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "payment"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">PIX</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
-                                        </div>
+                                    <div class="dropdown-menu">
+                                        <a href="{{ getRouterValue(); }}/app/ouro/list?payment=CARTÃO @foreach(app('request')->input() as $key =>$value) @if($key != "_token"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">CARTÃO</a>
+                                        <a href="{{ getRouterValue(); }}/app/ouro/list?payment=BOLETO{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">BOLETO</a>
+                                        <a href="{{ getRouterValue(); }}/app/ouro/list?payment=PIX{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">PIX</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
                                     </div>
-                                    <div class="btn-group mb-4 mr-2">
-                                        @if (app('request')->input('ouro') == "")
-                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                Ouro<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-outline-dark btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{app('request')->input('ouro')}}<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                            </button>
-                                        @endif
-                                        <div class="dropdown-menu">
-                                            <a href="{{ getRouterValue(); }}/app/user/search?ouro=Sim @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "ouro"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">SIM</a>
-                                            <a href="{{ getRouterValue(); }}/app/user/search?ouro=Não @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "ouro"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">NÃO</a>
-                                            
-                                            <div class="dropdown-divider"></div>
-                                            <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
-                                        </div>
-                                    </div>
+                                </div>
         
                         </div>
                     </div>
@@ -189,10 +166,12 @@
                                 <th class="text-center dt-no-sorting">Ação</th>
                             </tr>
                         </thead>
-                        
                         <tbody>
                             @foreach ($users as $user)
+                            {{app('request')->input('secretary')}}
+                            {{!$user = $user->get_user()->first()}}
                             <tr>
+                                
                                 <td>
                                     <a class="media" href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
                                         <div class="media">
@@ -202,7 +181,7 @@
                                             <div class="media-body align-self-center">
                                                 <h6 class="mb-0">{{ $user->name }} {{ $user->lastname }}</h6>
                                                 <h6 class="mb-0">{{ $user->username }}</h6>
-                                                <h6 class="mb-2">{{ $user->email }}</h6>
+                                                <h6 class="mb-0">{{ $user->email }}</h6>
                                                     @if($user->first == 2)
                                                         <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
                                                     @elseif($user->first == 3)
@@ -216,13 +195,6 @@
                                                         <div class="shadow-none badge badge-primary">Boleto</div>
                                                     @else
                                                         <div class="shadow-none badge badge-dark">Vazio</div>
-                                                    @endif
-                                                    <span class="badge badge-light-info mb-2">10 Cursos</span>
-                                                    @if ($user->client_ouro()->first() || $user->ouro_id !== null)
-                                                    <span class="btn btn-light-info position-relative btn-icon btn-rounded mb-2 me-4">
-                                                        <img src="{{Vite::asset('resources/images/ouro.svg')}}" class="" style="width: 20px;" alt="logo">
-                                                        <span class="badge badge-danger counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
-                                                    </span>
                                                     @endif
                                             </div>
                                         </div>
