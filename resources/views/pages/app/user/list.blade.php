@@ -163,12 +163,18 @@
                                         @endif
                                         <div class="dropdown-menu">
                                             <a href="{{ getRouterValue(); }}/app/user/search?ouro=Sim @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "ouro"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">SIM</a>
+                                            <a href="{{ getRouterValue(); }}/app/user/search?ouro=10 @foreach(app('request')->input() as $key =>$value) @if($key != "_token" && $key != "ouro"){{"&$key=$value"}}@endif @endforeach" class="dropdown-item">10 Cursos</a>
                                             {{--<a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">NÃO</a>--}}
                                             
                                             <div class="dropdown-divider"></div>
                                             <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
                                         </div>
+                                        
                                     </div>
+                                    <div class="btn-group mx-2 mb-4 mr-2">
+                                        <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
+                                    </div>
+                                    
         
                         </div>
                     </div>

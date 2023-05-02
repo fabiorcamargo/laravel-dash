@@ -316,15 +316,11 @@ class UserController extends Controller
                         $join->on('users.id', '=', 'ouro_clients.user_id');
                     })
                     ->get();
-
-                }else{
-                    $query
-                        ->leftJoin('ouro_clients', 'users.id', '=', 'ouro_clients.user_id')->where('user_id', '=', NULL)
-                        ->get();
-
+                }else if($request->input('ouro') == 10){
+                    $query->where('ouro', '=', 1);
             }
+        }
         
-    }
         foreach ($request->input() as $nome => $valor) {
             if($nome != "_token" && $nome != "page" && $nome != "ouro"){
                 if ($valor) { 
