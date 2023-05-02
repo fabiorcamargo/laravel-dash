@@ -332,7 +332,7 @@ class UserController extends Controller
                 }
             }
         }
-        $users = $query->paginate();
+        $users = $query->orderBy('users.updated_at', 'desc')->paginate();
         //dd($users);
         return view('pages.app.user.list', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'secretary' => $request->secretary], compact('users'));
     }

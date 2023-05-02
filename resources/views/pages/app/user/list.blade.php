@@ -195,7 +195,7 @@
                             <tr>
                                 <td>
                                     
-                                    <a class="media" href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
+                                    <a class="media" href="{{ getRouterValue(); }}/app/user/profile/{{ app('request')->input('ouro') != "" ? $user->user_id : $user->id }}" class="action-btn btn-view bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Ver">
                                         <div class="media">
                                             <div class="avatar me-2">
                                                 <img alt="avatar" src="{{ asset($user->image) }}" class="rounded-circle">
