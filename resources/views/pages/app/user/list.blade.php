@@ -172,7 +172,7 @@
                                         
                                     </div>
                                     <div class="btn-group mx-2 mb-4 mr-2">
-                                        <a href="{{Request::url()}}?{{app('request')->input('secretary') != null ? "&secretary=" . app('request')->input('secretary') : ""}}" class="dropdown-item">Limpar</a>
+                                        <a href="{{Request::url()}}" class="dropdown-item">Limpar</a>
                                     </div>
                                     
         
