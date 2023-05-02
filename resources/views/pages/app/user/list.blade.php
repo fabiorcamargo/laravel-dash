@@ -218,7 +218,9 @@
                                                     @else
                                                         <div class="shadow-none badge badge-dark">Vazio</div>
                                                     @endif
-                                                    <span class="badge badge-light-info mb-2">10 Cursos</span>
+                                                    @if($user->ouro == 1)
+                                                        <span class="badge badge-light-info mb-2">10 Cursos</span>
+                                                    @endif
                                                     @if ($user->client_ouro()->first() || $user->ouro_id !== null)
                                                     <span class="btn btn-light-info position-relative btn-icon btn-rounded mb-2 me-4">
                                                         <img src="{{Vite::asset('resources/images/ouro.svg')}}" class="" style="width: 20px;" alt="logo">
