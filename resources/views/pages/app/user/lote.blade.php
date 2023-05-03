@@ -26,12 +26,18 @@
         <nav class="breadcrumb-style-four  mb-3" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg><span class="inner-text">Home</span></a></li>
-            <li class="breadcrumb-item"><a href="#">Library</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Data</li>
+            <li class="breadcrumb-item"><a href="#">User</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cademi</li>
             </ol>
             </nav>
     </div>
     <!-- /BREADCRUMB -->
+    @if(env('APP_DEBUG'))
+    <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg> ... </svg></button>
+        <strong>Atenção!</strong> Modo depuração ativado, as requisições não serão enviadas!!!</button>
+    </div>
+    @endif
    
        
         @if (@isset($users))
@@ -40,7 +46,7 @@
         
 
         <div class="row layout-top-spacing">
-
+            
             <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header">
@@ -130,7 +136,7 @@
             <div class="statbox widget box box-shadow">
                 <div class="widget-header">
                     <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-xl-12 col-md-12 col-sm-12 col-12 mt-2">
                             <h4>Lista de Usuários</h4>
                         </div>
                     </div>

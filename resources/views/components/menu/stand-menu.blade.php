@@ -195,6 +195,22 @@
                             @endif                 
                         </ul>
                     </li>
+                    <li class="menu {{ Request::is('*/app/flow/*') ? "active" : "" }}">
+                        <a href="#ouro" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/ouro/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="">
+                                <x-widgets._w-svg svg="sitemap"/>
+                                <span>CRM</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/ouro/*') ? "show" : "" }}" id="ouro" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('ouro-show') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/flow/list"> Lista </a>
+                            </li>
+                        </ul>
+                    </li>
 
                     @endcan
 

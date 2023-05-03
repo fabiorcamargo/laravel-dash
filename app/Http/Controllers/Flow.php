@@ -52,4 +52,11 @@ class Flow extends Controller
         //dd($flow);
         return view('pages.app.flow.show', ['title' => 'Profissionaliza EAD | Entradas do Fluxo ', 'breadcrumb' => 'show flow'], compact('flow', 'flow_entries'));
     }
+
+    public function list(){
+        $flows = ModelsFlow::all();
+
+        return view('pages.app.flow.list', ['title' => 'Profissionaliza EAD | Entradas do Fluxo ', 'breadcrumb' => 'show flow'], compact('flows'));
+
+    }
 }

@@ -327,6 +327,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             
             Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     
         });
+
+        
            
         Route::middleware(['can:api'])->group(function () {
             Route::get('/calendar', function () {
@@ -1278,7 +1280,17 @@ Route::middleware(['auth', 'can:admin', 'can:e-commerce'])->group(function () {
 
         Route::prefix('app')->group(function () {
 
-
+            // Flow
+            Route::prefix('/flow')->group(function () {
+                Route::get('/add', [Flow::class, 'show_add'])->name('eco-flow-add-show');
+                Route::post('/add', [Flow::class, 'flow_add'])->name('eco-flow-add');
+                Route::get('/config_flow/{id}', [Flow::class, 'flow_config_show'])->name('eco-flow-config-show');
+                Route::get('/show/{id}', [Flow::class, 'flow_show'])->name('eco-flow-config-show');
+                Route::get('/list', [Flow::class, 'list'])->name('eco-flow-list');
+                
+            
+                
+            });
 
 
 // Ecommerce
@@ -1338,15 +1350,7 @@ Route::prefix('/app/eco')->group(function () {
     
 });
 
-Route::prefix('/app/flow')->group(function () {
-    Route::get('/add', [Flow::class, 'show_add'])->name('eco-flow-add-show');
-    Route::post('/add', [Flow::class, 'flow_add'])->name('eco-flow-add');
-    Route::get('/config_flow/{id}', [Flow::class, 'flow_config_show'])->name('eco-flow-config-show');
-    Route::get('/show/{id}', [Flow::class, 'flow_show'])->name('eco-flow-config-show');
-    
 
-    
-});
 
 Route::prefix('/app/form')->group(function () {
 
