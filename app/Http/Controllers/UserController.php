@@ -433,7 +433,8 @@ class UserController extends Controller
         $city = City::where('id', $request->city)->first();
         $user->city = $city->name;
         $state = State::where('id', $request->state)->first();
-        $user->uf = $state->name;
+        //dd($state);
+        $user->uf = $state->abbr;
         } else {
             $user->city = $request->city;
             $user->uf = $request->state; 
@@ -454,10 +455,10 @@ class UserController extends Controller
         
         //dd($user);
         $user->update();
-        $sucess = "Perfil atualizado com sucesso!";
+        $status = "Usuário atualizado com sucesso!";
         
         if (str_contains(url()->previous(), "profile")){
-            return redirect("/modern-dark-menu/aluno/profile/$user->id")->with('sucess', 'Verdade');
+            return redirect("/modern-dark-menu/aluno/profile/$user->id")->with('status', __($status));
         }
         
         

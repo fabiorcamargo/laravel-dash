@@ -156,7 +156,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Email Escola</label>
-                                                                    <input type="email" class="form-control mb-3" name="email2" id="email2" placeholder="Email Escola" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email2" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email2 }}">
+                                                                    <input type="email" class="form-control mb-3" name="email2" id="email2" placeholder="Email Escola" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email2" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email2 }}" readonly>
                                                                 </div>
                                                             </div>
                                                             @endif
@@ -164,7 +164,7 @@
                                                             <div class="col-md-6">
                                                                 <div class="form-group">
                                                                     <label for="profession">Telefone (Whatsapp)</label>
-                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="off" value="{{ $user->cellphone }}" required >
+                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="off" value="{{ $user->cellphone }}">
                                                                 </div>
                                                             </div>
                                                             @if(Auth::user()->role >= 4)
@@ -180,8 +180,8 @@
     
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label for="title">Selecione seu Estado</label>
-                                                                            <select name="state" id="state" class="form-control mb-4" required>
+                                                                            <label for="title">Estado</label>
+                                                                            <select name="state" id="state" class="form-control mb-4">
                                                                                 <option value="{{ $user->uf }}">{{ $user->uf }}</option>
                                                                                 @foreach ($states as $key => $value)
                                                                                     <option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
@@ -191,10 +191,30 @@
                                                                     </div>
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
-                                                                            <label for="title">Selecione sua Cidade</label>
+                                                                            <label for="title">Cidade</label>
                                                                             
-                                                                            <select name="city" id="city" class="form-control mb-4" aria-placeholder="Cidade" required>
+                                                                            <select name="city" id="city" class="form-control mb-4" aria-placeholder="Cidade">
                                                                                 <option value="{{ $user->city }}">{{ $user->city }}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Estado 2</label>
+                                                                            <select name="state" id="state" class="form-control mb-4">
+                                                                                <option value="{{ $user->uf2 }}">{{ $user->uf2 }}</option>
+                                                                                @foreach ($states as $key => $value)
+                                                                                    <option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Cidade 2</label>
+                                                                            
+                                                                            <select name="city" id="city" class="form-control mb-4" aria-placeholder="Cidade">
+                                                                                <option value="{{ $user->city2 }}">{{ $user->city2 }}</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
@@ -254,6 +274,16 @@
                                                                         <div class="form-group">
                                                                             <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif>
                                                                             Contratou 10 Cursos
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="profession">Token Cademi</label>
+                                                                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
+                                                                                <x-widgets._w-svg svg="lock-open"/>
+                                                                            </a>
+                                                                            <input type="text" class="form-control mb-3" name="token_cademi" id="token_cademi" placeholder="Sobrenome" value="{{ $user->cademis()->first()->login_auto }}" readonly>
+                                                                            
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-md-8">

@@ -42,20 +42,18 @@
         </nav>
     </div>
     <!-- /BREADCRUMB -->
+    
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+    
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+   
 
     <div class="row layout-spacing ">
-        <!-- Session Status -->
-    <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
-
-    <!-- Validation Errors -->
-    <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
-
-        @if (session('sucess'))
-            <div class="alert alert-light-success alert-dismissible fade show border-0 mb-4 mt-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Sucesso!</strong> Usuário atualizado com sucesso! </div>
-        @endif
 
         <!-- Content -->
-        <div class="col-xl-5 col-lg-12 col-md-12 col-sm-12 layout-top-spacing">
+        <div class="col-xl-5 col-md-5 col-sm-12 layout-top-spacing">
             <div class="user-profile">
                 <div class="widget-content widget-content-area">
                     <div class="d-flex justify-content-between">
@@ -279,7 +277,7 @@
 
                                 @isset($cademi->login_auto)
                                 <li class="contacts-block__item">
-                                   <a href="{{ $cademi->login_auto }}" class="btn btn-secondary  _effect--ripple waves-effect waves-light">
+                                   <a href="{{ $cademi->login_auto }}" target="blank"  class="btn btn-secondary  _effect--ripple waves-effect waves-light">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-in"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
                                         <span class="btn-text-inner">Acesse seu Curso</span>
                                    </a>    
@@ -290,6 +288,13 @@
                                 <li class="contacts-block__item">
                                     @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
                                     <div class="clipboard">
+                                        
+                                        <li class="contacts-block__item">
+                                            <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}" target="blank" class="btn btn-danger  _effect--ripple waves-effect waves-light">
+                                                <x-widgets._w-svg svg="user-search"/>
+                                                 <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
+                                            </a>    
+                                         </li>
                                         <form class="form-horizontal">
                                             <div class="clipboard-input">
                                                 <input type="text" class="form-control inative" id="copy-basic-input" value="{{ $cademi->login_auto }}" readonly>
@@ -324,13 +329,13 @@
                                 </li>
                             </ul>
                             --}}
-                        </div>                                    
+                                                           
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="col-xl-7 col-lg-12 col-md-12 col-sm-12 layout-top-spacing">
+        <div class="col-xl-7 col-md-7 col-sm-12 layout-top-spacing">
 
             <div class="user-profile">
                 <div class="widget-content widget-content-area">

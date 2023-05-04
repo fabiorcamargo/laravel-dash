@@ -185,7 +185,8 @@
                                                     <div class="media-body align-self-center">
                                                         <h6 class="mb-0">{{ $user->name }} {{ $user->lastname }}</h6>
                                                         <h6 class="mb-0">{{ $user->username }}</h6>
-                                                        <h6 class="mb-2">{{ $user->email }}</h6>
+                                                        <h6 class="mb-0">{{ $user->email }}</h6>
+                                                        <h6 class="mb-2">{{ $user->city }} - {{ $user->uf }}</h6>
                                                             @if($user->first == 2)
                                                                 <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
                                                             @elseif($user->first == 3)
@@ -222,7 +223,9 @@
                                         {{--<td>{{ $user->name }} {{ $user->lastname }}</td>--}}
                                         {{--<td>{{ $user->email }}</td>--}}
                                         {{--<td>{{ $user->cellphone }}</td>--}}
-                                        <td>{{ $user->city }} - {{ $user->uf }}</td>
+                                        <td>
+                                            {{ $user->city2 }} - {{ $user->uf2 }} <br>
+                                        </td>
                                         {{--}}
                                         <td>
                                             <div class="d-flex">
