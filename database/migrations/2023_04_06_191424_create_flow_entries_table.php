@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('flows', function (Blueprint $table) {
+        Schema::create('flow_entries', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('context');
-            $table->string('steps');
-            $table->string('item')->nullable();
+            $table->foreignId('flow_id')->constrained('flows');
+            $table->string('user_id');
+            $table->string('step');
+            $table->string('seller');
+            $table->json('body')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flows');
+        Schema::dropIfExists('flow_entries');
     }
 };

@@ -15,7 +15,7 @@ class Flow extends Model
     'name',
     'context',
     'item',
-    'steps'
+    'steps',
     ];
 
     public function entry(): HasMany

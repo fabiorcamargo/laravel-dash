@@ -15,7 +15,9 @@ class FlowEntry extends Model
         'id',
         'flow_id',
         'user_id',
-        'step'
+        'step',
+        'body',
+        'seller'
     ];
 
     public function user(){

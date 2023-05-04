@@ -22,7 +22,7 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
     */
     public function model(array $row)
     {
-        
+        $document = preg_replace('/[^0-9]/', '', $row['document']);
         if (DB::table('users')->where('username', $row["username"])->doesntExist()) {
 
         $user = new User();
@@ -38,7 +38,7 @@ class UsersImportNew implements ToModel, WithChunkReading, ShouldQueue, WithHead
             $user->role = "1";
             $user->ouro = "0";
             $user->secretary = "NÃO";
-            $user->document = 99999999999;
+            $user->document = $document;
             $user->seller = "IZA";
             $user->courses = "NÃO";
             $user->active = "1";

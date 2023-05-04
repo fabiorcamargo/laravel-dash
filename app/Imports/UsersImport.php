@@ -52,9 +52,15 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
 
         $s = count($row);
 
+        $document = preg_replace('/[^0-9]/', '', $row['document']);
+
+        //dd($document);
+
         if(User::where('username', $row['username'])->first()){
+            //dd('s');
             $user = User::where('username', $row['username'])->first();
         }else{
+            
             $user = User::create([
             'username' => $row['username'],
             'email' => $row['email2'],
@@ -63,10 +69,11 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
             'password' => 'xp12b1',
             'role' => 1,
             'secretary' => "NÃO",
-            'document' => 99999999999,
+            'document' => $document,
             'active' => 0,
             'image' => 'avatar/default.jpeg'
             ]);
+            //dd($user);
         }
         
         $r = str_replace(" ", "", $row['courses']);
@@ -96,10 +103,8 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
             $password = Hash::make($row['password']);
         }
 
-        $document = preg_replace('/[^0-9]/', '', $row['document']);
-
            $user->username = $row['username'];
-           $user->email = $email;
+           $user->email = strtolower($email);
            $user->email2 = strtolower($row['email2']);
            $user->name = $row['name'];
            $user->lastname = $row['lastname'];
@@ -118,10 +123,11 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
            $user->courses = $row['courses'];
            $user->active = $row['active'];
            $user->observation = $row['observation'];
+           $user->created_at = now();
            //dd($user);
            $user->save();
-
-        (new CademiController)->lote($row);
+        //dd($user);
+        (new CademiController)->lote($row, $user);
 
         (new CademiController)->get_user($user->id);
  

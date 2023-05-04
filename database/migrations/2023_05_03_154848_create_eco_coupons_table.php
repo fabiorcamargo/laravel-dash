@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('flow_entries', function (Blueprint $table) {
+        Schema::create('eco_coupons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('flow_id')->constrained('flows');
-            $table->string('user_id');
-            $table->string('step');
+            $table->string('name');
+            $table->string('eco_product_id');
+            $table->float('discount');
+            $table->string('token');
+            $table->string('seller');
             $table->timestamps();
         });
     }
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flow_entries');
+        Schema::dropIfExists('eco_coupons');
     }
 };

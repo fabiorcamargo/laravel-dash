@@ -57,12 +57,16 @@ class AsaasController extends Controller
         //$product = EcoProduct::find($product_id);
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
-        //dd($pay->payment);
+        dd($pay);
         if($pay->payment == "PIX"){
             $pay1 = "BOLETO";
             $pay2 = "Pix";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
-            $product->price = $product->price * 0.9;
+            if($pay->cupom_discount !== ""){
+                $product->price = $product->price * $pay->cupom_discount;
+            }else{
+                $product->price = $product->price * 0.9;
+            }
 
             $externalReference = $user->eco_sales()->create([
                 'customer_id' => $customer,
@@ -105,6 +109,13 @@ class AsaasController extends Controller
                     $card = str_replace(array(' ', "\t", "\n"), '', $pay->number);
                     //dd($product);
                     //dd($product->price / $pay->parcelac);
+                    
+                    if($pay->cupom_discount !== ""){
+                        $product->price = $product->price * $pay->cupom_discount;
+                    }else{
+                        $product->price = $product->price * 0.9;
+                    }
+
                     $externalReference = $user->eco_sales()->create([
                         'customer_id' => $customer,
                         'codesale' => $codesale,

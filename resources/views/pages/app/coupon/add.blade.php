@@ -1,4 +1,4 @@
-<x-base-layout :scrollspy="false">
+<x-base-layout :scrollspy="true">
 
     <x-slot:pageTitle>
         {{$title}} 
@@ -41,47 +41,52 @@
     </div>
     -->
 
-    <div class="row mb-4 layout-spacing layout-top-spacing">
-        <!-- Session Status -->
-        <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+    <x-slot:scrollspyConfig>
+        data-bs-spy="scroll" data-bs-target="#navSection" data-bs-offset="100"
+    </x-slot>
 
-        <!-- Validation Errors -->
-        <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
-        <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12">
-            <form action="{{ getRouterValue(); }}/app/flow/add" method="post" enctype="multipart/form-data" name="form1" class="was-validated">
+    <div class="row mb-4 layout-spacing layout-top-spacing">
+        
+
+
+        <div class="col-xxl-12 col-xl-12 col-lg-12 col-md-12 col-sm-12">
+
+            <!-- Session Status -->
+            <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+            <!-- Validation Errors -->
+            <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+
+            <form action="{{ getRouterValue(); }}/app/eco/add" method="post" enctype="multipart/form-data" name="form1" class="was-validated">
                 @csrf
             <div class="widget-content widget-content-area blog-create-section mb-4">
-                <h5 class="mb-4">Criar novo Fluxo</h5>
+                <h5 class="mb-4">Criar novo Cupom</h5>
                 <div class="row mb-4">
-                    <div class="col-xxl-8 col-md-8 mb-3">
-                        <label>Nome do fluxo</label>
+                    <div class="col-xxl-12 col-md-12 mb-3">
+                        <label>Nome do Cupom</label>
                         <input type="text" class="form-control" name="name" id="name" placeholder="Nome" required>
                     </div>
                 </div>
 
                 <div class="row mb-2">
-                    <div class="col-xxl-4 col-md-4 mb-3">
-                        <label for="context">Contexto</label>
-                            <select class="form-select" name="context" id="context" required>
+                    <div class="col-xxl-6 col-md-6 mb-3">
+                        <label for="discount">Desconto</label>
+                            <div class="input-group mb-3">
+                                <input type="number" class="form-control" id="discount" name="discount" min="1" max="70" required>
+                                <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-percent"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg></span>
+                            </div>
+                    </div>
+                    <div class="col-xxl-6 col-md-6 mb-3">
+                        <label for="product">Produto</label>
+                            <select class="form-select" name="eco_product_id" id="eco_product_id" required>
                                 <option></option>
-                                <option value="1">Ecommerce</option>
-                                <option value="2">Campanhas</option>
+                                @foreach ($products as $product)
+                                <option value="{{$product->id}}">{{$product->id}} | {{$product->name}}</option>    
+                                @endforeach
                             </select>
                     </div>
+                    
                     <div class="col-xxl-4 col-md-4 mb-3">
-                        <label for="steps">Etapas</label>
-                            <select class="form-select" name="steps" id="steps" required>
-                                <option></option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                            </select>
-                    </div>
-               
-                    <div class="col-xxl-4 col-md-4 mb-3">
-                            <input class="form-control" name="item" id="item" value="4" hidden>
+                            <input class="form-control" name="seller" id="seller" value="1" hidden>
                     </div>
               
                 </div>     

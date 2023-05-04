@@ -121,7 +121,7 @@
                     <li class="menu {{ Request::is('*/app/ouro/*') ? "active" : "" }}">
                         <a href="#ouro" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/ouro/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                                <img src="{{Vite::asset('resources/images/ouro.svg')}}" class="" style="width: 20px;" alt="logo">
                                 <span>Ouro</span>
                             </div>
                             <div>
@@ -196,7 +196,7 @@
                         </ul>
                     </li>
                     <li class="menu {{ Request::is('*/app/flow/*') ? "active" : "" }}">
-                        <a href="#ouro" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/ouro/*') ? "true" : "false" }}" class="dropdown-toggle">
+                        <a href="#flow" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/flow/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
                                 <x-widgets._w-svg svg="sitemap"/>
                                 <span>CRM</span>
@@ -205,9 +205,35 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
                             </div>
                         </a>
-                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/ouro/*') ? "show" : "" }}" id="ouro" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('ouro-show') ? 'active' : '' }}">
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/flow/*') ? "show" : "" }}" id="flow" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('eco-flow-list') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/flow/list"> Lista </a>
+                            </li>
+                        </ul>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/flow/*') ? "show" : "" }}" id="flow" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('eco-flow-add-show') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/flow/add"> Nova </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="menu {{ Request::is('*/app/coupon/*') ? "active" : "" }}">
+                        <a href="#coupon" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/coupon/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="">
+                                <x-widgets._w-svg svg="ticket"/>
+                                <span>Cupons</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/coupon/*') ? "show" : "" }}" id="coupon" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('eco-coupon-list') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/coupon/list"> Lista </a>
+                            </li>
+                        </ul>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/coupon/*') ? "show" : "" }}" id="coupon" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('eco-coupon-add-show') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/coupon/add"> Nova </a>
                             </li>
                         </ul>
                     </li>

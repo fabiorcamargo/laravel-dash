@@ -27,6 +27,21 @@
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
         
+        <style>
+            
+            .cupom {
+                width: 100px; 
+                max-width: 300px;
+            }
+            .cupom-text{
+                position: relative;
+                top: 30px;
+                right: 75px;
+                color: white;
+                
+            }
+        </style>     
+
         <!--  END CUSTOM STYLE FILE  -->
         <x-fb-microdata object={!!$product!!}/>
     </x-slot>
@@ -84,7 +99,7 @@
 
                         <div class="product-details-content">
                             
-                            {!! $product->perc !!}
+                            {{--!! $product->perc !!--}}
                             
                             <h3 class="product-title mb-0">{{ $product->name }}</h3>
                             
@@ -99,8 +114,22 @@
 
                                     <div class="pricing">
 
-                                        <span class="discounted-price">R${{ $product->price }}</span>
-                                        <span class="regular-price">R${{ $product->oprice}}</span>
+                                       
+                                        @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
+                                        
+                                            <span class="discounted-price">R${{ $product->price *  (100 - App\Models\EcoCoupon::where('token', request()->input('t'))->first()->discount) / 100}}</span>
+                                            <span class="regular-price">R${{ $product->oprice}}</span>
+                                            <br>
+                                            <div class="callout">
+                                                <img class="cupom" src="{{Vite::asset('resources/images/cupom-aplicado.svg')}}"  alt="logo"><span class="cupom-text">{{App\Models\EcoCoupon::where('token', request()->input('t'))->first()->discount}}</span>
+                                            </div>
+                                            
+                                        @else
+                                            {!! $product->perc !!}
+                                            <span class="discounted-price">R${{ $product->price }}</span>
+                                            <span class="regular-price">R${{ $product->oprice}}</span>
+                                        @endif
+
                                         
                                     </div>
                                     
@@ -186,7 +215,8 @@
                                     
                                    
                                     <div class="col-xxl-7 col-xl-7 col-sm-6 mb-sm-0 mb-3">
-                                        <a href="/modern-light-menu/app/eco/checkout/{{ $product->id }}" class="btn btn-success w-100 btn-lg" type="send"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> <span class="btn-text-inner">Adicionar no Carrinho</span></a>
+                                        
+                                        <a href="/modern-light-menu/app/eco/checkout/{{ $product->id }}{{request()->input('s') !== null ? "?s=".request()->input('s') : ""}}{{request()->input('t') !== null ? "&t=".request()->input('t') : ""}}" class="btn btn-success w-100 btn-lg" type="send"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg> <span class="btn-text-inner">Adicionar no Carrinho</span></a>
                                     </div>
                                   
                                     {{--

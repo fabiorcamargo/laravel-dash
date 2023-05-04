@@ -1287,9 +1287,13 @@ Route::middleware(['auth', 'can:admin', 'can:e-commerce'])->group(function () {
                 Route::get('/config_flow/{id}', [Flow::class, 'flow_config_show'])->name('eco-flow-config-show');
                 Route::get('/show/{id}', [Flow::class, 'flow_show'])->name('eco-flow-config-show');
                 Route::get('/list', [Flow::class, 'list'])->name('eco-flow-list');
-                
-            
-                
+            });
+
+            //Coupon
+            Route::prefix('/coupon')->group(function () {
+                Route::get('/add', [EcommerceController::class, 'coupon_create_show'])->name('eco-add_coupon-show');
+                Route::post('/add', [EcommerceController::class, 'coupon_create'])->name('eco-add_coupon');
+                Route::get('/list', [EcommerceController::class, 'list'])->name('eco-add-list');
             });
 
 
@@ -1329,7 +1333,6 @@ Route::prefix($prefixRouter)->group(function () {
 
 
 Route::prefix('/app/eco')->group(function () {
-
     Route::get('/shop', [EcommerceController::class, 'product_show'])->name('eco-shop');
     Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-show');
     Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
@@ -1342,12 +1345,7 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
     Route::get('/cademi/tag', [CademiController::class, 'cademi_tag'])->name('eco-cademi_tag');
     Route::get('/rd/fluxo', [RdController::class, 'rd_fluxos']);
-    Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);
-
-
-    
-    
-    
+    Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);    
 });
 
 

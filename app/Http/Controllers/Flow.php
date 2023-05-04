@@ -36,14 +36,30 @@ class Flow extends Controller
         return view('pages.app.flow.config_flow', ['title' => 'Profissionaliza EAD | Configurar Fluxo ', 'breadcrumb' => 'config flow'], compact('flow'));
     }
 
-    public function new_entry($id, $step){
+    public function new_entry($id, $step, $seller){
         //dd($id);
+        //dd($seller);
         $flow = ModelsFlow::find($id);
         $user = Auth::user();
-        $flow->entry()->create([
-            'user_id' => $user->id,
-            'step' => $step,
-        ]);
+        $body = json_encode(['saller' => $seller, 'date' => now()]);
+        //dd($user->flow_entry()->where('flow_id', $id)->exists());
+        if($user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->exists()){
+            $flow = $user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->first();
+            $flow->body = $body;
+            $flow->update();
+            //dd(json_decode($flow->body));
+            //dd('s');
+        }else{
+            $flow->entry()->create([
+                'user_id' => $user->id,
+                'step' => $step,
+                'body' => $body,
+                'seller' => $seller
+            ]);
+            //dd('n');
+        }
+        
+        
     }
 
     public function flow_show($id){

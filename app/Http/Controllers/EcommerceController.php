@@ -6,6 +6,7 @@ use App\Http\Controllers\Asaas\AsaasController;
 use App\Mail\SendMailUser;
 use App\Models\CademiTag;
 use App\Models\Customer;
+use App\Models\EcoCoupon;
 use App\Models\EcoProduct;
 use App\Models\EcoProductCategory;
 use App\Models\EcoSales;
@@ -174,9 +175,6 @@ class EcommerceController extends Controller
         $product->comments = json_decode($product->comment);
         
         //dd(json_decode($product->tag)[0]->value);
-
-        
-
         return view('pages.app.eco.detail', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('product'));
     }
 
@@ -310,6 +308,7 @@ class EcommerceController extends Controller
 
         $user->password = $password;
 
+
         //Cria CRM no RD
         //$rd = new RdController;
         //$rd->rd_client_register($user->id, $password, $product);
@@ -339,6 +338,7 @@ class EcommerceController extends Controller
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
         //Captura dados do pagamento
+        //dd($request->all());
         $pay = (object)$request->all();
         $cep = str_replace("-","", $request->cep);
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $pay->expiry));
@@ -364,10 +364,15 @@ class EcommerceController extends Controller
         }
         $user->save();
 
+        $asaas = new AsaasController();
+            $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
+
+            dd($cobranca);
+
             //Cria o cliente no gateway
             if(!($user->eco_client()->first())){
-            $asaas = new AsaasController();
-            $response = $asaas->create_client($user, $cep);
+                $asaas = new AsaasController();
+                $response = $asaas->create_client($user, $cep);
             }else{
             }
             
@@ -384,7 +389,7 @@ class EcommerceController extends Controller
             $asaas = new AsaasController();
             $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
 
-            //dd($cobranca);
+            dd($cobranca);
             $invoice = json_decode($cobranca->body)->invoiceUrl;
 
             $product->cobranca = $cobranca;
@@ -660,5 +665,34 @@ class EcommerceController extends Controller
         return back();
     }
 
+    public function coupon_create_show(Request $request){
+        //dd($request->all());
+        $products = (EcoProduct::all());
+        return view('pages.app.coupon.add', ['title' => 'Novo Cupom | Profissionaliza EAD', 'breadcrumb' => 'Novo Cupom'], compact('products'));
+    }
+    public function coupon_create(Request $request){
+        //dd($request->all());
+        $products = (EcoProduct::all());
+        $token = ((string) Str::orderedUuid());
+        //dd($token);
+
+        $coupon = EcoCoupon::create([
+            'name' => $request->name,
+            'eco_product_id' => $request->eco_product_id,
+            'discount' => $request->discount,
+            'token' => $token,
+            'seller' => $request->seller,
+        ]);
+
+        $status = "Cupom criado com sucesso!";
+        return back()->with('status', __($status));
+    }
+
+    public function list(){
+        $coupons = (EcoCoupon::all());
+
+        return view('pages.app.coupon.list', ['title' => 'Novo Cupom | Profissionaliza EAD', 'breadcrumb' => 'Novo Cupom'], compact('coupons'));
+    }
+    
 
 }

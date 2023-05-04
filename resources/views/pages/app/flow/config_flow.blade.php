@@ -82,7 +82,7 @@
                
                     <div class="col-xxl-4 col-md-4 mb-3">
                         <label for="item">Item</label>
-                            <input class="form-control" name="item" id="item" required>
+                            <input class="form-control" name="item" id="item" hidden>
                     </div>
               
                 </div>     

@@ -58,11 +58,12 @@ class CademiController extends Controller
     
 
 
-    public function lote($row)
+    public function lote($row, $user)
     {
         $r = str_replace(" ", "", $row['courses']);
         $courses = explode(",",  $r);
-        $user = (User::firstWhere('username', $row['username']));
+        //$user = (User::firstWhere('username', $row['username']));
+        //dd($user);
         foreach($courses as $course){
          $payload = [
              "token" => env('CADEMI_TOKEN_GATEWAY'),
@@ -74,14 +75,14 @@ class CademiController extends Controller
              "produto_nome"=> $course,
              "cliente_email"=> $user->email2,
              "cliente_nome"=> $user->name . " " . $user->lastname,
-             "cliente_doc"=> $user->username,
+             //"cliente_doc"=> $user->document,
              "cliente_celular"=> $user->cellphone,
              //"cliente_endereco_cidade"=> $user->city2,
              //"cliente_endereco_estado"=> $user->uf2,
              "produto_nome" => $course
          ];
 
-         if (env('APP_DEBUG') == true){
+         if (env('APP_DEBUG') == false){
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             /*
@@ -126,7 +127,7 @@ class CademiController extends Controller
                 $import->username = $user->username;
                 $import->status = "success";
                 $import->course = $course;
-                $import->code = "CODD-$course-$user->username";
+                $import->code = $cademi->data[0]->engine_id;
                 $import->msg = "success";
                 $import->body = json_encode($cademi);
                 $import->save();

@@ -17,7 +17,7 @@
     <!-- END GLOBAL MANDATORY STYLES -->
     
     <div class="action-btn layout-top-spacing mb-5">
-        <button id="add-list" class="btn btn-secondary">Add List</button>
+        {{--<button id="add-list" class="btn btn-secondary">Add List</button>--}}
     </div>
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="addTaskModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -138,7 +138,7 @@
         <div class="col-lg-12 layout-spacing">
 
             <div class="task-list-section">
-                @for ($i = 1; $i < $flow->item; $i++)
+                @for ($i = 0; $i < $flow->steps; $i++)
                 <div data-section="{{$i}}" class="task-list-container" data-connect="sorting">
                     <div class="connect-sorting">
                         <div class="task-container-header">

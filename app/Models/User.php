@@ -144,4 +144,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(OuroClient::class);
     }
+    public function flow_entry()
+    {
+        return $this->hasMany(FlowEntry::class);
+    }
 }
