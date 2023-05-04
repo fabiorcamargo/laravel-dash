@@ -82,7 +82,7 @@ class CademiController extends Controller
              "produto_nome" => $course
          ];
 
-         if (env('APP_DEBUG') == false){
+         if (env('APP_DEBUG') == true){
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             /*
