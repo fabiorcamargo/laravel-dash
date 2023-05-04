@@ -222,4 +222,15 @@ class CademiController extends Controller
         return back();
 
 }
+    
+    public function change_token(Request $request){
+        //dd($request->all());
+        $cademi = Cademi::where('user_id', $request->user_id)->first();
+        $cademi->login_auto = $request->login_auto;
+        $cademi->save();
+        
+        $status = "Token de Login Automático atualizado com sucesso!";
+        return back()->with('status', __($status));
+    }
+
 }

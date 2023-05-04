@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
 use App\Jobs\WhatsappBulkTemplate;
+use App\Models\Cademi;
 use App\Models\OuroClient;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
@@ -168,6 +169,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::get('/users/corr/email', [UserController::class, 'corr_email'])->name('cademi.corr_email');
         
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
+
+        Route::post('/users/cademi/change_token', [CademiController::class, 'change_token'])->name('user.cademi.change_token');
 
         
 

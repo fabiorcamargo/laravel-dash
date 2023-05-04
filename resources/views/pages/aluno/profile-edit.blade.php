@@ -24,6 +24,11 @@
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/users/account-setting.scss'])
 
+        @vite(['resources/scss/light/assets/elements/alert.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])
+
+        @vite(['resources/scss/dark/assets/components/modal.scss'])
+        @vite(['resources/scss/light/assets/components/modal.scss'])
 
         @vite(['resources/scss/dark/assets/components/tabs.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])        
@@ -32,6 +37,10 @@
         @vite(['resources/scss/dark/assets/forms/switches.scss'])
         @vite(['resources/scss/dark/assets/components/list-group.scss'])
         @vite(['resources/scss/dark/assets/users/account-setting.scss'])
+
+        <link rel="stylesheet" href="{{asset('plugins/sweetalerts2/sweetalerts2.css')}}">
+        @vite(['resources/scss/light/plugins/sweetalerts2/custom-sweetalert.scss'])
+        @vite(['resources/scss/dark/plugins/sweetalerts2/custom-sweetalert.scss'])
         
         
         <!--  END CUSTOM STYLE FILE  -->
@@ -48,13 +57,19 @@
         </nav>
     </div>
     <!-- /BREADCRUMB -->
-        
+
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+    
     <div class="account-settings-container layout-top-spacing">
 
         <div class="account-content">
             <div class="row mb-3">
                 <div class="col-md-12">
-                    <h2>Dados</h2>
+                    
 {{--
                     <ul class="nav nav-pills" id="animateLine" role="tablist">
                         <li class="nav-item" role="presentation">
@@ -276,17 +291,20 @@
                                                                             Contratou 10 Cursos
                                                                         </div>
                                                                     </div>
+                                                                    @isset($user->cademis()->first()->login_auto)
                                                                     <div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <label for="profession">Token Cademi</label>
-                                                                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
-                                                                                <x-widgets._w-svg svg="lock-open"/>
+                                                                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" data-toggle="tooltip" data-placement="top" title="Trocar Token" class="badge badge-danger mb-2 me-4"><x-widgets._w-svg svg="lock"/> Trocar Token</span>
+                                                                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Trocar Token">
+                                                                                
                                                                             </a>
                                                                             <input type="text" class="form-control mb-3" name="token_cademi" id="token_cademi" placeholder="Sobrenome" value="{{ $user->cademis()->first()->login_auto }}" readonly>
                                                                             
                                                                         </div>
                                                                     </div>
-                                                                    <div class="col-md-8">
+                                                                    @endisset
+                                                                    <div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <h4>Observações:</h4>
                                                                             <div id="quillEditor"></div>
@@ -311,7 +329,9 @@
                                                                 <div class="form-group text-end">
                                                                     <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais</div>
                                                                     <div class="text-danger invisible" name="feed1" id="feed1" >As Senhas não são iguais</div>
-                                                                    <button class="btn btn-secondary" type="submit">Salvar</button>
+                                                                    <a href="{{ getRouterValue(); }}/app/user/profile/{{$user->id}}" class="btn btn-primary">Voltar</a>
+                                                                    <button class="btn btn-secondary mx-2" type="submit">Salvar</button>
+                                                                    
                                                                 </div>
                                                             </div>
                                                             
@@ -805,6 +825,56 @@
         
     </div>
 
+                    @if ((Auth::user()->role) >= 4)
+                    @isset($user->cademis()->first()->login_auto)
+                        <div id="OuroModal" class="modal animated fadeInDown modal-xl" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <form action="{{ route('user.cademi.change_token') }}" method="POST" id="liberation_form" class="py-12">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Alteração token do aluno</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                        </div>
+
+                                        
+                                        <div class="modal-body">
+                                            <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                    <h5 class="text-warning">Atenção!!</h5>
+                                                    <p class="text-warning">Muito cuidado, a troca do token pode tirar o acesso do aluno, ou dar acesso a conta de outro usuário, só prossiga se tiver certeza.</p>
+                                                    <p class="text-warning">Ao abrir o perfil do usuário verifique se as informações são realmente do usuário desejado.</p>
+                                                    <p class="text-white pt-2">Copie o token do perfil do aluno na Cademi ele está localizado na opção <b>Link de login automático</b></p>
+                                                    <div class="col-12">
+                                                        <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}" target="blank" class="btn btn-danger  _effect--ripple waves-effect waves-light">
+                                                            <x-widgets._w-svg svg="user-search"/>
+                                                             <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
+                                                        </a>    
+                                                    </div>
+                                                    <label class="text-white mt-4" for="users_list_tags mt-4">Novo Token</label>
+                                                    <input type="text" class="form-control mb-3" name="login_auto" id="login_auto" placeholder="login_auto" value="{{ $user->cademis()->first()->login_auto }}">
+                                                    <p class="text-white pt-2">Dados do Aluno</p>
+                                                    <li>{{ $user->username }}</li>
+                                                    <li>{{ $user->name }} {{ $user->lastname }}</li>
+                                                    <li>{{ $user->email }} | {{ $user->email2 }}</li>
+                                                    <input type="text" class="form-control mb-3" name="user_id" id="user_id" value="{{ $user->id }}" readonly hidden>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('liberation_form').submit();" class="btn btn-success">Liberar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @endisset
+                    @endif
+
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
@@ -819,6 +889,17 @@
         <script src="{{asset('plugins/editors/quill/quill.js')}}"></script>
 
         @vite(['resources/assets/js/users/account-settings.js'])
+    <script>
+        $('[name=id]').focus();
+           var element = $('.alert')
+            if(element.is(':visible')){
+                document.querySelector('.widget-content .message')
+            
+            Swal.fire('Token atualizado com sucesso')
+            }
+            
+            
+    </script>
 
 <script type="text/javascript">
     $(document).ready(function() {

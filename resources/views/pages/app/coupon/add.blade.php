@@ -56,7 +56,7 @@
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
 
-            <form action="{{ getRouterValue(); }}/app/eco/add" method="post" enctype="multipart/form-data" name="form1" class="was-validated">
+            <form action="{{ getRouterValue(); }}/app/coupon/add" method="post" enctype="multipart/form-data" name="form1" class="was-validated">
                 @csrf
             <div class="widget-content widget-content-area blog-create-section mb-4">
                 <h5 class="mb-4">Criar novo Cupom</h5>
