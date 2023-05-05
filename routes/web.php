@@ -64,7 +64,15 @@ use Illuminate\Support\Facades\Route;
         Route::get('/test_mail', function(){ 
             Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
-        
+         Route::get('/redir', function () {
+            if(Auth::user()->cademis()->exists()){
+                $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", request()->input('url'), Auth::user()->cademis()->first()->login_auto));
+                return Redirect::to($new_url);
+            } else {
+                $msg = "Token inválido por favor entre em contato com o suporte";
+                return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));;
+            }
+        })->name('aluno.redir');
         
         
     
@@ -110,22 +118,6 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
-
-                        Route::get('/redir', function () {
-                            if(Auth::user()->cademis()->exists()){
-                                $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", request()->input('url'), Auth::user()->cademis()->first()->login_auto));
-                                return Redirect::to($new_url);
-                            } else {
-                                $msg = "Token inválido por favor entre em contato com o suporte";
-                                return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));;
-                            }
-                        })->name('aluno.redir');
-
-
-                        
-                        
-                        
-                        
                     });
 
             });
