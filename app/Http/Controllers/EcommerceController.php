@@ -28,6 +28,10 @@ use Illuminate\Support\Str;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cookie;
 
+use App\Http\Controllers\ChatbotAsset as ControllersChatbotAsset;
+use App\Jobs\WhatsappBulkTemplate;
+use App\Mail\UserSign;
+
 class EcommerceController extends Controller
 
 
@@ -276,6 +280,7 @@ class EcommerceController extends Controller
     }
     public function checkout_client_post($product_id, Request $request){
 
+        //dd($request->all());
         $product = (EcoProduct::find($product_id));
 
         //dd($product->id);
@@ -304,10 +309,11 @@ class EcommerceController extends Controller
         $user->active = "1";
         $user->courses = "$product->course_id";
         $user->document = 99999999999;
-        $user->save();
+        //$user->save();
 
         $user->password = $password;
 
+        //dd($user);
 
         //Cria CRM no RD
         //$rd = new RdController;
@@ -316,11 +322,31 @@ class EcommerceController extends Controller
         //$rd2 = new RdController;
         //$rd2->rd_create_opportunity($user->id, $product);
 
-        //Mail::to($user->email)->send(new SendMailUser($user));
+        //Mail::to($user->email)->send(new UserSign($user, "Profissionaliza EAD - Cadastro Realizado"));
 
-        Auth::login($user);
+        //Auth::login($user);
 
-        return redirect(getRouterValue() . "/app/eco/checkout/$product->id/pay/$user->id");
+        $template = "login_ead";
+
+        dispatch(new \App\Jobs\WhatsappSignSend($template, $user->name, $user->cellphone, $user->username, $user->password));
+        /*
+        $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\n";
+        $send = new ControllersChatbotAsset;
+        $send->chatbot_send(1, $user->cellphone, $msg);*/
+
+        if($request->t !== null && $request->s !== null){
+            $url = "/app/eco/checkout/$product->id/pay/$user->id?s=$request->s&t=$request->t";
+            //dd($url);
+        }else if($request->t !== null && $request->s == null){
+            $url = "/app/eco/checkout/$product->id/pay/$user->id?s=1&t=$request->t";
+            //dd($url);
+        }else{
+            $url = "/app/eco/checkout/$product->id/pay/$user->id";
+            //dd($url);
+        }
+        dd($url);
+
+        return redirect(getRouterValue() . $url);
         //return view('pages.eco.checkout_pay', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu'], compact('product', 'user'));
 
     }
@@ -338,7 +364,7 @@ class EcommerceController extends Controller
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
         //Captura dados do pagamento
-        //dd($request->all());
+        dd($request->all());
         $pay = (object)$request->all();
         $cep = str_replace("-","", $request->cep);
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $pay->expiry));
@@ -362,12 +388,11 @@ class EcommerceController extends Controller
         } else {
             $user->courses = $user->courses . ", $product->course_id";
         }
-        $user->save();
+        //$user->save();
 
-        $asaas = new AsaasController();
-            $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
+            //$asaas = new AsaasController();
+           // $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
 
-            dd($cobranca);
 
             //Cria o cliente no gateway
             if(!($user->eco_client()->first())){
@@ -693,6 +718,8 @@ class EcommerceController extends Controller
 
         return view('pages.app.coupon.list', ['title' => 'Novo Cupom | Profissionaliza EAD', 'breadcrumb' => 'Novo Cupom'], compact('coupons'));
     }
+
+    
     
 
 }

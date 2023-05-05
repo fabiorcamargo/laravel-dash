@@ -9,20 +9,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SendMailUser extends Mailable
+class UserSign extends Mailable
 {
     use Queueable, SerializesModels;
-    public $user;
+
     /**
      * Create a new message instance.
-     * 
-     * 
      *
      * @return void
      */
-    public function __construct($user)
+    public function __construct($user, $sub)
     {
         $this->user = $user;
+        $this->subject = $sub;
     }
 
     /**
@@ -33,21 +32,32 @@ class SendMailUser extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Cadastro Realizado com Sucesso',
+            subject: $this->subject,
         );
+    }
+
+    public function build()
+    {
+        return $this->markdown('emails.user.sign')
+                ->with('user', $this->user);
+        /*return new Content(
+            markdown: 'emails.user.sign',
+        );*/
     }
 
     /**
      * Get the message content definition.
      *
      * @return \Illuminate\Mail\Mailables\Content
-     */
+     *//*
     public function content()
     {
-        return new Content(
-            view: 'mail.test',
+        return $this->markdown('emails.user.sign')
+                ->with('user', $this->user);
+        /*return new Content(
+            markdown: 'emails.user.sign',
         );
-    }
+    }*/
 
     /**
      * Get the attachments for the message.

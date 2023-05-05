@@ -14,6 +14,7 @@
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
         
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
         <script>
     
             function limpa_formulário_cep() {
@@ -92,11 +93,78 @@
             };
         
             </script>
+            
             <x-fb-microdata object={!!$product!!}/>
+
+            <style>
+                .callout {
+                    position: fixed;
+                    top: 10px;
+                    right: 10px;
+                    margin-left: 20px;
+
+                    animation: pulse infinite; /* referring directly to the animation's @keyframe declaration */
+                    animation-duration: 2s; /* don't forget to set a duration! */
+                }
+                .cupom {
+                    width: 100px; 
+
+                }
+                .cupom-text{
+                    position: fixed;
+                    top: 58px;
+                    right: 48px;
+                    color: black;
+                }
+                .footer {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 40px;
+                background-color: rgb(49, 49, 49);
+                color: white;
+                text-align: center;
+                }
+                #overlay {
+                position: fixed; /* Sit on top of the page content */
+                display: none; /* Hidden by default */
+                width: 100%; /* Full width (cover the whole page) */
+                height: 100%; /* Full height (cover the whole page) */
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+                z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+                cursor: pointer; /* Add a pointer on hover */
+                }
+                #text{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                -ms-transform: translate(-5%,-5%);
+                }
+                .text{
+                font-size: 50px;
+                color: white;
+                }
+            </style> 
+
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
+
     @php $price = $product->price @endphp
+        @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
+            @php $cupom = App\Models\EcoCoupon::where('token', request()->input('t'))->first() @endphp
+            @php $cupom_discount = 1 - $cupom->discount /100 @endphp
+            @php $seller = App\Models\User::find(App\Models\EcoSeller::find(App\Models\EcoCoupon::where('token', request()->input('t'))->first()->seller)->user_id)  @endphp
+            @php $wp_text = urlencode("Olá preciso de um novo cupom para o curso de $product->name eu estava utilizando o Cupom: $cupom->name") @endphp
+        @else
+            @php $cupom_discount = 1 - $product->percent @endphp
+    @endif
     <div class="row invoice layout-top-spacing layout-spacing">
         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
             
@@ -202,18 +270,10 @@
                                                         <div class="col-xl-10 col-lg-12 col-md-12 layout-spacing">
                                                             <div class="section general-info payment-info">
                                                                 <div class="info">
-                                                                                                                                     
-                                                                    <div id='cards' name='cards' hidden>
-                                                                    <x-widgets._w-cardcredit/>
-                                                                    </div>
+                                                                    @foreach (request()->input() as $key => $value)
+                                                                        <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}" readonly hidden>
+                                                                    @endforeach
 
-                                                                    <div id='pixs' name='pixs' hidden>
-                                                                        <h3>Pix</h3>
-                                                                    </div>
-
-                                                                    <div id='boletos' name='boletos' hidden="true">
-                                                                        <h3>Boleto</h3>
-                                                                    </div>
                                                                     <button class="btn btn-primary mt-4" type="submit">Próximo</button>
                                                                 </div>
                                                             </div>
@@ -234,6 +294,38 @@
 
         </div>
     </div>
+        @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
+            <div class="footer">
+                <h4 class="mt-2" style="color: #FFBA00">Cupom expira em: <span class="btn-text-inner" id="demo"></span></h4>
+            </div>
+            <div class="callout">
+                <span class="closebtn" {{--onclick="this.parentElement.style.display='none';"--}}><img class="cupom" src="{{Vite::asset('resources/images/Cupom.svg')}}"  alt="logo"><h4 class="cupom-text">{{App\Models\EcoCoupon::where('token', request()->input('t'))->first()->discount}}</h4></span>
+            </div>
+            <div id="overlay">
+                <div id="text" class="col-xxl-6 col-xl-8 col-lg-10 col-md-12 col-12" >
+                    <div class="card style-4 mx-4 mt-5">
+                        <div class="card-body pt-3">
+                            <div class="media mt-0 mb-3">
+                                <div class="">
+                                <div class="avatar avatar-md avatar-indicators avatar-online me-3">
+                                    <img alt="avatar" src="{{asset($seller->image)}}" class="rounded-circle">
+                                </div>
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading mb-0">{{($seller->name)}} {{($seller->lastname)}}</h4>
+                                    <p class="media-text">Representante Comercial</p>
+                                </div>
+                            </div>
+                            <p class="card-text mt-4 mb-0">Olá! Vejo que seu cupom explirou, fale comigo através do Whatsapp que tenho uma ótima proposta para você!</p>
+                        </div>
+                        <div class="card-footer pt-0 border-0 text-center">
+                            
+                            <a href="https://api.whatsapp.com/send?phone={{$seller->cellphone}}&text={{$wp_text}}" class="btn btn-success w-100"><x-widgets._w-svg svg="brand-whatsapp"/>  <span class="btn-text-inner ms-3">Enviar Mensagem</span></a>
+                        </div>
+                        </div>
+                </div>
+            </div>
+        @endif
     <body>
         <style>
             .demo-container {
@@ -272,47 +364,6 @@
         </script>
 
         <script>
-            
-
-            function mycard(){
-                    prec.innerText = "R${!! $product->price !!}" ;
-                    document.getElementById("cards").hidden = false;
-                    document.getElementById("pixs").hidden = true;
-                    document.getElementById("boletos").hidden = true;
-                    document.getElementById("number").required = true;
-                    document.getElementById("holderName").required = true;
-                    document.getElementById("expiry").required = true;
-                    document.getElementById("cvc").required = true;
-                    document.getElementById("cep").required = true;
-                    document.getElementById("numero").required = true;
-                    document.getElementById("payment").value = "Cartão";
-                    
-            }
-            function mypix(){
-                    prec.innerText = "R${!! $product->price * 0.90 !!}" ;
-                    document.getElementById("pixs").hidden = false;
-                    document.getElementById("cards").hidden = true;
-                    document.getElementById("boletos").hidden = true;
-                    document.getElementById("number").required = false;
-                    document.getElementById("holderName").required = false;
-                    document.getElementById("expiry").required = false;
-                    document.getElementById("cvc").required = false;
-                    document.getElementById("payment").value = "Pix";
-            }
-            function myboleto(){
-                    prec.innerText = "R${!! $product->price !!}" ;
-                    document.getElementById("boletos").hidden = false;
-                    document.getElementById("cards").hidden = true;
-                    document.getElementById("pixs").hidden = true;
-                    document.getElementById("number").required = false;
-                    document.getElementById("holderName").required = false;
-                    document.getElementById("expiry").required = false;
-                    document.getElementById("cvc").required = false;
-                    document.getElementById("payment").value = "Boleto";
-            }
-        </script>
-
-        <script>
             window.addEventListener('load', function() {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
@@ -327,6 +378,73 @@
             }, false);
             });
             }, false);
+        </script>
+
+        <script>
+            Date.prototype.addMinutes= function(h){
+                this.setMinutes(this.getMinutes()+h);
+                return this;
+            }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            }
+        
+        // Set the date we're counting down to
+            
+
+        if(getCookie('countDownDate')){
+            var countDownDate = getCookie('countDownDate');    
+        }else{
+            var countDownDate = new Date().addMinutes(10).getTime();
+            document.cookie = 'countDownDate=' + countDownDate  + '; max-age=' + 3600 + '; path=/';
+        }
+
+
+        // Update the count down every 1 second
+        var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+        // Find the distance between now and the count down date
+
+        var distance = countDownDate - now;
+            
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+        // Output the result in an element with id="demo"
+        document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+
+        document.cookie = 'countdown-m=' + minutes + '; max-age=' + minutes*60+seconds + '; path=/';
+        document.cookie = 'countdown-s=' + seconds + '; max-age=' + minutes*60+seconds + '; path=/';
+
+        // If the count down is over, write some text 
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("demo").innerHTML = "EXPIRADO";
+            document.getElementById("button_finalizar").hidden = true;
+            on();
+        }
+        }, 1000);
+
+
+        </script>
+
+        <script>
+            function on() {
+            document.getElementById("overlay").style.display = "block";
+            }
+            
+            function off() {
+            document.getElementById("overlay").style.display = "none";
+            }
         </script>
 
         <script>

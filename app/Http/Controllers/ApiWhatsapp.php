@@ -254,6 +254,114 @@ class ApiWhatsapp extends Controller
 
         }
 
+        public function sign_msg_send($template, $name, $phone, $username, $password){
+    
+            $payload = '{
+              "messaging_product": "whatsapp",
+              "recipient_type": "individual",
+              "to": "55' . $phone . '",
+              "type": "template",
+              "template": {
+                  "name": "' . $template . '",
+                  "language": {
+                      "code": "pt_BR"
+                  },
+                  "components": [
+                      {
+                          "type": "header",
+                          "parameters": [
+                              {
+                                  "type": "image",
+                                  "image": {
+                                      "link": "https://alunos.profissionalizaead.com.br/product/Bg/Profissionaliza-EAD.png"
+                                  }
+                              }
+                          ]
+                      },
+                      {
+                          "type": "body",
+                          "parameters": [
+                              {
+                                  "type": "text",
+                                  "text": "' . $name . '"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "' . $username .'"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "Curso Gratuíto foi aprovada"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "' . $password . '"
+                              },
+                              {
+                                  "type": "text",
+                                  "text": "essa semana"
+                              }
+                              ]
+                      }
+                          ]
+                      }
+          }';
+
+          //storage::put('wp_send1.txt',  $payload); 
+              //dd($payload);
+              //dd(json_decode($payload, true));
+
+            //dd($data);
+            //$response = ApiWhatsapp::msg_send($payload);
+
+            
+            $url = "https://graph.facebook.com/v15.0/" . env('WHATSAPP_PHONE_NUMBER_ID') . "/messages";
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => env('WHATSAPP_API_TOKEN')
+            ])->post("$url", json_decode($payload, true));
+    
+            //dd($response);
+            
+
+            if($response->status() !== 200){
+                WhatsappBulkStatus::create([
+                    'user_id' => $user->id,
+                    'template' => $template->id,
+                    'campaign' => "sign",
+                    'body' => $response->body(),
+                    'wamid' => "Não enviado",
+                  ]);
+                  return;
+            }
+            
+            $phone = $response->object()->contacts[0]->wa_id;
+            $msg_id = $response->object()->messages[0]->id;
+
+            WhatsappBulkStatus::create([
+                'user_id' => $user->id,
+                'template' => $template->id,
+                'campaign' => "sign",
+                'body' => $response->body(),
+                'wamid' => $msg_id,
+              ]);
+
+            $client = (new ControllersWhatsappManipulation)->client($phone, $user->name);  
+            if($template->button == 1){
+                $client->wp_msg()->create([
+                    'msg_id' => $msg_id,
+                    'body' => json_encode($response),
+                    'send' => 1,
+                    'type' => "button",
+                ]);
+            }
+
+            
+
+            return ($response->body());
+            //sleep(2);
+        }
+
         public function template_msg_send($template, $lead, $campaign){
             //$template = WhatsappTemplate::find($template);
             if(User::find($lead->user_id)){

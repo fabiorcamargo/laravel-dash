@@ -22,10 +22,15 @@ use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
 use App\Jobs\WhatsappBulkTemplate;
+use App\Mail\SendMailUser;
+use App\Mail\UserSign;
 use App\Models\Cademi;
 use App\Models\OuroClient;
+use App\Models\User;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 
@@ -55,7 +60,11 @@ use Illuminate\Support\Facades\Route;
         Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
         Route::get('/wp/templates/{id}', [ApiWhatsapp::class, 'wp_templates'])->name('wp-templates');
         Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
-        Route::get('/test', [ChatbotAsset::class, 'queue_send']);
+        //Route::get('/test', [ChatbotAsset::class, 'queue_send']);
+        Route::get('/test_mail', function(){ 
+            Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
+         });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
+        
         
         
     
@@ -74,7 +83,7 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
-
+                    
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::get('/avatar-correct',[TemporaryFileController::class, 'AvatarCorrect'])->name('avatar-correct');
@@ -101,6 +110,14 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
+
+                        Route::get('/redir', function () {
+                            
+                            $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", request()->input('url'), Auth::user()->cademis()->first()->login_auto));
+                            
+                            return Redirect::to($new_url);
+                        })->name('aluno.finish');
+
 
                         
                         

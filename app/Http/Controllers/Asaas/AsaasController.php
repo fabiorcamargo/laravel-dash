@@ -57,13 +57,16 @@ class AsaasController extends Controller
         //$product = EcoProduct::find($product_id);
 
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
-        dd($pay);
+        //dd($pay);
         if($pay->payment == "PIX"){
             $pay1 = "BOLETO";
             $pay2 = "Pix";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
-            if($pay->cupom_discount !== ""){
-                $product->price = $product->price * $pay->cupom_discount;
+            
+            if(isset($pay->cupom_discount)){
+                if($pay->cupom_discount !== ""){
+                    $product->price = $product->price * $pay->cupom_discount;
+                }
             }else{
                 $product->price = $product->price * 0.9;
             }
