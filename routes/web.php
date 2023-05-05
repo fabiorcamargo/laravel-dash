@@ -82,7 +82,10 @@ use Illuminate\Support\Facades\Route;
 
                     Route::prefix('aluno')->group(function () {
                         Route::get('/first', [UserController::class, 'first'])->name('aluno.first');
-                      
+                        Route::get('/pw_change', function () {
+                            return view('pages.aluno.pw_change', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início']);
+                        })->name('aluno.pw_change');
+                        Route::post('/pw_change', [UserController::class, 'pw_change'])->name('user.pw_change-save');
                         Route::post('/cpf_send', [UserController::class, 'cpf_send'])->name('user.cpf-send');
 
                         Route::get('/second', function () {

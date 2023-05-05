@@ -145,7 +145,7 @@
             !Request::routeIs('login')
         )
 
-        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout*', 'form-*'))  
+        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.pw_change', 'aluno.post', 'eco_checkout*', 'form-*'))  
         <!--  BEGIN NAVBAR  -->
         @isset((Auth::user()->role))
         <x-navbar.style-vertical-menu avatar="{{ Auth::user()->image }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
@@ -163,7 +163,7 @@
             <x-layout-overlay/>
             <!--  END LOADER  -->
 
-            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.post', 'eco_checkout*', 'form-*')) 
+            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.pw_change', 'aluno.post', 'eco_checkout*', 'form-*')) 
             <!--  BEGIN SIDEBAR  -->
             
            

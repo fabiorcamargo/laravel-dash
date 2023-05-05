@@ -286,9 +286,17 @@
                                                                     @if(Auth::user()->role >= 4)
                                                                     <div class="col-md-6">
                                                                         <label for="title"></label>
-                                                                        <div class="form-group">
-                                                                            <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif>
-                                                                            Contratou 10 Cursos
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif>
+                                                                                Contratou 10 Cursos
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mt-2">
+                                                                            <div class="form-group">
+                                                                                <input class="form-check-input me-1" id="pw_change" name="pw_change" type="checkbox">
+                                                                                Solicitar Troca de Senha
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     @isset($user->cademis()->first()->login_auto)

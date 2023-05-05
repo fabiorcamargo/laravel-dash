@@ -452,7 +452,9 @@ class UserController extends Controller
         $user->role = (integer)$request->role;
         }
         //dd($user);
+        $request->pw_change == "on" ? $user->first = 4 : "";
 
+        //dd($user);
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
         //$city2 = City::where('id', $city)->first();
         //$uf = State::where('id', $city2->state_id)->first();
@@ -936,6 +938,18 @@ class UserController extends Controller
             $status = "CPF atualizado com sucesso";
             return back()->with('status', __($status));;
 
+        }
+        public function pw_change(Request $request){
+            $user = Auth::user();
+            $user->password = bcrypt($request->password);
+            $user->first = 1;
+            $user->save();
+
+            //dd($user);
+            //dd('/modern-dark-menu/aluno/my');
+            $status = "Nova senha salva com sucesso";
+            return(redirect('/modern-dark-menu/aluno/my')->with('status', __($status)));
+            
         }
        
     }

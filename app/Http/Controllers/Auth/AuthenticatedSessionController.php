@@ -35,13 +35,12 @@ class AuthenticatedSessionController extends Controller
 
         if(empty(Auth::user()->first)){
         $home = '/modern-dark-menu/aluno/first';
-        }else{    
-
+        }else if(Auth::user()->first == 4){    
+        $home = '/modern-dark-menu/aluno/pw_change';  
+        }else{ 
         if ((Auth::check())){
         $home = '/modern-dark-menu/aluno/my';    
-        }
-        
-    }
+        }}
         
         return redirect()->intended($home);
     }
