@@ -33,11 +33,13 @@
             </x-slot>
             <!-- END GLOBAL MANDATORY STYLES -->
 
+            <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
             <!-- Session Status -->
             <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
 
             <!-- Validation Errors -->
             <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+            </div>
 
             <!-- Content -->
             <div class="row layout-spacing ">
