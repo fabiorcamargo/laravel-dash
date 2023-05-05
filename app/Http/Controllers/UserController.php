@@ -452,7 +452,7 @@ class UserController extends Controller
         $user->role = (integer)$request->role;
         }
         //dd($user);
-        $request->pw_change == "on" ? $user->first = 4 : "";
+        $request->pw_change == "on" ? $user->active = 4 : "";
 
         //dd($user);
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
@@ -942,7 +942,7 @@ class UserController extends Controller
         public function pw_change(Request $request){
             $user = Auth::user();
             $user->password = bcrypt($request->password);
-            $user->first = 1;
+            $user->active = 1;
             $user->save();
 
             //dd($user);

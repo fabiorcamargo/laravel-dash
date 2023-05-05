@@ -112,11 +112,9 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
 
                         Route::get('/redir', function () {
-                            
                             $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", request()->input('url'), Auth::user()->cademis()->first()->login_auto));
-                            
                             return Redirect::to($new_url);
-                        })->name('aluno.finish');
+                        })->name('aluno.redir');
 
 
                         

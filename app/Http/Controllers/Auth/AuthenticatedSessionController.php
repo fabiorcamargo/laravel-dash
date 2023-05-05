@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
 
         if(empty(Auth::user()->first)){
         $home = '/modern-dark-menu/aluno/first';
-        }else if(Auth::user()->first == 4){    
+        }else if(Auth::user()->active == 4){
         $home = '/modern-dark-menu/aluno/pw_change';  
         }else{ 
         if ((Auth::check())){
