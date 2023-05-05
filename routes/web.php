@@ -66,7 +66,7 @@ use Illuminate\Support\Facades\Route;
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          Route::get('/redir', function () {
             if(Auth::user()->cademis()->exists()){
-                $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", request()->input('url'), Auth::user()->cademis()->first()->login_auto));
+                $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", "https://profissionaliza.cademi.com.br/" . request()->input('url'), Auth::user()->cademis()->first()->login_auto));
                 return Redirect::to($new_url);
             } else {
                 $msg = "Token inválido por favor entre em contato com o suporte";
