@@ -86,7 +86,7 @@
                     </div>
                     
                     <div class="col-xxl-4 col-md-4 mb-3">
-                            <input class="form-control" name="seller" id="seller" value="1" hidden>
+                            <input class="form-control" name="seller" id="seller" value="{{Auth::user()->id}}">
                     </div>
               
                 </div>     

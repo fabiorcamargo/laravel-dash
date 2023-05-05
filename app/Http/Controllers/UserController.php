@@ -429,17 +429,25 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
         $user->email = $request->email;
         if (is_numeric($request->city)){
-            //dd($request->city);
         $city = City::where('id', $request->city)->first();
         $user->city = $city->name;
-        $state = State::where('id', $request->state)->first();
-        //dd($state);
+        $state = State::where('id', $city->state_id)->first();
         $user->uf = $state->abbr;
         } else {
             $user->city = $request->city;
             $user->uf = $request->state; 
         }
 
+        if (is_numeric($request->city2)){
+        $city2 = City::where('id', $request->city2)->first();
+        $user->city2 = $city2->name;
+        $state2 = State::where('id', $city2->state_id)->first();
+        $user->uf2 = $state2->abbr;
+        } else {
+            $user->city = $request->city;
+            $user->uf = $request->state; 
+        }
+        //dd($user);
         if (isset($request->role)){
         $user->role = (integer)$request->role;
         }

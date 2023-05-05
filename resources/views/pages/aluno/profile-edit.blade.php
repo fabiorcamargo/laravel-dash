@@ -216,7 +216,7 @@
                                                                     <div class="col-md-6">
                                                                         <div class="form-group">
                                                                             <label for="title">Estado 2</label>
-                                                                            <select name="state" id="state" class="form-control mb-4">
+                                                                            <select name="state2" id="state2" class="form-control mb-4">
                                                                                 <option value="{{ $user->uf2 }}">{{ $user->uf2 }}</option>
                                                                                 @foreach ($states as $key => $value)
                                                                                     <option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
@@ -228,7 +228,7 @@
                                                                         <div class="form-group">
                                                                             <label for="title">Cidade 2</label>
                                                                             
-                                                                            <select name="city" id="city" class="form-control mb-4" aria-placeholder="Cidade">
+                                                                            <select name="city2" id="city2" class="form-control mb-4" aria-placeholder="Cidade">
                                                                                 <option value="{{ $user->city2 }}">{{ $user->city2 }}</option>
                                                                             </select>
                                                                         </div>
