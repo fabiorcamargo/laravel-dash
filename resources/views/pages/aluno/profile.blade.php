@@ -164,7 +164,7 @@
                                             </path>
                                         </svg> {{ $user->cellphone }}
                                     </li>
-                                    @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8)
+                                    @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8 || (Auth::user()->role) == 4)
                                     <li class="contacts-block__item">
                                         <a href="mailto:{{ $user->email2 }}"><svg xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -226,6 +226,15 @@
                                         </div>
                                     </li>
 
+                                    <li class="contacts-block__item">
+                                        <a href="/login/{{ $user->id }}"
+                                            target="blank"
+                                            class="btn btn-dark  _effect--ripple waves-effect waves-light">
+                                            <x-widgets._w-svg svg="login" />
+                                            <span class="btn-text-inner">Acessar como {{$user->name}}</span>
+                                        </a>
+                                    </li>
+
                                     @isset($cademi->login_auto)
                                         <li class="contacts-block__item">
                                             <a href="{{ $cademi->login_auto }}" target="blank"
@@ -248,6 +257,7 @@
 
                                                 <div class="clipboard">
 
+                                                
                                                 <li class="contacts-block__item">
                                                     <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}"
                                                         target="blank"
@@ -256,6 +266,8 @@
                                                         <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
                                                     </a>
                                                 </li>
+                                                
+
                                                 <form class="form-horizontal">
                                                     <div class="clipboard-input">
                                                         <input type="text" class="form-control inative" id="copy-basic-input"

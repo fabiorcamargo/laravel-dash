@@ -73,6 +73,23 @@ use Illuminate\Support\Facades\Route;
                 return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));;
             }
         })->name('aluno.redir');
+
+        Route::get('/login/{id}', function ($id) {
+            if(Auth::user()->role >= 4){
+                $user = User::find($id);
+                    if($user->role != 1){
+                        $msg = "Só é permitido logar em um perfil de aluno!!!";
+                        return back()->withErrors(__($msg));
+                    }else{
+                        Auth::login($user);
+                        $msg = "Logado como $user->name $user->lastname cuidado todas as ações serão registradas no perfil do usuário";
+                        return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));
+                    }
+            } else {
+                $msg = "Ação não permitida para esse usuário";
+                return back()->withErrors(__($msg));;
+            }
+        })->name('aluno.redir');
         
         
     
