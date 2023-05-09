@@ -8,6 +8,7 @@ use App\Models\CademiImport;
 use App\Models\City;
 use App\Models\State;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
@@ -42,8 +43,10 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
         if ($row['username'] == null) {
             return null;
           }
-         
+          $contract_date = Carbon::parse(($row['contract_date']- 25569) * 86400)->toDateTimeString();
+          //dd($contract_date);
         //dd($_COOKIE['city']);
+        //dd($contract_date);
         $city2 = (preg_replace('/[^0-9]/', '', $_COOKIE['city']));
         $state2 = (City::find($city2)->state_id);
         $state2 = State::find($state2)->abbr;
@@ -123,6 +126,7 @@ class UsersImport implements ToModel, SkipsEmptyRows, WithChunkReading, WithHead
            $user->courses = $row['courses'];
            $user->active = $row['active'];
            $user->observation = $row['observation'];
+           $user->contract_date = $contract_date;
            $user->created_at = now();
            //dd($user);
            $user->save();

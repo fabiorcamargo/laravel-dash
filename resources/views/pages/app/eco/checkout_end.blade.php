@@ -72,30 +72,45 @@
                                                 <a class="info-box-1-button" href="https://alunos.profissionalizaead.com.br/modern-dark-menu/aluno/my">Área do Aluno</a>
                                             </div>
                                             @elseif($status == "PENDING")
-
-                                            <div class="text-center mb-3">
-                                                <div class="info-box-1-icon" style="background-color: orange">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                            <div id="pending">
+                                                <div class="text-center mb-3">
+                                                    <div class="info-box-1-icon" style="background-color: orange">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                                    </div>
+                                                <div class="info-box-1-content-wrapper text-center">
+                                                    <h3 class="info-box-1-title">Pagamento Pendente</h3>
+                                                    
+                                                    <div class="info-box-1-content"><b>{{Auth::user()->name}}</b> efetue o pagamento via pix para liberação imediata do seu conteúdo.<br><br></div>
+                                                    <div class="info-box-1-content"> O pagamento pode ser efetuado capturando o QRCODE no seu aplicativo bancário,<br>Ou clicando no botão Copiar, para utilizar a função Pix Copia e Cola.</div>
+                                                   
+                                                    <img class="col-12 col-sm-8 col-md-6 col-lg-6 col-xl-6 col-xxl-6" src="data:image/jpeg;base64, {{ $pix }}" />
+                                                    
+                                                        <form class="col-12">
+                                                            <div class="clipboard-input">
+                                                                <input type="text" class="form-control inative" id="copy-basic-input" value="{{ $copy }}" readonly>
+                                                                <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click" title="Copiado" data-clipboard-target="#copy-basic-input"> <a class="btn btn-success">Copiar</a></div>
+                                                            </div>
+                                                        </form>
+                                                    
+                                                    
                                                 </div>
-                                            <div class="info-box-1-content-wrapper text-center">
-                                                <h3 class="info-box-1-title">Pagamento Pendente</h3>
                                                 
-                                                <div class="info-box-1-content"><b>{{Auth::user()->name}}</b> efetue o pagamento via pix para liberação imediata do seu conteúdo.<br><br></div>
-                                                <div class="info-box-1-content"> O pagamento pode ser efetuado capturando o QRCODE no seu aplicativo bancário,<br>Ou clicando no botão Copiar, para utilizar a função Pix Copia e Cola.</div>
-                                                <img src="data:image/jpeg;base64, {{ $pix }}" />
-                                               
-                                                
-                                                    <form class="">
-                                                        <div class="clipboard-input">
-                                                            <input type="text" class="form-control inative" id="copy-basic-input" value="{{ $copy }}" readonly>
-                                                            <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click" title="Copied" data-clipboard-target="#copy-basic-input"> <a class="btn btn-success">Copiar</a></div>
-                                                        </div>
-                                                    </form>
-                                                
-                                                
-                                            </div>
-                                            <a class="info-box-1-button" href="#">Área do Aluno</a>
-                                            </div>
+                                                </div>
+                                                </div>
+
+                                                <div id="received" hidden>
+                                                <div class="text-center mb-3">
+                                                    <div class="info-box-1-icon">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-thumbs-up"><path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"></path></svg>
+                                                    </div>
+                                                    <div class="info-box-1-content-wrapper">
+                                                        <h3 class="info-box-1-title">Pagamento Aprovado</h3>
+                                                        <div class="info-box-1-content">Parabéns <b>{{Auth::user()->name}}</b> seu pagamento foi aprovado, clique no link abaixo para acessar seu Curso.</div>
+                                                    </div>
+                                                        <a class="info-box-1-button" href="https://alunos.profissionalizaead.com.br/modern-dark-menu/aluno/my">Área do Aluno</a>
+                                                </div>
+                                                </div>
+
                                             @endif
                                             {{--
                                             <div class="card bg-warning mb-4">
@@ -135,6 +150,34 @@
 
         <script src="{{asset('plugins/clipboard/clipboard.min.js')}}"></script>
         <script type="module" src="{{asset('plugins/clipboard/custom-clipboard.min.js')}}"></script>
+
+        <script>
+           function Temporizador(initiate) {
+                if (initiate !== true) {
+                    //alert("Olá mundo");
+                    if(httpGet('http://localhost:8991/api/pay/status/{{$pay_id}}') === "RECEIVED"){
+                        console.log(httpGet('http://localhost:8991/api/pay/status/{{$pay_id}}'));
+                        document.getElementById('pending').hidden = true;
+                        document.getElementById('received').hidden = false;
+                    }else{
+                        console.log(httpGet('http://localhost:8991/api/pay/status/{{$pay_id}}')+"não");
+                    }
+                }
+                setTimeout(Temporizador, 5000);
+            }
+
+            $(function() {
+                Temporizador(true);
+            });
+
+            function httpGet(theUrl)
+            {
+                var xmlHttp = new XMLHttpRequest();
+                xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+                xmlHttp.send( null );
+                return xmlHttp.responseText;
+            }
+        </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>

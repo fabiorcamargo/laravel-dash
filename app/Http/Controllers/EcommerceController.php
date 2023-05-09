@@ -364,7 +364,7 @@ class EcommerceController extends Controller
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
         //Captura dados do pagamento
-        dd($request->all());
+        //dd($request->all());
         $pay = (object)$request->all();
         $cep = str_replace("-","", $request->cep);
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $pay->expiry));
@@ -375,6 +375,7 @@ class EcommerceController extends Controller
         $parcelac = $request->parcelac;
         $parcelab = $request->parcelab;
         $product = EcoProduct::find($product_id);
+        $product->price = $request->checkou_value;
         $user = User::find($client);
         $codesale = $product->course_id . "-" . $user->id;
         $user->city = $request->cidade;
@@ -411,10 +412,11 @@ class EcommerceController extends Controller
                 $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
             }*/
 
+            //dd($pay);
             $asaas = new AsaasController();
             $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
 
-            dd($cobranca);
+            //dd($cobranca);
             $invoice = json_decode($cobranca->body)->invoiceUrl;
 
             $product->cobranca = $cobranca;
@@ -424,20 +426,31 @@ class EcommerceController extends Controller
            // $rd = new RdController;
            // $rd->rd_update_opportunity($user, $product);
 
-            if ($cobranca->status == "PENDING"){
-                //dd($cobranca);
-                $pix = json_decode($cobranca->body)->pix;
-                $copy = json_decode($cobranca->body)->copy;
-                return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pix' => $pix, 'copy' => $copy]);
-            }
-            //return redirect(getRouterValue() . "/app/eco/checkout_end");
-            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice]);
-            //dd($cobranca);
+           return redirect("modern-light-menu/app/eco/checkout/$cobranca->id/status");
 
     }
 
-    public function checkout_end($id, $status){
+    public function checkout_end($id){
 
+        //dd($id);
+        $cobranca = EcoSales::where('id', $id)->first();
+
+        //dd($cobranca);
+        $invoice = json_decode($cobranca->body)->invoiceUrl;
+        $status = $cobranca->status; 
+        $pay_id = $cobranca->pay_id;
+       // $rd = new RdController;
+       // $rd->rd_update_opportunity($user, $product);
+
+        if ($cobranca->status == "PENDING"){
+            //dd($cobranca);
+            $pix = json_decode($cobranca->body)->pix;
+            $copy = json_decode($cobranca->body)->copy;
+            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pix' => $pix, 'copy' => $copy, 'pay_id' => $pay_id]);
+        }
+        //return redirect(getRouterValue() . "/app/eco/checkout_end");
+        return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pay_id' => $pay_id]);
+        //dd($cobranca);
     }
 
     public function list_sales(){

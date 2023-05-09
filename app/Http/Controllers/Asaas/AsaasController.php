@@ -55,21 +55,14 @@ class AsaasController extends Controller
         //$user = User::find($user_id);
         $customer = ($user->eco_client()->first()->customer_id);
         //$product = EcoProduct::find($product_id);
-
-        $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
+        //dd($product);
         //dd($pay);
+        $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
+        //dd(json_decode($pay->parcelab));
         if($pay->payment == "PIX"){
             $pay1 = "BOLETO";
             $pay2 = "Pix";
             $due_date = (now()->addDays(1)->format('Y-m-d'));
-            
-            if(isset($pay->cupom_discount)){
-                if($pay->cupom_discount !== ""){
-                    $product->price = $product->price * $pay->cupom_discount;
-                }
-            }else{
-                $product->price = $product->price * 0.9;
-            }
 
             $externalReference = $user->eco_sales()->create([
                 'customer_id' => $customer,
@@ -163,20 +156,21 @@ class AsaasController extends Controller
 
     
         }else if($pay->payment == "BOLETO"){
+                    $pay1 = "BOLETO";
                     $due_date = (now()->addDays(1)->format('Y-m-d'));
                     $externalReference = $user->eco_sales()->create([
                         'customer_id' => $customer,
                         'codesale' => $codesale,
                         'seller' => $user->seller,
-                        'installmentCount' => (float)$pay->parcelac,
-                        'installmentValue' => (float)$product->price / $pay->parcelac,
+                        "installmentCount" => json_decode($pay->parcelab)->x,
+                        'installmentValue' => $pay->checkou_value / json_decode($pay->parcelab)->v,
                     ]);
 
                     $dadosAssinatura = array(
                         "customer" => "$customer",
                         "billingType" => "$pay->payment",
-                        "installmentCount" => $pay->parcelab,
-                        'installmentValue' => $product->price / $pay->parcelab,
+                        "installmentCount" => json_decode($pay->parcelab)->x,
+                        'installmentValue' => $pay->checkou_value / json_decode($pay->parcelab)->v,
                         "dueDate" => $due_date,
                         "description" => "$product->course_id $product->name",
                         'externalReference'=> $externalReference->id,

@@ -45,6 +45,7 @@ class User extends Authenticatable
         'image',
         'codesale',
         'observation',
+        'contract_date'
     ];
 
     /**
@@ -64,6 +65,7 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'contract_date' => 'datetime'
     ];
 
     public function getUsers(string|null $search = null)

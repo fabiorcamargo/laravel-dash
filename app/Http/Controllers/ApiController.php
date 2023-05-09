@@ -12,6 +12,7 @@ use App\Models\{
     ChatbotMessage,
     ChatbotProgram,
     Customer,
+    EcoSales,
     Payment,
     User
 };
@@ -438,6 +439,34 @@ class ApiController extends Controller
                 }
                 return response("oi",200);
               }
+
+              public function pay_status(Request $request, $cobranca){
+                //dd($request->header('authorization'));
+                $pay = (EcoSales::where('pay_id', $cobranca)->first());
+                if("Bearer ".env('API_PROFISSIONALIZA_TOKEN') !== $request->header('authorization')){
+                            $token = env('ASAAS_TOKEN');
+                            $client = new \GuzzleHttp\Client();
+                            $response = $client->request('GET', 'https://sandbox.asaas.com/api/v3/payments/'. $cobranca . '', [
+                            'headers' => [
+                                'accept' => 'application/json',
+                                'content-type' => 'application/json',
+                                'access_token' => "$token"
+                            ],
+                            ]);
+                            $response = (json_decode($response->getBody())); 
+                            //dd($response);
+                            if($response->status == 'RECEIVED'){
+                              $pay->status = "RECEIVED";
+                              $pay->save();
+                            }else if($response->status =="PENDING"){
+                              $pay->status = "PENDING";
+                              $pay->save();
+                            }
+                            return "$response->status";
+              }else{
+                return 'Token Inválido';
+              }
+            }
 
    }
             

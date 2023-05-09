@@ -7,8 +7,7 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
-        @vite(['resources/scss/light/assets/apps/invoice-preview.scss'])
-        @vite(['resources/scss/dark/assets/apps/invoice-preview.scss'])
+
 
         
         @vite(['resources/scss/light/assets/elements/alert.scss'])
@@ -219,6 +218,7 @@
                                                         <select name="pgpix" id="pgpix" class="form-control mb-4" hidden>
                                                             <option value="1">1x R${{ round($product->price*$cupom_discount*0.9, 0) }}</option>
                                                         </select>
+                                                        <input type="text" id="pixs" name="pixs" hidden readonly> 
                                                         </div>
 
                                                 </li>
@@ -257,18 +257,20 @@
                                                     </div>
                                                     <div class="col-md-12">
                                                         <select name="parcelab" id="parcelab" class="form-control mb-4" onchange="select_boleto()" hidden>
-                                                            <option value="">Escolha</option>
-                                                            <option value="1">1x R${{ round($product->price*$cupom_discount, 0) }} com desconto </option>
+                                                            <option value='{"x":"0", "v":"Escolha uma forma de Pagamento"}'>Escolha</option>
+                                                            <option value='{"x":"1", "v":"{{round($product->price*$cupom_discount, 0)}}"}'>1x R${{ round($product->price*$cupom_discount, 0) }} com desconto </option>
                                                             @for ($i = 2; $i < 13; $i++)
-                                                                <option value="{{ $i }}" >{{$i}}x R${{ round(($product->price + $i*$product->price*0.05)/$i, 0) }} sem desconto</option>
+                                                                <option value='{"x":"{{$i}}", "v":"{{round(($product->price + $i*$product->price*0.05)/$i, 0)}}"}' >{{$i}}x R${{ round(($product->price + $i*$product->price*0.05)/$i, 0) }} sem desconto</option>
                                                             @endfor
                                                         </select>
+                                                        <input type="text" id="parcelab_x" hidden readonly>
+                                                        <input type="text" id="parcelab_v" hidden readonly>
                                                     </div>
                                                 </li>
                                                 <input type="text" name="payment" id="payment" value="PIX" hidden>
-                                                @if (App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
-                                                    <input type="text" id="checkou_value" name="checkou_value" hidden>
-                                                @endif
+                                                
+                                                    <input type="text" id="checkou_value" name="checkou_value" hidden readonly>
+                                               
                                             </ul>
                                         </div>
                                                     
@@ -284,13 +286,8 @@
                                                     <h4>Informações de Pagamento</h4>
                                                     <div class="form-group col-md-6 mt-4">    
                                                         <label for="defaultEmailAddress">CPF do Pagador:</label>
-                                                        <input type="text" class="cpf-number form-control mb-4" placeholder="Apenas os números" name="cpfCnpj" id="cpfCnpj"  autocomplete="on" required>
-                                                        <div class="valid-feedback feedback-pos">
-                                                            CPF válido!
-                                                        </div>
-                                                        <div class="invalid-feedback feedback-pos">
-                                                            Por favor insira um CPF Válido.
-                                                        </div>
+                                                        <input type="text" class="cpf-number form-control mb-4"  onchange="cpfCheck(this)" maxlength="18" onkeydown="javascript: fMasc( this, mCPF );" placeholder="Apenas os números" name="cpfCnpj" id="cpfCnpj"  autocomplete="on" required>
+                                                        <p><span id="cpfResponse"></span></p>
                                                     </div>
                                                 </div>
                                                 
@@ -304,9 +301,7 @@
                                                                     <x-widgets._w-cardcredit/>
                                                                     
                                                                 </div>
-                                                                <div id='pixs' name='pixs' hidden>
-                                                                    <h3>Pix</h3>
-                                                                </div>
+                                                                
                                                                 <div id='boletos' name='boletos' hidden>
                                                                    
                                                                         <h4>Informações de Pagamento</h4>
@@ -406,14 +401,8 @@
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-        <script src="{{asset('node_modules/card/lib/card.js')}}"></script>
-        @vite(['resources/assets/js/apps/invoice-preview.js'])
-
-        <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
         
-
-        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
+        
         <script src="{{asset('plugins/card/dist/card.js')}}"></script>
         <script>
             var c = new Card({
@@ -422,7 +411,76 @@
             });
         </script>
 
+        <script>
+            function is_cpf (c) {
+
+                if((c = c.replace(/[^\d]/g,"")).length != 11)
+                return false
+
+                if (c == "00000000000")
+                return false;
+
+                var r;
+                var s = 0;
+
+                for (i=1; i<=9; i++)
+                s = s + parseInt(c[i-1]) * (11 - i);
+
+                r = (s * 10) % 11;
+
+                if ((r == 10) || (r == 11))
+                r = 0;
+
+                if (r != parseInt(c[9]))
+                return false;
+
+                s = 0;
+
+                for (i = 1; i <= 10; i++)
+                s = s + parseInt(c[i-1]) * (12 - i);
+
+                r = (s * 10) % 11;
+
+                if ((r == 10) || (r == 11))
+                r = 0;
+
+                if (r != parseInt(c[10]))
+                return false;
+
+                return true;
+                }
+
+
+                function fMasc(objeto,mascara) {
+                obj=objeto
+                masc=mascara
+                setTimeout("fMascEx()",1)
+                }
+
+                function fMascEx() {
+                obj.value=masc(obj.value)
+                }
+
+                function mCPF(cpf){
+                cpf=cpf.replace(/\D/g,"")
+                cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2")
+                cpf=cpf.replace(/(\d{3})(\d)/,"$1.$2")
+                cpf=cpf.replace(/(\d{3})(\d{1,2})$/,"$1-$2")
+                return cpf
+                }
+
+                cpfCheck = function (el) {
+                document.getElementById('cpfResponse').innerHTML = is_cpf(el.value)? '' : '<span class"pt-0" style="color:red">Inválido insira novamente</span>';
+                document.getElementById('cpfCnpj').classList = is_cpf(el.value)? 'cpf-number form-control mb-1 is-valid' : 'cpf-number form-control mb-1 is-invalid';
+
+                is-valid
+                if(el.value=='') document.getElementById('cpfResponse').innerHTML = '';
+                }
+        </script>
+
     <script>
+
+        
     function on() {
       document.getElementById("overlay").style.display = "block";
     }
@@ -437,10 +495,13 @@
 
             function mycard(){
                 
-                if({{$cupom_discount}} > 0){
+               
                    discount = {{$cupom_discount}};
                    price = {{$product->price}} * discount;
-                }
+                   console.log(price);
+            
+
+                
             
                     prec.innerText = "Total: R$"+price;
                     
@@ -459,14 +520,15 @@
                     
             }
             function mypix(){
-                if({{$cupom_discount}} > 0){
+                
                    discount = {{$cupom_discount}};
-                   price = {{$product->price}} * discount;
-                }
+                   price = {{$product->price}} * discount * 0.9;
+                   console.log(price);
+               
              
-                    prec.innerText = "Total: R$" + price * 0.9;
+                    prec.innerText = "Total: R$" + price;
 
-                    document.getElementById("pixs").hidden = false;
+                    
                     document.getElementById("cards").hidden = true;
                     document.getElementById("boletos").hidden = true;
                     document.getElementById("number").required = false;
@@ -475,15 +537,24 @@
                     document.getElementById("cvc").required = false;
                     document.getElementById("parcelac").hidden = true;
                     document.getElementById("pgpix").hidden = false;
+                    document.getElementById("pixs").hidden = true;
+                    document.getElementById("pixs").value = 1;
                     document.getElementById("payment").value = "PIX";
                     document.getElementById("checkou_value").value = price;
             }
             function myboleto(){
-                if({{$cupom_discount}} > 0){
+                
                    discount = {{$cupom_discount}};
-                   price = {{$product->price}} * discount;
-                }
-                    
+                   json = document.getElementById("parcelab").value;
+                   price = JSON.parse(json);
+                   
+                   console.log(price);
+
+                    if(price.x == 0){
+                        prec.innerText = "Escolha uma forma de pagamento";
+                    } else {
+                    prec.innerText = "Total: R$" + price.x * price.v;
+                    }
 
                     document.getElementById("boletos").hidden = false;
                     document.getElementById("cards").hidden = true;
@@ -494,20 +565,24 @@
                     document.getElementById("cvc").required = false;
                     document.getElementById("parcelac").hidden = true;
                     document.getElementById("parcelab").hidden = false;
+                    document.getElementById("parcelab_x").value = price.x;
+                    document.getElementById("parcelab_v").value = price.v;
+                    document.getElementById("pgpix").value = 0;
                     document.getElementById("pgpix").hidden = true;
                     document.getElementById("payment").value = "BOLETO";
-
+                    document.getElementById("checkou_value").value = price.x * price.v;
+                   
             }
             function select_boleto(){
                 
                 var value = document.getElementById("parcelab").value;
                 console.log(value);
-                document.getElementById("checkou_value").value = value;
-                var total_value = {!!($product->price)!!} * value;
+                //document.getElementById("checkou_value").value = value;
+                //var total_value = value;
 
-                {!!round($product->price + $i*$product->price*0.05, 0)!!}
+                
 
-                prec.innerText = "Total: R$"+total_value;
+                //prec.innerText = "Total: R$"+total_value;
             }
         </script>
 
@@ -568,17 +643,17 @@
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
         // Output the result in an element with id="demo"
-        document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+        //document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
 
         document.cookie = 'countdown-m=' + minutes + '; max-age=' + minutes*60+seconds + '; path=/';
         document.cookie = 'countdown-s=' + seconds + '; max-age=' + minutes*60+seconds + '; path=/';
 
         // If the count down is over, write some text 
-        if (distance < 0) {
+       if (distance < 0) {
             clearInterval(x);
-            document.getElementById("demo").innerHTML = "EXPIRADO";
-            document.getElementById("button_finalizar").hidden = true;
-            on();
+            //document.getElementById("demo").innerHTML = "EXPIRADO";
+            //document.getElementById("button_finalizar").hidden = true;
+            //on();
         }
         }, 1000);
 

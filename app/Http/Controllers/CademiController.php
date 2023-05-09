@@ -83,6 +83,7 @@ class CademiController extends Controller
          ];
 
          if (env('APP_DEBUG') == true){
+            //dd('s');
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             Storage::put('file1.txt', $data . "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username, Debug" . PHP_EOL);
             /*
@@ -91,14 +92,54 @@ class CademiController extends Controller
                 'Authorization' => env('CADEMI_TOKEN_API')
             ])->post("$url", $payload));*/
 
-            $cademi = json_decode( '{
+            $cademi = json_decode('{
                 "success": true,
                 "code": 200,
-                "data": [{
-                            "id": 4410598,
-                            "status": "Debug"
-                        }]
-                    }');
+                "data":
+                [
+                    {
+                        "id": 12330850,
+                        "instancia_id": 1543,
+                        "integracao_id": 21462,
+                        "importacao_id": null,
+                        "importacao_comecou_em": null,
+                        "processado": 1,
+                        "engine": "custom",
+                        "engine_id": "COD-1234G",
+                        "recorrencia_id": null,
+                        "recorrencia_status": null,
+                        "recorrencia_encerra_em": null,
+                        "status": "aprovado",
+                        "pagamento": null,
+                        "produto_id": "AG55",
+                        "produto_nome": null,
+                        "itens": null,
+                        "cliente_nome": "Evandro Miranda",
+                        "cliente_doc": "123.123.123-12",
+                        "cliente_email": "fabio.xina@gmail.com",
+                        "cliente_telefone": "5511991232020",
+                        "cliente_endereco": null,
+                        "cliente_endereco_cep": null,
+                        "cliente_endereco_comp": null,
+                        "cliente_endereco_n": null,
+                        "cliente_endereco_bairro": null,
+                        "cliente_endereco_cidade": null,
+                        "cliente_endereco_estado": null,
+                        "valor": null,
+                        "erro": null,
+                        "updated_at": "30/01/2023 às 10:18",
+                        "created_at": "30/01/2023 às 10:18"
+                    }
+                ],
+                "profiler":
+                {
+                    "start": 1683642813.891291,
+                    "finish": 1683642813.915258,
+                    "process": 0.02396702766418457
+                }
+            }');
+            
+            //dd($cademi);
 
          } else {
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
@@ -122,7 +163,7 @@ class CademiController extends Controller
                 $import->save();
 
             }else{
-
+                //dd($cademi);
                 $import = new CademiImport();
                 $import->username = $user->username;
                 $import->status = "success";

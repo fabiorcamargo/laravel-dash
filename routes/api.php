@@ -31,6 +31,8 @@ Route::post('gateway/pay', [ApiController::class, 'gateway_pay_post'])->name('ap
 Route::post('chatbot/pre_hen', [ApiController::class, 'chatbot_pre_hen'])->name('api.chatbot.pre_hen');
 Route::post('chatbot/chat_pro', [ApiController::class, 'chatbot_chat_pro'])->name('api.chatbot.chat_pro');
 Route::post('chatbot/test', [ApiController::class, 'chatbot_test']);
+
+Route::get('pay/status/{id}', [ApiController::class, 'pay_status']);
 //Route::post('chatbot/queue', [ChatbotAsset::class, 'chatbot_convert_data']);
 
 Route::any('rd', function (Request $request) {

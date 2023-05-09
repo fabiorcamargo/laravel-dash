@@ -132,17 +132,19 @@
                                             <line x1="14" y1="1" x2="14" y2="4"></line>
                                         </svg> Web Developer
                                     </li> --}}
+                                    <div class="card p-2" id="create">
                                     <li class="contacts-block__item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-calendar me-3">
-                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                                            <line x1="16" y1="2" x2="16" y2="6"></line>
-                                            <line x1="8" y1="2" x2="8" y2="6"></line>
-                                            <line x1="3" y1="10" x2="21" y2="10"></line>
-                                        </svg>{{ $user->created_at->format('d-m-Y H:i') }}
+                                        
+                                        <label for="create">Data de Liberação:</label>
+                                        <p>{{ $user->created_at->format('d-m-Y H:i') }}</p>
+                                        @if($user->contract_date != null)
+                                        <label for="create">Data do Contrato:</label>
+                                        <p>{{ $user->contract_date->format('d-m-Y') }}</p>
+                                        @endif
+                                    
                                     </li>
+                                    </div>
+                                    <div class="card p-2 mt-4" id="create">
                                     <li class="contacts-block__item">
                                         <a href="mailto:{{ $user->email }}"><svg xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"

@@ -363,6 +363,23 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     
         });
 
+
+        Route::prefix('/flow')->group(function () {
+            Route::get('/add', [Flow::class, 'show_add'])->name('eco-flow-add-show');
+            Route::post('/add', [Flow::class, 'flow_add'])->name('eco-flow-add');
+            Route::get('/config_flow/{id}', [Flow::class, 'flow_config_show'])->name('eco-flow-config-show');
+            Route::get('/show/{id}', [Flow::class, 'flow_show'])->name('eco-flow-config-show');
+            Route::get('/list', [Flow::class, 'list'])->name('eco-flow-list');
+        });
+
+        //Coupon
+        Route::prefix('/coupon')->group(function () {
+            Route::get('/add', [EcommerceController::class, 'coupon_create_show'])->name('eco-add_coupon-show');
+            Route::post('/add', [EcommerceController::class, 'coupon_create'])->name('eco-add_coupon');
+            Route::get('/list', [EcommerceController::class, 'list'])->name('eco-add-list');
+        });
+
+
         
            
         Route::middleware(['can:api'])->group(function () {
@@ -1316,20 +1333,7 @@ Route::middleware(['auth', 'can:admin', 'can:e-commerce'])->group(function () {
         Route::prefix('app')->group(function () {
 
             // Flow
-            Route::prefix('/flow')->group(function () {
-                Route::get('/add', [Flow::class, 'show_add'])->name('eco-flow-add-show');
-                Route::post('/add', [Flow::class, 'flow_add'])->name('eco-flow-add');
-                Route::get('/config_flow/{id}', [Flow::class, 'flow_config_show'])->name('eco-flow-config-show');
-                Route::get('/show/{id}', [Flow::class, 'flow_show'])->name('eco-flow-config-show');
-                Route::get('/list', [Flow::class, 'list'])->name('eco-flow-list');
-            });
-
-            //Coupon
-            Route::prefix('/coupon')->group(function () {
-                Route::get('/add', [EcommerceController::class, 'coupon_create_show'])->name('eco-add_coupon-show');
-                Route::post('/add', [EcommerceController::class, 'coupon_create'])->name('eco-add_coupon');
-                Route::get('/list', [EcommerceController::class, 'list'])->name('eco-add-list');
-            });
+           
 
 
 // Ecommerce
@@ -1374,6 +1378,7 @@ Route::prefix('/app/eco')->group(function () {
     Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end');
     Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay');
     Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end');
+    Route::get('/checkout/{id}/status', [EcommerceController::class, 'checkout_end'])->name('eco_checkout_pay_status');
     Route::get('/checkout_end', function () {
         return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
     })->name('eco_checkout_end');
