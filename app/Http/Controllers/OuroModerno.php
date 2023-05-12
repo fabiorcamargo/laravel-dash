@@ -331,7 +331,8 @@ class OuroModerno extends Controller
       
       $payload = ['token' => env('OURO_POST_TOKEN'),];
       
-      $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/removercurso/$ouro->ouro_id/$ouro->ouro_course_id/";
+      $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/removercurso/$ouro->ouro_id/$ouro->ouro_course_id?token=".env('OURO_TOKEN');
+      //dd($url);
       $type = "POST";
 
       $request = OuroModerno::req($payload, $url, $type);
