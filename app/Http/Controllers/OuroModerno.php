@@ -329,7 +329,7 @@ class OuroModerno extends Controller
     public function user_course_delete(OuroCourse $ouro){
       //dd($ouro);
       
-      $payload = "";
+      $payload = ['token' => env('OURO_POST_TOKEN'),];
       
       $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/removercurso/$ouro->ouro_id/$ouro->ouro_course_id/";
       $type = "POST";
