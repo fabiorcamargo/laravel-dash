@@ -501,7 +501,7 @@
                                                 <x-widgets._w-card-checkout-end title="{{$product->name}}"
                                                     img="{{$images}}"
                                                     desc="Este é um produto digital, você receberá todas as informações nos contatos inseridos no seu perfil."
-                                                    price="R$1000" />
+                                                    price="R${{$product->price}}" />
                                             </div>
 
                                         </div>
