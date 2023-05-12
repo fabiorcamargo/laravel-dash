@@ -329,7 +329,7 @@ class OuroModerno extends Controller
     public function user_course_delete($ouro){
       
       $ouro = (OuroCourse::find($ouro));
-      dd($ouro);
+      //dd($ouro);
       
       $payload = ['token' => env('OURO_POST_TOKEN'),];
       
@@ -338,10 +338,13 @@ class OuroModerno extends Controller
       $type = "POST";
 
       $request = OuroModerno::req($payload, $url, $type);
-      dd($request);
+      //dd($request);
       $return = $request->status;
       if($return == true){
         $status = "Cursos Excluído com Sucesso";
+
+        $ouro->delete();
+
         return back()->with('status', __($status)); 
   
         exit();
