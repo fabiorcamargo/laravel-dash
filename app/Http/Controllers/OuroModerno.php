@@ -326,8 +326,10 @@ class OuroModerno extends Controller
       return view('pages.app.user.list_ouro', ['title' => 'Profissionaliza EAD Ouro - Lista de Cursos', 'breadcrumb' => 'This Breadcrumb']);
     }
 
-    public function user_course_delete(OuroCourse $ouro){
-      //dd($ouro);
+    public function user_course_delete($ouro){
+      
+      $ouro = (OuroCourse::find($ouro));
+      dd($ouro);
       
       $payload = ['token' => env('OURO_POST_TOKEN'),];
       
