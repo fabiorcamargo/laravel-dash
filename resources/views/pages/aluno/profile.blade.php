@@ -431,7 +431,7 @@
                                                     $course['name'] }} </p>
                                                 <div class="icons"><svg> ... </svg></div>
                                             </div>
-                                            @if ((Auth::user()->role) >= 8)
+                                            @if ((Auth::user()->role) >= 4)
                                                 
                                             
                                             <div class="btn-group" role="group" aria-label="Basic example">
@@ -527,7 +527,7 @@
                                                 <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
                                                 <button type="button" href="javascript:void(0);"
                                                     onClick="document.getElementById('delOuroCourse{{$course->id}}').submit();"
-                                                    class="btn btn-danger">Bloquear</button>
+                                                    class="btn btn-danger">Excluir</button>
                                             </div>
                                         </div>
                                     </div>
