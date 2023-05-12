@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Imports\OuroBulk;
 use App\Models\OuroClient;
 use App\Models\OuroCombo;
+use App\Models\OuroCourse;
 use App\Models\OuroList;
 use App\Models\User;
 use Carbon\Carbon;
@@ -323,6 +324,32 @@ class OuroModerno extends Controller
       $client_ouro = (User::find($id)->client_ouro()->first());
       $course_ouro = ($client_ouro->matricula_ouro()->get());
       return view('pages.app.user.list_ouro', ['title' => 'Profissionaliza EAD Ouro - Lista de Cursos', 'breadcrumb' => 'This Breadcrumb']);
+    }
+
+    public function user_course_delete(OuroCourse $ouro){
+      //dd($ouro);
+
+      $payload = "";
+      
+      $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/removercurso/$ouro->ouro_id/$ouro->ouro_course_id/";
+      $type = "POST";
+
+      $response = OuroModerno::req($payload, $url, $type);
+
+      $return = $response->status;
+      if($return == true){
+        $status = "Cursos Excluído com Sucesso";
+        return back()->with('status', __($status)); 
+  
+        exit();
+        }else{
+            $msg = "Erro! Por favor refaça a operação";
+    
+            return back()->withErrors(__($msg));
+            exit();	
+          }
+
+
     }
 
     public function get_courses_list(){

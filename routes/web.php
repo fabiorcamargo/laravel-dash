@@ -288,6 +288,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/ouro/show/{id}', [OuroModerno::class, 'bulk_user_show'])->name('user-ouro-show');
                 Route::get('/ouro/create', [OuroModerno::class, 'bulk_user_create_show'])->name('user-ouro-create-show');
                 Route::post('/ouro/create', [OuroModerno::class, 'bulk_user_create'])->name('user-ouro-create');
+                Route::delete('/ouro/delete/{id}', [OuroModerno::class, 'user_course_delete'])->name('user-ouro-course-delete');
 
                 Route::post('/ouro/course/liberation/{id}', [OuroModerno::class, 'ouro_create_liberation'])->name('ouro-create-liberation');
 
@@ -306,6 +307,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::delete('/combo/delete/{id}', [OuroModerno::class, 'combo_delete'])->name('user-ouro-combo-delete');
                 Route::get('/get/courses', [OuroModerno::class, 'get_courses_list'])->name('user-ouro-get-courses');
                 Route::get('/courses/correct-img', [OuroModerno::class, 'correct_img_course'])->name('user-ouro-courses-correct-img');
+                
             });
 
             Route::prefix('/group')->group(function () {
