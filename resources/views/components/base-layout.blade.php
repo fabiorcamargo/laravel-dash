@@ -19,7 +19,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Venha fazer parte de uma das maiores plataformas profissionalizantes do Brasil.">
+    <meta name="keywords" content="curso, curso online, preparatorios, cpa10, aprendiz, aprendiz bancario">
+    <meta name="robots" content="index, follow">
+    <meta http-equiv="content-language" content="pt">
     
+    
+    <meta name="twitter:card" content="Profissionaliza EAD" />
+    <meta name="twitter:description" content="Venha fazer parte de uma das maiores plataformas profissionalizantes do Brasil." />
+    <meta property="og:site_name" content="Profissionaliza EAD" />
+    <meta name="title" content="Profissionaliza EAD" />
+    <meta property="og:title" content="Profissionaliza EAD" />
+    <meta property="og:description" content="Venha fazer parte de uma das maiores plataformas profissionalizantes do Brasil." />
+    <meta property="og:image" content="{{Vite::asset('resources/images/url-image.jpg')}}" />
+    <meta property="og:url" content="{{url()->current()}}" />
+    <meta property="og:type" content="website" />
+        
     <title>{{ $pageTitle }}</title>
     <link rel="icon" type="image/x-icon" href="{{Vite::asset('resources/images/favicon.ico')}}"/>
     @vite(['resources/scss/layouts/vertical-light-menu/light/loader.scss'])
@@ -145,7 +160,7 @@
             !Request::routeIs('login')
         )
 
-        @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.pw_change', 'aluno.post', 'eco_checkout*', 'form-*'))  
+        @if (!Request::routeIs('*blank*', 'aluno.first', 'aluno.second', 'aluno.pw_change', 'aluno.post', 'eco_checkout*', 'form-*'))  
         <!--  BEGIN NAVBAR  -->
         @isset((Auth::user()->role))
         <x-navbar.style-vertical-menu avatar="{{ Auth::user()->image }}" classes="{{($isBoxed ? 'container-xxl' : '')}}"/>
@@ -163,7 +178,7 @@
             <x-layout-overlay/>
             <!--  END LOADER  -->
 
-            @if (!Request::routeIs('blank', 'aluno.first', 'aluno.second', 'aluno.pw_change', 'aluno.post', 'eco_checkout*', 'form-*')) 
+            @if (!Request::routeIs('*blank*', 'aluno.first', 'aluno.second', 'aluno.pw_change', 'aluno.post', 'eco_checkout*', 'form-*')) 
             <!--  BEGIN SIDEBAR  -->
             
            
@@ -176,7 +191,7 @@
             @endif
             
             <!--  BEGIN CONTENT AREA  -->
-            <div id="content" class="main-content {{(Request::routeIs('blank') ? 'ms-0 mt-0' : '')}}">
+            <div id="content" class="main-content {{(Request::routeIs('*blank*') ? 'ms-0 mt-0' : '')}}">
 
                 @if ($scrollspy == 1)
                     <div class="container">

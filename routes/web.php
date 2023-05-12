@@ -15,6 +15,7 @@ use App\Http\Controllers\{
     FormController,
     OuroModerno,
     RdController,
+    RedirCademiController,
     TemporaryFileController,
     UserController
 };
@@ -64,17 +65,9 @@ use Illuminate\Support\Facades\Route;
         Route::get('/test_mail', function(){ 
             Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
-         Route::get('/redir', function () {
-            if(Auth::user()->cademis()->exists()){
-                $new_url = (str_replace("https://profissionaliza.cademi.com.br/auth/login", "https://profissionaliza.cademi.com.br/" . request()->input('url'), Auth::user()->cademis()->first()->login_auto));
-                return Redirect::to($new_url);
-            } else {
-                $msg = "Token inválido por favor entre em contato com o suporte";
-                return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));;
-            }
-        })->name('aluno.redir');
+         
 
-        Route::get('/login/{id}', function ($id) {
+       /* Route::get('/login/{id}', function ($id) {
             if(Auth::user()->role >= 4){
                 $user = User::find($id);
                     if($user->role != 1){
@@ -89,7 +82,7 @@ use Illuminate\Support\Facades\Route;
                 $msg = "Ação não permitida para esse usuário";
                 return back()->withErrors(__($msg));;
             }
-        })->name('aluno.redir');
+        })->name('aluno.redir');*/
         
         
     
@@ -135,6 +128,16 @@ use Illuminate\Support\Facades\Route;
                         Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                         Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                         Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
+                    });
+
+
+                    Route::prefix('app/eco')->group(function () {
+                        Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay-blank');
+                        Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end-blank');
+                        Route::get('/checkout/{id}/status', [EcommerceController::class, 'checkout_end'])->name('eco_checkout_pay_status-blank');
+                        Route::get('/checkout_end', function () {
+                            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
+                        })->name('eco_checkout_end-blank');
                     });
 
             });
@@ -360,7 +363,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             
 
             
-            Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show');     
+            Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco-checkout-show-blank');     
         });
 
 
@@ -1374,14 +1377,9 @@ Route::prefix($prefixRouter)->group(function () {
 Route::prefix('/app/eco')->group(function () {
     Route::get('/shop', [EcommerceController::class, 'product_show'])->name('eco-shop');
     Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-show');
-    Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show');
-    Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end');
-    Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay');
-    Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end');
-    Route::get('/checkout/{id}/status', [EcommerceController::class, 'checkout_end'])->name('eco_checkout_pay_status');
-    Route::get('/checkout_end', function () {
-        return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
-    })->name('eco_checkout_end');
+    Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show-blank.');
+    Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end-blank');
+    
     Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
     Route::get('/cademi/tag', [CademiController::class, 'cademi_tag'])->name('eco-cademi_tag');
     Route::get('/rd/fluxo', [RdController::class, 'rd_fluxos']);
@@ -1409,6 +1407,10 @@ Route::get('/form/{id}', [FormController::class, 'redir'])->name('form-redirect'
 Route::get('/politica-de-privacidade', function () {
     return Redirect::to('https://ead.profissionalizaead.com.br/mod/page/view.php?id=18448');;
 });
+
+Route::get('/redir', [RedirCademiController::class , 'redir_get'])->name('aluno.redir');
+Route::post('/redir', [RedirCademiController::class , 'redir_post'])->name('aluno.redir.post');
+Route::get('/modern-dark-menu/redir_login', [RedirCademiController::class , 'redir_get_show'])->name('aluno.redir.login');
 
 Route::get('/', function () {
     return Redirect::to(env('APP_HOME_URL'));

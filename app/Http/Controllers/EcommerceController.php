@@ -30,6 +30,7 @@ use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\ChatbotAsset as ControllersChatbotAsset;
 use App\Jobs\WhatsappBulkTemplate;
+use App\Mail\UserInvoiceSend;
 use App\Mail\UserSign;
 
 class EcommerceController extends Controller
@@ -309,7 +310,7 @@ class EcommerceController extends Controller
         $user->active = "1";
         $user->courses = "$product->course_id";
         $user->document = 99999999999;
-        //$user->save();
+        $user->save();
 
         $user->password = $password;
 
@@ -322,17 +323,18 @@ class EcommerceController extends Controller
         //$rd2 = new RdController;
         //$rd2->rd_create_opportunity($user->id, $product);
 
-        //Mail::to($user->email)->send(new UserSign($user, "Profissionaliza EAD - Cadastro Realizado"));
+        Mail::to($user->email)->send(new UserSign($user, "Profissionaliza EAD - Cadastro Realizado"));
 
-        //Auth::login($user);
+        Auth::login($user);
 
-        $template = "login_ead";
+        //$template = "login_ead";
 
-        dispatch(new \App\Jobs\WhatsappSignSend($template, $user->name, $user->cellphone, $user->username, $user->password));
-        /*
+        //dispatch(new \App\Jobs\WhatsappSignSend($template, $user->name, $user->cellphone, $user->username, $user->password));
+        
+        $msg2 = "🥰Seja bem vindo(a) à Profissionaliza EAD!\n\nFábio Camargo, ficamos felizes pelo seu cadastro em nossa plataforma.\n\n👇Abaixo seguem as informações de acesso:\n\n👤 Login: $user->username\n🔐 Senha: $user->password\n\n📲 Site: https://alunos.profissionalizaead.com.br/login";
         $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\n";
         $send = new ControllersChatbotAsset;
-        $send->chatbot_send(1, $user->cellphone, $msg);*/
+        $send->chatbot_send(1, $user->cellphone, $msg2);
 
         if($request->t !== null && $request->s !== null){
             $url = "/app/eco/checkout/$product->id/pay/$user->id?s=$request->s&t=$request->t";
@@ -344,7 +346,7 @@ class EcommerceController extends Controller
             $url = "/app/eco/checkout/$product->id/pay/$user->id";
             //dd($url);
         }
-        dd($url);
+        //dd($url);
 
         return redirect(getRouterValue() . $url);
         //return view('pages.eco.checkout_pay', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'prefixRouters' => 'modern-light-menu'], compact('product', 'user'));
@@ -364,7 +366,7 @@ class EcommerceController extends Controller
     public function checkout_pay_end_post($product_id, $client, Request $request){
     
         //Captura dados do pagamento
-        //dd($request->all());
+        dd($request->all());
         $pay = (object)$request->all();
         $cep = str_replace("-","", $request->cep);
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $pay->expiry));
@@ -385,43 +387,29 @@ class EcommerceController extends Controller
         $user->payment = strtoupper($request->payment);
         $user->document = preg_replace('/[^0-9]/', '', $request->cpfCnpj);
         if(isset($user->courses)){
-        $user->courses = $product->course_id;
+            $user->courses = $product->course_id;
         } else {
             $user->courses = $user->courses . ", $product->course_id";
         }
-        //$user->save();
-
-            //$asaas = new AsaasController();
-           // $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
 
 
             //Cria o cliente no gateway
             if(!($user->eco_client()->first())){
                 $asaas = new AsaasController();
-                $response = $asaas->create_client($user, $cep);
+                $asaas->create_client($user, $cep);
             }else{
+
             }
-            
-            //Cria cobrança no gateway
-            /*
-            if($user->eco_sales()->where('codesale', $codesale)->first()){
-                $cobranca = $user->eco_sales()->where('codesale', $codesale)->first();
-
-            }else{
-                $asaas = new AsaasController();
-                $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
-            }*/
-
-            //dd($pay);
+          
             $asaas = new AsaasController();
             $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
 
-            //dd($cobranca);
-            $invoice = json_decode($cobranca->body)->invoiceUrl;
-
-            $product->cobranca = $cobranca;
-
-            $status = $cobranca->status; 
+            Mail::to($user->email)->send(new UserInvoiceSend($user, $cobranca, "Profissionaliza EAD - Fatura"));
+            
+            $msg2 = "Fatura";
+            $msg = "Parabéns seu cadastro foi realizado com sucesso, segue os dados para acesso:\n\nLogin: $user->username\n\nSenha: $user->password\n\nhttps://alunos.profissionalizaead.com.br/login\n\n";
+            $send = new ControllersChatbotAsset;
+            //$send->chatbot_send(1, $user->cellphone, $msg2);
 
            // $rd = new RdController;
            // $rd->rd_update_opportunity($user, $product);

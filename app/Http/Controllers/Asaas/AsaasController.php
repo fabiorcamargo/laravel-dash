@@ -29,7 +29,6 @@ class AsaasController extends Controller
     public function create_client($user, $cep){
         //$user = User::find($id);
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
-        $user->name = $user->name;
         $user->name = $user->name . ((isset($user->lastname)) ? " " . $user->lastname : "");
             $clientes = $asaas->Cliente()->create([
                 'name' => $user->name,
@@ -52,13 +51,14 @@ class AsaasController extends Controller
     }
 
     public function create_payment($user, $product, $pay, $codesale){
-        //$user = User::find($user_id);
+
+        dd(json_encode($user) . "\n" . json_encode($product) . "\n" . json_encode($pay) . "\n" . json_encode($codesale));
+        
+        /*
+
         $customer = ($user->eco_client()->first()->customer_id);
-        //$product = EcoProduct::find($product_id);
-        //dd($product);
-        //dd($pay);
         $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
-        //dd(json_decode($pay->parcelab));
+        
         if($pay->payment == "PIX"){
             $pay1 = "BOLETO";
             $pay2 = "Pix";
@@ -84,19 +84,7 @@ class AsaasController extends Controller
                 'description' => "$product->course_id | $product->name | $codesale" 
               ]);
 
-                            $token = env('ASAAS_TOKEN');
-                            $client = new \GuzzleHttp\Client();
-                            $response = $client->request('GET', 'https://sandbox.asaas.com/api/v3/payments/'. $cobranca->id . '/pixQrCode', [
-                            'headers' => [
-                                'accept' => 'application/json',
-                                'content-type' => 'application/json',
-                                'access_token' => "$token"
-                            ],
-                            ]);
-                            $response = (json_decode($response->getBody()));
-                            $cobranca->pix = $response->encodedImage;
-                            $cobranca->copy = $response->payload;
-                            $cobranca->expiry = $response->expirationDate;
+              
 
             } else if($pay->payment == "CREDIT_CARD"){
                     $pay1 = "CREDIT_CARD";
@@ -156,6 +144,7 @@ class AsaasController extends Controller
 
     
         }else if($pay->payment == "BOLETO"){
+
                     $pay1 = "BOLETO";
                     $due_date = (now()->addDays(1)->format('Y-m-d'));
                     $externalReference = $user->eco_sales()->create([
@@ -163,25 +152,32 @@ class AsaasController extends Controller
                         'codesale' => $codesale,
                         'seller' => $user->seller,
                         "installmentCount" => json_decode($pay->parcelab)->x,
-                        'installmentValue' => $pay->checkou_value / json_decode($pay->parcelab)->v,
+                        'installmentValue' => json_decode($pay->parcelab)->v,
                     ]);
 
                     $dadosAssinatura = array(
                         "customer" => "$customer",
                         "billingType" => "$pay->payment",
                         "installmentCount" => json_decode($pay->parcelab)->x,
-                        'installmentValue' => $pay->checkou_value / json_decode($pay->parcelab)->v,
+                        'installmentValue' => json_decode($pay->parcelab)->v,
                         "dueDate" => $due_date,
                         "description" => "$product->course_id $product->name",
                         'externalReference'=> $externalReference->id,
                     );
+                    
+                    //dd($pay);
+                    //dd($dadosAssinatura);
                     $cobranca = $asaas->Cobranca()->create(
                     $dadosAssinatura
-                );
+                    );
+                    
+                    
         }
 
-        //dd($cobranca);
+        
+        
         if(isset($cobranca->errors)){
+            dd($cobranca);  
             $asaas = new AsaasAsaas(env('ASAAS_TOKEN'), env('ASAAS_TIPO'));
             $dadosAssinatura = array(
                 "customer" => "$customer",
@@ -197,6 +193,7 @@ class AsaasController extends Controller
             $cobranca = $asaas->Cobranca()->create(
                 $dadosAssinatura
             );
+           
 
             $externalReference->update([
                 'pay_id' => $cobranca->id,
@@ -213,13 +210,34 @@ class AsaasController extends Controller
                 'status' => "$cobranca->status",
                 'body' => json_encode($cobranca),
             ]);
+
+            $pay->payment != "CREDIT_CARD" ? $cobranca = AsaasController::get_pix_qrcode($cobranca) : "" ;
         }
         
         //dd($cobranca);
 
         return $externalReference;
+        */
+
+
     }
 
+    public function get_pix_qrcode($cobranca){
+                            $token = env('ASAAS_TOKEN');
+                            $client = new \GuzzleHttp\Client();
+                            $response = $client->request('GET', 'https://sandbox.asaas.com/api/v3/payments/'. $cobranca->id . '/pixQrCode', [
+                            'headers' => [
+                                'accept' => 'application/json',
+                                'content-type' => 'application/json',
+                                'access_token' => "$token"
+                            ],
+                            ]);
+                            $response = (json_decode($response->getBody()));
+                            $cobranca->pix = $response->encodedImage;
+                            $cobranca->copy = $response->payload;
+                            $cobranca->expiry = $response->expirationDate;
+                            return $cobranca;
+    }
     public function get_client($id){
         //($id);
         $user = User::find($id);

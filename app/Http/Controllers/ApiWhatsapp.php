@@ -323,10 +323,10 @@ class ApiWhatsapp extends Controller
     
             //dd($response);
             
-
+/*
             if($response->status() !== 200){
                 WhatsappBulkStatus::create([
-                    'user_id' => $user->id,
+                    'user_id' => $username,
                     'template' => $template->id,
                     'campaign' => "sign",
                     'body' => $response->body(),
@@ -339,14 +339,14 @@ class ApiWhatsapp extends Controller
             $msg_id = $response->object()->messages[0]->id;
 
             WhatsappBulkStatus::create([
-                'user_id' => $user->id,
+                'user_id' => $username,
                 'template' => $template->id,
                 'campaign' => "sign",
                 'body' => $response->body(),
                 'wamid' => $msg_id,
               ]);
 
-            $client = (new ControllersWhatsappManipulation)->client($phone, $user->name);  
+            $client = (new ControllersWhatsappManipulation)->client($phone, $username);  
             if($template->button == 1){
                 $client->wp_msg()->create([
                     'msg_id' => $msg_id,
@@ -355,7 +355,7 @@ class ApiWhatsapp extends Controller
                     'type' => "button",
                 ]);
             }
-
+*/
             
 
             return ($response->body());

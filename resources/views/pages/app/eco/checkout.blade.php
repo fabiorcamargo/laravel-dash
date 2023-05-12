@@ -1,23 +1,24 @@
 <x-base-layout :scrollspy="false">
 
     <x-slot:pageTitle>
-        {{$title}} 
-    </x-slot>
+        {{$title}}
+        </x-slot>
 
-    <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <x-slot:headerFiles>
-        <!--  BEGIN CUSTOM STYLE FILE  -->
-        @vite(['resources/scss/light/assets/apps/invoice-preview.scss'])
-        @vite(['resources/scss/dark/assets/apps/invoice-preview.scss'])
+        <!-- BEGIN GLOBAL MANDATORY STYLES -->
+        <x-slot:headerFiles>
+            <!--  BEGIN CUSTOM STYLE FILE  -->
+            @vite(['resources/scss/light/assets/apps/invoice-preview.scss'])
+            @vite(['resources/scss/dark/assets/apps/invoice-preview.scss'])
 
-        
-        @vite(['resources/scss/light/assets/elements/alert.scss'])
-        @vite(['resources/scss/dark/assets/elements/alert.scss'])
-        
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-        <script>
-    
-            function limpa_formulário_cep() {
+
+            @vite(['resources/scss/light/assets/elements/alert.scss'])
+            @vite(['resources/scss/dark/assets/elements/alert.scss'])
+
+
+
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+            <script>
+                function limpa_formulário_cep() {
                     //Limpa valores do formulário de cep.
                     document.getElementById('rua').value=("");
                     document.getElementById('bairro').value=("");
@@ -93,8 +94,8 @@
             };
         
             </script>
-            
-            <x-fb-microdata object={!!$product!!}/>
+
+            <x-fb-microdata object={!!$product!!} />
 
             <style>
                 .callout {
@@ -103,268 +104,351 @@
                     right: 10px;
                     margin-left: 20px;
 
-                    animation: pulse infinite; /* referring directly to the animation's @keyframe declaration */
-                    animation-duration: 2s; /* don't forget to set a duration! */
+                    animation: pulse infinite;
+                    /* referring directly to the animation's @keyframe declaration */
+                    animation-duration: 2s;
+                    /* don't forget to set a duration! */
                 }
+
                 .cupom {
-                    width: 100px; 
+                    width: 100px;
 
                 }
-                .cupom-text{
+
+                .cupom-text {
                     position: fixed;
                     top: 58px;
                     right: 48px;
                     color: black;
                 }
+
                 .footer {
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                width: 100%;
-                height: 40px;
-                background-color: rgb(49, 49, 49);
-                color: white;
-                text-align: center;
+                    position: fixed;
+                    left: 0;
+                    bottom: 0;
+                    width: 100%;
+                    height: 40px;
+                    background-color: rgb(49, 49, 49);
+                    color: white;
+                    text-align: center;
                 }
+
                 #overlay {
-                position: fixed; /* Sit on top of the page content */
-                display: none; /* Hidden by default */
-                width: 100%; /* Full width (cover the whole page) */
-                height: 100%; /* Full height (cover the whole page) */
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background-color: rgba(0,0,0,0.5); /* Black background with opacity */
-                z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-                cursor: pointer; /* Add a pointer on hover */
+                    position: fixed;
+                    /* Sit on top of the page content */
+                    display: none;
+                    /* Hidden by default */
+                    width: 100%;
+                    /* Full width (cover the whole page) */
+                    height: 100%;
+                    /* Full height (cover the whole page) */
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    /* Black background with opacity */
+                    z-index: 2;
+                    /* Specify a stack order in case you're using a different order for other elements */
+                    cursor: pointer;
+                    /* Add a pointer on hover */
                 }
-                #text{
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%,-50%);
-                -ms-transform: translate(-5%,-5%);
-                }
-                .text{
-                font-size: 50px;
-                color: white;
-                }
-            </style> 
 
-        <!--  END CUSTOM STYLE FILE  -->
-    </x-slot>
-    <!-- END GLOBAL MANDATORY STYLES -->
+                #text {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    -ms-transform: translate(-5%, -5%);
+                }
 
-    @php $price = $product->price @endphp
-        @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
+                .text {
+                    font-size: 50px;
+                    color: white;
+                }
+            </style>
+
+            <!--  END CUSTOM STYLE FILE  -->
+            </x-slot>
+            <!-- END GLOBAL MANDATORY STYLES -->
+
+            @php $price = $product->price @endphp
+            @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
             @php $cupom = App\Models\EcoCoupon::where('token', request()->input('t'))->first() @endphp
             @php $cupom_discount = 1 - $cupom->discount /100 @endphp
-            @php $seller = App\Models\User::find(App\Models\EcoSeller::find(App\Models\EcoCoupon::where('token', request()->input('t'))->first()->seller)->user_id)  @endphp
-            @php $wp_text = urlencode("Olá preciso de um novo cupom para o curso de $product->name eu estava utilizando o Cupom: $cupom->name") @endphp
-        @else
+            @php $seller = App\Models\User::find(App\Models\EcoSeller::find(App\Models\EcoCoupon::where('token',
+            request()->input('t'))->first()->seller)->user_id) @endphp
+            @php $wp_text = urlencode("Olá preciso de um novo cupom para o curso de $product->name eu estava utilizando
+            o Cupom: $cupom->name") @endphp
+            @else
             @php $cupom_discount = 1 - $product->percent @endphp
-    @endif
-    <div class="row invoice layout-top-spacing layout-spacing">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-            
-            <div class="doc-container">
+            @endif
 
-                <div class="row">
+            <div class="auth-container d-flex">
 
-                    <div class="col-xl-9">
+                <div class="container mx-auto align-self-center">
+                    <div class="row">
+                        @if (\Session::has('erro'))
+                        <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg></button> <strong>Atenção:</strong> {!!
+                            \Session::get('erro') !!} </div>
 
-                        <div class="invoice-container">
-                            <div class="invoice-inbox">
-                                
-                                <div id="ct" class="">
-                                    
-                                    <div class="invoice-00001">
-                                        <div class="content-section">
+                        @endif
+                        @if (\Session::has('success'))
+                        <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert">
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg
+                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg></button> <strong>Atenção:</strong> {!!
+                            \Session::get('success') !!} </div>
 
-                                            <div class="inv--head-section inv--detail-section">
-                                            
-                                                <div class="row">
+                        @endif
 
-                                                    <div class="col-sm-6 col-12 mr-auto">
-                                                        <div class="d-flex">
-                                                        <h4 class=""><img src="{{Vite::asset('resources/images/logo2.svg')}}" class="navbar-logo logo-light pe-3" width="80" alt="logo">Profissionaliza EAD</h4> 
-                                                        </div>
-                                                        <p class="inv-street-addr mt-3">CNPJ: 41.769.690/0001-25</p>
-                                                        <p class="inv-street-addr mt-3">Endereço: Av. Advogado Horácio Raccanello Filho, 5410 Sala 01, Maringá/PR, 87020-035</p>
-                                                        
-                                                    </div>
+                    </div>
 
-                                                    
+                    <div class="row">
+                        <form action="{{ getRouterValue(); }}/app/eco/checkout/{{ $product->id }}/client" method="post"
+                            enctype="multipart/form-data" name="form" id="form" class="needs-validation m-0 p-0"
+                            novalidate>
+                            @csrf
+                            <div
+                                class="col-xxl-4 col-xl-5 col-lg-5 col-md-8 col-12 d-flex flex-column align-self-center mx-auto p-0 m-0">
+                                <div class="card mt-3 mb-3">
+                                    <div class="card-body">
 
-                                                    
-                                                   {{--}}<div class="col-sm-6 text-sm-end">
-                                                        <p class="inv-list-number mt-sm-3 pb-sm-2 mt-4"><span class="inv-title">Identificação : </span> <span class="inv-number">#0001</span></p>
-                                                    </div>     --}}                                       
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <div class="text-center">
+                                                    <img src="{{Vite::asset('resources/images/Logo-Vetorial.png')}}"
+                                                        class="navbar-logo logo-light pe-3" width="200"
+                                                        alt="Profissionaliza EAD">
                                                 </div>
-                                                
+                                                <h2 class="pt-4 text-center">Bem vindo</h2>
+                                                <p class="pt-2 text-center">Você está a um passo de ingressar em uma das
+                                                    maiores plataformas profissionalizantes do Brasil</p>
+
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nome</label>
+                                                    <input type="text" class="form-control add-billing-address-input"
+                                                        placeholder="Nome completo" name="nome" id="nome"
+                                                        autocomplete="on" required>
+                                                    <div class="valid-feedback feedback-pos">
+                                                        Celular válido!
+                                                    </div>
+                                                    <div class="invalid-feedback feedback-pos">
+                                                        Por favor preencha com seu nome completo.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" class="email form-control"
+                                                        placeholder="Para receber acesso ao portal"
+                                                        class="email white col-7 col-md-4 col-lg-7 ml-3 form-control"
+                                                        id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                        onchange="myFn('mail')" required>
+                                                    <div class="valid-feedback feedback-pos">
+                                                        Email Válido!
+                                                    </div>
+                                                    <div class="invalid-feedback feedback-pos">
+                                                        Por favor coloque um email válido.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="mb-3">
+                                                    <label class="form-label">Telefone</label>
+                                                    <input type="text" class="ph-number form-control"
+                                                        placeholder="Digite apenas os números" name="cellphone"
+                                                        id="cellphone" autocomplete="on" required>
+                                                    <div class="valid-feedback feedback-pos">
+                                                        Celular válido!
+                                                    </div>
+                                                    <div class="invalid-feedback feedback-pos">
+                                                        Por favor coloque um Telefone válido com DDD e 9º
+                                                        dígito.
+                                                    </div>
+                                                </div>
                                             </div>
 
-                                            
-                                            <form action="{{ getRouterValue(); }}/app/eco/checkout/{{ $product->id }}/client" method="post" enctype="multipart/form-data" name="form" id="form" class="needs-validation" novalidate>
-                                                @csrf
-                                                <div class="inv--detail-section">
-
-                                                    <div class="row">
-                                                        @if (\Session::has('erro'))
-                                                            <div class="alert alert-light-danger alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('erro') !!} </div>
-                                                
-                                                        @endif
-                                                        @if (\Session::has('success'))
-                                                            <div class="alert alert-light-sucess alert-dismissible fade show border-0 mb-4" role="alert"> <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x close" data-bs-dismiss="alert"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button> <strong>Atenção:</strong> {!! \Session::get('success') !!} </div>
-                                                
-                                                        @endif
-                                                        
-                                                    </div>
-                                                 
-                                                    
-                                                    <div class="row">
-                                                        
-                                                        <div class="col-md-6">
-                                                            <h5 class="pb-4">Para prosseguir insira as informações abaixo:</h5>
-                                                            <label for="defaultEmailAddress">Nome Completo</label>
-                                                            <input type="text" class="form-control mb-4" placeholder="Nome completo" name="nome" id="nome"  autocomplete="on" required >
-                                                            <div class="valid-feedback feedback-pos">
-                                                                Celular válido!
-                                                            </div>
-                                                            <div class="invalid-feedback feedback-pos">
-                                                                Por favor preencha com seu nome completo.
-                                                            </div>
-                                                
-                                                            <div class="form-group">
-                                                            <label for="defaultEmailAddress">Telefone com Whatsapp</label>
-                                                            <input type="text" class="ph-number form-control mb-4" placeholder="Digite apenas os números" name="cellphone" id="cellphone"  autocomplete="on" required >
-                                                            <div class="valid-feedback feedback-pos">
-                                                                Celular válido!
-                                                            </div>
-                                                            <div class="invalid-feedback feedback-pos">
-                                                                Por favor coloque um Telefone válido com DDD e 9º dígito.
-                                                            </div>
-                                                            </div>
-
-                                                            <div class="form-group">
-                                                                <label for="email">Email</label>
-                                                                <input type="email" name="email" placeholder="Para receber acesso ao portal" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
-                                                                        <div class="valid-feedback feedback-pos">
-                                                                            Email Válido!
-                                                                        </div>
-                                                                        <div class="invalid-feedback feedback-pos">
-                                                                            Por favor coloque um email válido.
-                                                                        </div>
-                    
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    
-                                            
-                                            
-                                                   
-
-                                                    <div class="row" >
-                                                        <div class="col-xl-10 col-lg-12 col-md-12 layout-spacing">
-                                                            <div class="section general-info payment-info">
-                                                                <div class="info">
-                                                                    @foreach (request()->input() as $key => $value)
-                                                                        <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}" readonly hidden>
-                                                                    @endforeach
-
-                                                                    <button class="btn btn-primary mt-4" type="submit">Próximo</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                            <div class="col-12 mt-3">
+                                                <div class="mb-3">
+                                                    <div class="form-check form-check-primary form-check-inline">
+                                                        <input class="form-check-input  " type="checkbox"
+                                                            id="form-check-default" required>
+                                                        <label class="form-check-label" for="form-check-default" >
+                                                            Eu concordo com <a href="javascript:void(0);"
+                                                                class="text-primary">Termos e Política de
+                                                                Privacidade</a>
+                                                        </label>
                                                     </div>
                                                 </div>
-                                            </form>
+                                            </div>
+
+                                            <div class="col-12">
+                                                <div class="mb-4">
+                                                    @foreach (request()->input() as $key => $value)
+                                                    <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}"
+                                                        readonly hidden>
+                                                    @endforeach
+                                                    <button class="btn btn-secondary w-100">Continuar</button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-12 mb-2">
+                                                <div class="">
+                                                    <div class="seperator">
+                                                        <hr>
+                                                        <div class="seperator-text"> <span></span></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {{--}}
+                                            <div class="col-sm-4 col-12">
+                                                <div class="mb-4">
+                                                    <button class="btn  btn-social-login w-100 ">
+                                                        <img src="{{Vite::asset('resources/images/google-gmail.svg')}}"
+                                                            alt="" class="img-fluid">
+                                                        <span class="btn-text-inner">Google</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 col-12">
+                                                <div class="mb-4">
+                                                    <button class="btn  btn-social-login w-100">
+                                                        <img src="{{Vite::asset('resources/images/github-icon.svg')}}"
+                                                            alt="" class="img-fluid">
+                                                        <span class="btn-text-inner">Github</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4 col-12">
+                                                <div class="mb-4">
+                                                    <button class="btn  btn-social-login w-100">
+                                                        <img src="{{Vite::asset('resources/images/twitter.svg')}}"
+                                                            alt="" class="img-fluid">
+                                                        <span class="btn-text-inner">Twitter</span>
+                                                    </button>
+                                                </div>
+                                            </div>--}}
+
+                                            <div class="col-12">
+                                                <div class="text-center">
+                                                    <p class="mb-0">Já possui uma conta? <a href="javascript:void(0);"
+                                                            class="text-warning">Clique aqui para entrar</a></p>
+                                                </div>
+                                            </div>
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
 
                 </div>
-                
+
             </div>
 
-        </div>
-    </div>
-        @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
+            @if(App\Models\EcoCoupon::where('token', request()->input('t'))->exists())
             <div class="footer">
-                <h4 class="mt-2" style="color: #FFBA00">Cupom expira em: <span class="btn-text-inner" id="demo"></span></h4>
+                <h4 class="mt-2" style="color: #FFBA00">Cupom expira em: <span class="btn-text-inner" id="demo"></span>
+                </h4>
             </div>
             <div class="callout">
-                <span class="closebtn" {{--onclick="this.parentElement.style.display='none';"--}}><img class="cupom" src="{{Vite::asset('resources/images/Cupom.svg')}}"  alt="logo"><h4 class="cupom-text">{{App\Models\EcoCoupon::where('token', request()->input('t'))->first()->discount}}</h4></span>
+                <span class="closebtn" {{--onclick="this.parentElement.style.display='none';" --}}><img class="cupom"
+                        src="{{Vite::asset('resources/images/Cupom.svg')}}" alt="logo">
+                    <h4 class="cupom-text">{{App\Models\EcoCoupon::where('token',
+                        request()->input('t'))->first()->discount}}</h4>
+                </span>
             </div>
             <div id="overlay">
-                <div id="text" class="col-xxl-6 col-xl-8 col-lg-10 col-md-12 col-12" >
+                <div id="text" class="col-xxl-6 col-xl-8 col-lg-10 col-md-12 col-12">
                     <div class="card style-4 mx-4 mt-5">
                         <div class="card-body pt-3">
                             <div class="media mt-0 mb-3">
                                 <div class="">
-                                <div class="avatar avatar-md avatar-indicators avatar-online me-3">
-                                    <img alt="avatar" src="{{asset($seller->image)}}" class="rounded-circle">
-                                </div>
+                                    <div class="avatar avatar-md avatar-indicators avatar-online me-3">
+                                        <img alt="avatar" src="{{asset($seller->image)}}" class="rounded-circle">
+                                    </div>
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading mb-0">{{($seller->name)}} {{($seller->lastname)}}</h4>
                                     <p class="media-text">Representante Comercial</p>
                                 </div>
                             </div>
-                            <p class="card-text mt-4 mb-0">Olá! Vejo que seu cupom explirou, fale comigo através do Whatsapp que tenho uma ótima proposta para você!</p>
+                            <p class="card-text mt-4 mb-0">Olá! Vejo que seu cupom explirou, fale comigo através do
+                                Whatsapp que tenho uma ótima proposta para você!</p>
                         </div>
                         <div class="card-footer pt-0 border-0 text-center">
-                            
-                            <a href="https://api.whatsapp.com/send?phone={{$seller->cellphone}}&text={{$wp_text}}" class="btn btn-success w-100"><x-widgets._w-svg svg="brand-whatsapp"/>  <span class="btn-text-inner ms-3">Enviar Mensagem</span></a>
+
+                            <a href="https://api.whatsapp.com/send?phone={{$seller->cellphone}}&text={{$wp_text}}"
+                                class="btn btn-success w-100">
+                                <x-widgets._w-svg svg="brand-whatsapp" /> <span class="btn-text-inner ms-3">Enviar
+                                    Mensagem</span>
+                            </a>
                         </div>
-                        </div>
+                    </div>
                 </div>
             </div>
-        @endif
-    <body>
-        <style>
-            .demo-container {
-                width: 100%;
-                max-width: 350px;
-                margin: 50px auto;
-            }
-    
-            form {
-                margin: 30px;
-            }
-    
-            input {
-                width: 200px;
-                margin: 10px auto;
-                display: block;
-            }
-        </style>
+            @endif
 
-    <!--  BEGIN CUSTOM SCRIPTS FILE  -->
-    <x-slot:footerFiles>
-        <script src="{{asset('node_modules/card/lib/card.js')}}"></script>
-        @vite(['resources/assets/js/apps/invoice-preview.js'])
 
-        <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-        
 
-        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
-        <script src="{{asset('plugins/card/dist/card.js')}}"></script>
-        <script>
-            var c = new Card({
+            <body>
+                <style>
+                    .demo-container {
+                        width: 100%;
+                        max-width: 350px;
+                        margin: 50px auto;
+                    }
+
+                    form {
+                        margin: 30px;
+                    }
+
+                    input {
+                        width: 200px;
+                        margin: 10px auto;
+                        display: block;
+                    }
+                </style>
+
+                <!--  BEGIN CUSTOM SCRIPTS FILE  -->
+                <x-slot:footerFiles>
+                    <script src="{{asset('node_modules/card/lib/card.js')}}"></script>
+                    @vite(['resources/assets/js/apps/invoice-preview.js'])
+
+                    <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
+
+
+                    <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+                    <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
+                    <script src="{{asset('plugins/card/dist/card.js')}}"></script>
+                    <script>
+                        var c = new Card({
                 form: document.querySelector('#form'),
                 container: '.card-wrapper'
             });
-        </script>
+                    </script>
 
-        <script>
-            window.addEventListener('load', function() {
+                    <script>
+                        window.addEventListener('load', function() {
             // Fetch all the forms we want to apply custom Bootstrap validation styles to
             var forms = document.getElementsByClassName('needs-validation');
             // Loop over them and prevent submission
@@ -378,10 +462,10 @@
             }, false);
             });
             }, false);
-        </script>
+                    </script>
 
-        <script>
-            Date.prototype.addMinutes= function(h){
+                    <script>
+                        Date.prototype.addMinutes= function(h){
                 this.setMinutes(this.getMinutes()+h);
                 return this;
             }
@@ -435,20 +519,20 @@
         }, 1000);
 
 
-        </script>
+                    </script>
 
-        <script>
-            function on() {
+                    <script>
+                        function on() {
             document.getElementById("overlay").style.display = "block";
             }
             
             function off() {
             document.getElementById("overlay").style.display = "none";
             }
-        </script>
+                    </script>
 
-        <script>
-            fbq("track", "AddToWishlist",
+                    <script>
+                        fbq("track", "AddToWishlist",
             {
                 "event_name": "AddToWishlist",
                 "event_time": "{{ time() }}",
@@ -470,8 +554,8 @@
                 }
             }
             )
-        </script>
-    </x-slot>
-    <!--  END CUSTOM SCRIPTS FILE  -->
+                    </script>
+                    </x-slot>
+                    <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
-<x-fb-event event="AddToWishlist" object={!!$product!!}/>
+<x-fb-event event="AddToWishlist" object={!!$product!!} />
