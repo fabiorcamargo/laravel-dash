@@ -41,10 +41,11 @@ class Flow extends Controller
         //dd($seller);
         $flow = ModelsFlow::find($id);
         $user = Auth::user();
-        $body = json_encode(['saller' => $seller, 'date' => now(), 'product' => [$product]]);
+        $body = json_encode(['saller' => $seller, 'date' => now(), 'step' => $step, 'product' => [$product]]);
         //dd($user->flow_entry()->where('flow_id', $id)->exists());
         if($user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->exists()){
             $flow = $user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->first();
+            $flow->step = $step;
             $flow->body = $body;
             $flow->update();
             //dd(json_decode($flow->body));

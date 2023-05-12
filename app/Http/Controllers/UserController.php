@@ -399,7 +399,7 @@ class UserController extends Controller
                 } else {
                 $user->first = 1;   
                 }*/
-            $user->observation = $request->observation;
+            
         }
            // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
         }else{
@@ -462,7 +462,7 @@ class UserController extends Controller
 
        // $user->city = $city2->name;
         //$user->uf = $uf->abbr;
-        
+        $request->observation != null ? $user->observation = $request->observation : "";
         //dd($user);
         $user->update();
         $status = "Usuário atualizado com sucesso!";

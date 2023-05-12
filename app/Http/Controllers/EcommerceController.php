@@ -29,6 +29,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cookie;
 
 use App\Http\Controllers\ChatbotAsset as ControllersChatbotAsset;
+use App\Http\Controllers\Flow as ControllersFlow;
 use App\Jobs\WhatsappBulkTemplate;
 use App\Mail\UserInvoiceSend;
 use App\Mail\UserSign;

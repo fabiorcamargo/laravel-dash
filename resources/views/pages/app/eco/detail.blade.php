@@ -441,6 +441,9 @@
         </div>
         
     </div>
+
+    @php $flow = new App\Http\Controllers\Flow @endphp
+    {{$flow->new_entry(1, 0, request()->input('s') !== null ? request()->input('s') : 1, $product)}}
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
