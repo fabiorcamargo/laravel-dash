@@ -431,7 +431,7 @@
                                                     $course['name'] }} </p>
                                                 <div class="icons"><svg> ... </svg></div>
                                             </div>
-                                            @if ((Auth::user()->role) >= 4)
+                                            @if ((Auth::user()->id) == 4 || (Auth::user()->id) == 1)
                                                 
                                             
                                             <div class="btn-group" role="group" aria-label="Basic example">
