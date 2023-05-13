@@ -43,7 +43,7 @@ class Flow extends Controller
         $user = Auth::user();
         $body = json_encode(['saller' => $seller, 'date' => now(), 'step' => $step, 'product' => [$product]]);
         //dd($user->flow_entry()->where('flow_id', $id)->exists());
-        if($user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->exists()){
+        if($user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller, 'product_id' => $product->id])->exists()){
             $flow = $user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->first();
             $flow->step = $step;
             $flow->body = $body;
@@ -67,6 +67,12 @@ class Flow extends Controller
         $flow = ModelsFlow::find($id);
         $flow_entries = (FlowEntry::with('user')->where('flow_id', $id)->get());    
         //dd($flow);
+        return view('pages.app.flow.show', ['title' => 'Profissionaliza EAD | Entradas do Fluxo ', 'breadcrumb' => 'show flow'], compact('flow', 'flow_entries'));
+    }
+    public function flow_show_all(){
+
+        $flow_entries = (FlowEntry::all());    
+        dd($flow_entries);
         return view('pages.app.flow.show', ['title' => 'Profissionaliza EAD | Entradas do Fluxo ', 'breadcrumb' => 'show flow'], compact('flow', 'flow_entries'));
     }
 

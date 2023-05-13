@@ -18,7 +18,8 @@ return new class extends Migration
             $table->foreignId('flow_id')->constrained('flows');
             $table->string('user_id');
             $table->string('step');
-            $table->string('seller');
+            $table->string('seller')->nullable();
+            $table->string('product_id')->nullable();
             $table->json('body')->nullable();
             $table->timestamps();
         });

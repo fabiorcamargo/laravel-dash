@@ -22,7 +22,45 @@ class OuroModerno extends Controller
 {
 
     public function check_token(){
-     
+      $date = Carbon::parse(env('OURO_POST_TOKEN_EXPIRATION'));
+      $diference = (Carbon::now()->diffInSeconds($date));
+      
+      if($diference < 10800){
+        //dd('menor');
+
+      }else{
+        $token = env('OURO_TOKEN') . ":"; 
+        $curl = curl_init();
+        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/token/" . env('OURO_UNIDADE');
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => 'GET',
+          //CURLOPT_POSTFIELDS => $payload,
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: Basic ' . base64_encode($token)
+          ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        if(curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200){
+          $path = base_path('.env');
+          $content = file_get_contents($path);
+          if (file_exists($path)) {
+              $ini = [env('OURO_POST_TOKEN'), env('OURO_POST_TOKEN_EXPIRATION')];
+              $fim = [json_decode($response)->data->token, Carbon::now()->format('Y-m-d H:i:s')];
+              file_put_contents($path, str_replace($ini, $fim, $content));
+          }
+          return true;
+        }
+        
+      }
+     /*
         $token = env('OURO_TOKEN') . ":"; 
         $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/token/check/" . env('OURO_POST_TOKEN');
         $curl = curl_init();
@@ -41,6 +79,7 @@ class OuroModerno extends Controller
                     ),
                   ));
                   $response = curl_exec($curl);
+                  dd($response);
                   curl_close($curl);
         if(curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200){
           return true;
@@ -76,11 +115,12 @@ class OuroModerno extends Controller
                   }
                    
                 }
-                return false;
+                return false;*/
 
     }
 
     public function req($payload, $url, $type){
+      OuroModerno::check_token();
       $token = env('OURO_TOKEN') . ":";  
         $curl = curl_init();
         curl_setopt_array($curl, array(
@@ -99,16 +139,19 @@ class OuroModerno extends Controller
         ));
         $response = curl_exec($curl);
         curl_close($curl);
-        return json_decode($response);
+
+            return json_decode($response);
+        
     }
 
     
     public function criar_aluno_auth($liberation){
-
+      /*
         if(OuroModerno::check_token() == false){
           $msg = "Por favor insira o código novamente";
           return back()->withErrors(__($msg));
-        }
+        }*/
+        
         $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
         $type = "POST";
         $user = User::find(Auth::user()->id);
@@ -160,11 +203,7 @@ class OuroModerno extends Controller
 
     public function criar_aluno($id){
 
-      if(OuroModerno::check_token() == false){
-        $msg = "Por favor insira o código novamente";
-
-        return back()->withErrors(__($msg));
-      }
+      
       $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
       $type = "POST";
       $user = User::find($id);
@@ -191,9 +230,9 @@ class OuroModerno extends Controller
       //dd($payload);
       $request = OuroModerno::req($payload, $url, $type);
       if($request->status !== "true" || $request->data->id == 0){
-        $msg = "Erro na requisição: $request->info";
+        
         //dd($request);
-        return back()->withErrors(__($msg));
+        return false;
         exit();
       }else{
         sleep(1);
@@ -218,13 +257,6 @@ class OuroModerno extends Controller
     public function criar_matricula($liberation, $ouro){
           //dd($liberation);
 
-          if(OuroModerno::check_token() == false){
-            $msg = "Por favor insira o código novamente";
-    
-            return back()->withErrors(__($msg));
-            exit();
-          }
-
           $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/matricula/$ouro->ouro_id";
           $payload = [
             'token' => env('OURO_POST_TOKEN'),
@@ -232,6 +264,15 @@ class OuroModerno extends Controller
           ];
           $type = "POST";
           $request = OuroModerno::req($payload, $url, $type);
+          //dd($request->status);
+          $return = $request->status;
+          
+          if($request->status !== "true" || $request->data->id == 0){
+            $msg = "Erro na requisição: $request->info";
+            //dd($request);
+            return false;
+            exit();
+          }
 			
 			if(!isset($request->data->id)){
             $msg = "Por favor refaça a liberação";
@@ -340,7 +381,7 @@ class OuroModerno extends Controller
       $request = OuroModerno::req($payload, $url, $type);
       //dd($request);
       $return = $request->status;
-      if($return == true){
+      if($return == "true"){
         $status = "Cursos Excluído com Sucesso";
 
         $ouro->delete();
@@ -438,6 +479,12 @@ class OuroModerno extends Controller
 
       if(!$user->client_ouro()->first()){
         $aluno = OuroModerno::criar_aluno($id);
+        if($aluno == false){
+              $msg = "Erro: Por favor refaça a liberação";
+      
+              return back()->withErrors(__($msg));
+              exit();	
+            }
       }else{
         $aluno = $user->client_ouro()->first();
       }
