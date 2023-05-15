@@ -692,7 +692,7 @@ class UserController extends Controller
             }
         }
         //dd("ok");
-        dd(UserController::getIp());
+        //dd(UserController::getIp());
         $user = User::find($id);
 
         $cademi = Cademi::where('user_id', $user->id)->first();
