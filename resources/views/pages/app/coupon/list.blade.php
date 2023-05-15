@@ -155,31 +155,31 @@
                                             <!-- MODAL SEÇÃO -->
                                             <tr>
                                                 <td>
-                                                    <a class="media" href="{{getRouterValue();}}/app/eco/product/{{App\Models\EcoProduct::find($coupon->eco_product_id)->id}}?s={{$coupon->seller}}&t={{$coupon->token}}">
+                                                    <a class="media" href="{{getRouterValue();}}/app/eco/product/{{$coupon->get_product->id}}?s={{$coupon->seller}}&t={{$coupon->token}}">
                                                         <div class="avatar me-2">
-                                                            <img alt="avatar"  src="{{asset("product/" . json_decode(App\Models\EcoProduct::find($coupon->eco_product_id)->image)[0])}}" class="rounded-circle">
+                                                            <img alt="avatar"  src="{{asset("product/" . json_decode($coupon->get_product->image)[0])}}" class="rounded-circle">
                                                         </div>
                                                         <div class="media-body align-self-center">
                                                             <h6 class="mb-0">{{ $coupon->name }}</h6>
-                                                            <span> Curso: {{App\Models\EcoProduct::find($coupon->eco_product_id)->id}} {{App\Models\EcoProduct::find($coupon->eco_product_id)->name}} <br> Desconto: {{$coupon->discount}}% <br> Token: {{$coupon->token}}</span>
+                                                            <span> Curso: {{$coupon->get_product->id}} {{$coupon->get_product->name}} <br> Desconto: {{$coupon->discount}}% <br> Token: {{$coupon->token}}</span>
                                                         </div>
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a class="media" href="{{ getRouterValue(); }}/app/user/profile/{{ App\Models\User::find(App\Models\EcoSeller::find($coupon->seller)->user_id)->id }}">
+                                                    <a class="media" href="{{ getRouterValue(); }}/aluno/profile/{{$coupon->get_seller->user->id}}">
                                                         <div class="avatar me-2">
-                                                            <img alt="avatar"  src="{{asset(App\Models\User::find(App\Models\EcoSeller::find($coupon->seller)->user_id)->image)}}" class="rounded-circle">
+                                                            <img alt="avatar"  src="{{asset($coupon->get_seller->user->image)}}" class="rounded-circle">
                                                         </div>
                                                         <div class="media-body align-self-center">
-                                                            <h6 class="mb-0">{{App\Models\User::find(App\Models\EcoSeller::find($coupon->seller)->user_id)->name}} {{App\Models\User::find(App\Models\EcoSeller::find($coupon->seller)->user_id)->lastname}}</h6>
+                                                            <h6 class="mb-0">{{$coupon->get_seller->user->name}} {{$coupon->get_seller->user->lastname}}</h6>
                                                         </div>
                                                     </a>
                                                 </td>
                                                 <td class="text-center">
                                                     <div class="action-btns">
-                                                        <a data-bs-toggle="modal" href="" onclick="mycoupon({{$coupon->id}})" data-bs-target="#DivOuroComboModal{{$coupon->id}}" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Editar Combo">
+                                                        {{--<a data-bs-toggle="modal" href="" onclick="mycoupon({{$coupon->id}})" data-bs-target="#DivOuroComboModal{{$coupon->id}}" class="action-btn btn-edit bs-tooltip me-2" data-toggle="tooltip" data-placement="top" title="Editar Combo">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                                                        </a>
+                                                        </a>--}}
                                                         <a href="" data-bs-toggle="modal" data-bs-target="#DivOuroComboDelete{{$coupon->id}}" class="action-btn btn-delete bs-tooltip" data-toggle="tooltip" data-placement="top" title="Excluir Combo">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                                         </a>

@@ -717,6 +717,7 @@ class EcommerceController extends Controller
 
     public function list(){
         $coupons = (EcoCoupon::all());
+        //dd($coupons);
 
         return view('pages.app.coupon.list', ['title' => 'Novo Cupom | Profissionaliza EAD', 'breadcrumb' => 'Novo Cupom'], compact('coupons'));
     }

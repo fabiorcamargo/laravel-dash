@@ -10,7 +10,12 @@ class EcoSeller extends Model
     use HasFactory;
     protected $fillable = [
         'id',
+        'user_id',
         'name',
         'type',
     ];
+
+    public function user(){
+        return $this->hasOne(User::class,'id','user_id')->withDefault();
+    }
 }

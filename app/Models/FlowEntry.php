@@ -24,7 +24,7 @@ class FlowEntry extends Model
     public function user(){
         return $this->hasOne(User::class,'id','user_id')->withDefault();
     }
-    public function seller(){
+    public function get_seller(){
         return $this->hasOne(EcoSeller::class,'id','seller')->withDefault();
     }
 

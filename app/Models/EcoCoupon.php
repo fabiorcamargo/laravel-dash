@@ -15,5 +15,12 @@ class EcoCoupon extends Model
     'token',
     'seller'
     ];
+
+    public function get_seller(){
+        return $this->hasOne(EcoSeller::class,'id','seller')->withDefault();
+    }
+    public function get_product(){
+        return $this->hasOne(EcoProduct::class,'id','eco_product_id')->withDefault();
+    }
 }
 

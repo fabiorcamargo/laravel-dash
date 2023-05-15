@@ -692,6 +692,7 @@ class UserController extends Controller
             }
         }
         //dd("ok");
+        dd(UserController::getIp());
         $user = User::find($id);
 
         $cademi = Cademi::where('user_id', $user->id)->first();
@@ -799,7 +800,7 @@ class UserController extends Controller
         public function profile_edit($id)
     {
 
-        if((Auth::user()->role) == 1 ){
+        if((Auth::user()->role) < 4 ){
             //dd("1");
             if(Auth::user()->id != $id){
                 return back();
@@ -955,6 +956,20 @@ class UserController extends Controller
             $status = "Nova senha salva com sucesso";
             return(redirect('/modern-dark-menu/aluno/my')->with('status', __($status)));
             
+        }
+
+        public function getIp(){
+            foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
+                if (array_key_exists($key, $_SERVER) === true){
+                    foreach (explode(',', $_SERVER[$key]) as $ip){
+                        $ip = trim($ip); // just to be safe
+                        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
+                            return $ip;
+                        }
+                    }
+                }
+            }
+            return request()->ip(); // it will return the server IP if the client IP is not found using this method.
         }
        
     }

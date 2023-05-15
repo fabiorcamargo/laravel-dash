@@ -171,7 +171,8 @@
                             
                             @if($entry->step == $i)
                             @php ( $product = (isset(json_decode($entry->body)->product[0]->name)) ? json_decode($entry->body)->product[0]->name : "vazio" ) @endphp
-                            <x-widgets._w-card-crm-one name="{!!$entry->user->name!!} {!!$entry->user->lastname!!}" date="{{$entry->created_at->format('d/m/y H:i')}}" today="{{\Carbon\Carbon::parse($entry->created_at)->isToday() ? 1 : 0}}" product="{{$product}}"/>
+                            <x-widgets._w-card-crm-one id="{!!$entry->user->id!!}" name="{!!$entry->user->name!!} {!!$entry->user->lastname!!}" date="{{$entry->created_at->format('d/m/y H:i')}}" today="{{\Carbon\Carbon::parse($entry->created_at)->isToday() ? 1 : 0}}" product="{{$product}}" seller="{{$entry->get_seller->user->id}} {{$entry->get_seller->user->name}}"/>
+                                
                             
                             @endif
                             @endforeach

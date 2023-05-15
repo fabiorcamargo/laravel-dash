@@ -25,7 +25,7 @@ class OuroModerno extends Controller
       $date = Carbon::parse(env('OURO_POST_TOKEN_EXPIRATION'));
       $diference = (Carbon::now()->diffInSeconds($date));
       
-      if($diference < 10800){
+      if($diference < 3600){
         //dd('menor');
 
       }else{
