@@ -17,11 +17,15 @@ class FlowEntry extends Model
         'user_id',
         'step',
         'body',
-        'seller'
+        'seller',
+        'product_id'
     ];
 
     public function user(){
         return $this->hasOne(User::class,'id','user_id')->withDefault();
+    }
+    public function seller(){
+        return $this->hasOne(EcoSeller::class,'id','seller')->withDefault();
     }
 
 }

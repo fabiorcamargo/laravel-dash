@@ -934,6 +934,31 @@
         });
     });
 </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('select[name="state2"]').on('change', function() {
+            var stateID = $(this).val();
+            if(stateID) {
+                $.ajax({
+                    url: '/city/'+stateID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {   
+                        console.log("teste");   
+                        var city = "1";                
+                        $('select[name="city2"]').empty();
+                        $.each(data, function(key, value) {
+                        $('select[name="city2"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="city"]').empty();
+            }
+        });
+    });
+</script>
 
 
 <script>

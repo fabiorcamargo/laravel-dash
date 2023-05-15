@@ -39,23 +39,27 @@ class Flow extends Controller
     public function new_entry($id, $step, $seller, $product){
         //dd($id);
         //dd($seller);
+        //dd($product);
         $flow = ModelsFlow::find($id);
         $user = Auth::user();
         $body = json_encode(['saller' => $seller, 'date' => now(), 'step' => $step, 'product' => [$product]]);
-        //dd($user->flow_entry()->where('flow_id', $id)->exists());
+        //dd($user->flow_entry()->all());
         if($user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller, 'product_id' => $product->id])->exists()){
-            $flow = $user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller])->first();
+            $flow = $user->flow_entry()->where(['flow_id' => $id, 'seller' => $seller, 'product_id' => $product->id])->first();
             $flow->step = $step;
             $flow->body = $body;
             $flow->update();
             //dd(json_decode($flow->body));
             //dd('s');
         }else{
+            //dd('n');
+            
             $flow->entry()->create([
                 'user_id' => $user->id,
                 'step' => $step,
                 'body' => $body,
-                'seller' => $seller
+                'seller' => $seller,
+                'product_id' => $product->id
             ]);
             //dd('n');
         }
