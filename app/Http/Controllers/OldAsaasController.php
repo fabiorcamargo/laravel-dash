@@ -561,6 +561,7 @@ public function lista_cliente($cpf, $token){
       $cobrancas = ($client->lista_cobranca($customer, env("ASAAS_TOKEN$i")))->data;
       //dd($cobrancas);
 
+      if(isset($cobrancas[0]->billingType)){
       if($cobrancas[0]->billingType == "CREDIT_CARD"){
         $link = [
           "status" => $cobrancas[0]->status,
@@ -577,6 +578,7 @@ public function lista_cliente($cpf, $token){
         $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
         return back()->withErrors(__($msg));
       }
+    }
 
       return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
 
