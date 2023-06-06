@@ -88,6 +88,7 @@ return [
         public_path('tmp') => storage_path('app/tmp'),
         public_path('avatar') => storage_path('app/avatar'),
         public_path('product') => storage_path('app/product'),
+        public_path('paybook') => storage_path('app/paybook'),
     ],
 
 ];

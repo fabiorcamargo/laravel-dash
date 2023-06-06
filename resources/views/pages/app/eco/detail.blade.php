@@ -95,6 +95,7 @@
 
                     </div>
 
+                    
                     <div class="col-xxl-4 col-xl-5 col-lg-12 col-md-12 col-12 mt-xl-0 mt-5 align-self-center">
 
                         <div class="product-details-content">
@@ -477,6 +478,9 @@
                 }
             }
             )
+            </script>
+            <script>
+                console.log(window.matchMedia('(prefers-color-scheme: dark)'));
             </script>
 
     </x-slot>

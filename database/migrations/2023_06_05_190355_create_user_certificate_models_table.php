@@ -13,11 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('eco_sellers', function (Blueprint $table) {
+        Schema::create('user_certificate_models', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('name');
-            $table->string('type');
+            
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eco_sellers');
+        Schema::dropIfExists('user_certificate_models');
     }
 };

@@ -13,6 +13,8 @@ use App\Http\Controllers\{
     FileUploadController,
     Flow,
     FormController,
+    MktController,
+    OldAsaasController,
     OuroModerno,
     RdController,
     RedirCademiController,
@@ -26,10 +28,13 @@ use App\Jobs\WhatsappBulkTemplate;
 use App\Mail\SendMailUser;
 use App\Mail\UserSign;
 use App\Models\Cademi;
+use App\Models\EcoSeller;
 use App\Models\OuroClient;
 use App\Models\User;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -67,7 +72,7 @@ use Illuminate\Support\Facades\Route;
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
 
-       /* Route::get('/login/{id}', function ($id) {
+        Route::get('/login/{id}', function ($id) {
             if(Auth::user()->role >= 4){
                 $user = User::find($id);
                     if($user->role != 1){
@@ -82,7 +87,7 @@ use Illuminate\Support\Facades\Route;
                 $msg = "Ação não permitida para esse usuário";
                 return back()->withErrors(__($msg));;
             }
-        })->name('aluno.redir');*/
+        })->name('aluno.redir');
         
         
     
@@ -123,6 +128,7 @@ use Illuminate\Support\Facades\Route;
                         })->name('aluno.finish');
                         Route::post('/post', [UserController::class, 'post'])->name('aluno.post');
                         Route::get('/my', [UserController::class, 'my'])->name('aluno.my');
+                        
                         
                         Route::get('/config', [UserController::class, 'username'])->name('config');
                         Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
@@ -206,7 +212,16 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
         Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
 
         Route::post('/users/cademi/change_token', [CademiController::class, 'change_token'])->name('user.cademi.change_token');
+        Route::post('/user/obs/create/{id}',function ($id, Request $request){
+                //dd($request->all());
+                $user = User::find($id);
+                $user->observation()->create([
+                    'obs'=>$request->descricao
+                ]);
+                return back();
+        })->name('user.obs.create');
 
+       
         
 
         
@@ -295,6 +310,27 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/ouro/send', [OuroModerno::class, 'bulk_user_send'])->name('user-ouro-create');
                 Route::post('/ouro/combo/create', [OuroModerno::class, 'combo_create'])->name('user-ouro-combo-create');
 
+            });
+
+            Route::prefix('/pay')->group(function () {
+                Route::get('/create', function(){
+                    $sec = Auth::user()->secretary;
+                    $sellers = (EcoSeller::where(['secretary'=>"$sec", 'type'=>'2'])
+                    ->get());
+                    return view('pages.app.pay.create')->with('sellers', $sellers);
+                }
+                )->name('pay-create');
+                Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
+                Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');
+            });
+
+            Route::prefix('/mkt')->group(function () {
+                Route::get('/token', [MktController::class, 'getToken']
+                )->name('mkt-token');
+                Route::get('/send_not_active/{name}/{phone}/{type}/{msg}', [MktController::class, 'send_not_active']
+                )->name('mkt-send_not_active');
+                Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
+                Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');
             });
 
             Route::prefix('/ouro')->group(function () {
@@ -1388,7 +1424,9 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);    
 });
 
-
+Route::prefix('/aluno/pay')->group(function () {
+    Route::get('/list', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
+});
 
 Route::prefix('/app/form')->group(function () {
 
@@ -1396,6 +1434,8 @@ Route::prefix('/app/form')->group(function () {
     Route::post('/end/{id}', [FormController::class, 'end_post'])->name('form-end-post');
 
 });
+
+
 
 
 
@@ -1413,6 +1453,23 @@ Route::get('/politica-de-privacidade', function () {
 Route::get('/redir', [RedirCademiController::class , 'redir_get'])->name('aluno.redir');
 Route::post('/redir', [RedirCademiController::class , 'redir_post'])->name('aluno.redir.post');
 Route::get('/modern-dark-menu/redir_login', [RedirCademiController::class , 'redir_get_show'])->name('aluno.redir.login');
+
+Route::get('/test/pdf', function (){
+    //dd('s');
+    $pdf = Pdf::loadView('pdf.lista')
+    ->setPaper('a4', 'landscape')
+    ->setOptions([
+        'tempDir' => public_path(),
+        'chroot' => public_path('storage'),
+        'enable_remote' => true,
+        'dpi' => '160'
+    ]);
+    //return $pdf->download('invoice.pdf');
+    return $pdf->stream('invoice.pdf');
+    //return view('pdf.lista');
+      
+});
+
 
 Route::get('/', function () {
     return Redirect::to(env('APP_HOME_URL'));

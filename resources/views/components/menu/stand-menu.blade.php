@@ -50,15 +50,18 @@
                         </a>
                         <ul class="collapse submenu list-unstyled {{ Request::is('*/aluno/*') ? "show" : "" }}" id="aluno" data-bs-parent="#accordionExample">
                             <li class="{{ Request::routeIs('aluno.my') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/aluno/my"> Início </a>
-                             </li>{{--
+                                <a href="{{getRouterValue();}}/aluno/my"><x-widgets._w-svg class="pe-1" svg="school"/> Início </a>
+                             </li>
+                             @if(Auth::user()->role == 1)
                             <li class="{{ Request::routeIs('aluno.pagamento') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/aluno/pagamento"> Pagamento </a>
+                                <a href="{{getRouterValue();}}/aluno/pay/list"><x-widgets._w-svg class="pe-1" svg="cash-banknote"/> Pagamentos </a>
                             </li>
-                            <li class="{{ Request::routeIs('config') ? 'active' : '' }}">
+                            @endif
+                            {{--<li class="{{ Request::routeIs('config') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/aluno/config"> Configurações </a>
-                            </li> --}}
+                            </li>--}}
                         </ul>
+                        
                     </li>
                     @endif
                     @can('admin')
@@ -87,10 +90,8 @@
                     </li>
                     --}}
                     @endcan
-                    @can('edit')
-                    <li class="menu menu-heading">
-                        <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>APP</span></div>
-                    </li>
+                
+                   
 
                     @can('secretary')
                     <li class="menu {{ Request::is('*/app/user/*') ? "active" : "" }}">
@@ -118,6 +119,27 @@
                             </li>--}}
                         </ul>
                     </li>
+                    @if(Auth::user()->role == 4)
+                    <li class="menu {{ Request::is('*/app/pay/*') ? "active" : "" }}">
+                        <a href="#pay" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/pay/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="">
+                                <x-widgets._w-svg svg="cash-banknote"/> 
+                                <span>Pagamentos</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/pay/*') ? "show" : "" }}" id="pay" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('pay-create') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/pay/create"> Criar </a>
+                            </li>
+                            {{--<li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/user/reset"> Resetar Senha </a>
+                            </li>--}}
+                        </ul>
+                    </li>
+                    @endif
                     <li class="menu {{ Request::is('*/app/ouro/*') ? "active" : "" }}">
                         <a href="#ouro" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/ouro/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
@@ -896,7 +918,6 @@
                     @endcan
                 </ul>
 
-                @endcan
                 
             </nav>
 

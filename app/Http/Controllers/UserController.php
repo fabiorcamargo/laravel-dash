@@ -128,8 +128,32 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function delete($id) {
-        
+    public function delete($id, Request $request) {
+        //dd($request->all());
+        $user = $this->user->find($id);
+        //dd($obs);
+        if($request->ouro == "on" && $request->cademi == "on"){
+            //dd('dois');
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro e Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 5;
+            
+        }else if($request->ouro == "on"){
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs";
+            $user->first = 4;
+        }else if($request->cademi == "on"){
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs";
+            $user->first = 3;
+        }
+        //dd($user);
+        //  dd($obs);
+        $user->observation()->create([
+            'obs' => $obs
+        ]);
+
+        $user->save();        
+
+        return back();
+        /*
         $user = $this->user->find($id);
         //dd($user);
         $r = str_replace(" ", "", $user->courses);
@@ -195,11 +219,8 @@ class UserController extends Controller
                 $import->save();
             }
 
-    }
-                $user->first = 3;
-                $user->save();        
-        
-                return back();
+    }*/
+                
         
             
     }

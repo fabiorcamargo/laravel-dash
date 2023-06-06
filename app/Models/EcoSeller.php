@@ -13,6 +13,7 @@ class EcoSeller extends Model
         'user_id',
         'name',
         'type',
+        'secretary'
     ];
 
     public function user(){

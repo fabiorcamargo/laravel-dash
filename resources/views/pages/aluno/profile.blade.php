@@ -48,7 +48,7 @@
                         <div class="widget-content widget-content-area">
                             <div class="d-flex justify-content-between">
                                 <h3 class="">Perfil do Usuário</h3>
-                                @if (Auth::user()->id == $user->id)
+                                @if (Auth::user()->id == $user->id || Auth::user()->role >= 4)
                                 <a href="{{getRouterValue();}}/aluno/profile/{{ $user->id }}/edit"
                                     class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                         height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -67,10 +67,7 @@
                                 <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
                                 @if ((Auth::user()->role) >= 4)
                                 @if($user->first == 2)
-                                <form action="{{ route('user-profile-delete', $user->id) }}" method="POST"
-                                    id="delete_form" class="py-12">
-                                    @method('DELETE')
-                                    @csrf
+                                
                                     <div class="badge badge-success badge-dot"></div>
                                     <a data-bs-toggle="modal" data-bs-target="#bloquearModal"
                                         class="btn btn-danger btn-lg mt-4" data-toggle="tooltip" data-placement="top"
@@ -82,8 +79,8 @@
                                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                                         </svg>
                                     </a>
-                                </form>
-                                @elseif($user->first == 3)
+                                
+                                @elseif($user->first >= 3)
                                 <form action="{{ route('user-profile-active', $user->id) }}" method="POST"
                                     id="active_form" class="py-12">
                                     @method('POST')
@@ -549,11 +546,12 @@
                         </div>
                     </div>
                 </div>
-                @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
+                @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
                 <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
+                    
                     <div class="summary layout-spacing">
                         <div class="widget-content widget-content-area">
-                            <h3 class="">Observações</h3>
+                            <h3 class="">Dados do Contrato</h3>
                             <div class="order-summary">
 
                                 <div class="summary-list summary-income">
@@ -561,6 +559,40 @@
 
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing mt-0">
+                    <div class="summary user-profile layout-spacing">
+                        <div class="d-flex justify-content-between">
+                        <div class="widget-content widget-content-area col-12">
+                            
+                            <div class="d-flex justify-content-between">
+                                <h3 class="">Observações</h3>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a data-bs-toggle="modal" href="" data-bs-target="#ObsModal" class="edit-profile" data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
+                                        <svg svg="apps-filled" width="24" height="24">
+                                        <use xlink:href="http://localhost:8991/images/tabler-sprite.svg#tabler-apps-filled"></use>
+                                        </svg>
+                                    </a>
+                                </div>
+                                
+                            </div>
+                          
+                            <div class="order-summary">
+
+                                <div class="summary-list summary-income">
+                                    @foreach ($user->observation()->orderby('created_at','desc')->get() as $obs)
+                                    <div class="pb-2">
+                                    <p class="contacts-block__item mb-0">{!!$obs->created_at->format('d/m/y H:i:s')!!} </p>
+                                    <small class="form-group" >{!!str_ireplace("\r\n", "<br>", $obs->obs)!!}</small>    
+                                    </div>
+                                    @endforeach
+                                    
+
+                                </div>
+                            </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -932,6 +964,11 @@
                             <div id="bloquearModal" class="modal animated fadeInDown" role="dialog">
                                 <div class="modal-dialog">
                                     <!-- Modal content-->
+                                    <form action="{{ route('user-profile-delete', $user->id) }}" method="POST"
+                                        id="delete_form" class="py-12">
+                                        @method('DELETE')
+                                        @csrf
+                                        
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Bloqueio de Usuário</h5>
@@ -945,6 +982,7 @@
                                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                                 </svg>
                                             </button>
+
                                         </div>
 
                                         <div class="modal-body">
@@ -954,15 +992,45 @@
                                                 Ative as compras
                                                 do usuário na Cademi;<br>2º Clique em desbloquear aqui no sistema;</p>
                                         </div>
+                                        <div class="modal-body mt-0 pt-0">
+                                            
+                                            <div class="col-md-6">
+                                                <label for="type"> Selecione o tipo:</label>
+                                                <label for="title"></label>
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <input class="form-check-input me-1" id="cademi" name="cademi" type="checkbox">
+                                                        Cademi
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="form-group">
+                                                        <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox">
+                                                        Ouro
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body mt-0 pt-0">
+                                        <label for="type"> Motivo do Bloqueio:</label>
+                                                <select name="motivo" id="motivo" class="form-control mb-4" required>
+                                                    <option value="">Escolha uma Opção</option>
+                                                    <option value="Pagamento atrasado">Pagamento atrasado</option>
+                                                    <option value="Cancelamento">Cancelamento</option>
+                                                </select>
+                                                <label for="users_list_tags mt-4">Observações:</label>
+                                                <textarea class="form-control" name="obs" id="obs" rows="3" required></textarea>
+                                        </div>
                                         <div class="modal-footer">
                                             <button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>
-                                            <button type="button" href="javascript:void(0);"
-                                                onClick="document.getElementById('delete_form').submit();"
+                                            <button type="send" 
                                                 class="btn btn-danger">Bloquear</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </form>
+
 
                             <div id="desbloquearModal" class="modal animated fadeInDown" role="dialog">
                                 <div class="modal-dialog">
@@ -999,6 +1067,47 @@
                                                 onClick="document.getElementById('active_form').submit();"
                                                 class="btn btn-success">Desbloquear</button>
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ObsModal" class="modal animated fadeInDown" role="dialog">
+                                <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <form action="{{ route('user.obs.create', $user->id) }}" method="POST"
+                                            id="obs_create" class="py-12">
+                                            @csrf
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Cadastro de Observações</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close">
+                                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-x">
+                                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+
+                                            <div class="modal-body">
+                                                <div class="col-xxl-12 col-md-12">
+                                                    <div class="col-xxl-12 col-md-12">
+                                                        <label for="users_list_tags mt-4">Observações:</label>
+                                                        <textarea class="form-control" name="descricao" id="descricao" rows="3"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                {{--<button class="btn btn-light-dark"
+                                                    data-bs-dismiss="modal">Sair</button>--}}
+                                                <button type="button" href="javascript:void(0);"
+                                                    onClick="document.getElementById('obs_create').submit();"
+                                                    class="btn btn-success">Cadastrar</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

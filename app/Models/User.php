@@ -150,4 +150,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(FlowEntry::class);
     }
+    public function observation()
+    {
+        return $this->hasMany(UserObservation::class);
+    }
 }
