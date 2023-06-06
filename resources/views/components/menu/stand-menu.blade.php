@@ -119,7 +119,7 @@
                             </li>--}}
                         </ul>
                     </li>
-                    @if(Auth::user()->role == 4)
+                    @if(Auth::user()->role >= 4)
                     <li class="menu {{ Request::is('*/app/pay/*') ? "active" : "" }}">
                         <a href="#pay" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/pay/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
