@@ -72,11 +72,9 @@ use Illuminate\Support\Facades\Route;
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
 
-         Route::prefix('/aluno/pay')->group(function () {
-            Route::get('/list', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
-        });
+       
 
-        
+
 
         Route::get('/login/{id}', function ($id) {
             if(Auth::user()->role >= 4){
@@ -112,6 +110,9 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
+            Route::prefix('/aluno/pay')->group(function () {
+                Route::get('/list', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
+            });
                     
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
