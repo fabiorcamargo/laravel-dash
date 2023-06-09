@@ -566,20 +566,29 @@ public function lista_cliente($cpf, $token){
         $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
         return back()->withErrors(__($msg));
       }
-      //dd('s');
+        //dd(Auth::user()->document);
         $client = new OldAsaasController;
         $i = 1;
+        $a = 1;
         //dd(env("ASAAS_TOKEN$i"));
         $response = $client->lista_cliente(Auth::user()->document, env("ASAAS_TOKEN$i"));
-        //dd($response);
+          //dd(Auth::user()->document);
+      if(!isset($response->data[0]->id)){
         
-      while($i > 3){
+      while($a <= 3){
         
-        if(isset($response->data[0]->id)){
+        $a++;
+        if(!isset($response->data[0]->id)){
+          
           $i++;
-        $response = $client->lista_cliente(Auth::user()->document, env("ASAAS_TOKEN$i"));
+          //dd($i);
+          //dd($a);
+          $response = $client->lista_cliente(Auth::user()->document, env("ASAAS_TOKEN$i"));
+
+        //dd($response->data);
         }
       }
+    }
       //dd($response);
       if(!isset($response->data[0]->id)){
       $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
