@@ -10,7 +10,7 @@
                 id="input-users">
             <datalist id="list-users">
                 @foreach($users as $user)
-                <option data-value="{{ $user->id }}" value="{{ $user->username }}" />
+                <option data-value="{{ $user->username }}" value="{{ $user->username }}" />
                 @endforeach
             </datalist>
         </div>

@@ -13,7 +13,6 @@ class OuroClient extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id',
         'user_id',
         'ouro_id',
         'nome',
