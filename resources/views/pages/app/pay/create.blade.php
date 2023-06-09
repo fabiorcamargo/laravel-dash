@@ -107,6 +107,10 @@
                                 <input type="text" id="telefone" name="telefone" class="form-control"
                                     onkeypress="$(this).mask('(00) 90000-0000')" required>
                             </div>
+                            <div class="form-group col-md-6">
+                                <label>Email (Opcional)<br></label>
+                                <input type="email" id="email" name="email" class="form-control" />
+                            </div>
                         </div>
                         <p class="text-danger"><x-widgets._w-svg svg="alert-triangle"/> Atenção os boletos serão enviados no telefone inserido</p>
 

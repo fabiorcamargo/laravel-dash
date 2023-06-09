@@ -35,7 +35,7 @@ public function lista_cliente($cpf, $token){
     
     
     // Cria o Cliente no Asaas
-    public function cria_cliente($id, $nome, $cpf, $telefone, $cep, $descricao, $empresa, $grupo, $token){
+    public function cria_cliente($id, $nome, $cpf, $telefone, $email, $cep, $descricao, $empresa, $grupo, $token){
     $ch = curl_init();
     
     
@@ -48,6 +48,7 @@ public function lista_cliente($cpf, $token){
     curl_setopt($ch, CURLOPT_POSTFIELDS, "{
       \"name\": \"$nome\",
       \"phone\": \"$telefone\",
+      \"email\": \"$email\",
       \"mobilePhone\": \"$telefone\",
       \"observations\": \"$descricao\",
       \"company\": \"$empresa\",
@@ -212,7 +213,7 @@ public function lista_cliente($cpf, $token){
     // Faz a requisição GET com o token
     $response = $client->request('GET', $url, [
         'headers' => [
-            'access_token' => 'a8b9e454a84a17b7b592bb63f5717d75f44d593600b38d661af38c837ab132e8',
+            'access_token' => $token,
         ],
     ]);
     
@@ -232,7 +233,7 @@ public function lista_cliente($cpf, $token){
 
 
     public function result(Request $request){
-      //dd($request->all());
+      //dd($request->cpf);
       $aluno = User::where('id', $request->id)->first();
   
       if(Auth::user()->secretary == "TB"){
@@ -247,8 +248,19 @@ public function lista_cliente($cpf, $token){
         $pagina = "lista";
         $nomeresp = $_POST["responsavel"];
         $nomealuno = $_POST["aluno"];
-        $telefone = $_POST["telefone"];
-        $cpf = $_POST["cpf"];
+
+        $de = array('(',')',' ','-');
+        $para = array('','','','');
+        $telefone = str_replace($de, $para, $_POST["telefone"]);
+        
+        $email =  $_POST["email"];
+
+        $de = array('.','-');
+        $para = array('','');
+        $cpf = str_replace($de, $para, $_POST["cpf"]);
+
+        //$cpf = $_POST["cpf"];
+        //dd($cpf);
         $id = $_POST["id"];
         $username = $_POST["username"];
         $valor = preg_replace('/[^0-9]/', '', $_POST["valor"]);
@@ -347,7 +359,7 @@ public function lista_cliente($cpf, $token){
         //var_dump($descricao);
         //exit();
         $client = new OldAsaasController;
-        $dec = $client->cria_cliente($username, $nome, $cpf, $telefone, $cep, $descricao, $empresa, $grupo, $token);
+        $dec = $client->cria_cliente($username, $nome, $cpf, $telefone, $email, $cep, $descricao, $empresa, $grupo, $token);
         //dd($dec);
         $customer = $dec->id;
         $client->notificacao_asaas($customer, $token);
@@ -368,7 +380,7 @@ public function lista_cliente($cpf, $token){
           
         $status3 = "<br><b>COBRANÇA CRIADA COM SUCESSO</b> <br>" . $curso . " em " . $parcela . " parcelas de " . "R$" . $valor;
 
-        $paybook = $client->getPayBook($dec->installment, $token);
+        $paybook = $client->getPayBook($dec->installment, str_replace("access_token: ","",$token));
 
         $msg = new MktController;
         $url = "https://profissionalizaead.com.br";
@@ -405,9 +417,17 @@ public function lista_cliente($cpf, $token){
         $acao = "/modern-dark-menu/app/pay/create";
         $botao = "Fechar";
         //dd($dec);
+        $aluno->document = $cpf;
+        $aluno->save();
         $aluno->observation()->create([
           'obs' => str_ireplace("\\n", "\r\n", $descricao)
         ]);
+        $aluno->accountable()->create([
+          'name' => $nomeresp,
+          'cellphone' => $telefone,
+          'document' => $cpf
+        ]);
+
         return view('pages.app.pay.modal1')->with([
             'status1'=>$status1,
             'status2'=>$status2,
@@ -473,7 +493,7 @@ public function lista_cliente($cpf, $token){
     if (!empty($installment)){
       $status3 = "<br><b>COBRANÇA CRIADA COM SUCESSO</b> <br>" . $curso . " em " . $parcela . " parcelas de " . "R$" . $valor;
 
-      $paybook = $cobranca->getPayBook($dec->installment, $token);
+      $paybook = $cobranca->getPayBook($dec->installment, str_replace("access_token: ","",$token));
 
       $msg = new MktController;
       $url = "https://profissionalizaead.com.br";
@@ -513,6 +533,15 @@ public function lista_cliente($cpf, $token){
       //dd($dec);
       $aluno->observation()->create([
         'obs' => str_ireplace("\\n", "\r\n", $descricao)
+      ]);
+
+      $aluno->document = $cpf;
+      $aluno->save();
+
+      $aluno->accountable()->create([
+        'name' => $nomeresp,
+        'cellphone' => $telefone,
+        'document' => $cpf
       ]);
       return view('pages.app.pay.modal1')->with([
           'status1'=>$status1,

@@ -72,6 +72,12 @@ use Illuminate\Support\Facades\Route;
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
 
+         Route::prefix('/aluno/pay')->group(function () {
+            Route::get('/list', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
+        });
+
+        
+
         Route::get('/login/{id}', function ($id) {
             if(Auth::user()->role >= 4){
                 $user = User::find($id);
@@ -1424,9 +1430,7 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/rd/{id}', [RdController::class, 'rd_create_oportunity']);    
 });
 
-Route::prefix('/aluno/pay')->group(function () {
-    Route::get('/list', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
-});
+
 
 Route::prefix('/app/form')->group(function () {
 

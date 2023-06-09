@@ -154,4 +154,11 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserObservation::class);
     }
+    public function accountable()
+    {
+        return $this->hasMany(UserAccountable::class);
+    }
+
+
+    
 }

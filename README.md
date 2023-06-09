@@ -9,6 +9,7 @@ cd app
 ```
 
 
+
 Alterne para a branch desejada
 ```sh
 git checkout "nome da branch"
