@@ -574,8 +574,9 @@ public function lista_cliente($cpf, $token){
         //dd($response);
         
       while($i > 3){
-        $i++;
+        
         if(isset($response->data[0]->id)){
+          $i++;
         $response = $client->lista_cliente(Auth::user()->document, env("ASAAS_TOKEN$i"));
         }
       }
