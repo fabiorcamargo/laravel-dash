@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Http;
 
 class MktController extends Controller
@@ -41,8 +44,9 @@ class MktController extends Controller
         }
     }
 
-    public function send_not_active($name, $phone, $type, $msg)
+    public function send_not_active($name, $phone, $type, $msg, $user_id)
     {
+        $user = User::find($user_id);
 
         $renew = new MktController;
         $token = $renew->getToken();
@@ -62,7 +66,50 @@ class MktController extends Controller
                     ]
                  }';
 
-        $client = new \GuzzleHttp\Client();
+        $client = new Client();
+
+        try {
+            $response = $client->request('POST', 'https://api.mktzap.com.br/company/' . env('MKT_COMPANY') . '/history/active', [
+                'body' => "$payload",
+                'headers' => [
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json',
+                    'Authorization' => "Bearer $token"
+                ],
+            ]);
+            // Processar a resposta
+            
+            $user->usermsg()->create([
+                'msg' => $msg,
+                'status' => $response->getStatusCode()
+              ]);
+ 
+              return $response->getStatusCode();
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                
+                $user->usermsg()->create([
+                    'msg' => $msg,
+                    'status' => $e->getResponse()->getStatusCode()
+                  ]);
+                // Se a requisição falhou e houver uma resposta HTTP, você pode acessá-la assim:
+                return $e->getResponse()->getStatusCode(); // Código de status HTTP
+                //echo $e->getResponse()->getBody(); // Corpo da resposta HTTP
+            } else {
+                
+                $user->usermsg()->create([
+                    'msg' => $msg,
+                    'status' => $e->getMessage()
+                  ]);
+                // Se a requisição não obteve uma resposta HTTP, você pode acessar o erro assim:
+                return $e->getMessage();
+                
+            }
+        }
+
+
+
+/*
         $response = $client->request('POST', 'https://api.mktzap.com.br/company/' . env('MKT_COMPANY') . '/history/active', [
             'body' => "$payload",
             'headers' => [
@@ -72,6 +119,6 @@ class MktController extends Controller
             ],
         ]);
 
-        return response("Status", $response->getStatusCode());
+        return response("Status", $response->getStatusCode());*/
     }
 }

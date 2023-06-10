@@ -394,7 +394,7 @@ public function lista_cliente($cpf, $token){
         }
         
         
-        $msg->send_not_active($nome, $telefone, "text", $msg_text);
+        $msg->send_not_active($nome, $telefone, "text", $msg_text, $aluno->id);
        
 
         }else{
@@ -410,7 +410,7 @@ public function lista_cliente($cpf, $token){
         }else{
           $msg_text = '😊 Olá '.$nomeresp.', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
         }
-        $msg->send_not_active($nome, $telefone, "text", $msg_text);
+        $msg->send_not_active($nome, $telefone, "text", $msg_text, $aluno->id);
         
         }
         $status1 = "<b>CRIAÇÃO DE BOLETOS</b>";
@@ -507,7 +507,7 @@ public function lista_cliente($cpf, $token){
       }
       
       
-      $msg->send_not_active($nome, $telefone, "text", $msg_text);
+      $msg->send_not_active($nome, $telefone, "text", $msg_text, $aluno->id);
      
 
 
@@ -524,7 +524,7 @@ public function lista_cliente($cpf, $token){
         }else{
           $msg_text = '😊 Olá '.$nomeresp.', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
         }
-      $msg->send_not_active($nome, $telefone, "text", $msg_text);
+      $msg->send_not_active($nome, $telefone, "text", $msg_text, $aluno->id);
       
       }
       $status1 = "<b>CRIAÇÃO DE BOLETOS</b>";
@@ -553,26 +553,32 @@ public function lista_cliente($cpf, $token){
 
     }
 
-    public function list(){
-      if(Auth::user()->document == null || Auth::user()->document == 99999999999 || Auth::user()->document == 00000000000 ){
+    public function list($id){
+      if(Auth::user()->role >= 4){
+        $user = User::find($id);
+      }else{
+        $user = Auth::user();
+      }
+
+      if($user->document == null || $user->document == 99999999999 || $user->document == 00000000000 ){
         $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
         return back()->withErrors(__($msg));
       }
       //dd('1');
-      if(Auth::user()->secretary == "TB" || Auth::user()->secretary == "MGA"){
+      if($user->secretary == "TB" || $user->secretary == "MGA"){
         //dd('1');
       }else{
         
         $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
         return back()->withErrors(__($msg));
       }
-        //dd(Auth::user()->document);
+        //dd($user->document);
         $client = new OldAsaasController;
         $i = 1;
         $a = 1;
         //dd(env("ASAAS_TOKEN$i"));
-        $response = $client->lista_cliente(Auth::user()->document, env("ASAAS_TOKEN$i"));
-          //dd(Auth::user()->document);
+        $response = $client->lista_cliente($user->document, env("ASAAS_TOKEN$i"));
+          //dd($user->document);
       if(!isset($response->data[0]->id)){
         
       while($a <= 3){
@@ -583,7 +589,7 @@ public function lista_cliente($cpf, $token){
           $i++;
           //dd($i);
           //dd($a);
-          $response = $client->lista_cliente(Auth::user()->document, env("ASAAS_TOKEN$i"));
+          $response = $client->lista_cliente($user->document, env("ASAAS_TOKEN$i"));
 
         //dd($response->data);
         }

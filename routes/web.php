@@ -110,8 +110,8 @@ use Illuminate\Support\Facades\Route;
              *       @Router -  Student
              * ==============================
              */
-            Route::prefix('/aluno/pay')->group(function () {
-                Route::get('/list', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
+            Route::prefix('/aluno/pay/')->group(function () {
+                Route::get('/list/{id}', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
             });
                     
                     Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
@@ -334,7 +334,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::prefix('/mkt')->group(function () {
                 Route::get('/token', [MktController::class, 'getToken']
                 )->name('mkt-token');
-                Route::get('/send_not_active/{name}/{phone}/{type}/{msg}', [MktController::class, 'send_not_active']
+                Route::get('/send_not_active/{name}/{phone}/{type}/{msg}/{user_id}', [MktController::class, 'send_not_active']
                 )->name('mkt-send_not_active');
                 Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
                 Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');

@@ -145,6 +145,26 @@
                                     </li>
                                     </div>
                                     <div class="card p-2 mt-4" id="create">
+                                       
+                                        <label for="create">Responsável Financeiro:</label>
+                                        <li class="contacts-block__item">
+                                            <a href="{{getRouterValue();}}/aluno/pay/list/{{$user->id}}" target="blank"
+                                                class="btn btn-secondary  _effect--ripple waves-effect waves-light">
+                                                <x-widgets._w-svg svg="cash"/> 
+                                                <span class="btn-text-inner">Ver Pagamentos</span>
+                                            </a>
+                                        </li>
+                                        @foreach ($user->accountable()->get() as $responsavel)
+                                        <li class="contacts-block__item">
+                                                <div class="media-body align-self-center">
+                                                    <p class="mb-0">{{ $responsavel->name }}</p>
+                                                    <p class="mb-0">{{ $responsavel->document }}</p>
+                                                    <p class="mb-0">{{ $responsavel->cellphone }}</p>
+                                            </div>
+                                        </li>
+                                        @endforeach
+                                        </div>
+                                    <div class="card p-2 mt-4" id="create">
                                     <li class="contacts-block__item">
                                         <a href="mailto:{{ $user->email }}"><svg xmlns="http://www.w3.org/2000/svg"
                                                 width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -298,6 +318,7 @@
                     </div>
                 </div>
                 <div class="col-xl-7 col-md-7 col-sm-12 layout-top-spacing">
+
 
                     <div class="user-profile">
                         <div class="widget-content widget-content-area">

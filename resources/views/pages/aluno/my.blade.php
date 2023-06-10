@@ -161,6 +161,12 @@
             </div>
         </div>
         @endif --}}
+        @if(Auth::user()->active == 1)
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+            <x-widgets._w-pay-asaas title="Pagamentos" chart-id="pay-asaas"/>
+        </div>
+        
+        @endif
         
         <div id="owl-demo" class="mt-4">
 

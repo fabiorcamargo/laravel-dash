@@ -158,6 +158,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserAccountable::class);
     }
+    public function usermsg()
+    {
+        return $this->hasMany(UserMessage::class);
+    }
 
 
     
