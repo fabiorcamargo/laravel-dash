@@ -241,6 +241,7 @@
                                                                                 <option value="{{ $user->secretary }}">{{ $user->secretary }}</option>
                                                                                 <option value="MGA">MGA</option>
                                                                                 <option value="TB">TB</option>
+                                                                                <option value="TB">UMU</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
