@@ -1,6 +1,6 @@
 
 
-<a class="card mb-md-0 mb-4" href="{{env('OURO_LINK_AUTO')}}{{ App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto') }}" target="_self">
+<a class="card mb-md-0 mb-4" href="https://wa.me/554484233200?text=Curso Bloqueado" target="_self">
     <img src="{{asset($card)}}" class="card-img-top" alt="Seu Curso">
     <div class="card-footer">
         <div class="row">

@@ -1,8 +1,4 @@
 <html>
-
-
-
-
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -18,13 +14,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title"><?php echo $status1; ?></h5>
+        <h5 class="modal-title">Título</h5>
       </div>
       <div class="modal-body">
-        <p> <?php echo $status2; echo "<br>" . $status3; ?></p>
+        <p>Status 1 <br> Status2</p>
       </div>
       <div class="modal-footer">
-        <a href=<?php echo $acao; ?> class="btn btn-primary" role="button" aria-disabled="true"><?php echo $botao; ?></a>
+        <a href="href" class="btn btn-primary" role="button" aria-disabled="true">Botão1</a>
       </div>
     </div>
   </div>

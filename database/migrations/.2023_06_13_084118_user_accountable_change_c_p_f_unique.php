@@ -13,13 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_accountables', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('name');
-            $table->string('cellphone')->nullable();
-            $table->string('document')->nullable();
-            $table->timestamps();
+        Schema::table('user_accountables', function (Blueprint $table) {
+            $table->unique('document');
         });
     }
 
@@ -30,6 +25,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_accountables');
+        //
     }
 };

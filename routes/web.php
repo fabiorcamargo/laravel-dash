@@ -19,7 +19,8 @@ use App\Http\Controllers\{
     RdController,
     RedirCademiController,
     TemporaryFileController,
-    UserController
+    UserController,
+    UserGetAccountable
 };
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
@@ -71,7 +72,7 @@ use Illuminate\Support\Facades\Route;
             Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
-
+         Route::get('/usergetaccountable', [UserGetAccountable::class, 'get_accountable'])->name('usergetaccountable');
        
 
 
@@ -327,8 +328,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                     return view('pages.app.pay.create')->with('sellers', $sellers);
                 }
                 )->name('pay-create');
-                Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
-                Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');
+                Route::get('/asaas/{cpf}', [OldAsaasController::class, 'lista_cliente_stoken'])->name('asaas-get-client');
+                Route::post('/create', [OldAsaasController::class, 'cria'])->name('pay-create-post');
+                Route::get('/cliente_existe', [OldAsaasController::class, 'cria_existe'])->name('pay-cliente_existe');
             });
 
             Route::prefix('/mkt')->group(function () {
@@ -336,8 +338,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 )->name('mkt-token');
                 Route::get('/send_not_active/{name}/{phone}/{type}/{msg}/{user_id}', [MktController::class, 'send_not_active']
                 )->name('mkt-send_not_active');
-                Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
-                Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');
+                //Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
+                //Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');
             });
 
             Route::prefix('/ouro')->group(function () {

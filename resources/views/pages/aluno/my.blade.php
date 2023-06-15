@@ -176,7 +176,7 @@
                 </div>
             @endif
             @if(Auth::user()->first == 5)
-            <x-widgets._w-card-ouro title="Cursos Premium" card="{{Vite::asset('/resources/images/Curso Bloqueado.jpg')}}"/>
+            <x-widgets._w-card-bloqueado title="Cursos Premium" card="{{Vite::asset('/resources/images/Curso Bloqueado.jpg')}}"/>
             @else
                 @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') )
                     <div class="me-2">
@@ -186,7 +186,7 @@
             @endif
             
             @if(Auth::user()->first == 4 || Auth::user()->first == 5)
-            <x-widgets._w-card-ouro title="Cursos Ouro" card="{{Vite::asset('/resources/images/Curso Bloqueado.jpg')}}"/>
+            <x-widgets._w-card-bloqueado title="Cursos Ouro" card="{{Vite::asset('/resources/images/Curso Bloqueado.jpg')}}"/>
             @else
             @if(Auth::user()->client_ouro()->first() && $courses = Auth::user()->client_ouro()->first()->matricula_ouro()->get())
                 @foreach ($courses as $course)

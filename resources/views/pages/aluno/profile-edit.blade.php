@@ -312,14 +312,14 @@
                                                                         </div>
                                                                     </div>
                                                                     @endisset
-                                                                    <div class="col-md-12">
+                                                                    {{--<div class="col-md-12">
                                                                         <div class="form-group">
                                                                             <h4>Observações:</h4>
                                                                             <div id="quillEditor"></div>
                                                                             <input id="observation" name="observation"  hidden>
-                                                                            {{--<input type="text" name="observation" id="observation" class="form-control mb-8" value="{{$user->observation}}">--}}
+                                                                            {{--<input type="text" name="observation" id="observation" class="form-control mb-8" value="{{$user->observation}}">
                                                                         </div>
-                                                                    </div>
+                                                                    </div>--}}
                                                                     
                                                                     @endif
 

@@ -228,12 +228,10 @@ class UserController extends Controller
     public function active($id) {
         
         $user = $this->user->find($id);
-        //dd($user);
         $r = str_replace(" ", "", $user->courses);
         $courses = explode(",",  $r);
-        //dd($courses);
 
-        foreach($courses as $course){
+        /*foreach($courses as $course){
          $payload = [
              "token" => env('CADEMI_TOKEN_GATEWAY'),
              "codigo"=> "CODD-$course-$user->username",
@@ -292,7 +290,7 @@ class UserController extends Controller
                 $import->save();
             }
 
-    }
+    }*/
                 $user->first = 2;
                 $user->save();        
         

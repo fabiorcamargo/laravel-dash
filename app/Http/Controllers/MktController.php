@@ -46,7 +46,8 @@ class MktController extends Controller
 
     public function send_not_active($name, $phone, $type, $msg, $user_id)
     {
-        $user = User::find($user_id);
+        
+        //$user = User::find($user_id);
 
         $renew = new MktController;
         $token = $renew->getToken();
@@ -79,10 +80,24 @@ class MktController extends Controller
             ]);
             // Processar a resposta
             
-            $user->usermsg()->create([
+            if(count((array)$user_id) > 1){
+                //dd('s');
+                foreach((array)$user_id as $user){
+                   $user = User::find($user);
+                   $user->usermsg()->create([
                 'msg' => $msg,
                 'status' => $response->getStatusCode()
               ]);
+                    //dd($user);
+                }
+            }else{
+                $user = User::find($user_id)->first();
+                //dd($user);  
+                $user->usermsg()->create([
+                'msg' => $msg,
+                'status' => $response->getStatusCode()
+              ]);
+            }
  
               return $response->getStatusCode();
         } catch (RequestException $e) {
