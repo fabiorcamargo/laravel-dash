@@ -19,3 +19,4 @@ yarn-error.log
 /public/tmp
 /public/storage
 /public/avatar
+!/public/avatar/default.jpeg
