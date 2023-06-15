@@ -153,7 +153,9 @@
 
     @livewireStyles
 </head>
-
+    @if(request()->input('search'))
+        <body onload="myFunction()">
+    @endif
 <ul class="nav justify-content-end p-4">
     <li class="nav-item">
         <a type="button" class="btn btn-danger" href="/modern-dark-menu/aluno/my">"Sair do Sistema"</a>
@@ -362,7 +364,7 @@
                         </a>
                     </div>
 
-                    <div class="form-row">
+                    <div class="form-row pt-4">
                         <div class="form-group col-md-3">
                             <label>CEP</label>
                             <input type="text" id="cep" name="cep" value="" size="8" maxlength="8" class="form-control"
@@ -389,7 +391,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label>Valor da Parcela</label>
-                            <input type="text" id="valor" name="valor" class="form-control"
+                            <input type="text" id="valor" name="valor" class="form-control" placeholder="Valor 00,00"
                                 onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});"
                                 onchange="adicionarRequired('data')">
                         </div>
@@ -450,13 +452,14 @@
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="taxa" name="taxa" value=" + Taxa"
                                     onclick="toggleInput(1)" style="scale:1.3">
-                                <label class="form-check-label" for="inlineCheckbox1">Taxa</label>
+                                <label class="form-check-label" for="inlineCheckbox1">Taxa Paga</label>
                                 <div id="input-wrapper1" class="input-wrapper" hidden>
                                     <input type="text" id="taxa_valor" name="taxa_valor" placeholder="R$ Valor Total"
                                         class="mx-2  form-control"
                                         onkeypress="$(this).mask('R$ #######', {reverse: false});">
                                 </div>
                             </div>
+                            
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="cartaoi" name="cartaoi"
                                     value=" + Cartão Integral" onclick="toggleInput(3)" style="scale:1.3">
@@ -476,7 +479,17 @@
                                         class="mx-2 form-control"
                                         onkeypress="$(this).mask('R$ #######', {reverse: false});">
                                 </div>
-                            </div>
+                            </div><br><br>
+                            {{--<div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" id="taxa-gerar" name="taxa-gerar" value=" + Taxa"
+                                    onclick="toggleInput(5)" style="scale:1.3">
+                                <label class="form-check-label" for="inlineCheckbox1">Colocar taxa junto na 1ª parcela</label>
+                                <div id="input-wrapper5" class="input-wrapper" hidden>
+                                    <input type="text" id="taxa_valor" name="taxa_valor" placeholder="R$ Valor Total"
+                                        class="mx-2  form-control"
+                                        onkeypress="$(this).mask('R$ #######', {reverse: false});">
+                                </div>
+                            </div>--}}
                         </div>
 
 
@@ -598,6 +611,12 @@
     <script>
         //arquivo funcoes_cpf.js
 // validador CPF
+
+function myFunction(){
+    console.log('sim');
+    window.location.href = "/modern-dark-menu/app/pay/create";
+}
+
 
 function loading(){
 

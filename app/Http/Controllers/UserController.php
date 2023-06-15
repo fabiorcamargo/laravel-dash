@@ -128,31 +128,76 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function delete($id, Request $request) {
-        //dd($request->all());
+    public function block_cademi($id, Request $request) {
         $user = $this->user->find($id);
-        //dd($obs);
-        if($request->ouro == "on" && $request->cademi == "on"){
-            //dd('dois');
-            $obs = "Motivo: $request->motivo\r\nTipo: Ouro e Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
-            $user->first = 5;
-            
-        }else if($request->ouro == "on"){
-            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs";
-            $user->first = 4;
-        }else if($request->cademi == "on"){
-            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs";
+        if($user->first < 3){
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
             $user->first = 3;
+        }elseif($user->first == 4){
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 5;
         }
-        //dd($user);
-        //  dd($obs);
         $user->observation()->create([
             'obs' => $obs
         ]);
-
         $user->save();        
+        return back()->with([
+            'status' => "Cursos Cademi bloqueados com sucesso!"
+        ]);
+    }
 
-        return back();
+    public function desblock_cademi($id, Request $request) {
+        $user = $this->user->find($id);
+        if($user->first == 3){
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 2;
+        }elseif($user->first == 5){
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 4;
+        }
+        $user->observation()->create([
+            'obs' => $obs
+        ]);
+        //dd($user);
+        $user->save();        
+        return back()->with([
+            'status' => "Cursos Cademi desbloqueados com sucesso!"
+        ]);
+    }
+    public function desblock_ouro($id, Request $request) {
+        $user = $this->user->find($id);
+        if($user->first == 4){
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 2;
+        }elseif($user->first == 5){
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 3;
+        }
+        $user->observation()->create([
+            'obs' => $obs
+        ]);
+        $user->save();        
+        return back()->with([
+            'status' => "Cursos Ouro desbloqueados com sucesso!"
+        ]);
+    }
+
+    public function block_ouro($id, Request $request) {
+        $user = $this->user->find($id);
+        if($user->first < 3){
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 4;
+        }elseif($user->first == 3){
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+            $user->first = 5;
+        }
+        $user->observation()->create([
+            'obs' => $obs
+        ]);
+        $user->save();        
+        return back()->with([
+            'status' => "Cursos Ouro bloqueados com sucesso!"
+        ]);
         /*
         $user = $this->user->find($id);
         //dd($user);
@@ -226,6 +271,7 @@ class UserController extends Controller
     }
 
     public function active($id) {
+        
         
         $user = $this->user->find($id);
         $r = str_replace(" ", "", $user->courses);

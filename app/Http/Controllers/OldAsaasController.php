@@ -346,10 +346,10 @@ class OldAsaasController extends Controller
     $send->pagamento = "$send->taxa$send->cartao$send->link$send->boleto";
     $send->criado_por = Auth::user()->name;
     $send->desc = str_ireplace("\r\n", "\\n", $send->desc);
-    $send->contratos = (count($send->username) > 1 ? implode("/ ", (array)$send->username) : implode("", (array)$send->username));
+    $send->contratos = (count($send->username) > 1 ? implode("/", (array)$send->username) : implode("", (array)$send->username));
     $send->names = (count($send->nomealuno) > 1 ? implode(", ", $send->nomealuno) : implode("",$send->nomealuno));
     $send->nome = "$send->contratos $send->nomeresp ($send->names)";
-    $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCRIADO POR: $send->criado_por\\n$send->desc";
+    $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCONTRATOS: $send->contratos \\nCRIADO POR: $send->criado_por\\n$send->desc";
 
     //dd(count($send->username) > 1 ? implode("|", (array)$send->username) : $send->username);
 
@@ -449,6 +449,10 @@ class OldAsaasController extends Controller
     $send = $client->trata_dados($request);
     //dd($send->resp_exist);
 
+    //dd($send->id[1]);
+
+    //dd($send);
+   
     if($send->resp_exist == "2"){
         $this->cria_existe((object)$send);
         return redirect('/modern-dark-menu/app/pay/create')->with([
@@ -478,6 +482,7 @@ class OldAsaasController extends Controller
           $client->cria_cobranca1($send, $customer, $token);
 
           $send->responsavel = UserAccountable::create([
+            'user_id' => $send->id[1],
             'name' => $send->nomeresp,
             'cellphone' => $send->telefone,
             'document' => $send->cpf,
@@ -554,6 +559,7 @@ class OldAsaasController extends Controller
           $send->cobranca = $client->cria_cobranca1($send, $customer, $token);
 
           $send->responsavel = UserAccountable::create([
+            'user_id'=> $send->id[1],
             'name' => $send->nomeresp,
             'cellphone' => $send->telefone,
             'document' => $send->cpf,

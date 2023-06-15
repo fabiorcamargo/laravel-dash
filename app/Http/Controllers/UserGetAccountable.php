@@ -17,12 +17,17 @@ class UserGetAccountable extends Controller
         foreach($users as $user){
             $accountable = (UserAccountable::where('user_id', $user->id)->first());
             if(isset($accountable->id)){
-            $user->user_accountables_id = $accountable->id;
+            $user->user_accountable_id = $accountable->id;
             $accountable->secretary = $user->secretary;
+				$accountable->active = 1;
+				$accountable->save();
+				//dd($accountable);
             $response->$i = ['user' => $user->id,'accountable' => $accountable->id];
             //dd($response);
-            $user->user_accountables_id;
-            //$user->save();
+            //$user->user_accountable_id = $accountable->id;
+				
+            $user->save();
+				//dd($user);
             //dd($accountable);
             $i++;
             }

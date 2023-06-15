@@ -204,18 +204,28 @@
                                                             @if($user->ouro == 1)
                                                                 <span class="badge badge-light-info mb-2">10 Cursos</span>
                                                             @endif
-                                                            @if ($user->client_ouro()->first() || $user->ouro_id !== null)
-                                                            <span class="btn btn-light-info position-relative btn-icon btn-rounded mb-2 me-4">
-                                                                <img src="{{Vite::asset('resources/images/ouro.svg')}}" class="" style="width: 20px;" alt="logo">
-                                                                
-                                                                @if(app('request')->input('ouro') == null || app('request')->input('ouro') == 10)
-                                                                <span class="badge badge-danger counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
+                                                            @if($user->cademis()->first())
+                                                                @if($user->first < 3)
+                                                                    <span  class="badge badge-success mb-2">Cademi</span>
+                                                                @elseif($user->first == 4)
+                                                                    <span  class="badge badge-success mb-2">Cademi</span>
                                                                 @else
-                                                                <span class="badge badge-danger counter">{{\App\Models\OuroCourse::where('ouro_client_id', $user->id)->get()->count()}}</span>
+                                                                    <span  class="badge badge-danger mb-2">Cademi</span>
                                                                 @endif
-
-                                                            </span>
                                                             @endif
+                                                            @if ($user->client_ouro()->first() || $user->ouro_id !== null)
+                                                                @if($user->first < 4)
+                                                                    <span class="badge badge-success position-relative btn-icon mb-2">Ouro
+                                                                @else
+                                                                    <span class="badge badge-danger position-relative btn-icon mb-2">Ouro
+                                                                @endif
+                                                                    <span class="badge badge-dark counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
+                                                                </span>
+                                                            @endif
+                                                            @if($user->accountable()->first())
+                                                                <span class="badge badge-success mb-2"><x-widgets._w-svg class="text-white" svg="currency-real"/> </span>
+                                                            @endif
+                                                            
                                                     </div>
                                                 </div>
                                             </a>

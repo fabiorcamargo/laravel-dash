@@ -288,7 +288,10 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/profile/{id}/courses', [UserController::class, 'courses_profile'])->name('user-courses');
                 Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('user-profile-edit');
                 Route::post('/profile/{id}/active', [UserController::class, 'active'])->name('user-profile-active');
-                Route::delete('/profile/{id}/delete', [UserController::class, 'delete'])->name('user-profile-delete');
+                Route::post('/profile/{id}/ouro-block', [UserController::class, 'block_ouro'])->name('ouro-block');
+                Route::post('/profile/{id}/cademi-block', [UserController::class, 'block_cademi'])->name('cademi-block');
+                Route::post('/profile/{id}/ouro-desblock', [UserController::class, 'desblock_ouro'])->name('ouro-desblock');
+                Route::post('/profile/{id}/cademi-desblock', [UserController::class, 'desblock_cademi'])->name('cademi-desblock');
 
                 Route::get('/profile/{id}/pay', [UserController::class, 'profile_edit'])->name('user-profile-edit');
 

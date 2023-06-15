@@ -11,6 +11,7 @@ class UserMessage extends Model
     protected $fillable = [
         'id',
         'user_id',
+        'cellphone',
         'msg',
         'status'
     ];

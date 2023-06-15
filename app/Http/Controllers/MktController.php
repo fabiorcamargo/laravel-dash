@@ -49,8 +49,7 @@ class MktController extends Controller
         
         //$user = User::find($user_id);
 
-        $renew = new MktController;
-        $token = $renew->getToken();
+        $token = $this->getToken();
         //dd($token);
 
         $payload = '{
@@ -80,42 +79,51 @@ class MktController extends Controller
             ]);
             // Processar a resposta
             
-            if(count((array)$user_id) > 1){
+            
                 //dd('s');
                 foreach((array)$user_id as $user){
                    $user = User::find($user);
                    $user->usermsg()->create([
                 'msg' => $msg,
+                'cellphone' => $phone,
                 'status' => $response->getStatusCode()
               ]);
                     //dd($user);
                 }
-            }else{
-                $user = User::find($user_id)->first();
-                //dd($user);  
-                $user->usermsg()->create([
-                'msg' => $msg,
-                'status' => $response->getStatusCode()
-              ]);
-            }
+            
  
               return $response->getStatusCode();
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                
-                $user->usermsg()->create([
-                    'msg' => $msg,
-                    'status' => $e->getResponse()->getStatusCode()
-                  ]);
+                             
+                foreach((array)$user_id as $user){
+                   $user = User::find($user);
+                   $user->usermsg()->create([
+                'msg' => $msg,
+                'cellphone' => $phone,
+                'status' => $e->getResponse()->getStatusCode()
+              ]);
+                    //dd($user);
+                }
+            
                 // Se a requisição falhou e houver uma resposta HTTP, você pode acessá-la assim:
                 return $e->getResponse()->getStatusCode(); // Código de status HTTP
                 //echo $e->getResponse()->getBody(); // Corpo da resposta HTTP
             } else {
                 
-                $user->usermsg()->create([
-                    'msg' => $msg,
-                    'status' => $e->getMessage()
-                  ]);
+                if ($e->hasResponse()) {
+                
+               
+                //dd('s');
+                foreach((array)$user_id as $user){
+                   $user = User::find($user);
+                   $user->usermsg()->create([
+                'msg' => $msg,
+                'cellphone' => $phone,
+                'status' => $e->getStatusCode()
+              ]);
+                 
+            }
                 // Se a requisição não obteve uma resposta HTTP, você pode acessar o erro assim:
                 return $e->getMessage();
                 
@@ -136,4 +144,5 @@ class MktController extends Controller
 
         return response("Status", $response->getStatusCode());*/
     }
+}
 }
