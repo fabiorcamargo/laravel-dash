@@ -25,6 +25,8 @@ use App\Http\Controllers\{
 use App\Http\Controllers\Admin\CommentController;
 use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
+use App\Http\Livewire\CreateTask;
+use App\Jobs\Mkt_resend_not_active;
 use App\Jobs\WhatsappBulkTemplate;
 use App\Mail\SendMailUser;
 use App\Mail\UserSign;
@@ -32,6 +34,8 @@ use App\Models\Cademi;
 use App\Models\EcoSeller;
 use App\Models\OuroClient;
 use App\Models\User;
+use App\Models\UserMessage;
+use App\Models\UserNotification;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -54,7 +58,7 @@ use Illuminate\Support\Facades\Route;
 //Route::middleware(['auth', 'can:admin'])->group(function () {
 
     
-
+    
     
         /**
          * ==============================
@@ -72,10 +76,9 @@ use Illuminate\Support\Facades\Route;
             Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
-         Route::get('/usergetaccountable', [UserGetAccountable::class, 'get_accountable'])->name('usergetaccountable');
+        Route::get('/usergetaccountable', [UserGetAccountable::class, 'get_accountable'])->name('usergetaccountable');
        
-
-
+        
 
         Route::get('/login/{id}', function ($id) {
             if(Auth::user()->role >= 4){
@@ -339,7 +342,15 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::prefix('/mkt')->group(function () {
                 Route::get('/token', [MktController::class, 'getToken']
                 )->name('mkt-token');
+
                 Route::get('/send_not_active/{name}/{phone}/{type}/{msg}/{user_id}', [MktController::class, 'send_not_active']
+                )->name('mkt-send_not_active');
+                Route::get('/resend_not_active/{msg_id}', function($msg_id){
+                    $send = new MktController;
+                    $send->resend_not_active($msg_id);
+
+                    return back();
+                }
                 )->name('mkt-send_not_active');
                 //Route::post('/create', [OldAsaasController::class, 'result'])->name('pay-create-post');
                 //Route::get('/cliente_existe', [OldAsaasController::class, 'cliente_existe'])->name('pay-cliente_existe');
@@ -1469,14 +1480,29 @@ Route::get('/test/pdf', function (){
     $pdf = Pdf::loadView('pdf.lista')
     ->setPaper('a4', 'landscape')
     ->setOptions([
-        'tempDir' => public_path(),
-        'chroot' => public_path('storage'),
+        //'tempDir' => public_path(),
+        //'chroot' => public_path('storage'),
         'enable_remote' => true,
-        'dpi' => '160'
+        'dpi' => '120'
     ]);
     //return $pdf->download('invoice.pdf');
     return $pdf->stream('invoice.pdf');
-    //return view('pdf.lista');
+    return view('pdf.lista');
+      
+});
+
+Route::get('/resume/pdf', function (){
+    /*$pdf = Pdf::loadView('pdf.resume')
+    ->setPaper('a4', 'portrait')
+    ->setOptions([
+        //'tempDir' => public_path(),
+        //'chroot' => public_path('storage'),
+        'enable_remote' => true,
+        'dpi' => '120'
+    ]);
+    //return $pdf->download('invoice.pdf');
+    return $pdf->stream('pdf.resume');*/
+    return view('pdf.resume');
       
 });
 
@@ -1484,6 +1510,8 @@ Route::get('/test/pdf', function (){
 Route::get('/', function () {
     return Redirect::to(env('APP_HOME_URL'));
 });
+
+
 
 require __DIR__.'/auth.php';
 

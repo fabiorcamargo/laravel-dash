@@ -21,6 +21,7 @@
 
 
 
+
             @vite(['resources/scss/dark/assets/components/modal.scss'])
             @vite(['resources/scss/light/assets/components/modal.scss'])
 
@@ -29,6 +30,44 @@
 
             @vite(['resources/scss/light/assets/components/accordions.scss'])
             @vite(['resources/scss/dark/assets/components/accordions.scss'])
+
+            <style>
+                .tooltips {
+                    position: relative;
+                    display: inline-block;
+                    border-bottom: 1px dotted black;
+                }
+
+                .tooltips .tooltiptexts {
+
+                    visibility: hidden;
+                    width: 420px;
+                    background-color: black;
+                    color: #fff;
+                    text-align: left;
+                    border-radius: 6px;
+                    padding: 5px 0;
+                    position: absolute;
+                    z-index: 1;
+                    top: -5px;
+                    left: 110%;
+                }
+
+                .tooltips .tooltiptexts::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    right: 100%;
+                    margin-top: -5px;
+                    border-width: 5px;
+                    border-style: solid;
+                    border-color: transparent black transparent transparent;
+                }
+
+                .tooltips:hover .tooltiptexts {
+                    visibility: visible;
+                }
+            </style>
             <!--  END CUSTOM STYLE FILE  -->
             </x-slot>
             <!-- END GLOBAL MANDATORY STYLES -->
@@ -41,6 +80,8 @@
                 <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
             </div>
 
+            
+            
             <!-- Content -->
             <div class="row layout-spacing ">
                 <div class="col-xl-5 col-md-5 col-sm-12 layout-top-spacing">
@@ -61,59 +102,63 @@
 
                             </div>
 
+                            
+
                             <div class="text-center user-info">
 
 
                                 <img src="{{ asset($user->image) }}" alt="avatar">
                                 <p class="">{{ $user->username }} | {{ $user->name }} {{ $user->lastname }}</p>
                                 <div class="media-body align-self-center">
-                                    @if ((Auth::user()->role) <= 4) @if($user->first == 2)
-                                        <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
-                                        @elseif($user->first == 3)
-                                        <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
-                                        @else
-                                        <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
-                                        @endif
-                                        @if ($user->payment == "CARTÃO")
-                                        <div class="shadow-none badge badge-success">Cartão</div>
-                                        @elseif ($user->payment == "BOLETO")
-                                        <div class="shadow-none badge badge-primary">Boleto</div>
-                                        @else
-                                        <div class="shadow-none badge badge-dark">Vazio</div>
-                                        @endif
-                                        @if($user->ouro == 1)
-                                        <span class="badge badge-light-info mb-2">10 Cursos</span>
-                                        @endif
+                                    @if ((Auth::user()->role) >= 4)
+                                    @if($user->first == 2)
+                                    <div class="badge badge-success badge-dot">{{$user->secretary}}</div>
+                                    @elseif($user->first == 3)
+                                    <div class="badge badge-danger badge-dot">{{$user->secretary}}</div>
+                                    @else
+                                    <div class="badge badge-warning badge-dot">{{$user->secretary}}</div>
+                                    @endif
+                                    @if ($user->payment == "CARTÃO")
+                                    <div class="shadow-none badge badge-success">Cartão</div>
+                                    @elseif ($user->payment == "BOLETO")
+                                    <div class="shadow-none badge badge-primary">Boleto</div>
+                                    @else
+                                    <div class="shadow-none badge badge-dark">Vazio</div>
+                                    @endif
+                                    @if($user->ouro == 1)
+                                    <span class="badge badge-light-info mb-2">10 Cursos</span>
+                                    @endif
 
-                                        @if($user->cademis()->first())
-                                        @if($user->first < 3) <a href="javascript():void" data-bs-toggle="modal"
-                                            data-bs-target="#bloquearCademiModal" class="badge badge-success mb-2">Cademi</a>
-                                            @elseif($user->first == 4)
-                                            <a href="javascript():void" data-bs-toggle="modal"
-                                                data-bs-target="#bloquearCademiModal"
-                                                class="badge badge-success mb-2">Cademi</a>
+                                    @if($user->cademis()->first())
+                                    @if($user->first < 3) <a href="javascript():void" data-bs-toggle="modal"
+                                        data-bs-target="#bloquearCademiModal" class="badge badge-success mb-2">
+                                        Cademi</a>
+                                        @elseif($user->first == 4)
+                                        <a href="javascript():void" data-bs-toggle="modal"
+                                            data-bs-target="#bloquearCademiModal"
+                                            class="badge badge-success mb-2">Cademi</a>
+                                        @else
+                                        <a href="javascript():void" data-bs-toggle="modal"
+                                            data-bs-target="#desbloquearCademiModal"
+                                            class="badge badge-danger mb-2">Cademi</a>
+                                        @endif
+                                        @endif
+                                        @if ($user->client_ouro()->first() || $user->ouro_id !== null)
+                                        @if($user->first < 4) <a href="javascript():void" data-bs-toggle="modal"
+                                            data-bs-target="#bloquearOuroModal"
+                                            class="badge badge-success position-relative btn-icon mb-2 me-4">
+                                            Ouro
                                             @else
                                             <a href="javascript():void" data-bs-toggle="modal"
-                                                data-bs-target="#desbloquearCademiModal"
-                                                class="badge badge-danger mb-2">Cademi</a>
-                                            @endif
-                                            @endif
-                                            @if ($user->client_ouro()->first() || $user->ouro_id !== null)
-                                            @if($user->first < 4) <a href="javascript():void" data-bs-toggle="modal"
-                                                data-bs-target="#bloquearOuroModal"
-                                                class="badge badge-success position-relative btn-icon mb-2 me-4">
+                                                data-bs-target="#desbloquearOuroModal"
+                                                class="badge badge-danger position-relative btn-icon mb-2 me-4">
                                                 Ouro
-                                                @else
-                                                <a href="javascript():void" data-bs-toggle="modal"
-                                                    data-bs-target="#desbloquearOuroModal"
-                                                    class="badge badge-danger position-relative btn-icon mb-2 me-4">
-                                                    Ouro
-                                                    @endif
-                                                    <span
-                                                        class="badge badge-dark counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
-                                                </a>
                                                 @endif
-                                                @endif
+                                                <span
+                                                    class="badge badge-dark counter">{{$user->client_ouro()->first()->matricula_ouro()->count()}}</span>
+                                            </a>
+                                            @endif
+                                            @endif
 
 
 
@@ -283,6 +328,7 @@
                                             </div>
                                         </li>
 
+                                        @if ((Auth::user()->role) >= 4)
                                         <li class="contacts-block__item">
                                             <a href="/login/{{ $user->id }}" target="blank"
                                                 class="btn btn-dark  _effect--ripple waves-effect waves-light">
@@ -290,61 +336,62 @@
                                                 <span class="btn-text-inner">Acessar como {{$user->name}}</span>
                                             </a>
                                         </li>
+                                        @endif
 
                                         @isset($cademi->login_auto)
-                                            {{--<li class="contacts-block__item">
-                                                <a href="{{ $cademi->login_auto }}" target="blank"
-                                                    class="btn btn-secondary  _effect--ripple waves-effect waves-light">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-log-in">
-                                                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                                                        <polyline points="10 17 15 12 10 7"></polyline>
-                                                        <line x1="15" y1="12" x2="3" y2="12"></line>
-                                                    </svg>
-                                                    <span class="btn-text-inner">Acesse seu Curso</span>
+                                        {{--<li class="contacts-block__item">
+                                            <a href="{{ $cademi->login_auto }}" target="blank"
+                                                class="btn btn-secondary  _effect--ripple waves-effect waves-light">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    class="feather feather-log-in">
+                                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                                </svg>
+                                                <span class="btn-text-inner">Acesse seu Curso</span>
+                                            </a>
+                                        </li>--}}
+
+
+                                        @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
+                                        <li class="contacts-block__item">
+                                            <div class="clipboard">
+
+                                                <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}"
+                                                    target="blank"
+                                                    class="btn btn-danger  _effect--ripple waves-effect waves-light">
+                                                    <x-widgets._w-svg svg="user-search" />
+                                                    <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
                                                 </a>
-                                            </li>--}}
+                                        </li>
 
 
-                                            @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
-                                                <li class="contacts-block__item">
-                                                    <div class="clipboard">
-
-                                                        <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}"
-                                                            target="blank"
-                                                            class="btn btn-danger  _effect--ripple waves-effect waves-light">
-                                                            <x-widgets._w-svg svg="user-search" />
-                                                            <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
-                                                        </a>
-                                                </li>
-
-
-                                                {{--<li class="contacts-block__item">
-                                                    <form class="form-horizontal">
-                                                        <div class="clipboard-input">
-                                                            <input type="text" class="form-control inative"
-                                                                id="copy-basic-input" value="{{ $cademi->login_auto }}"
-                                                                readonly>
-                                                            <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click"
-                                                                title="Copied" data-clipboard-target="#copy-basic-input"><svg
-                                                                    xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                    stroke-width="2" stroke-linecap="round"
-                                                                    stroke-linejoin="round" class="feather feather-copy">
-                                                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2">
-                                                                    </rect>
-                                                                    <path
-                                                                        d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1">
-                                                                    </path>
-                                                                </svg></div>
-                                                        </div>
-                                                    </form>
+                                        {{--<li class="contacts-block__item">
+                                            <form class="form-horizontal">
+                                                <div class="clipboard-input">
+                                                    <input type="text" class="form-control inative"
+                                                        id="copy-basic-input" value="{{ $cademi->login_auto }}"
+                                                        readonly>
+                                                    <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click"
+                                                        title="Copied" data-clipboard-target="#copy-basic-input"><svg
+                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round" class="feather feather-copy">
+                                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2">
+                                                            </rect>
+                                                            <path
+                                                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1">
+                                                            </path>
+                                                        </svg></div>
+                                                </div>
+                                            </form>
 
 
-                                                </li>--}}
-                                            @endif
+                                        </li>--}}
+                                        @endif
 
                                         @endisset
                                 </ul>
@@ -617,48 +664,121 @@
                             </div>
                         </div>
                     </div>
+
+                    
                 </div>
-                <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing mt-0">
-                    <div class="summary user-profile layout-spacing">
-                        <div class="d-flex justify-content-between">
-                            <div class="widget-content widget-content-area col-12">
+            </div>
+            <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing mt-0">
+                <div class="summary user-profile layout-spacing" >
+                    <div class="d-flex justify-content-between">
+                        <div class="widget-content widget-content-area col-12" >
 
-                                <div class="d-flex justify-content-between">
-                                    <h3 class="">Observações</h3>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a data-bs-toggle="modal" href="" data-bs-target="#ObsModal"
-                                            class="edit-profile" data-toggle="tooltip" data-placement="top"
-                                            title="Adicionar Cursos">
-                                            <svg svg="apps-filled" width="24" height="24">
-                                                <use
-                                                    xlink:href="http://localhost:8991/images/tabler-sprite.svg#tabler-apps-filled">
-                                                </use>
-                                            </svg>
-                                        </a>
-                                    </div>
-
+                            <div class="d-flex justify-content-between" >
+                                <h3 class="">Observações</h3>
+                                <div class="btn-group"  role="group" aria-label="Basic example">
+                                    <a data-bs-toggle="modal" href="" data-bs-target="#ObsModal" class="edit-profile"
+                                        data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
+                                        <svg svg="apps-filled" width="24" height="24">
+                                            <use
+                                                xlink:href="http://localhost:8991/images/tabler-sprite.svg#tabler-apps-filled">
+                                            </use>
+                                        </svg>
+                                    </a>
                                 </div>
 
-                                <div class="order-summary">
+                            </div>
 
-                                    <div class="summary-list summary-income">
-                                        @foreach ($user->observation()->orderby('created_at','desc')->get() as $obs)
-                                        <div class="pb-2">
-                                            <p class="contacts-block__item mb-0">{!!$obs->created_at->format('d/m/y
-                                                H:i:s')!!} </p>
-                                            <small class="form-group">{!!str_ireplace("\r\n", "<br>",
-                                                $obs->obs)!!}</small>
-                                        </div>
-                                        @endforeach
+                            <div class="order-summary"  style="height: 350px;
+                            overflow:auto;
+                           ">
 
-
+                                <div class="summary-list summary-income">
+                                    @foreach ($user->observation()->orderby('created_at','desc')->get() as $obs)
+                                    <div class="pb-2">
+                                        <p class="contacts-block__item mb-0">{!!$obs->created_at->format('d/m/y
+                                            H:i:s')!!} </p>
+                                        <small class="form-group">{!!str_ireplace("\r\n", "<br>",
+                                            $obs->obs)!!}</small>
                                     </div>
+                                    @endforeach
+
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                @endif
+                <div class="summary layout-spacing">
+                    <div class="widget-content widget-content-area">
+                        <h3 class="">Mensagens</h3>
+                        <div class="order-summary" style="height: 350px;
+                        overflow:auto;
+                       " >
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Data</th>
+                                        <th scope="col">Telefone</th>
+                                        <th scope="col">Mensagem</th>
+                                        <th class="text-center dt-no-sorting">Status</th>
+                                    </tr>
+                                </thead>
+
+                                @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
+                                <tr>
+                                    <td>
+                                        <p class="form-group">{!!$obs->created_at->format('d/m/y
+                                            H:i:s')!!} </p>
+                                    </td>
+                                    <td>
+                                        <small class="form-group">{{$obs->cellphone}}</small>
+                                    </td>
+                                    <td>
+                                        <div class="tooltips">{!! mb_strimwidth(str_replace(['\r','\n'], ["","<br>"], $obs->msg), 0, 50, "...") !!}
+                                        </div>
+                                    </td>
+                                    <td>
+
+                                        @if($obs->status == 201)
+                                        <div class="btn-toolbar" role="toolbar"
+                                            aria-label="Toolbar with button groups">
+                                            <div class="btn-group me-2" role="group" aria-label="First group">
+                                                <a type="button" class="btn btn-success bs-tooltip"
+                                                    title="Eviada com sucesso">
+                                                    <x-widgets._w-svg class="text-white" svg="message-circle" />
+                                            </a>
+                                            </div>
+                                            @else
+                                            <div class="btn-toolbar" role="toolbar"
+                                                aria-label="Toolbar with button groups">
+                                                <div class="btn-group me-2" role="group" aria-label="First group">
+                                                    <a type="button" class="btn btn-danger bs-tooltip"
+                                                        title="Não Enviada">
+                                                        <x-widgets._w-svg class="text-white" svg="message-circle" />
+                                                </a>
+                                                @isset($obs->cellphone)
+                                                    <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}" type="button" class="btn btn-warning bs-tooltip"
+                                                        title="Reenviar">
+                                                        <x-widgets._w-svg class="text-white" svg="reload" />
+                                            </a>
+                                            @endisset
+                                                </div>
+                                                @endif
+
+                                    </td>
+                                    {{--<td>
+                                        <p class="contacts-block__item mb-0">{!!$obs->id!!} </p>
+                                    </td>--}}
+                                </tr>
+                                @endforeach
+
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @endif
             </div>
 
 
@@ -1004,7 +1124,8 @@
             <div id="desbloquearOuroModal" class="modal animated fadeInDown" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
-                    <form action="{{ route('ouro-desblock', $user->id) }}" method="POST" id="ouro_desblock" class="py-12">
+                    <form action="{{ route('ouro-desblock', $user->id) }}" method="POST" id="ouro_desblock"
+                        class="py-12">
                         @csrf
 
                         <div class="modal-content">
@@ -1086,7 +1207,8 @@
             <div id="desbloquearCademiModal" class="modal animated fadeInDown" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
-                    <form action="{{ route('cademi-desblock', $user->id) }}" method="POST" id="cademi_desblock" class="py-12">
+                    <form action="{{ route('cademi-desblock', $user->id) }}" method="POST" id="cademi_desblock"
+                        class="py-12">
                         @csrf
 
                         <div class="modal-content">
@@ -1484,6 +1606,13 @@ var usrList = new Tagify(inputElm, {
     ]
 })
 
+                </script>
+
+                <script>
+                    new bootstrap.Tooltip(document.querySelector('.success'), {
+    template: '<div class="tooltip tooltip-success" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    title: "Success"
+})
                 </script>
 
                 </x-slot>

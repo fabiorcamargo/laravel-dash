@@ -422,6 +422,7 @@
                             <label for="inputState">Curso</label>
                             <select id="curso" name="curso" class="form-control" required>
                                 <option selected></option>
+                                <option>PREPARATÓRIO PM</option>
                                 <option>BANCÁRIO</option>
                                 <option>BANCÁRIO + INGLÊS</option>
                                 <option>BANCÁRIO + 10 CURSOS</option>
@@ -479,7 +480,18 @@
                                         class="mx-2 form-control"
                                         onkeypress="$(this).mask('R$ #######', {reverse: false});">
                                 </div>
-                            </div><br><br>
+                            </div><br>
+                            <div class="form-check form-check-inline pt-2">
+                                <input class="form-check-input" type="checkbox" id="taxa" name="taxa" value=" + Taxa"
+                                    onclick="toggleInput(5)" style="scale:1.3">
+                                <label class="form-check-label" for="inlineCheckbox5">Gerar Taxa(Junto com a 1ª Parcela)</label>
+                                <div id="input-wrapper5" class="input-wrapper" hidden>
+                                    <input type="text" id="gerartaxa" name="gerartaxa" placeholder="R$ Valor Total"
+                                        class="mx-2  form-control"
+                                        onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});">
+                                </div>
+                            </div>
+                            <br><br>
                             {{--<div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="taxa-gerar" name="taxa-gerar" value=" + Taxa"
                                     onclick="toggleInput(5)" style="scale:1.3">

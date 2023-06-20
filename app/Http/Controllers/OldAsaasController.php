@@ -168,7 +168,7 @@ class OldAsaasController extends Controller
 
 
   // Cria a Cobrança no Asaas
-  public function cria_cobranca($customer, $curso, $data2, $valor, $parcela, $token)
+  public function cria_cobranca($customer, $curso, $data2, $valor, $parcela, $taxavalor, $token)
   {
 
     $ch = curl_init();
@@ -206,6 +206,44 @@ class OldAsaasController extends Controller
 
     $response = curl_exec($ch);
     $dec = json_decode($response);
+
+
+
+
+    if ($taxavalor !== ""){
+      //dd($dec->id);
+      $value = $dec->value + $taxavalor;
+      $id = $dec->id;
+
+      $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments/$id");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+      \"value\": $value
+                        }");
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      "Content-Type: application/json",
+      $token
+    ));
+
+    $response = curl_exec($ch);
+    $dec = json_decode($response);
+
+    //dd($dec);
+
+    }
+
+
+
+
+
+
     return $dec;
   }
 
@@ -342,8 +380,10 @@ class OldAsaasController extends Controller
     $send->taxa = $send->taxa !== "" ? "TAXA: $request->taxa_valor\\n" : "";
     $send->cartao = $send->cartao !== "" ? "CARTÃO: $request->cartaoi_valor\\n" : "";
     $send->link = $send->link !== "" ? "LINK: $request->link_valor\\n" : "";
-    $send->boleto = "BOLETO: $request->parcelas $request->valor";
-    $send->pagamento = "$send->taxa$send->cartao$send->link$send->boleto";
+    $send->boleto = "BOLETO: $request->parcelas $request->valor\\n";
+    $send->taxavalor = $request->gerartaxa !== "" ? str_replace($de, $para, $request->gerartaxa) : "";
+    $send->gerartaxa = $request->gerartaxa !== "" ? "TAXA GERADA (Junto 1ª Parcela: R$ $request->gerartaxa\\n" : "";
+    $send->pagamento = "$send->taxa$send->cartao$send->link$send->boleto$send->gerartaxa";
     $send->criado_por = Auth::user()->name;
     $send->desc = str_ireplace("\r\n", "\\n", $send->desc);
     $send->contratos = (count($send->username) > 1 ? implode("/", (array)$send->username) : implode("", (array)$send->username));
@@ -391,7 +431,7 @@ class OldAsaasController extends Controller
           
           //Pesquisa se cliente existe no Asaas
           if ($send->valor !== "") {
-            $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $token);
+            $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
             $paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
             
             //Cria e envia msg inicial
@@ -427,14 +467,16 @@ class OldAsaasController extends Controller
 
       //Testa se a cobrança é link
       if ($send->link !== "") {
+                
                 $link = $this->lista_link($customer, $token);
-                $link = $link->data[0]->invoiceUrl;
+                isset($link->data[0]->invoiceUrl) ? $link = $link->data[0]->invoiceUrl : $link = "Solicite seu link na Central de Atendimento.";
+                //$link = $link->data[0]->invoiceUrl;
                 $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade Link de Pagamento, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento, basta clicar no link abaixo:👇\r\n\r\nLink: ' . $link . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nCaso o link não esteja habilitado basta salvar nosso contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
       } else {
                 $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
       }
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
-                dispatch($job)->delay(now()->addMinutes(2));
+                dispatch($job)->delay(now()->addMinutes(5));
 
                 return $send;
 
@@ -448,7 +490,7 @@ class OldAsaasController extends Controller
     $client = new OldAsaasController;
     $send = $client->trata_dados($request);
     //dd($send->resp_exist);
-
+    //dd($send);
     //dd($send->id[1]);
 
     //dd($send);
@@ -973,5 +1015,12 @@ class OldAsaasController extends Controller
     $pix = new OldAsaasController;
     $response = $pix->getpixqr($id, env("ASAAS_TOKEN$i"));
     return ($response);
+  }
+
+  public function resend_mkt($cellphone, $msg, $user_id, $msg_id){
+
+    $job = new Mkt_send_not_active('', $cellphone, "text", $msg, $user_id, $msg_id);
+                dispatch($job)->delay(now()->addMinutes(5));
+
   }
 }

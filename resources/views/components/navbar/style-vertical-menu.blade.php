@@ -45,7 +45,7 @@
 
             <li class="nav-item dropdown notification-dropdown">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="notificationDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><span class="badge badge-success"></span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg><livewire:user-notify-count />
                 </a>
 
                 <div class="dropdown-menu position-absolute" aria-labelledby="notificationDropdown">
@@ -102,12 +102,15 @@
                             </div>
                         </div> --}}
                         
+                        
                         <div class="drodpown-title notification mt-2">
-                            <h6 class="d-flex justify-content-between"><span class="align-self-center">Notificações</span> <span class="badge badge-secondary">0 Novas</span></h6>
+                            <h6 class="d-flex justify-content-between"><span class="align-self-center">Notificações</span></h6>
                         </div>
-                        {{--
+                        
 
-                        <div class="dropdown-item">
+                        <livewire:user-notify-live />
+                            
+                        {{--<div class="dropdown-item">
                             <div class="media server-log">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-server"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6" y2="6"></line><line x1="6" y1="18" x2="6" y2="18"></line></svg>
                                 <div class="media-body">
@@ -122,6 +125,7 @@
                                 </div>
                             </div>
                         </div>
+                        
 
                         <div class="dropdown-item">
                             <div class="media file-upload">
@@ -153,8 +157,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        --}}
+                        </div>--}}
+                        
                     </div>
                 </div>
                 

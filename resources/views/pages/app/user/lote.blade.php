@@ -39,6 +39,13 @@
     </div>
     @endif
    
+    <div class="row">
+        <!-- Session Status -->
+        <x-auth-session-status class="mb-4 text-success" :status="session('status')"/>
+        <!-- Validation Errors -->
+        <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors"/>
+        
+    </div>
        
         @if (@isset($users))
 

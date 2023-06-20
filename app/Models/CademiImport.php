@@ -12,6 +12,7 @@ class CademiImport extends Model
         'username',
         'status',
         'course',
+        'body',
         'code',
         'msg',
     ];

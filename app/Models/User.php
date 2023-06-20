@@ -164,6 +164,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserMessage::class);
     }
+    public function getusernotification()
+    {
+        return $this->hasMany(UserNotification::class);
+    }
 
 
     

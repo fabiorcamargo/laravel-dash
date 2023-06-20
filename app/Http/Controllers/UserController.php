@@ -18,6 +18,7 @@ use App\Models\Role;
 use App\Models\State;
 use App\Models\TemporaryFile;
 use App\Models\User;
+use App\Models\UserMessage;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
@@ -852,11 +853,12 @@ class UserController extends Controller
 
         $ouro_courses = OuroList::all();
         $ouro_combos = OuroCombo::all();
+        $messages = UserMessage::all();
 
            if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
         } else {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
         }
            
        

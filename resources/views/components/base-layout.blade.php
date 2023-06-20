@@ -47,6 +47,7 @@
         @vite(['resources/layouts/collapsible-menu/loader.js'])
     @else @vite(['resources/layouts/vertical-dark-menu/loader.js'])
     @endif
+    @livewireStyles
 
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id="{{env('GOOGLE_TAG_ANALYTICS_ID')}}></script>
@@ -251,7 +252,7 @@
         <!-- END GLOBAL MANDATORY STYLES -->
 
     @endif
-         
+        @livewireScripts
         {{$footerFiles}}
 </body>
 </html>
