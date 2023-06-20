@@ -176,7 +176,7 @@
                 </div>
             @endif
             @if(Auth::user()->first == 3 || Auth::user()->first == 5)
-                <x-widgets._w-card-bloqueado title="Cursos Premium" card="{{Vite::asset('resources/images/Curso Bloqueado.jpg')}}"/>
+                <x-widgets._w-card-bloqueado title="Cursos Premium" card="{{Vite::asset('resources/images/Curso_Bloqueado.jpg')}}"/>
             @else
                 @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') )
                     <div class="me-2">
