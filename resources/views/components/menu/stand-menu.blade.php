@@ -54,7 +54,7 @@
                              </li>
                              @if(Auth::user()->role == 1)
                             <li class="{{ Request::routeIs('aluno.pagamento') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/aluno/pay/list"><x-widgets._w-svg class="pe-1" svg="cash-banknote"/> Pagamentos </a>
+                                <a href="{{getRouterValue();}}/aluno/pay/list/{{Auth::user()->id}}"><x-widgets._w-svg class="pe-1" svg="cash-banknote"/> Pagamentos </a>
                             </li>
                             @endif
                             {{--<li class="{{ Request::routeIs('config') ? 'active' : '' }}">
@@ -132,7 +132,7 @@
                         </a>
                         <ul class="collapse submenu list-unstyled {{ Request::is('*/app/pay/*') ? "show" : "" }}" id="pay" data-bs-parent="#accordionExample">
                             <li class="{{ Request::routeIs('pay-create') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/app/pay/create"> Criar </a>
+                                <a href="/collapsible-menu/app/pay/create"> Criar </a>
                             </li>
                             {{--<li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/reset"> Resetar Senha </a>

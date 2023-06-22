@@ -345,6 +345,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                 Route::get('/send_not_active/{name}/{phone}/{type}/{msg}/{user_id}', [MktController::class, 'send_not_active']
                 )->name('mkt-send_not_active');
+                Route::post('/send_profile_msg/{id}', [MktController::class, 'send_profile_msg']
+                )->name('mkt-send_profile_msg');
                 Route::get('/resend_not_active/{msg_id}', function($msg_id){
                     $send = new MktController;
                     $send->resend_not_active($msg_id);

@@ -65,7 +65,7 @@ class TemporaryFileController extends Controller
         $users = Excel::toArray(new UsersImport, "$file");
         //dd($users);
         foreach($users[0] as $user){
-            if(!isset($user->contract_date)){
+            if(!isset($user['contract_date'])){
                 //dd($user['username']);
                 $import = CademiImport::create([
                     "username" => $user['username'],
@@ -76,6 +76,7 @@ class TemporaryFileController extends Controller
                 return back()->withErrors(__("Campo contract_date errado ou inexistente"));
           }
         }
+        //dd('s');
         //$users = $response[0];
 
         //dd($users[0]);

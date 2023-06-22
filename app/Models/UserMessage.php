@@ -10,6 +10,7 @@ class UserMessage extends Model
     use HasFactory;
     protected $fillable = [
         'id',
+        'name',
         'user_id',
         'cellphone',
         'msg',

@@ -87,6 +87,7 @@ class MktController extends Controller
                 foreach((array)$user_id as $user){
                    $user = User::find($user);
                    $user->usermsg()->create([
+                'name' => $name,
                 'msg' => $msg,
                 'cellphone' => $phone,
                 'status' => $response->getStatusCode()
@@ -102,6 +103,7 @@ class MktController extends Controller
                 foreach((array)$user_id as $user){
                    $user = User::find($user);
                    $user->usermsg()->create([
+                'name' => $name,
                 'msg' => $msg,
                 'cellphone' => $phone,
                 'status' => $e->getResponse()->getStatusCode()
@@ -121,6 +123,7 @@ class MktController extends Controller
                 foreach((array)$user_id as $user){
                    $user = User::find($user);
                    $user->usermsg()->create([
+                'name' => $name,
                 'msg' => $msg,
                 'cellphone' => $phone,
                 'status' => $e->getStatusCode()
@@ -130,6 +133,159 @@ class MktController extends Controller
                 // Se a requisição não obteve uma resposta HTTP, você pode acessar o erro assim:
                 return $e->getMessage();
                 
+            }
+        }
+
+
+
+/*
+        $response = $client->request('POST', 'https://api.mktzap.com.br/company/' . env('MKT_COMPANY') . '/history/active', [
+            'body' => "$payload",
+            'headers' => [
+                'accept' => 'application/json',
+                'content-type' => 'application/json',
+                'Authorization' => "Bearer $token"
+            ],
+        ]);
+
+        return response("Status", $response->getStatusCode());*/
+    }
+}
+
+public function send_profile_msg(Request $request)
+    {
+        
+        $dados = explode(",", str_replace(" ", "", $request->cellphone));
+        $name = $dados[0];
+        $phone = $dados[1];
+        $type = "text";
+        $de = array('\r', '\n');
+        $para = array('', '');
+        $msg = preg_replace( '/\r\n/', '\n', $request->obs);
+        $user_id = $request->id;
+        $active = $request->chamadoativo == "on" ? "false" : "true";
+        //dd($active);
+        //dd($request->all());
+
+        $token = $this->getToken();
+        //dd($token);
+
+       
+        $payload = '{
+            "type": "whatsapp",
+            "channel_phone": "' . env('MKT_PHONE') . '",
+            "phone_number": "'. $phone . '",
+            "name": "'. $name .'",
+            "only_active": '. $active .',
+            "messages": [
+            {
+                "type": "text",
+                "content": "' . $msg . '"
+            }
+            ]
+         }';
+
+       
+         //dd($payload);
+        $client = new Client();
+
+        try {
+            $response = $client->request('POST', 'https://api.mktzap.com.br/company/' . env('MKT_COMPANY') . '/history/active', [
+                'body' => "$payload",
+                'headers' => [
+                    'accept' => 'application/json',
+                    'content-type' => 'application/json',
+                    'Authorization' => "Bearer $token"
+                ],
+            ]);
+            // Processar a resposta
+            
+            
+                //dd('s');
+           
+                   $user = User::find($user_id);
+                   $msg_use = $user->usermsg()->create([
+                        'name' => $name,
+                        'msg' => $msg,
+                        'cellphone' => $phone,
+                        'status' => $response->getStatusCode()
+                    ]);
+                    Auth::user()->getusernotification()->create([
+                        'resume'=>"Msg $phone",
+                        'msg'=> "Enviado -> $msg",
+                        'status'=> "success",
+                        'show'=> 1,
+                        'action'=> "/modern-dark-menu/aluno/profile/$user->user_id",
+                        'icon'=> "message",
+                        'body'=> json_encode($msg_use)
+                    ]);
+    
+                    //dd($user);
+                
+            //dd($response->getStatusCode());
+ 
+              //return back()->with('status' => $response->getStatusCode());
+              return back()->with([
+                'status' => "Enviado com Sucesso"
+              ]);
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                             
+                
+                   $user = User::find($user_id);
+                   $msg_use = $user->usermsg()->create([
+                        'name' => $name,
+                        'msg' => $msg,
+                        'cellphone' => $phone,
+                        'status' => $e->getResponse()->getStatusCode()
+                    ]);
+                    Auth::user()->getusernotification()->create([
+                        'resume'=>"Msg $phone",
+                        'msg'=> "Erro -> $msg",
+                        'status'=> "danger",
+                        'show'=> 1,
+                        'action'=> "/modern-dark-menu/aluno/profile/$user->user_id",
+                        'icon'=> "alert",
+                        'body'=> json_encode($msg_use)
+                    ]);
+                    //dd($user);
+                
+              //dd($e); 
+                // Se a requisição falhou e houver uma resposta HTTP, você pode acessá-la assim:
+                $msg = "Erro: " . $e->getResponse()->getStatusCode() . "Informar programador!";
+                return back()->withErrors(__($msg));
+                //return $e->getResponse()->getStatusCode(); // Código de status HTTP
+                //echo $e->getResponse()->getBody(); // Corpo da resposta HTTP
+            } else {
+                
+                if ($e->hasResponse()) {
+                
+               
+                //dd('s');
+                
+                   $user = User::find($user_id);
+                   $msg_use = $user->usermsg()->create([
+                        'name' => $name,
+                        'msg' => $msg,
+                        'cellphone' => $phone,
+                        'status' => $e->getStatusCode()
+                    ]);
+                    Auth::user()->getusernotification()->create([
+                        'resume'=>"Msg $phone",
+                        'msg'=> "Erro -> $msg",
+                        'status'=> "danger",
+                        'show'=> 1,
+                        'action'=> "/modern-dark-menu/aluno/profile/$user->user_id",
+                        'icon'=> "alert",
+                        'body'=> json_encode($msg_use)
+                    ]);
+                 
+            
+                // Se a requisição não obteve uma resposta HTTP, você pode acessar o erro assim:
+                $msg = "Erro: " . $e->getMessage() . "Informar programador!";
+
+                return $e->getMessage();
+                return back()->withErrors(__($msg));
             }
         }
 
@@ -198,7 +354,7 @@ public function resend_not_active($msg_id)
 
                 Auth::user()->getusernotification()->create([
                     'resume'=>"Msg $phone",
-                    'msg'=> $msg,
+                    'msg'=> "Reenviar -> $msg",
                     'status'=> "success",
                     'show'=> 1,
                     'action'=> "/modern-dark-menu/aluno/profile/$msg_use->user_id",
@@ -220,7 +376,7 @@ public function resend_not_active($msg_id)
                     //dd($user);
                     Auth::user()->getusernotification()->create([
                         'resume'=>"Msg $phone",
-                        'msg'=> $msg,
+                        'msg'=> "Reenviar -> $msg",
                         'status'=> "danger",
                         'show'=> 1,
                         'action'=> "/modern-dark-menu/aluno/profile/$msg_use->user_id",
@@ -243,7 +399,7 @@ public function resend_not_active($msg_id)
 
                 Auth::user()->getusernotification()->create([
                     'resume'=>"Msg $phone",
-                    'msg'=> $msg,
+                    'msg'=> "Reenviar -> $msg",
                     'status'=> "danger",
                     'show'=> 1,
                     'action'=> "/modern-dark-menu/aluno/profile/$msg_use->user_id",

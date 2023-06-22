@@ -382,13 +382,29 @@ class OldAsaasController extends Controller
     $send->link = $send->link !== "" ? "LINK: $request->link_valor\\n" : "";
     $send->boleto = "BOLETO: $request->parcelas $request->valor\\n";
     $send->taxavalor = $request->gerartaxa !== "" ? str_replace($de, $para, $request->gerartaxa) : "";
-    $send->gerartaxa = $request->gerartaxa !== "" ? "TAXA GERADA (Junto 1ª Parcela: R$ $request->gerartaxa\\n" : "";
-    $send->pagamento = "$send->taxa$send->cartao$send->link$send->boleto$send->gerartaxa";
+    
+    $send->msgtaxa = $request->msgtaxa;
+    
+    $send->gerartaxa = $request->gerartaxa !== null ? "TAXA GERADA (Junto 1ª Parcela: R$ $request->gerartaxa\\n" : "";
+
+    if($send->msgtaxa !== ""){
+    $send->pagamento = is_null($send->msgtaxa) ? '' : "Gerado taxa $request->parcelas R$$request->valor para " .  Carbon::parse($send->data2)->format('d/m/Y');
+    }else{
+    $send->pagamento = is_null($send->taxa) ? '' : $send->taxa;
+    $send->pagamento .= is_null($send->cartao) ? '' : $send->cartao;
+    $send->pagamento .= is_null($send->link) ? '' : $send->link;
+    $send->pagamento .= is_null($send->boleto) ? '' : $send->boleto;
+    $send->pagamento .= is_null($send->gerartaxa) ? '' : $send->gerartaxa;
+    }
+    
     $send->criado_por = Auth::user()->name;
     $send->desc = str_ireplace("\r\n", "\\n", $send->desc);
     $send->contratos = (count($send->username) > 1 ? implode("/", (array)$send->username) : implode("", (array)$send->username));
     $send->names = (count($send->nomealuno) > 1 ? implode(", ", $send->nomealuno) : implode("",$send->nomealuno));
     $send->nome = "$send->contratos $send->nomeresp ($send->names)";
+    if($send->msgtaxa !== ""){
+    $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCONTRATOS: $send->contratos \\nCRIADO POR: $send->criado_por\\n$send->desc";  
+    }
     $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCONTRATOS: $send->contratos \\nCRIADO POR: $send->criado_por\\n$send->desc";
 
     //dd(count($send->username) > 1 ? implode("|", (array)$send->username) : $send->username);
@@ -414,8 +430,8 @@ class OldAsaasController extends Controller
               ";
     $send->footer =
       "<p>O que você deseja fazer?</p> 
-              <a href='/modern-dark-menu/app/pay/cliente_existe?send=" . urlencode(json_encode($send)) . "' class='btn btn-primary col-12' role='button' aria-disabled='true'>Criar cobrança no Responsável Existente</a>
-              <a href='/modern-dark-menu/app/pay/create' class='btn btn-primary col-12 mt-2' role='button' aria-disabled='true'>Atualizar o Responsável e gerar cobranças</a>
+              <a href='/collapsible-menu/app/pay/cliente_existe?send=" . urlencode(json_encode($send)) . "' class='btn btn-primary col-12' role='button' aria-disabled='true'>Criar cobrança no Responsável Existente</a>
+              <a href='/collapsible-menu/app/pay/create' class='btn btn-primary col-12 mt-2' role='button' aria-disabled='true'>Atualizar o Responsável e gerar cobranças</a>
               <a href='ação2' class='btn btn-secondary col-12 mt-2' role='button' aria-disabled='true'>Sair</a>";
 
     return $send;
@@ -434,12 +450,23 @@ class OldAsaasController extends Controller
             $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
             $paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
             
+            if($send->msgtaxa == null){
             //Cria e envia msg inicial
             $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, aguarde as próximas informações!_*';
             $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
                                                           dispatch($job)->delay(now()->addMinutes(1));
+            }
 
             //Testa tipo de cobrança e envia msg relacionada
+            if($send->msgtaxa !== null){
+                $msg_text ='\r\n'. $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+
+                $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
+                                                              dispatch($job)->delay(now()->addMinutes(5));
+                
+                return $send;
+            }
+
             if ($send->cartao !== "") {
                 $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             } else if ($send->link !== "") {
@@ -497,12 +524,12 @@ class OldAsaasController extends Controller
    
     if($send->resp_exist == "2"){
         $this->cria_existe((object)$send);
-        return redirect('/modern-dark-menu/app/pay/create')->with([
+        return redirect('/collapsible-menu/app/pay/create')->with([
           'status' => $send->body
         ]);
     }else if($send->resp_exist == "3"){
         $this->cria_existe((object)$send);
-        return redirect('/modern-dark-menu/app/pay/create')->with([
+        return redirect('/collapsible-menu/app/pay/create')->with([
           'status' => $send->body
         ]);
     }
@@ -733,7 +760,7 @@ class OldAsaasController extends Controller
         $botao1 = "Criar Cobrança";
         $botao2 = "Não Criar";
         $acao2 = "index.php";
-        $acao = "/modern-dark-menu/app/pay/cliente_existe?";
+        $acao = "/collapsible-menu/app/pay/cliente_existe?";
         $acao = $acao . "nomeresp=" . urlencode($nomeresp) . "&";
         $acao = $acao . "nomealuno=" . urlencode($nomealuno) . "&";
         $acao = $acao . "telefone=" . urlencode($telefone) . "&";
@@ -821,7 +848,7 @@ class OldAsaasController extends Controller
           $msg->send_not_active($nome, $telefone, "text", $msg_text, $aluno->id);
         }
         $status1 = "<b>CRIAÇÃO DE BOLETOS</b>";
-        $acao = "/modern-dark-menu/app/pay/create";
+        $acao = "/collapsible-menu/app/pay/create";
         $botao = "Fechar";
         //dd($dec);
         $aluno->document = $cpf;
@@ -909,7 +936,7 @@ class OldAsaasController extends Controller
       $msg->send_not_active($nome, $telefone, "text", $msg_text, $aluno->id);
     }
     $status1 = "<b>CRIAÇÃO DE BOLETOS</b>";
-    $acao = "/modern-dark-menu/app/pay/create";
+    $acao = "/collapsible-menu/app/pay/create";
     $botao = "Fechar";
     //dd($dec);
     $aluno->observation()->create([

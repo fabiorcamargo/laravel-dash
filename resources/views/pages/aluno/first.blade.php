@@ -15,6 +15,14 @@
         @vite(['resources/scss/dark/assets/pages/knowledge_base.scss'])
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>   
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
         
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
@@ -107,18 +115,18 @@
 
                                     <div class="form-group mb-4">
                                         <label for="name">Primeiro Nome</label>
-                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="on" onchange="myFn('name')" required>
+                                        <input type="text" class="form-control" name="name" id="name" placeholder="Maria Vitória" autocomplete="off" onchange="myFn('name')" required>
                                         
                                     </div>
                                     <div class="form-group mb-4">
                                         <label for="lastname">Sobrenome</label>
-                                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="on" required onchange="myFn('lastname')">
+                                        <input type="text" class="form-control" name="lastname" id="lastname" placeholder="Soares da Silva" autocomplete="off" required onchange="myFn('lastname')">
 
                                     </div>
                                     <div class="form-group mb-4">
                                         <div class="form-group">
-                                            <label for="email">Email</label>
-                                            <input type="email" name="email" placeholder="Para recuperação de senha" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" onchange="myFn('mail')" required>
+                                            <label for="email">Email (Opcional)</label>
+                                            <input type="email" name="email" placeholder="Para recuperação de senha" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" autocomplete="email">
                                                     <div class="valid-feedback feedback-pos">
                                                         Email Válido!
                                                     </div>
@@ -130,13 +138,10 @@
                                     </div>     
                                     <div class="form-group mb-4">
                                         <label for="defaultEmailAddress">Celular com Whatsapp </label>
-                                        <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" pattern="(\([0-9]{2}\))\s([9]{1})\s?([0-9]{4})-([0-9]{4})" autocomplete="on" required onchange = "myFn('cellphone')">
-                                        <div class="valid-feedback feedback-pos">
-                                            Celular válido!
-                                        </div>
-                                        <div class="invalid-feedback feedback-pos">
-                                            Por favor coloque um Telefone válido com DDD e 9º dígito.
-                                        </div>
+                                        <input type="text" id="cellphone" name="cellphone" class="form-control"
+                                                onkeypress="$(this).mask('(00) 90000-0000')" placeholder="Telefone com DDD" required>
+                                        {{--<input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" pattern="(\([0-9]{2}\))\s([9]{1})\s?([0-9]{4})-([0-9]{4})" autocomplete="off" required onchange = "myFn('cellphone')">--}}
+                                        
                                     </div>
                                     <div class="form-group">
   
@@ -193,10 +198,10 @@
                                             
                                             <label for="name">Nova Senha</label>
                                             <input class="invisible" id="login" type="text" name="login" value="{{Auth::user()->username}}" disabled>
-                                            <input type="password" class="form-control invalid" name="password" id="password" placeholder="******" autocomplete="on">
+                                            <input type="password" class="form-control invalid" name="password" id="password" placeholder="******" autocomplete="off">
                                             
                                             <label for="name">Repita a Senha</label>
-                                            <input type="password" class="form-control mb-2" name="password2" id="password2" placeholder="******" autocomplete="on" oninput ="myPw()">
+                                            <input type="password" class="form-control mb-2" name="password2" id="password2" placeholder="******" autocomplete="off" oninput ="myPw()">
                                             <div class="text-warning invisible" name="feed" id="feed" >As Senhas não são iguais!</div>
                                             <div class="text-warning invisible" name="feed" id="feed" >Existem campos incompletos, favor voltar no passo anterior</div>
                                             <a id="customCheck1" class="mt-2" onclick="myFunction()"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></a>
@@ -229,9 +234,7 @@
       
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
-        <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
+
 
         <script src="{{asset('plugins/stepper/bsStepper.min.js')}}"></script>
         <script src="{{asset('plugins/stepper/custom-bsStepper.min.js')}}"></script>
@@ -301,7 +304,7 @@
 <script>
     function myFn($data){
         console.log($data);
-        if ( name.value != ""  && lastname.value != "" && email.value != "" && cellphone.value != "" && city.value != "") {
+        if ( name.value != ""  && lastname.value != "" && cellphone.value != "" && city.value != "") {
         let el = document.getElementById('step');
         el.classList.remove('disabled');
         }

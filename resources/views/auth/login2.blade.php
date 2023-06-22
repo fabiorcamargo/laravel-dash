@@ -9,6 +9,7 @@
         <!--  BEGIN CUSTOM STYLE FILE  -->
         @vite(['resources/scss/light/assets/authentication/auth-cover.scss'])
         @vite(['resources/scss/dark/assets/authentication/auth-cover.scss'])
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -83,21 +84,28 @@
                                             <x-input id="login" class="form-control" type="text" name="login" :value="old('login')" required autofocus />
                                         </div>
 
+                                        
                                         <!-- Password -->
                                         <div class="mt-4">
                                             <x-label for="password" :value="__('Senha')" />
 
-                                            <x-input id="password" class="form-control"
-                                                            type="password"
-                                                            name="password"
-                                                            required autocomplete="current-password" />
+                                            <div class="input-group mb-3">
+                                                <x-input id="password" class="form-control"
+                                                                type="password"
+                                                                name="password"
+                                                                required autocomplete="current-password" />
+                                                <span class="input-group-text" id="basic-addon2"> <x-widgets._w-svg id="checkbox" onclick="myclick()" svg="eye-off"/> </span>
+                                                
+                                                
+                                            </div>
+                                        
                                         </div>
 
                                         <!-- Remember Me -->
-                                        <div class="block mt-4">
+                                        <div class="block mt-2">
                                             <label for="remember_me" class="inline-flex items-center">
                                                 <input id="remember_me" type="checkbox" class="form-check-input me-3" name="remember">
-                                                <span class="ml-2 text-sm text-gray-600">{{ __('Lembrar') }}</span>
+                                                <span class="text-sm text-gray-600">{{ __('Lembrar') }}</span>
                                             </label>
                                         </div>
 
@@ -165,7 +173,16 @@
     
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
+        <script>
 
+           
+
+            function myclick(){
+                    $('#password').attr('type') == 'password' ? $('#password').attr('type', "text") : $('#password').attr('type', "password");
+                    
+ 
+        }
+            </script>
     </x-slot>
     <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>

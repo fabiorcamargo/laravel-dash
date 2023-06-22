@@ -19,9 +19,6 @@
             @vite(['resources/scss/light/plugins/clipboard/custom-clipboard.scss'])
             @vite(['resources/scss/dark/plugins/clipboard/custom-clipboard.scss'])
 
-
-
-
             @vite(['resources/scss/dark/assets/components/modal.scss'])
             @vite(['resources/scss/light/assets/components/modal.scss'])
 
@@ -31,46 +28,21 @@
             @vite(['resources/scss/light/assets/components/accordions.scss'])
             @vite(['resources/scss/dark/assets/components/accordions.scss'])
 
+            @vite(['resources/scss/light/assets/apps/chat.scss'])
+            @vite(['resources/scss/dark/assets/apps/chat.scss'])
+
+
             <style>
-                .tooltips {
+                .ps {
                     position: relative;
-                    display: inline-block;
-                    border-bottom: 1px dotted black;
-                }
-
-                .tooltips .tooltiptexts {
-
-                    visibility: hidden;
-                    width: 420px;
-                    background-color: black;
-                    color: #fff;
-                    text-align: left;
-                    border-radius: 6px;
-                    padding: 5px 0;
-                    position: absolute;
-                    z-index: 1;
-                    top: -5px;
-                    left: 110%;
-                }
-
-                .tooltips .tooltiptexts::after {
-                    content: "";
-                    position: absolute;
-                    top: 50%;
-                    right: 100%;
-                    margin-top: -5px;
-                    border-width: 5px;
-                    border-style: solid;
-                    border-color: transparent black transparent transparent;
-                }
-
-                .tooltips:hover .tooltiptexts {
-                    visibility: visible;
+                    height: 300px;
                 }
             </style>
             <!--  END CUSTOM STYLE FILE  -->
             </x-slot>
             <!-- END GLOBAL MANDATORY STYLES -->
+
+
 
             <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
                 <!-- Session Status -->
@@ -80,10 +52,21 @@
                 <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
             </div>
 
-            
-            
+
+
             <!-- Content -->
-            <div class="row layout-spacing ">
+            <div class="body row layout-spacing">
+                @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
+                <div class="ms-4 col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
+                    <div class="">
+                        <h3 class="">Dados do Contrato</h3>
+                        <div class="">
+                            <p>{!!$user->observation!!}</p>
+
+                        </div>
+                    </div>
+                </div>
+                @endif
                 <div class="col-xl-5 col-md-5 col-sm-12 layout-top-spacing">
                     <div class="user-profile">
                         <div class="widget-content widget-content-area">
@@ -102,7 +85,7 @@
 
                             </div>
 
-                            
+
 
                             <div class="text-center user-info">
 
@@ -649,134 +632,370 @@
                         </div>
                     </div>
                 </div>
-                @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
-                <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
-
-                    <div class="summary layout-spacing">
-                        <div class="widget-content widget-content-area">
-                            <h3 class="">Dados do Contrato</h3>
-                            <div class="order-summary">
-
-                                <div class="summary-list summary-income">
-                                    <p>{!!$user->observation!!}</p>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    
-                </div>
             </div>
-            <div class="col-xl-12 col-md-12 col-sm-12 layout-top-spacing mt-0">
-                <div class="summary user-profile layout-spacing" >
-                    <div class="d-flex justify-content-between">
-                        <div class="widget-content widget-content-area col-12" >
+            @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
 
-                            <div class="d-flex justify-content-between" >
-                                <h3 class="">Observações</h3>
-                                <div class="btn-group"  role="group" aria-label="Basic example">
-                                    <a data-bs-toggle="modal" href="" data-bs-target="#ObsModal" class="edit-profile"
-                                        data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
-                                        <svg svg="apps-filled" width="24" height="24">
-                                            <use
-                                                xlink:href="http://localhost:8991/images/tabler-sprite.svg#tabler-apps-filled">
-                                            </use>
-                                        </svg>
-                                    </a>
-                                </div>
+                <div class="modal" style="height: 788px; overflow:auto;" id="modal-send" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <form class="chat-form" method="POST" id="msg_send"
+                                action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
+                                @csrf
+                                <div class="card style-4">
+                                    <div class="card-body pt-3">
+                                        <div class="media mt-0 mb-3">
+                                            <div class="">
+                                                <div class="avatar avatar-md avatar-indicators avatar-online me-3">
+                                                    <img alt="avatar" src="{{Vite::asset('resources/images/logo.svg')}}"
+                                                        class="rounded-circle">
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h4 class="media-heading mb-0">{{$user->name}}</h4>
+                                                <p class="media-text">Aluno</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row px-4">
+                                            <label for="cellphone"
+                                                class="col-sm-3 col-form-label col-form-label-sm">Telefone:</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control form-control-sm" id="cellphone"
+                                                    name="cellphone" required>
+                                                    <option value="">Escolha</option>
+                                                    <option value="{{$user->name}}, {{$user->cellphone}}">
+                                                        Aluno - {{$user->cellphone}}
+                                                    </option>
+                                                    <option value="{{$user->name}}, {{$user->cellphone2}}">
+                                                        Aluno - {{$user->cellphone2}}
+                                                    </option>
+                                                    @isset($user->accountable->name)
+                                                    <option
+                                                        value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
+                                                        Responsável -
+                                                        {{$user->accountable->cellphone}}
+                                                    </option>
+                                                    @endisset
+                                                </select>
+                                            </div>
+                                        </div>
 
-                            </div>
-
-                            <div class="order-summary"  style="height: 350px;
-                            overflow:auto;
-                           ">
-
-                                <div class="summary-list summary-income">
-                                    @foreach ($user->observation()->orderby('created_at','desc')->get() as $obs)
-                                    <div class="pb-2">
-                                        <p class="contacts-block__item mb-0">{!!$obs->created_at->format('d/m/y
-                                            H:i:s')!!} </p>
-                                        <small class="form-group">{!!str_ireplace("\r\n", "<br>",
-                                            $obs->obs)!!}</small>
+                                        <p class="card-text py-2">Selecione para qual telefone, escolha se deseja abrir
+                                            chamado no MKT e digite a mensagem que deseja enviar.</p>
                                     </div>
-                                    @endforeach
+                                    <div class="card-footer pt-0 border-0 text-center">
+                                        <div class="col-xxl-12 col-md-12">
+                                            <label for="users_list_tags">Mensagem:</label>
+                                            <textarea class="form-control" name="obs" id="obs" rows="3"
+                                                required></textarea>
+                                        </div>
 
+                                        <button type="send" class="btn btn-secondary w-100 mt-4">
+                                            <span class="btn-text-inner ms-3">Enviar</span></button>
 
+                                    </div>
+                                    <div class="form-check ms-4">
+                                        <input class="form-check-input" type="checkbox" value="" name="chamadoativo"
+                                            id="customCheck1">
+                                        <label class="form-check-label bs-tooltip" for="customCheck1"
+                                            title="Nessa opção será aberto um chamado no MKT">Abrir
+                                            Protocolo</label>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-                <div class="summary layout-spacing">
+                
+            @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
+            <div class="modal" style="height: 788px; overflow:auto;" id="exampleModal{{$obs->id}}" tabindex="-1"
+                role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form class="chat-form" method="POST" id="msg_send"
+                            action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
+                            @csrf
+                            <div class="chat-system" style="height: 488px;" id="chat[{{$obs->id}}]">
+                                <div class="chat-box m-1"
+                                    style="background-image: url({{Vite::asset('resources/images/bg.png')}}); height: 488px;">
+
+                                    <div class="chat-not-selected" style="display: none;">
+                                        <p> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-message-square">
+                                                <path
+                                                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                                                </path>
+                                            </svg> Click User To Chat</p>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="card-top-content">
+                                            <div class="chat-box-inner" style="height: 100%;">
+                                                <div class="chat-meta-user chat-active">
+
+                                                    <div class="current-chat-user-name">
+                                                        <form class="chat-form" method="POST" id="msg_send"
+                                                            action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
+                                                            @csrf
+                                                            <span>
+                                                                <img src="{{Vite::asset('resources/images/logo.svg')}}"
+                                                                    alt="dynamic-image">
+                                                                <span class="name">Enviar Mensagem
+
+                                                                </span>
+                                                                <div class="d-flex justify-content-between">
+                                                                    <div class="form-group">
+                                                                        <select class="form-select mt-2"
+                                                                            id="cellphone" name="cellphone"
+                                                                            required>
+                                                                            <option value="">Escolha</option>
+                                                                            <option
+                                                                                value="{{$user->name}}, {{$user->cellphone}}">
+                                                                                Aluno - {{$user->cellphone}}
+                                                                            </option>
+                                                                            <option
+                                                                                value="{{$user->name}}, {{$user->cellphone2}}">
+                                                                                Aluno - {{$user->cellphone2}}
+                                                                            </option>
+                                                                            @isset($user->accountable->name)
+                                                                            <option
+                                                                                value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
+                                                                                Responsável -
+                                                                                {{$user->accountable->cellphone}}
+                                                                            </option>
+                                                                            @endisset
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="form-group ms-4 pt-2">
+                                                                        <input class="form-check-input me-1"
+                                                                            id="chamadoativo" name="chamadoativo"
+                                                                            type="checkbox">
+                                                                        <label for="chamadoativo" class="bs-tooltip"
+                                                                            title="Nessa opção será aberto um chamado no MKT">Abrir
+                                                                            Protocolo</label>
+                                                                    </div>
+                                                                </div>
+                                                            </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="chat-conversation-box pt-4">
+                                            <div id="chat-conversation-box-scroll"
+                                                class="chat-conversation-box-scroll ms-2">
+                                                <div class="chat" data-chat="{{$obs->id}}">
+                                                    <div class="conversation-start">
+                                                        <span>{!!$obs->created_at->format('d/m/y
+                                                            H:i:s')!!}</span>
+                                                    </div>
+                                                    <div class="bubble you">
+                                                        {!! str_replace(['\r','\n'], [""," <br> "],
+                                                        $obs->msg) !!}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="btn-toolbar" role="toolbar"
+                                                aria-label="Toolbar with button groups">
+                                                @if($obs->status == 201)
+
+                                                <div class="btn-group ms-2" role="group" aria-label="First group">
+                                                    <a type="button" class="btn btn-success bs-tooltip"
+                                                        title="Eviada com sucesso">
+                                                        <x-widgets._w-svg class="text-white" svg="checks" />
+                                                    </a>
+                                                    @isset($obs->cellphone)
+                                                    <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
+                                                        type="button" class="btn btn-warning bs-tooltip"
+                                                        title="Reenviar">
+                                                        <x-widgets._w-svg class="text-white" svg="reload" />
+                                                    </a>
+                                                    @endisset
+                                                </div>
+                                                @else
+                                                <div class="btn-toolbar" role="toolbar"
+                                                    aria-label="Toolbar with button groups">
+                                                    <div class="btn-group ms-2" role="group"
+                                                        aria-label="First group">
+                                                        <a type="button" class="btn btn-danger bs-tooltip"
+                                                            title="Não Enviada">
+                                                            <x-widgets._w-svg class="text-white"
+                                                                svg="alert-triangle" />
+                                                        </a>
+                                                        @isset($obs->cellphone)
+                                                        <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
+                                                            type="button" class="btn btn-warning bs-tooltip"
+                                                            title="Reenviar">
+                                                            <x-widgets._w-svg class="text-white" svg="reload" />
+                                                        </a>
+                                                        @endisset
+                                                    </div>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between p-4">
+                                <div class="col-sm-10">
+                                    <textarea class="form-control" name="obs" id="obs" rows="3" required></textarea>
+                                </div>
+                                <div class="col-sm-2 mx-2">
+                                    <button type="send" class="btn">Enviar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
+            </div>
+        @endforeach
+            <div class="row layout-spacing ">
+                <div class="summary layout-spacing col-md-6">
                     <div class="widget-content widget-content-area">
-                        <h3 class="">Mensagens</h3>
-                        <div class="order-summary" style="height: 350px;
-                        overflow:auto;
-                       " >
+
+                        <div class="d-flex justify-content-between">
+                            <h3 class="">Observações</h3>
+                            <div>
+                                <a data-bs-toggle="modal" href="" data-bs-target="#ObsModal" class="btn"
+                                    data-toggle="tooltip" data-placement="top" title="Adicionar Observação">
+                                    Nova Observação
+                                </a>
+                            </div>
+
+                        </div>
+
+                        <div class="table-responsive ps" id="table1" style="height: 350px;
+                            overflow:auto;
+                        ">
                             <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Data</th>
-                                        <th scope="col">Telefone</th>
-                                        <th scope="col">Mensagem</th>
-                                        <th class="text-center dt-no-sorting">Status</th>
+                                        <th scope="col">Dados</th>
                                     </tr>
                                 </thead>
-
-                                @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
-                                <tr>
-                                    <td>
-                                        <p class="form-group">{!!$obs->created_at->format('d/m/y
-                                            H:i:s')!!} </p>
-                                    </td>
-                                    <td>
-                                        <small class="form-group">{{$obs->cellphone}}</small>
-                                    </td>
-                                    <td>
-                                        <div class="tooltips">{!! mb_strimwidth(str_replace(['\r','\n'], ["","<br>"], $obs->msg), 0, 50, "...") !!}
-                                        </div>
-                                    </td>
-                                    <td>
-
-                                        @if($obs->status == 201)
-                                        <div class="btn-toolbar" role="toolbar"
-                                            aria-label="Toolbar with button groups">
-                                            <div class="btn-group me-2" role="group" aria-label="First group">
-                                                <a type="button" class="btn btn-success bs-tooltip"
-                                                    title="Eviada com sucesso">
-                                                    <x-widgets._w-svg class="text-white" svg="message-circle" />
-                                            </a>
-                                            </div>
-                                            @else
-                                            <div class="btn-toolbar" role="toolbar"
-                                                aria-label="Toolbar with button groups">
-                                                <div class="btn-group me-2" role="group" aria-label="First group">
-                                                    <a type="button" class="btn btn-danger bs-tooltip"
-                                                        title="Não Enviada">
-                                                        <x-widgets._w-svg class="text-white" svg="message-circle" />
-                                                </a>
-                                                @isset($obs->cellphone)
-                                                    <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}" type="button" class="btn btn-warning bs-tooltip"
-                                                        title="Reenviar">
-                                                        <x-widgets._w-svg class="text-white" svg="reload" />
-                                            </a>
-                                            @endisset
-                                                </div>
-                                                @endif
-
-                                    </td>
-                                    {{--<td>
-                                        <p class="contacts-block__item mb-0">{!!$obs->id!!} </p>
-                                    </td>--}}
-                                </tr>
-                                @endforeach
-
+                                <tbody>
+                                    @foreach ($user->observation()->orderby('created_at','desc')->get() as $obs)
+                                    <tr>
+                                        <td>
+                                            <p class="contacts-block__item mb-0">{!!$obs->created_at->format('d/m/y
+                                                H:i:s')!!} </p>
+                                            <small class="form-group">{!!str_ireplace("\r\n", "<br>",
+                                                $obs->obs)!!}</small>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
+                
+                <div class="summary layout-spacing col-md-6">
+                    <div class="widget-content widget-content-area">
+                            <form class="chat-form" method="POST" id="msg_send"
+                                action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
+                                @csrf
+                                    <div class="pt-3">
+                                        <div class="media mt-0 mb-3">
+                                            <div class="">
+                                                <div class="avatar avatar-md avatar-indicators avatar-online me-3">
+                                                    <img alt="avatar" src="{{Vite::asset('resources/images/logo.svg')}}"
+                                                        class="rounded-circle">
+                                                </div>
+                                            </div>
+                                            <div class="media-body">
+                                                <h3 class="mb-0">{{$user->name}}</h3>
+                                                <p class="media-text">Aluno</p>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row px-4">
+                                            <label for="cellphone"
+                                                class="col-sm-3 col-form-label col-form-label-sm">Telefone:</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-control form-control-sm" id="cellphone"
+                                                    name="cellphone" required>
+                                                    <option value="">Escolha</option>
+                                                    <option value="{{$user->name}}, {{$user->cellphone}}">
+                                                        Aluno - {{$user->cellphone}}
+                                                    </option>
+                                                    <option value="{{$user->name}}, {{$user->cellphone2}}">
+                                                        Aluno - {{$user->cellphone2}}
+                                                    </option>
+                                                    @isset($user->accountable->name)
+                                                    <option
+                                                        value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
+                                                        Responsável -
+                                                        {{$user->accountable->cellphone}}
+                                                    </option>
+                                                    @endisset
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <p class="card-text py-2">Selecione para qual telefone, escolha se deseja abrir
+                                            chamado no MKT e digite a mensagem que deseja enviar.</p>
+                                            <div class=" rounded p-4 ps bg-light-dark" id="messages" style="height: 350px;
+                                            overflow:auto;
+                                        ">
+                                            <p class="py-2 text-center">Mensagens enviadas do sistema</p>
+                                            @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
+                                                <div class="card my-3">
+                                                    <div class="card-body">
+                                                        <p class="mb-0">{!! str_replace(['\r','\n'], [""," <br> "],
+                                                            $obs->msg) !!}</p><br>
+                                                    
+                                                    </div>
+                                                    <div> 
+                                                        @if($obs->status == 201)
+                                                        <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
+                                                            H:i:s')!!}<x-widgets._w-svg class="mx-2 text-success" svg="checks" /></p>
+                                                        @else
+                                                        @isset($obs->cellphone)
+                                                        <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
+                                                            H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada<x-widgets._w-svg class="ps-1 text-warning bs-tooltip" title="Reenviar" svg="reload" /></small></p>
+                                                        @else
+                                                        <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
+                                                            H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada</p></p>
+                                                        @endisset
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    <div class="card-footer pt-4 border-0 text-center">
+                                        
+                                        <div class="col-xxl-12 col-md-12">
+                                            <label for="users_list_tags">Mensagem:</label>
+                                            <textarea class="form-control" name="obs" id="obs" rows="3"
+                                                required></textarea>
+                                        </div>
+
+                                        <button type="send" class="btn btn-secondary w-100 mt-4">
+                                            <span class="btn-text-inner ms-3">Enviar</span></button>
+
+                                    </div>
+                                    <div class="form-check m-2">
+                                        <input class="form-check-input" type="checkbox" value="" name="chamadoativo"
+                                            id="chamadoativo">
+                                        <label class="form-check-label bs-tooltip" for="chamadoativo"
+                                            title="Nessa opção será aberto um chamado no MKT">Abrir
+                                            Protocolo</label>
+                                    </div>
+                            </form>
+                    </div>
+                </div>
+            </div>
+
             </div>
             @endif
             </div>
@@ -1445,11 +1664,21 @@
 
             <!--  BEGIN CUSTOM SCRIPTS FILE  -->
             <x-slot:footerFiles>
+
                 <script src="{{asset('plugins/clipboard/clipboard.min.js')}}"></script>
                 <script type="module" src="{{asset('plugins/clipboard/custom-clipboard.min.js')}}">
                 </script>
 
                 <script src="{{asset('plugins/tagify/tagify.min.js')}}"></script>
+
+
+
+                <script>
+                    const ps1 = new
+                    PerfectScrollbar('#table1');
+                    const ps2 = new
+                    PerfectScrollbar('#messages');
+                </script>
 
 
 
@@ -1527,8 +1756,7 @@
                         },
                 @endforeach
             ]
-            })
-
+            });
                 </script>
 
                 <script>
@@ -1604,16 +1832,11 @@ var usrList = new Tagify(inputElm, {
         },
         @endforeach
     ]
-})
+});
 
                 </script>
 
-                <script>
-                    new bootstrap.Tooltip(document.querySelector('.success'), {
-    template: '<div class="tooltip tooltip-success" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    title: "Success"
-})
-                </script>
+
 
                 </x-slot>
                 <!--  END CUSTOM SCRIPTS FILE  -->
