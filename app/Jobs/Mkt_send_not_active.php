@@ -14,7 +14,6 @@ class Mkt_send_not_active implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private $msgs;
     private $nome;
     private $telefone;
     private $type;

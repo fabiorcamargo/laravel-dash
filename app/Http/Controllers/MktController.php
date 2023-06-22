@@ -58,7 +58,7 @@ class MktController extends Controller
         $payload = '{
                     "type": "whatsapp",
                     "channel_phone": "' . env('MKT_PHONE') . '",
-                    "phone_number": "' . $phone . '",
+                    "phone_number": "55' . $phone . '",
                     "name": "' . $name . '",
                     "only_active": true,
                     "messages": [
@@ -174,7 +174,7 @@ public function send_profile_msg(Request $request)
         $payload = '{
             "type": "whatsapp",
             "channel_phone": "' . env('MKT_PHONE') . '",
-            "phone_number": "'. $phone . '",
+            "phone_number": "55'. $phone . '",
             "name": "'. $name .'",
             "only_active": '. $active .',
             "messages": [
@@ -320,7 +320,7 @@ public function resend_not_active($msg_id)
         $payload = '{
                     "type": "whatsapp",
                     "channel_phone": "' . env('MKT_PHONE') . '",
-                    "phone_number": "' . $phone . '",
+                    "phone_number": "55' . $phone . '",
                     "name": "",
                     "only_active": true,
                     "messages": [
