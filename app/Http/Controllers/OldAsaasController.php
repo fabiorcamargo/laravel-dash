@@ -449,10 +449,10 @@ class OldAsaasController extends Controller
           //Pesquisa se cliente existe no Asaas
           if ($send->valor !== "") {
             $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
-            $paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
+            $send->paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
             //$dec = new stdClass;
             //$dec->id = "1";
-            //$paybook = "Teste";
+            //$send->paybook = "Teste";
             if($send->msgtaxa == null){
             //Cria e envia msg inicial
             $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, aguarde as próximas informações!_*';
@@ -464,7 +464,7 @@ class OldAsaasController extends Controller
 
             //Testa tipo de cobrança e envia msg relacionada
             if($send->msgtaxa !== null){
-                $msg_text ='\r\n'. $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text ='\r\n'. $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
                                                               dispatch($job)->delay(now()->addMinutes(2));
@@ -474,7 +474,7 @@ class OldAsaasController extends Controller
             }
 
             if ($send->cartao !== "") {
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             } else if ($send->link !== "") {
                 $link = $this->lista_link($dec->id, $token);
                 if(isset($link->data[0]->invoiceUrl)){
@@ -483,9 +483,9 @@ class OldAsaasController extends Controller
                   $link = "";
                 }
 
-                $msg_text ='\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento e o seu carnê para pagamento basta clicar nos links abaixo:👇\r\n\r\n Link: ' . $link . '\r\n\r\n Boleto: ' . $paybook . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text ='\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento e o seu carnê para pagamento basta clicar nos links abaixo:👇\r\n\r\n Link: ' . $link . '\r\n\r\n Boleto: ' . $send->paybook . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             } else {
-                $msg_text ='\r\n'. $send->nomeresp . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text ='\r\n'. $send->nomeresp . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             }
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
@@ -562,15 +562,19 @@ class OldAsaasController extends Controller
     //Cria cliente e cobranças
           $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->descricao, $send->empresa, $send->grupo, $token);
           $customer = $dec->id;
-          $client->cria_cobranca1($send, $customer, $token);
-
+          $send = $client->cria_cobranca1($send, $customer, $token);
+          //dd($send);
           $send->responsavel = UserAccountable::create([
             'user_id' => $send->id[1],
             'name' => $send->nomeresp,
             'cellphone' => $send->telefone,
             'document' => $send->cpf,
             'secretary' => $send->secretary,
-            'active' => 1
+            'active' => 1,
+            'body' => '{
+              "payload": "' . $send->paybook . '",
+              "customer": "' . $customer . '"
+            }'
           ]);
 
           foreach($send->id as $id){
@@ -600,7 +604,7 @@ class OldAsaasController extends Controller
 
     $aluno = User::where('id', $send->id[1])->first();
     $send->responsavel = $aluno->accountable()->first();
-    
+    //dd($send);
     //Escolhe o token da secretaria
     if ($send->responsavel['secretary'] == "TB") {
       $token = env('ASAAS_TOKEN1');
@@ -623,8 +627,8 @@ class OldAsaasController extends Controller
     //Avalia se cliente existe
     if(isset($dec->data[0]->id)){
 
-      $client->cria_cobranca1($send, $dec->data[0]->id, $token);
-
+      $send = $client->cria_cobranca1($send, $dec->data[0]->id, $token);
+      //dd($send);
           foreach($send->id as $id){
             $user = User::find($id);
             $user->document = $send->cpf;
@@ -639,15 +643,19 @@ class OldAsaasController extends Controller
     }else{
           $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->descricao, $send->empresa, $send->grupo, $token);
           $customer = $dec->id;
-          $send->cobranca = $client->cria_cobranca1($send, $customer, $token);
-
+          $send = $client->cria_cobranca1($send, $customer, $token);
+          //dd($send);
           $send->responsavel = UserAccountable::create([
-            'user_id'=> $send->id[1],
+            'user_id' => $send->id[1],
             'name' => $send->nomeresp,
             'cellphone' => $send->telefone,
             'document' => $send->cpf,
             'secretary' => $send->secretary,
-            'active' => 1
+            'active' => 1,
+            'body' => '{
+              "payload": "' . $send->paybook . '",
+              "customer": "' . $customer . '"
+            }'
           ]);
 
           foreach($send->id as $id){
@@ -831,17 +839,17 @@ class OldAsaasController extends Controller
 
             $status3 = "<br><b>COBRANÇA CRIADA COM SUCESSO</b> <br>" . $curso . " em " . $parcela . " parcelas de " . "R$" . $valor;
 
-            $paybook = $client->getPayBook($dec->installment, str_replace("access_token: ", "", $token));
+            $send->paybook = $client->getPayBook($dec->installment, str_replace("access_token: ", "", $token));
 
             $msg = new MktController;
             $url = "https://profissionalizaead.com.br";
 
             if ($cartao !== "") {
-              $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+              $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             } else if ($link !== "") {
-              $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCom relação ao Link de Pagamento, caso ainda não tenha recebido, solicite aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+              $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCom relação ao Link de Pagamento, caso ainda não tenha recebido, solicite aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             } else {
-              $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nPara sua comodidade estamos enviando o seu carnê referente ao curso contratado do aluno(a) ' . $nomealuno . ', para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+              $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nPara sua comodidade estamos enviando o seu carnê referente ao curso contratado do aluno(a) ' . $nomealuno . ', para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
             }
 
 
@@ -919,17 +927,17 @@ class OldAsaasController extends Controller
       if (!empty($installment)) {
         $status3 = "<br><b>COBRANÇA CRIADA COM SUCESSO</b> <br>" . $curso . " em " . $parcela . " parcelas de " . "R$" . $valor;
 
-        $paybook = $cobranca->getPayBook($dec->installment, str_replace("access_token: ", "", $token));
+        $send->paybook = $cobranca->getPayBook($dec->installment, str_replace("access_token: ", "", $token));
 
         $msg = new MktController;
         $url = "https://profissionalizaead.com.br";
 
         if ($cartao !== "") {
-          $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+          $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
         } else if ($link !== "") {
-          $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCom relação ao Link de Pagamento, caso ainda não tenha recebido, solicite aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+          $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nNossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCom relação ao Link de Pagamento, caso ainda não tenha recebido, solicite aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
         } else {
-          $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nPara sua comodidade estamos enviando o seu carnê referente ao curso contratado do aluno(a) ' . $nomealuno . ', para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+          $msg_text = '😊 Olá ' . $nomeresp . ', aqui é da *PROFISSIONALIZA CURSOS*\r\n\r\nPara sua comodidade estamos enviando o seu carnê referente ao curso contratado do aluno(a) ' . $nomealuno . ', para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
         }
 
 
