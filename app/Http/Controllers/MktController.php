@@ -130,21 +130,38 @@ public function send_profile_msg(Request $request)
              $error = curl_error($ch);
              // Lidar com o erro de acordo com suas necessidades
              $status = $error;
+             
+             foreach((array)$user_id as $user){
+                $user = User::find($user);
+                $user->usermsg()->create([
+                 'name' => $name,
+                 'msg' => $msg,
+                 'cellphone' => $phone,
+                 'status' => $status
+           ]);
+             }
+
+             $msg = "Mensagem não enviada contatar programador!!!";
+                        return back()->withErrors(__($msg));
          }else{
              $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
              curl_close($ch);
+
+             foreach((array)$user_id as $user){
+                $user = User::find($user);
+                $user->usermsg()->create([
+                 'name' => $name,
+                 'msg' => $msg,
+                 'cellphone' => $phone,
+                 'status' => $status
+           ]);
+             }
+
+             return back()->with('status', "Status: $status | Mensagem enviada com sucesso!!!");
          }
          
-     foreach((array)$user_id as $user){
-        $user = User::find($user);
-        $user->usermsg()->create([
-         'name' => $name,
-         'msg' => $msg,
-         'cellphone' => $phone,
-         'status' => $status
-   ]);
-     }
-     return $status;
+     
+     
 }
 
 
