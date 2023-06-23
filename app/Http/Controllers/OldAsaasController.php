@@ -505,12 +505,13 @@ class OldAsaasController extends Controller
 
       //Testa se a cobrança é link
       if ($send->link !== "") {
-                
+        $send->paybook = "link";        
                 $link = $this->lista_link($customer, $token);
                 isset($link->data[0]->invoiceUrl) ? $link = $link->data[0]->invoiceUrl : $link = "Solicite seu link na Central de Atendimento.";
                 //$link = $link->data[0]->invoiceUrl;
                 $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade Link de Pagamento, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento, basta clicar no link abaixo:👇\r\n\r\nLink: ' . $link . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nCaso o link não esteja habilitado basta salvar nosso contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
       } else {
+        $send->paybook = "Cartão";
                 $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
       }
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));

@@ -96,6 +96,23 @@ class ApiController extends Controller
 
           public function verify()
                 {
+
+
+                  $users = User::all();
+                  
+                  $url = "https://profissionaliza.cademi.com.br/api/v1/usuario";
+                  foreach($users as $user){
+                    if(!$user->cademis()->first()){
+                      $response = Http::withHeaders([
+                        'Authorization' => env('CADEMI_TOKEN_API')
+                    ])->get("$url");
+                      dd($user);
+                    }
+                    //dd($user->cademis()->first());
+                  }
+                  dd($users);
+
+
                   $array = array(
                     array('developer' => array('name' => 'Taylor')),
                     array('developer' => array('name' => 'Dayle')),
