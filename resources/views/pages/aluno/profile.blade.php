@@ -961,7 +961,11 @@
                                                         @else
                                                         @isset($obs->cellphone)
                                                         <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                            H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada<x-widgets._w-svg class="ps-1 text-warning bs-tooltip" title="Reenviar" svg="reload" /></small></p>
+                                                            H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada<a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
+                                                        type="button" class="btn btn-warning bs-tooltip"
+                                                        title="Reenviar">
+                                                        <x-widgets._w-svg class="text-white" svg="reload" />
+                                                    </a></small></p>
                                                         @else
                                                         <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
                                                             H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada</p></p>

@@ -41,6 +41,7 @@ use App\Models\WhatsappTemplate;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +78,7 @@ use Illuminate\Support\Facades\Route;
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
         Route::get('/usergetaccountable', [UserGetAccountable::class, 'get_accountable'])->name('usergetaccountable');
+        
        
         
 
@@ -350,7 +352,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/resend_not_active/{msg_id}', function($msg_id){
                     $send = new MktController;
                     $send->resend_not_active($msg_id);
-
+                    
                     return back();
                 }
                 )->name('mkt-send_not_active');
