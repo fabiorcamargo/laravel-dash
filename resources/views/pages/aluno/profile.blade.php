@@ -950,6 +950,7 @@
                                             @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
                                                 <div class="card my-3">
                                                     <div class="card-body">
+                                                        <p class="mb-0">{{$obs->name}} - {{$obs->cellphone}}</p><br>
                                                         <p class="mb-0">{!! str_replace(['\r','\n'], [""," <br> "],
                                                             $obs->msg) !!}</p><br>
                                                     

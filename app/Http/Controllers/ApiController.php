@@ -98,19 +98,33 @@ class ApiController extends Controller
                 {
 
 
-                  $users = User::all();
+                  /*$users = User::all();
                   
-                  $url = "https://profissionaliza.cademi.com.br/api/v1/usuario";
+                  
                   foreach($users as $user){
-                    if(!$user->cademis()->first()){
-                      $response = Http::withHeaders([
-                        'Authorization' => env('CADEMI_TOKEN_API')
-                    ])->get("$url");
-                      dd($user);
-                    }
+                    $url = "https://profissionaliza.cademi.com.br/api/v1/usuario/$user->email";
+                        if(!$user->cademis()->first()){
+                                $response = Http::withHeaders([
+                                  'Authorization' => env('CADEMI_TOKEN_API')
+                              ])->get("$url");
+                                  $response = $response->json();
+                                  if(isset($response['data']['usuario']['login_auto'])){
+                                    dd('email1');
+                                  }else{
+                                    $response = Http::withHeaders([
+                                      'Authorization' => env('CADEMI_TOKEN_API')
+                                  ])->get("$url");
+                                      $response = $response->json();
+                                      if(isset($response['data']['usuario']['login_auto'])){
+                                      dd('email2');
+                                      }
+                                  }
+                                  
+                          
+                        }
                     //dd($user->cademis()->first());
                   }
-                  dd($users);
+                  dd($users);*/
 
 
                   $array = array(

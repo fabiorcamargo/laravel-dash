@@ -38,7 +38,9 @@ class MktController extends Controller
 
     public function send_not_active($name, $phone, $type, $msg, $user_id)
     {
-        $phone = '55'.$phone;
+        if(strlen($phone) <= 11){
+            $phone = '55'.$phone;
+        }
         $token = $this->getToken();
         $payload = '{
                     "type": "whatsapp",
@@ -89,10 +91,13 @@ class MktController extends Controller
 public function send_profile_msg(Request $request)
     {
         
+        
         $dados = explode(",", str_replace(" ", "", $request->cellphone));
         $name = $dados[0];
         $phone = $dados[1];
-        $phone = '55'.$phone;
+        if(strlen($phone) <= 11){
+            $phone = '55'.$phone;
+        }
         $type = "text";
         $de = array('\r', '\n');
         $para = array('', '');
@@ -172,7 +177,11 @@ public function resend_not_active($msg_id)
         $msg_use = UserMessage::find($msg_id);
         $phone = $msg_use->cellphone;
         $msg = $msg_use->msg;
-        $phone = '55'.$phone;
+
+        if(strlen($phone) <= 11){
+            $phone = '55'.$phone;
+        }
+        //dd($phone);
         $token = $this->getToken();
 
         $payload = '{
@@ -205,24 +214,46 @@ public function resend_not_active($msg_id)
                         $error = curl_error($ch);
                         // Lidar com o erro de acordo com suas necessidades
                         $status = $error;
+
+                        $msg_use->status = $status;
+                        $msg_use->save();
+
+                        Auth::user()->getusernotification()->create([
+                            'resume'=>"Msg $phone",
+                            'msg'=> "Reenviar -> $msg",
+                            'status'=> "danger",
+                            'show'=> 1,
+                            'action'=> "/modern-dark-menu/aluno/profile/$msg_use->user_id",
+                            'icon'=> "message",
+                            'body'=> json_encode($msg_use)
+                        ]);
+
+                        $msg = "Mensagem não enviada contatar programador!!!";
+                        return back()->withErrors(__($msg));
+
                     }else{
                         $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
                         curl_close($ch);
+
+                        $msg_use->status = $status;
+                        $msg_use->save();
+
+                        Auth::user()->getusernotification()->create([
+                            'resume'=>"Msg $phone",
+                            'msg'=> "Reenviar -> $msg",
+                            'status'=> "success",
+                            'show'=> 1,
+                            'action'=> "/modern-dark-menu/aluno/profile/$msg_use->user_id",
+                            'icon'=> "message",
+                            'body'=> json_encode($msg_use)
+                        ]);
+        
+                        return back()->with('status', "Status: $status | Mensagem enviada com sucesso!!!");
+
                     }
                     
-                    $msg_use->status = $status;
-                    $msg_use->save();
+                    
     
-                    Auth::user()->getusernotification()->create([
-                        'resume'=>"Msg $phone",
-                        'msg'=> "Reenviar -> $msg",
-                        'status'=> "success",
-                        'show'=> 1,
-                        'action'=> "/modern-dark-menu/aluno/profile/$msg_use->user_id",
-                        'icon'=> "message",
-                        'body'=> json_encode($msg_use)
-                    ]);
-    
-                return $status;
+                    
         }
     }
