@@ -49,7 +49,7 @@ class MktController extends Controller
 
     public function send_not_active($name, $phone, $type, $msg, $user_id)
     {
-        
+        $phone = "55$phone";
         //$user = User::find($user_id);
 
         $token = $this->getToken();
@@ -58,7 +58,7 @@ class MktController extends Controller
         $payload = '{
                     "type": "whatsapp",
                     "channel_phone": "' . env('MKT_PHONE') . '",
-                    "phone_number": "55' . $phone . '",
+                    "phone_number": "' . $phone . '",
                     "name": "' . $name . '",
                     "only_active": true,
                     "messages": [
@@ -158,6 +158,7 @@ public function send_profile_msg(Request $request)
         $dados = explode(",", str_replace(" ", "", $request->cellphone));
         $name = $dados[0];
         $phone = $dados[1];
+        $phone = "55$phone";
         $type = "text";
         $de = array('\r', '\n');
         $para = array('', '');
@@ -174,7 +175,7 @@ public function send_profile_msg(Request $request)
         $payload = '{
             "type": "whatsapp",
             "channel_phone": "' . env('MKT_PHONE') . '",
-            "phone_number": "55'. $phone . '",
+            "phone_number": "'. $phone . '",
             "name": "'. $name .'",
             "only_active": '. $active .',
             "messages": [
@@ -313,14 +314,14 @@ public function resend_not_active($msg_id)
         $msg_use = UserMessage::find($msg_id);
         $phone = $msg_use->cellphone;
         $msg = $msg_use->msg;
-
+        $phone = "55$phone";
         $token = $this->getToken();
         //dd($token);
 
         $payload = '{
                     "type": "whatsapp",
                     "channel_phone": "' . env('MKT_PHONE') . '",
-                    "phone_number": "55' . $phone . '",
+                    "phone_number": "' . $phone . '",
                     "name": "",
                     "only_active": true,
                     "messages": [
