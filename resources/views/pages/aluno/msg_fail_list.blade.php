@@ -49,6 +49,7 @@
                                 <div class="table-responsive ps" id="table1">
                                     <div class="statbox widget box box-shadow">
                                         @foreach ($failed as $fail)
+										{{--$fail->id--}}
                                         <tr>
                                             <td>
                                                 <div class="card style-5 bg-dark mt-4 mb-md-0 mb-4">
@@ -58,6 +59,8 @@
                                                                 src="{{ asset(($fail->getuser())->image) }}"
                                                                 class="rounded-circle">
                                                         </div>
+                                                        
+                                                        
                                                     </div>
                                                     <div class="card-content">
                                                         <div class="card-body">
@@ -66,13 +69,15 @@
                                                             <p class="card-text">{!!
                                                                 str_replace(['\r','\n'], [""," <br> "],
                                                                 $fail->msg) !!}</p>
-                                                            <form action="{{route('msg-del_list', ['id' => $fail->id])}}" id="msg_del" method="POST">
+                                                            <form action="{{route('msg-del_list', ['id' => $fail->id])}}" id="msg_del[{{$fail->id}}]" method="POST">
                                                                 @csrf
+                                                                
                                                                 @if($fail->status == 409)
                                                                     <p class="d-flex justify-content-start">
                                                                         {!!$fail->created_at->format('d/m/y
                                                                         H:i:s')!!}</p>
 
+                                                                    <div class="badge badge-light-dark badge-dot">{{ ($fail->getuser())->secretary }}</div>
                                                                     <span class="badge badge-warning mb-2 bs-tooltip"
                                                                         title="Mensagen não enviada devido chamado ativo no MKT">Chamado
                                                                         Ativo</span>
@@ -84,6 +89,7 @@
                                                                     </a>
 
                                                                 @else
+                                                                    <div class="badge badge-light-dark badge-dot">{{ ($fail->getuser())->secretary }}</div>
                                                                     <span class="badge badge-danger mb-2">Falha
                                                                         no Envio</span>
                                                                 @endif
@@ -98,7 +104,7 @@
                                                                 
 
                                                                 <a href="javascript:void(0);"
-                                                                onClick="document.getElementById('msg_del').submit();"
+                                                                onClick="document.getElementById('msg_del[{{$fail->id}}]').submit();"
                                                                     type="button"
                                                                     class="badge badge-danger mb-2 bs-tooltip"
                                                                     title="Abrir Perfil">
