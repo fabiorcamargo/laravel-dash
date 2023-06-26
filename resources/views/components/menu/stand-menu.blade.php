@@ -108,6 +108,9 @@
                             <li class="{{ Request::routeIs('user-list') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/list"> Lista </a>
                             </li>
+                            <li class="{{ Request::routeIs('msg-fail_list') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/user/fail_list"> Msg com Falha </a>
+                            </li>
                             <li class="{{ Request::routeIs('user-lote') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/lote"> Cademi </a>
                             </li>         

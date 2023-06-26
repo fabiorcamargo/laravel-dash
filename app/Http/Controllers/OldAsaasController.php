@@ -387,9 +387,13 @@ class OldAsaasController extends Controller
     
     $send->gerartaxa = $request->gerartaxa !== null ? "TAXA GERADA (Junto 1ª Parcela: R$ $request->gerartaxa\\n" : "";
 
-    if($send->msgtaxa !== ""){
+    if($send->msgtaxa !== null){
+      //dd($send->msgtaxa );
+      //dd('s');
     $send->pagamento = is_null($send->msgtaxa) ? '' : "Gerado taxa $request->parcelas R$$request->valor para " .  Carbon::parse($send->data2)->format('d/m/Y');
     }else{
+
+      //dd('n');
     $send->pagamento = is_null($send->taxa) ? '' : $send->taxa;
     $send->pagamento .= is_null($send->cartao) ? '' : $send->cartao;
     $send->pagamento .= is_null($send->link) ? '' : $send->link;

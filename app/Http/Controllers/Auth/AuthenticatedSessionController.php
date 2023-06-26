@@ -33,16 +33,21 @@ class AuthenticatedSessionController extends Controller
         //dd(Auth::user());
         $request->session()->regenerate();
 
-        if(empty(Auth::user()->first)){
+        if(Auth::user()->first == ""){
+            //dd('f');
         $home = '/modern-dark-menu/aluno/first';
-        }else if(Auth::user()->active == 4){
-        $home = '/modern-dark-menu/aluno/pw_change';  
-        }else{ 
-        if ((Auth::check())){
-        $home = '/modern-dark-menu/aluno/my';    
-        }}
-        
         return redirect()->intended($home);
+        }else if(Auth::user()->active == 4){
+            //dd('4');
+        $home = '/modern-dark-menu/aluno/pw_change';  
+        return redirect()->intended($home);
+        }else{ 
+        
+        $home = '/modern-dark-menu/aluno/my';   
+        return redirect()->intended($home); 
+        }
+        
+        //return redirect()->intended($home);
     }
 
     /**

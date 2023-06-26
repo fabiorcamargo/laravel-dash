@@ -271,7 +271,7 @@
                                 é
                                 notificada
                                 automáticamente ao cliente via SMS</p>
-                            <form class="form-horizontal" method="post" action="{{route('pay-create-post')}}">
+                            <form class="form-horizontal" method="post" id="create_pay" action="{{route('pay-create-post')}}">
                                 @csrf
                                 <div class="container">
                                     <div class="form-row">
@@ -399,18 +399,21 @@
                                             <label>Data</label>
                                             <input type="date" id="data" name="data" class="form-control" onkeypress="">
                                         </div>
-                                        <div class="form-group col-md-4">
-                                            <label>Valor da Parcela</label>
-                                            <input type="text" id="valor" name="valor" class="form-control"
-                                                placeholder="Valor 00,00"
-                                                onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});"
-                                                onchange="adicionarRequired('data')">
-                                        </div>
+                                        
                                         <div class="form-group col-md-4">
                                             <label>Quantidade</label>
                                             <input type="text" id="parcelas" name="parcelas" class="form-control"
                                                 placeholder="#x parcelas"
+                                                oninput="$('#valor').prop('required',true);"
                                                 onkeypress="$(this).mask('00x', {reverse: true});">
+                                        </div>
+
+                                        <div class="form-group col-md-4">
+                                            <label>Valor da Parcela</label>
+                                            <input type="text" id="valor" name="valor" class="form-control"
+                                                placeholder="Valor 00,00"
+                                                onkeypress='$(this).mask("#.##0,00", {reverse: true});'
+                                                onchange="adicionarRequired('data')">
                                         </div>
                                     </div>
                                     <p class="text-danger">
@@ -552,7 +555,7 @@
                                                 rows="3"></textarea>
                                         </div>
                                         <!-- Button trigger modal -->
-                                        <button type="submit" onclick="loading()"
+                                        <button type="submit" {{--onclick="loading()"--}}
                                             class="btn btn-primary btn-lg">CRIAR</button>
                                     </div>
                                 </div>
@@ -570,12 +573,27 @@
                 </body>
                 <x-slot:footerFiles>
 
+               <script>
+                $(document).ready(function() {
+                $('#create_pay').submit(function(event) {
+                    // Sua função a ser executada quando o formulário for enviado
+                    loading();
+                });
+                });
+
+                function minhaFuncao() {
+                // Código da sua função aqui
+                console.log('O formulário foi enviado!');
+                // Outras ações desejadas
+                }
+               </script>
+
                     <script>
                         function adicionarRequired(elementId) {
-        var inputElement = document.getElementById(elementId);
-        if (inputElement) {
-            inputElement.required = true;
-        }
+                        var inputElement = document.getElementById(elementId);
+                        if (inputElement) {
+                            inputElement.required = true;
+                        }
         }
                     </script>
 
@@ -588,7 +606,7 @@
                             document.getElementById("gtaxa").disabled == true ? document.getElementById("gtaxa").disabled = false : document.getElementById("gtaxa").disabled = true;
                             document.getElementById("link").disabled == true ? document.getElementById("link").disabled = false : document.getElementById("link").disabled = true;
                             document.getElementById("cartaoi").disabled == true ? document.getElementById("cartaoi").disabled = false : document.getElementById("cartaoi").disabled = true;
-                            document.getElementById("taxa").disabled == true ? document.getElementById("taxa").disabled = false : document.getElementById("taxa").disabled = true;
+                            document.getElementById("taxa").disabled == true ? document.getElementById("taxa").disabled = false : document.getElementById("taxa ").disabled = true;
                             
                         }
                     </script>

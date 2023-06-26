@@ -58,13 +58,11 @@
             <div class="body row layout-spacing">
                 @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
                 <div class="ms-4 col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
-                    <div class="">
-                        <h3 class="">Dados do Contrato</h3>
+                        <h3 >Dados do Contrato</h3>
                         <div class="">
                             <p>{!!$user->observation!!}</p>
 
                         </div>
-                    </div>
                 </div>
                 @endif
                 <div class="col-xl-5 col-md-5 col-sm-12 layout-top-spacing">
@@ -948,29 +946,31 @@
                                         ">
                                             <p class="py-2 text-center">Mensagens enviadas do sistema</p>
                                             @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
+                                            
                                                 <div class="card my-3">
+                                                    <p class="text-muted p-2">{{$obs->cellphone}}</p><br>
                                                     <div class="card-body">
-                                                        <p class="mb-0">{{$obs->name}} - {{$obs->cellphone}}</p><br>
+                                                        
                                                         <p class="mb-0">{!! str_replace(['\r','\n'], [""," <br> "],
                                                             $obs->msg) !!}</p><br>
                                                     
                                                     </div>
                                                     <div> 
                                                         @if($obs->status == 201)
-                                                        <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                            H:i:s')!!}<x-widgets._w-svg class="mx-2 text-success" svg="checks" /></p>
+                                                            <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
+                                                                H:i:s')!!}<x-widgets._w-svg class="mx-2 text-success" svg="checks" /></p>
                                                         @else
-                                                        @isset($obs->cellphone)
-                                                        <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                            H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada<a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
-                                                        type="button" class="btn btn-warning bs-tooltip"
-                                                        title="Reenviar">
-                                                        <x-widgets._w-svg class="text-white" svg="reload" />
-                                                    </a></small></p>
-                                                        @else
-                                                        <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                            H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada</p></p>
-                                                        @endisset
+                                                            @isset($obs->cellphone)
+                                                                <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
+                                                                    H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada<a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
+                                                                type="button" class="btn btn-warning bs-tooltip"
+                                                                title="Reenviar">
+                                                                <x-widgets._w-svg class="text-white" svg="reload" />
+                                                                </a></small></p>
+                                                            @else
+                                                                <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
+                                                                    H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada</p></p>
+                                                            @endisset
                                                         @endif
                                                     </div>
                                                 </div>

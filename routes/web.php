@@ -27,6 +27,7 @@ use App\Http\Controllers\Asaas\AsaasConectController;
 use App\Http\Controllers\Asaas\AsaasController;
 use App\Http\Livewire\CreateTask;
 use App\Jobs\Mkt_resend_not_active;
+use App\Jobs\UserMg_FailSend;
 use App\Jobs\WhatsappBulkTemplate;
 use App\Mail\SendMailUser;
 use App\Mail\UserSign;
@@ -326,6 +327,31 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/ouro/send', [OuroModerno::class, 'bulk_user_send'])->name('user-ouro-create');
                 Route::post('/ouro/combo/create', [OuroModerno::class, 'combo_create'])->name('user-ouro-combo-create');
 
+                Route::get('/fail_list', function(){
+                    $msg = new UserMg_FailSend;
+                    dispatch($msg);
+                    $failed = (UserMessage::where('status', 'not like', 201)->get());
+
+                    return view('pages.aluno.msg_fail_list', compact('failed'));
+                }
+                )->name('msg-fail_list');
+
+                Route::post('/msg-del_list/{id}', function($id){
+                    $msg = UserMessage::find($id);
+                    $status = $msg->delete();
+                    //dd($status);
+
+                    if($status == "true"){
+                    $msg = "Msg $msg->id, excluída com sucesso!";
+                    return back()->with('status', $msg);
+                    }else{
+                    $msg = "Msg $msg->id, não foi possível excluir!";
+                    return back()->withErrors(__($msg));
+                    }
+                    //return view('pages.aluno.msg_fail_list', compact('failed'));
+                }
+                )->name('msg-del_list');
+
             });
 
             Route::prefix('/pay')->group(function () {
@@ -345,6 +371,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/token', [MktController::class, 'getToken']
                 )->name('mkt-token');
 
+               
+
+                
                 Route::get('/send_not_active/{name}/{phone}/{type}/{msg}/{user_id}', [MktController::class, 'send_not_active']
                 )->name('mkt-send_not_active');
                 Route::post('/send_profile_msg/{id}', [MktController::class, 'send_profile_msg']

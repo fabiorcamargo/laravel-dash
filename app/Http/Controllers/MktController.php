@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 
 class MktController extends Controller
 {
@@ -255,5 +256,15 @@ public function resend_not_active($msg_id)
                     
     
                     
+        }
+
+        public function send(){
+            //$i = 5;
+                //dispatch(Storage::put('file5.txt', $msg->id));
+                Storage::put('file5.txt', 1);
+                //$i = $i + 5;
+            
+            //echo($msg_id);
+            return "ok";
         }
     }
