@@ -11,6 +11,9 @@
             @vite(['resources/scss/light/assets/users/user-profile.scss'])
             @vite(['resources/scss/dark/assets/components/list-group.scss'])
             @vite(['resources/scss/dark/assets/users/user-profile.scss'])
+
+            @vite(['resources/scss/dark/assets/components/modal.scss'])
+            @vite(['resources/scss/light/assets/components/modal.scss'])
             <!--  END CUSTOM STYLE FILE  -->
             </x-slot>
             <!-- END GLOBAL MANDATORY STYLES -->
@@ -49,7 +52,7 @@
                                 <div class="table-responsive ps" id="table1">
                                     <div class="statbox widget box box-shadow">
                                         @foreach ($failed as $fail)
-										{{--$fail->id--}}
+                                        {{--$fail->id--}}
                                         <tr>
                                             <td>
                                                 <div class="card style-5 bg-dark mt-4 mb-md-0 mb-4">
@@ -59,8 +62,8 @@
                                                                 src="{{ asset(($fail->getuser())->image) }}"
                                                                 class="rounded-circle">
                                                         </div>
-                                                        
-                                                        
+
+
                                                     </div>
                                                     <div class="card-content">
                                                         <div class="card-body">
@@ -69,29 +72,77 @@
                                                             <p class="card-text">{!!
                                                                 str_replace(['\r','\n'], [""," <br> "],
                                                                 $fail->msg) !!}</p>
-                                                            <form action="{{route('msg-del_list', ['id' => $fail->id])}}" id="msg_del[{{$fail->id}}]" method="POST">
+                                                            <form
+                                                                action="{{route('msg-del_list', ['id' => $fail->id])}}"
+                                                                id="msg_del[{{$fail->id}}]" method="POST">
                                                                 @csrf
-                                                                
-                                                                @if($fail->status == 409)
-                                                                    <p class="d-flex justify-content-start">
-                                                                        {!!$fail->created_at->format('d/m/y
-                                                                        H:i:s')!!}</p>
+                                                               
 
-                                                                    <div class="badge badge-light-dark badge-dot">{{ ($fail->getuser())->secretary }}</div>
-                                                                    <span class="badge badge-warning mb-2 bs-tooltip"
-                                                                        title="Mensagen não enviada devido chamado ativo no MKT">Chamado
-                                                                        Ativo</span>
-                                                                    <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$fail->id}}"
-                                                                        type="button"
-                                                                        class="badge badge-warning mb-2 bs-tooltip"
-                                                                        title="Reenviar">
+                                                                <!-- Modal content-->
+                                                                <div class="modal fade" id="exampleModal{{$fail->id}}"
+                                                                    tabindex="-1" role="dialog"
+                                                                    aria-labelledby="exampleModalLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="exampleModalLabel">Você deseja
+                                                                                    excluir?</h5>
+                                                                                <a type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <svg> ... </svg>
+                                                                                </a>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p class="text-danger p-4">⚠ Essa ação não pode ser revertida, confira os dados!</p>
+                                                                                
+                                                                                <div class="card-body">
+                                                                                    {{--$fail->id--}}
+                                                                                    <h5 class="card-title mb-2">{{
+                                                                                        $fail->name }}
+                                                                                    </h5>
+                                                                                    <p class="card-text">{!!
+                                                                                        str_replace(['\r','\n'], ["","
+                                                                                        <br> "],
+                                                                                        $fail->msg) !!}</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <a class="btn btn btn-success"
+                                                                                    data-bs-dismiss="modal"><i
+                                                                                        class="flaticon-cancel-12"></i>
+                                                                                    Não</a>
+                                                                                <a type="button"
+                                                                                    class="btn btn-danger" onClick="document.getElementById('msg_del[{{$fail->id}}]').submit();">Sim</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                @if($fail->status == 409)
+                                                                <p class="d-flex justify-content-start">
+                                                                    {!!$fail->created_at->format('d/m/y
+                                                                    H:i:s')!!}</p>
+
+                                                                <div class="badge badge-light-dark badge-dot">{{
+                                                                    ($fail->getuser())->secretary }}</div>
+                                                                <span class="badge badge-warning mb-2 bs-tooltip"
+                                                                    title="Mensagen não enviada devido chamado ativo no MKT">Chamado
+                                                                    Ativo</span>
+                                                                <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$fail->id}}"
+                                                                    type="button"
+                                                                    class="badge badge-warning mb-2 bs-tooltip"
+                                                                    title="Reenviar">
                                                                     <x-widgets._w-svg class="text-white" svg="reload" />
-                                                                    </a>
+                                                                </a>
 
                                                                 @else
-                                                                    <div class="badge badge-light-dark badge-dot">{{ ($fail->getuser())->secretary }}</div>
-                                                                    <span class="badge badge-danger mb-2">Falha
-                                                                        no Envio</span>
+                                                                <div class="badge badge-light-dark badge-dot">{{
+                                                                    ($fail->getuser())->secretary }}</div>
+                                                                <span class="badge badge-danger mb-2">Falha
+                                                                    no Envio</span>
                                                                 @endif
 
                                                                 <a href="{{getRouterValue();}}/aluno/profile/{{$fail->user_id}}"
@@ -101,19 +152,18 @@
                                                                     <x-widgets._w-svg class="text-white"
                                                                         svg="user-search" />
                                                                 </a>
-                                                                
 
-                                                                <a href="javascript:void(0);"
-                                                                onClick="document.getElementById('msg_del[{{$fail->id}}]').submit();"
+
+                                                                <a data-bs-toggle="modal"
+                                                                data-bs-target="#exampleModal{{$fail->id}}"
                                                                     type="button"
                                                                     class="badge badge-danger mb-2 bs-tooltip"
                                                                     title="Abrir Perfil">
-                                                                    <x-widgets._w-svg class="text-white"
-                                                                        svg="trash" />
+                                                                    <x-widgets._w-svg class="text-white" svg="trash" />
                                                                 </a>
 
                                                             </form>
-                                                            
+
                                                         </div>
                                                     </div>
                                                 </div>
