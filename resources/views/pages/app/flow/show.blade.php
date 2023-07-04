@@ -160,12 +160,6 @@
                         @for ($i = 0; $i < $flow->steps; $i++)
                             @php $f = $flow->id @endphp
 
-
-
-
-
-
-
                             <div data-section="{{$i}}" class="task-list-container" data-connect="sorting">
                                 <div class="connect-sorting">
                                     <div class="task-container-header">

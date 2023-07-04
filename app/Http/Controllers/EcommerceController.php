@@ -499,7 +499,7 @@ class EcommerceController extends Controller
             //dd($cobranca);
             $pix = $response->encodedImage;
             $copy = $response->payload;
-            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pix' => $pix, 'copy' => $copy, 'pay_id' => $pay_id]);
+            return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pix' => $pix, 'copy' => $copy, 'pay_id' => $pay_id, 'type' => $cobranca->type]);
         }
         }else{
             

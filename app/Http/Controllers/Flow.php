@@ -15,17 +15,19 @@ class Flow extends Controller
         return view('pages.app.flow.add', ['title' => 'Profissionaliza EAD | Adicionar Fluxo ', 'breadcrumb' => 'add flow']);
     }
     public function flow_add(Request $request){
+
         for ($i=1; $i < $request->steps; $i++) { 
             $steps[$i] = array("name" => "Etapa $i", "order" => "$i");
         }
         $json = (json_encode($steps));
         //dd(json_decode($json,true)[1]);
-
+        $body = '{"title": ["Carrinho", "Gerou Pagamento", "Pagamento Atrasado", "Pagamento Recusado", "Pagamento Aprovado"]}';
         $flow = ModelsFlow::create([
             'name' => $request->name,
             'context' => $request->context,
             'steps' => $request->steps,
-            'item' => $request->item
+            'item' => $request->item,
+            'body' => $body
         ]);
         $status = "Fluxo criado com sucesso";
         return back()->with('status', __($status));
