@@ -34,7 +34,7 @@
             </div>
             <div class="pt-4">
                 <div class="d-grid gap-2">
-            <button type="send" class="btn button_card">Finalizar</button>
+            <button type="send" class="btn button_card" id="button_finalizar">Finalizar</button>
             </div>
             </div>
         </div>

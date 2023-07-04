@@ -11,7 +11,7 @@ Senha: {{ $user->password }}
 Entrar
 </x-mail::button>
 
-Caso precise de ajuda chame nosso <a style="color:#48bb78" class="text-success" href="https://wa.me/5544984233200?text=Suporte">suporte via Whatsapp</a>:
+Caso precise de ajuda chame nosso <a style="color:#48bb78" class="text-success" href="https://wa.me/5544984233200?text=Suporte%20cadastro%20online!">suporte via Whatsapp</a>:
 
 Atenciosamente,<br>
 {{ config('app.name') }}

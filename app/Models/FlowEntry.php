@@ -27,5 +27,8 @@ class FlowEntry extends Model
     public function get_seller(){
         return $this->hasOne(EcoSeller::class,'id','seller')->withDefault();
     }
+    public function get_product(){
+        return $this->hasOne(EcoProduct::class,'id','product_id')->first();
+    }
 
 }

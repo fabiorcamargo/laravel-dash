@@ -294,9 +294,11 @@ class OldAsaasController extends Controller
 
   public function getpixqr($id, $token)
   {
+
+    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/payments/$id/pixQrCode" :  $url = "https://www.asaas.com/api/v3/payments/$id/pixQrCode";
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments/$id/pixQrCode");
+    curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -316,8 +318,9 @@ class OldAsaasController extends Controller
   public function getPayBook($id, $token)
   {
 
+    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/installments/$id/paymentBook?sort=dueDate&order=asc" :  $url = "https://www.asaas.com/api/v3/installments/$id/paymentBook?sort=dueDate&order=asc";
 
-    $url = "https://www.asaas.com//api/v3/installments/$id/paymentBook?sort=dueDate&order=asc"; // URL do arquivo que você deseja baixar
+    // URL do arquivo que você deseja baixar
     $publicPath = public_path("storage/paybook/$id"); // Pasta pública onde o arquivo será salvo
 
     // Verifica se a pasta pública existe, caso contrário, cria-a

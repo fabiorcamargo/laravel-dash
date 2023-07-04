@@ -50,7 +50,7 @@
     @livewireStyles
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id="{{env('GOOGLE_TAG_ANALYTICS_ID')}}></script>
+    {{--<script async src="https://www.googletagmanager.com/gtag/js?id="{{env('GOOGLE_TAG_ANALYTICS_ID')}}></script>
     <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
@@ -65,7 +65,7 @@
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','{{env('GOOGLE_TAG_MANAGER_ID')}}');</script>
-    <!-- End Google Tag Manager -->
+    <!-- End Google Tag Manager -->--}}
 
 
     <!-- Meta Pixel Code -->

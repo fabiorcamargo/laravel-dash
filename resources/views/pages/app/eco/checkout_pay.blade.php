@@ -431,10 +431,9 @@
                                                                 </li>
                                                             </label>
                                                             <input type="text" name="payment" id="payment" value="PIX"
-                                                                hidden>
+                                                                >
 
-                                                            <input type="text" id="checkou_value" name="checkou_value"
-                                                                hidden readonly>
+                                                        
 
                                                         </ul>
 
@@ -563,10 +562,10 @@
                 </div>
             </div>
             @endif
-
+            {{--}}
             {{!$flow = new App\Http\Controllers\Flow}}
             {{$flow->new_entry(1, 1, request()->input('s') !== null ? request()->input('s') : 1, $product)}}
-            {{--
+            
             <x-flow-event id="1" step="1" seller="{{request()->input('s') !== null ? "
                 ?seller=".request()->input('s') : 1}}" />--}}
 
@@ -652,12 +651,14 @@
 
                 <script>
                     function on() {
-      document.getElementById("overlay").style.display = "block";
-    }
-    
-    function off() {
-      document.getElementById("overlay").style.display = "none";
-    }
+                    //Mostra o popup de vendedor
+                    document.getElementById("overlay").style.display = "block";
+                    }
+                    
+                    function off() {
+                    //Mostra o popup de vendedor
+                    document.getElementById("overlay").style.display = "none";
+                    }
                 </script>
 
                 <script>
@@ -698,16 +699,13 @@
 
                
                
-               //document.getElementById("pixs").hidden = true;
+               document.getElementById("pixs").hidden = true;
                
                
-               //document.getElementById("parcelac").hidden = false;
-               //document.getElementById("pgpix").hidden = true;
-               //document.getElementById("parcelab").hidden = false;
                document.getElementById("parcelab_x").value = price.x;
                document.getElementById("parcelab_v").value = price.v;
-               document.getElementById("payment").value = "CREDIT_CARD";
-               document.getElementById("checkou_value").value = price;
+               document.getElementById("payment").value = pay;
+               
                
        }
             
@@ -770,7 +768,7 @@
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
             
         // Output the result in an element with id="demo"
-        //document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
+        document.getElementById("demo").innerHTML = minutes + "m " + seconds + "s ";
 
         document.cookie = 'countdown-m=' + minutes + '; max-age=' + minutes*60+seconds + '; path=/';
         document.cookie = 'countdown-s=' + seconds + '; max-age=' + minutes*60+seconds + '; path=/';
@@ -778,6 +776,7 @@
         // If the count down is over, write some text 
        if (distance < 0) {
             clearInterval(x);
+            //Quando o tempo acaba
             //document.getElementById("demo").innerHTML = "EXPIRADO";
             //document.getElementById("button_finalizar").hidden = true;
             //on();

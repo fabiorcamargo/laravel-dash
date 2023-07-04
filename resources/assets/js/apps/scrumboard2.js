@@ -354,7 +354,7 @@ $(function() {
                 var $_taskProgressDataAttr = $_outerThis.parents('.card').find('div.progress-bar').attr('data-progressState', $_taskProgressValue);
                 var $_taskProgressAriaAttr = $_outerThis.parents('.card').find('div.progress-bar').attr('aria-valuenow', $_taskProgressValue);
                 var $_taskProgressProgressCount = $_outerThis.parents('.card').find('.progress-count').html($_taskProgressValue+"%");
-
+            
             $('#addTaskModal').modal('hide');
             var setDate = $('.taskDate').html('');
             $('.taskDate').hide();

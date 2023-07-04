@@ -7,12 +7,15 @@ use App\Jobs\cademi as JobsCademi;
 use App\Models\{
   Cademi,
     CademiCourse,
+    CademiImport,
     Chatbot_Message,
     Chatbot_Program,
     ChatbotMessage,
     ChatbotProgram,
     Customer,
+    EcoProduct,
     EcoSales,
+    FlowEntry,
     Payment,
     User
 };
@@ -282,30 +285,69 @@ class ApiController extends Controller
           public function gateway_pay_post (Request $request){
             //$body = json_encode($request);
             //dd(($request->getContent()));
+            //$pay_id = $request->payment['id'];
             
-            $event = (object)json_decode($request->getContent(), true);
-            //dd($event);
-            if($event->event == "PAYMENT_RECEIVED"){
-              
-              $data = (object)json_decode($request->getContent(), true)['payment'];
-              $user_id = Customer::where('gateway_id',$data->customer)->first()->id;
-              $body = json_encode($data);
-
-              
-              $payment = new Payment();
-              $payment->pay_id = $data->id;
-              $payment->user_id = $user_id;
-              $payment->customer = $data->customer;
-              $payment->dateCreated = $data->dateCreated;
-              $payment->paymentDate = $data->paymentDate;
-              $payment->status = $data->status;
-              $payment->body = $body;
+            if($request->event == "PAYMENT_RECEIVED" || $request->event == "PAYMENT_CONFIRMED"){
+              $payment = EcoSales::where('pay_id', $request->payment['id'])->first();
+              $payment->status = $request->payment['status'];
               $payment->save();
 
-              
+              $user = User::find($payment->user_id);
+              $product = EcoProduct::find($payment->product_id);
 
+              $flow = FlowEntry::where('user_id', $user->id)->where('product_id', $product->id)->first();
+              $flow->step = 4;
+              $flow->save();
 
-              return response("User: $user_id | Payment: $payment->id", 200);
+              if($product->type == "Cademi"){
+                $payload = [
+                  "token" => env('CADEMI_TOKEN_GATEWAY'),
+                  "codigo"=> "COD-INTERNET-$product->course_id-$user->username",
+                  "status"=> "aprovado",
+                  "recorrencia_id" => "COD-INTERNET-$product->course_id-$user->username",
+                  "recorrencia_status" => "ativo",
+                  "produto_id"=> $product->course_c,
+                  "produto_nome"=> $product->course_c,
+                  "cliente_email"=> $user->email2,
+                  "cliente_nome"=> $user->name . " " . $user->lastname,
+                  //"cliente_doc"=> $user->document,
+                  "cliente_celular"=> $user->cellphone,
+                  //"cliente_endereco_cidade"=> $user->city2,
+                  //"cliente_endereco_estado"=> $user->uf2,
+              ];
+
+              $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
+              $cademi = json_decode(Http::withHeaders([
+                  'Authorization' => env('CADEMI_TOKEN_API')
+              ])->post("$url", $payload));
+
+              if (isset($cademi->data[0]->erro)){
+                //dd($cademi);
+                $import = new CademiImport();
+                $import->username = $user->username;
+                $import->status = "error";
+                $import->msg = $cademi->data[0]->erro;
+                $import->body = json_encode($cademi);
+                $import->save();
+
+            }else{
+                //dd($cademi);
+                $import = new CademiImport();
+                $import->username = $user->username;
+                $import->status = "success";
+                $import->course = $product->course_c;
+                $import->code = $cademi->data[0]->engine_id;
+                $import->msg = "success";
+                $import->body = json_encode($cademi);
+                $import->save();
+            }
+
+            $cademi_user = new CademiController;
+            $cademi_user->get_user($user->id);
+
+              }
+
+              return response("Payment: $payment->id", 200);
             }
             
             

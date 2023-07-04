@@ -13,12 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_certificates', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('name');
-            $table->string('hours');
-            $table->timestamps();
+        Schema::table('eco_products', function (Blueprint $table) {
+            $table->string('type')->after('id');
         });
     }
 
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_certificates');
+        Schema::table('eco_products', function (Blueprint $table) {
+            $table->dropColumn('type');
+        });
     }
 };

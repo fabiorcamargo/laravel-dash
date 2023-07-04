@@ -197,7 +197,8 @@
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg></button> <strong>Atenção:</strong> {!!
-                            \Session::get('erro') !!} </div>
+                            \Session::get('erro') !!}
+                        </div>
 
                         @endif
                         @if (\Session::has('success'))
@@ -209,7 +210,8 @@
                                     <line x1="18" y1="6" x2="6" y2="18"></line>
                                     <line x1="6" y1="6" x2="18" y2="18"></line>
                                 </svg></button> <strong>Atenção:</strong> {!!
-                            \Session::get('success') !!} </div>
+                            \Session::get('success') !!}
+                        </div>
 
                         @endif
 
@@ -257,7 +259,8 @@
                                                     <input type="email" class="email form-control"
                                                         placeholder="Para receber acesso ao portal"
                                                         class="email white col-7 col-md-4 col-lg-7 ml-3 form-control"
-                                                        id="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                                                        id="email" name="email"
+                                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
                                                         onchange="myFn('mail')" required>
                                                     <div class="valid-feedback feedback-pos">
                                                         Email Válido!
@@ -288,7 +291,7 @@
                                                     <div class="form-check form-check-primary form-check-inline">
                                                         <input class="form-check-input  " type="checkbox"
                                                             id="form-check-default" required>
-                                                        <label class="form-check-label" for="form-check-default" >
+                                                        <label class="form-check-label" for="form-check-default">
                                                             Eu concordo com <a href="javascript:void(0);"
                                                                 class="text-primary">Termos e Política de
                                                                 Privacidade</a>

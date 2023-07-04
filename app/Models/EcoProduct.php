@@ -11,6 +11,7 @@ class EcoProduct extends Model
     use HasFactory, SoftDeletes;
     protected $fillable = [
         'id',
+        'type',
         'course_id',
         'name',
         'description',

@@ -196,6 +196,7 @@
 
                                             <label for="create">Data de Liberação:</label>
                                             <p>{{ $user->created_at->format('d-m-Y H:i') }}</p>
+                                            
                                             @if($user->contract_date != null)
                                             <label for="create">Data do Contrato:</label>
                                             <p>{{ $user->contract_date->format('d-m-Y') }}</p>
@@ -397,8 +398,9 @@
                                         <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z">
                                         </path>
                                     </svg></a>--}}
+                                    
                             </div>
-
+                            <label class="pt-2" for=""> Último Acesso Cademi:{{ $ultimo_acesso->format('d-m-Y H:i') }}</label>
                             <div id="toggleAccordion" class="accordion mt-4">
                                 @foreach ($courses as $course)
                                 <div class="card">

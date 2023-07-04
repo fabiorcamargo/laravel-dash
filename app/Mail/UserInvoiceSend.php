@@ -18,11 +18,10 @@ class UserInvoiceSend extends Mailable
      *
      * @return void
      */
-    public function __construct($user, $sub, $invoice)
+    public function __construct($user, $invoice)
     {
         $this->user = $user;
-        $this->subject = $sub;
-        $this->$invoice;
+        $this->invoice = $invoice;
     }
 
     /**
@@ -33,21 +32,35 @@ class UserInvoiceSend extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: $this->subject,
+            subject: "Fatura Profissionaliza EAD",
         );
+    }
+
+    public function build()
+    {
+        return $this->markdown('emails.user.invoice-send')
+                ->with([
+                    'user'=> $this->user,
+                    'invoice' => $this->invoice
+            ]);
+        /*return new Content(
+            markdown: 'emails.user.sign',
+        );*/
     }
 
     /**
      * Get the message content definition.
      *
      * @return \Illuminate\Mail\Mailables\Content
-     */
+     *//*
     public function content()
     {
-        return new Content(
-            markdown: 'emails.user.invoice-send',
+        return $this->markdown('emails.user.sign')
+                ->with('user', $this->user);
+        /*return new Content(
+            markdown: 'emails.user.sign',
         );
-    }
+    }*/
 
     /**
      * Get the attachments for the message.
@@ -56,7 +69,6 @@ class UserInvoiceSend extends Mailable
      */
     public function attachments()
     {
-        return $this->markdown('emails.user.user.invoice')
-                ->with(['user'=> $this->user, 'invoice'=> $this->invoice]);
+        return [];
     }
 }

@@ -13,18 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('eco_sales', function (Blueprint $table) {
+        Schema::create('flow_entries', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('flow_id')->constrained('flows');
             $table->foreignId('user_id')->constrained('users');
-            $table->string('customer_id');
-            $table->string('codesale')->nullable();
+            $table->string('step');
             $table->string('seller')->nullable();
-            $table->string('pay_id')->nullable();
-            $table->string('status')->nullable();
-            $table->float('installmentCount')->nullable();
-            $table->float('installmentValue')->nullable();
+            $table->string('product_id')->nullable();
             $table->json('body')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -35,6 +33,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('eco_sales');
+        Schema::dropIfExists('flow_entries');
     }
 };
+
+

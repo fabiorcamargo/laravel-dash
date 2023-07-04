@@ -43,7 +43,7 @@
 
         .container {
             padding-top: 30%;
-            width: 500px;
+            width: 1100px;
             height: 300px;
         }
 
@@ -53,6 +53,7 @@
             margin-bottom: 30px;
             color: black;
         }
+
         .container h2 {
             
             font-size: 30px;
@@ -64,18 +65,37 @@
             font-size: 24px;
             margin-bottom: 10px;
         }
+
+        .container h3 {
+            font-size: 24px;
+            margin-bottom: -50px;
+        }
     </style>
 </head>
+<body>
+    <page size="A4" layout="landscape"></page>
+</body>
 <body class="one">
     <div class="container">
-        <h1 class="text-center display-1">FÁBIO CAMARGO</h1>
-        <h2 class="text-center display-1 fixed-bottom">AGENTE BANCÁRIO</h2>
+        <h1 class="text-center display-1">{{$cert->getuser()->name}} {{$cert->getuser()->lastname}}</h1>
+        
+        <h2 class="text-center display-1 fixed-bottom">{{$cert->getCertModel()->name}}</h2>
     </div>
 </body>
 <body class="two">
-    <div class="container">
-        <h1 class="text-center display-1">FÁBIO CAMARGO</h1>
-        <h2 class="text-center display-1 fixed-bottom">{{\Carbon\Carbon::now()->timestamp}}</h2>
+    <div class="container" style="padding-top: 10%;">
+        <h1 class="text-center ">CERTIFICADO REGISTRADO <br> </h1>
+        <h2 class="text-center "> CÓDIGO DE REGISTRO: <a href="{{route('cert-check', ['code' => $cert->code])}}">{{$cert->code}}</a><br><br><br>{{$cert->getCertModel()->content}}<br><br><br>CARGA HORÁRIA: {{$cert->getCertModel()->hours}}hs</h2>
+        <h3 class="text-center ">
+            CURSO MINISTRADO E RECONHECIDO POR:<br>
+            PROFISSIONALIZA CURSOS - LTDA<br>
+            CNPJ: 24.104.429/0001-40<br>
+            Avenida Horácio Racanello Filho, 5410,
+            Bairro Novo Centro - CEP 87.020-035
+            MARINGÁ - PR<br>
+            <a href="https://profissionalizaead.com.br">https://profissionalizaead.com.br</a></h3>
     </div>
+        
+
 </body>
 </html>

@@ -47,3 +47,8 @@ Route::any('rd', function (Request $request) {
         Route::get('correct', [ApiWhatsapp::class, 'correct_type_msg'])->name('wp_api.msg_receive'); 
         });
     });
+
+    Route::post('/asaas-status', function(Request $request){
+        $content = json_encode($request->all());
+        Storage::disk('local')->append('asaas.txt', $content);
+    })->name('asaas-status');

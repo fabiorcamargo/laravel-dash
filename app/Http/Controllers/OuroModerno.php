@@ -311,6 +311,9 @@ class OuroModerno extends Controller
 
     public function check_user_token(){
       $user = Auth::user();
+      if(env('APP_DEBUG') == false){
+        return "Debug";
+      }
       if(Carbon::now() > OuroClient::where('user_id', (Auth::user()->id))->value('expiration')){
         $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . OuroClient::where('user_id', (Auth::user()->id))->value('ouro_id');
         $payload = "";

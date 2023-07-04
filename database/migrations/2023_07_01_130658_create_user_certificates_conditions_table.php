@@ -13,14 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('flow_entries', function (Blueprint $table) {
+        Schema::create('user_certificates_conditions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('flow_id')->constrained('flows');
-            $table->string('user_id');
-            $table->string('step');
-            $table->string('seller')->nullable();
-            $table->string('product_id')->nullable();
-            $table->json('body')->nullable();
+            $table->foreignId('user_certificates_models_id')->constrained('user_certificates_models');
+            $table->string('name');
+            $table->string('type');
+            $table->string('percent');
+            $table->json('body');
             $table->timestamps();
         });
     }
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('flow_entries');
+        Schema::dropIfExists('user_certificates_conditions');
     }
 };

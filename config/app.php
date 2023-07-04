@@ -218,6 +218,7 @@ return [
         'Cep' => Canducci\Cep\Facades\Cep::class,
         'Endereco' => Canducci\Cep\Facades\Endereco::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ])->toArray(),
     
 

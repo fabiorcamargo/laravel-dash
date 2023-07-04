@@ -84,7 +84,7 @@ class Flow extends Controller
         //dd(Auth::user()->eco_seller->id);
         $flow = ModelsFlow::find($id);
         if(Auth::user()->role >= 6 ){
-            dd('s');
+            //dd('s');
         $flow_entries = (FlowEntry::with('user')->where('flow_id', $id)->get());    
         }else{
             //dd(Auth::user()->eco_seller);
@@ -96,7 +96,7 @@ class Flow extends Controller
     public function flow_show_all(){
 
         $flow_entries = (FlowEntry::all());    
-        dd($flow_entries);
+        //dd($flow_entries);
         return view('pages.app.flow.show', ['title' => 'Profissionaliza EAD | Entradas do Fluxo ', 'breadcrumb' => 'show flow'], compact('flow', 'flow_entries'));
     }
 

@@ -11,14 +11,17 @@ class EcoSales extends Model
 
     protected $fillable = [
         'id',
+        'product_id',
         'user_id',
         'customer_id',
         'codesale',
         'seller',
         'pay_id',
         'status',
+        'type',
         'installmentCount',
         'installmentValue',
+        'installment',
         'body',
     ];
 

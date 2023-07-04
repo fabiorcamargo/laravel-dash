@@ -7,6 +7,7 @@ use App\Http\Requests\StoreUpdateCommentRequest;
 use App\Models\{
     Cademi,
     CademiImport,
+    CademiListCourse,
     CademiTag,
     User
 };
@@ -273,5 +274,65 @@ class CademiController extends Controller
         $status = "Token de Login Automático atualizado com sucesso!";
         return back()->with('status', __($status));
     }
+    public function req($url, $type, $payload){
+        $curl = curl_init();
+        
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => $url,
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => '',
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 0,
+          CURLOPT_FOLLOWLOCATION => true,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => $type,
+          CURLOPT_POSTFIELDS => $payload,
+          CURLOPT_HTTPHEADER => array(
+            'Authorization: ' . env('CADEMI_TOKEN_API'),
+          ),
+        ));
+        
+        $response = curl_exec($curl);
+        
+        curl_close($curl);
+
+        return $response;
+
+        
+
+        
+    }
+
+    public function get_courses_list(){
+
+        $url = 'https://profissionaliza.cademi.com.br/api/v1/produto';
+        $type = 'GET';
+        $payload = '';
+        $response = $this->req($url, $type, $payload);
+        
+        $courses = json_decode($response);
+        $courses = $courses->data->produto;
+        //dd($courses[0]->id);
+        
+
+        foreach($courses as $course){
+          if(CademiListCourse::where('course_id', $course->id)->first()){
+          }else{
+            $url = 'https://profissionaliza.cademi.com.br/api/v1/produto/'.$course->id;
+            $response = $this->req($url, $type, $payload);
+            $nome_completo = json_decode($response)->data->produto->vitrine->nome;
+
+            CademiListCourse::create([
+              'course_id' => $course->id,
+              'nome' => $course->nome,
+              'ordem' => $course->ordem,
+              'nome_completo' => $nome_completo
+            ]);
+          }
+        }
+        $status = "Lista atualizada com sucesso!";
+        return back()->with('status', __($status));
+        exit();
+      }
 
 }

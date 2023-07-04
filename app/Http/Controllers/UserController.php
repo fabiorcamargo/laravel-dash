@@ -19,6 +19,7 @@ use App\Models\State;
 use App\Models\TemporaryFile;
 use App\Models\User;
 use App\Models\UserMessage;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
@@ -750,7 +751,6 @@ class UserController extends Controller
 
     public function profile($id)
     {
-        
         if((Auth::user()->role) == 1 ){
             //dd("1");
             if(Auth::user()->id != $id){
@@ -760,9 +760,9 @@ class UserController extends Controller
         //dd("ok");
         //dd(UserController::getIp());
         $user = User::find($id);
-
+        
         $cademi = Cademi::where('user_id', $user->id)->first();
-    
+        //dd($cademi);
         $i = 0;
         $n = 0;
         if(!empty($cademi)){
@@ -822,6 +822,7 @@ class UserController extends Controller
             
         $i++;    
     }
+    
     }else{
         $courses[0] = ["row" => "$i", "name" => "Vazio", "perc" => "0%"];
         
@@ -854,11 +855,13 @@ class UserController extends Controller
         $ouro_courses = OuroList::all();
         $ouro_combos = OuroCombo::all();
         $messages = UserMessage::all();
+        $ultimo_acesso = Carbon::parse(isset($profiler['data']['usuario']['ultimo_acesso_em']) ? $profiler['data']['usuario']['ultimo_acesso_em'] : "");
+        //dd($ultimo_acesso);
 
            if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
         } else {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
         }
            
        

@@ -53,7 +53,7 @@
                                 <a href="{{getRouterValue();}}/aluno/my"><x-widgets._w-svg class="pe-1" svg="school"/> Início </a>
                              </li>
                              @if(Auth::user()->role == 1)
-                            <li class="{{ Request::routeIs('aluno.pagamento') ? 'active' : '' }}">
+                            <li class="{{ Request::routeIs('aluno-pagamento') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/aluno/pay/list/{{Auth::user()->id}}"><x-widgets._w-svg class="pe-1" svg="cash-banknote"/> Pagamentos </a>
                             </li>
                             @endif
@@ -137,6 +137,30 @@
                             <li class="{{ Request::routeIs('pay-create') ? 'active' : '' }}">
                                 <a href="/collapsible-menu/app/pay/create"> Criar </a>
                             </li>
+                            {{--<li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/user/reset"> Resetar Senha </a>
+                            </li>--}}
+                        </ul>
+                    </li>
+                    <li class="menu {{ Request::is('*/app/cert/*') ? "active" : "" }}">
+                        <a href="#cert" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/cert/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="">
+                                <x-widgets._w-svg svg="cash-banknote"/> 
+                                <span>Certificados</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/cert/*') ? "show" : "" }}" id="cert" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('cert-list') ? 'active' : '' }}">
+                                <a href="{{route('cert-list')}}"> Modelos </a>
+                            </li>
+                            <li class="{{ Request::routeIs('cert-condition') ? 'active' : '' }}">
+                                <a href="{{route('cert-condition')}}"> Condições </a>
+                            </li>
+                            
+                          
                             {{--<li class="{{ Request::routeIs('user-reset') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/app/user/reset"> Resetar Senha </a>
                             </li>--}}

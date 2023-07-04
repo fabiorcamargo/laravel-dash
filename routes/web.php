@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     ApiController,
     ApiWhatsapp,
     CademiController,
+    CertificateController,
     ChatbotAsset,
     ChatbotController,
     ConversionApiFB,
@@ -30,11 +31,16 @@ use App\Jobs\Mkt_resend_not_active;
 use App\Jobs\UserMg_FailSend;
 use App\Jobs\WhatsappBulkTemplate;
 use App\Mail\SendMailUser;
+use App\Mail\UserInvoiceSend;
 use App\Mail\UserSign;
 use App\Models\Cademi;
+use App\Models\CademiListCourse;
 use App\Models\EcoSeller;
 use App\Models\OuroClient;
 use App\Models\User;
+use App\Models\UserCertificatesCondition;
+use App\Models\UserCertificatesEmit;
+use App\Models\UserCertificatesModel;
 use App\Models\UserMessage;
 use App\Models\UserNotification;
 use App\Models\WhatsappApi;
@@ -46,6 +52,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,16 +76,22 @@ use Illuminate\Support\Facades\Route;
          */
     Route::middleware(['auth'])->group(function () {
 
+
         Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
         Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
         Route::get('/wp/templates/{id}', [ApiWhatsapp::class, 'wp_templates'])->name('wp-templates');
         Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
         //Route::get('/test', [ChatbotAsset::class, 'queue_send']);
-        Route::get('/test_mail', function(){ 
-            Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
+        Route::get('/test_mail', function(){
+            $user = Auth::user();
+            $cobranca = "https://profissionalizaead.com.br";
+            Mail::to('fabio.xina@gmail.com')->send(new UserInvoiceSend($user, $cobranca)); 
+            //Mail::to(Auth::user()->email)->send(new UserSign(Auth::user(), "Profissionaliza EAD - Cadastro Realizado"));
          });//Mail::to("fabio.xina@gmail.com")->send(new SendMailUser(Auth::user())));
          
         Route::get('/usergetaccountable', [UserGetAccountable::class, 'get_accountable'])->name('usergetaccountable');
+
+        
         
        
         
@@ -118,10 +131,10 @@ use Illuminate\Support\Facades\Route;
              * ==============================
              */
             Route::prefix('/aluno/pay/')->group(function () {
-                Route::get('/list/{id}', [OldAsaasController::class, 'list'])->name('aluno.pagamento');
+                Route::get('/list/{id}', [OldAsaasController::class, 'list']);
             });
                     
-                    Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload'])->name('avatar-upload');
+                    Route::post('/avatar-upload',[TemporaryFileController::class, 'AvatarUpload']);
                     Route::delete('/avatar-delete',[TemporaryFileController::class, 'AvatarDelete'])->name('avatar-delete');
                     Route::get('/avatar-correct',[TemporaryFileController::class, 'AvatarCorrect'])->name('avatar-correct');
                     Route::post('/form/code/send', [FormController::class, 'code_verify'])->name('form-code');
@@ -153,7 +166,7 @@ use Illuminate\Support\Facades\Route;
 
                     Route::prefix('app/eco')->group(function () {
                         Route::get('/checkout/{id}/pay/{client}', [EcommerceController::class, 'checkout_client_pay'])->name('eco_checkout_client_pay-blank');
-                        Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end-blank');
+                        Route::post('/checkout/{id}/end/{client}', [EcommerceController::class, 'checkout_pay_end_post'])->name('eco_checkout_end-client');
                         Route::get('/checkout/{id}/status', [EcommerceController::class, 'checkout_end'])->name('eco_checkout_pay_status-blank');
                         Route::get('/checkout_end', function () {
                             return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
@@ -366,6 +379,69 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/create', [OldAsaasController::class, 'cria'])->name('pay-create-post');
                 Route::get('/cliente_existe', [OldAsaasController::class, 'cria_existe'])->name('pay-cliente_existe');
             });
+
+            Route::prefix('/cert')->group(function () {
+                Route::get('/cademi/get_courses', [CademiController::class, 'get_courses_list'])->name('cademi_get_courses');
+                Route::get('/list', function(){
+                    $certificates = UserCertificatesModel::all();
+                    return view('pages.app.cert.list', compact('certificates'));
+                })->name('cert-list');
+
+                Route::get('/condition', function(){
+                    $courses = CademiListCourse::all();
+                    $conditions = UserCertificatesCondition::all();
+                    $cademi_certificates = UserCertificatesModel::where('type', "cademi")->get();
+                    $ouro_certificates = UserCertificatesModel::where('type', "ouro")->get();
+                    return view('pages.app.cert.condition', compact('conditions', 'courses', 'cademi_certificates', 'ouro_certificates'));
+                })->name('cert-condition');
+                Route::post('/condition/create', [CertificateController::class, 'condition_create'])->name('post-condition-create');
+                Route::post('/condition/edit/{id}', [CertificateController::class, 'condition_edit'])->name('post-condition-edit');
+                Route::post('/condition/del/{id}', [CertificateController::class, 'condition_del'])->name('post-condition-del');
+                Route::get('/emit-list', function(){
+                    $certificates = UserCertificatesEmit::all();
+                    $cert_models = UserCertificatesModel::all();
+                    return view('pages.app.cert.emit-list', compact('certificates', 'cert_models'));
+                })->name('cert-emit-list');
+                Route::post('/create', [CertificateController::class, 'create'])->name('post-cert-create');
+
+                Route::post('/cert-del/{id}', function($id){
+                    $cert = UserCertificatesModel::find($id);
+                    $status = $cert->delete();
+                    //dd($status);
+
+                    if($status == "true"){
+                    $msg = "Certificado $cert->name, excluída com sucesso!";
+                    return back()->with('status', $msg);
+                    }else{
+                    $msg = "Certificado $cert->name, não foi possível excluir!";
+                    return back()->withErrors(__($msg));
+                    }
+                    //return view('pages.aluno.msg_fail_list', compact('failed'));
+                }
+                )->name('cert-del');
+                
+                Route::post('/cert-del-emit/{id}', function($id){
+                    $cert = UserCertificatesEmit::find($id);
+                    $status = $cert->delete();
+                    //dd($status);
+
+                    if($status == "true"){
+                    $msg = "Certificado $cert->code, excluída com sucesso!";
+                    return back()->with('status', $msg);
+                    }else{
+                    $msg = "Certificado $cert->code, não foi possível excluir!";
+                    return back()->withErrors(__($msg));
+                    }
+                    //return view('pages.aluno.msg_fail_list', compact('failed'));
+                }
+                )->name('cert-del-emit');
+
+                Route::post('/edit/{id}', [CertificateController::class, 'edit'])->name('post-cert-edit');
+                Route::get('/emit/view/{code}', [CertificateController::class, 'view'])->name('cert-view');
+                Route::get('/emit/pdf/{code}', [CertificateController::class, 'pdf'])->name('cert-pdf');
+                    
+            });
+
 
             Route::prefix('/mkt')->group(function () {
                 Route::get('/token', [MktController::class, 'getToken']
@@ -1472,7 +1548,7 @@ Route::prefix('/app/eco')->group(function () {
     Route::get('/shop', [EcommerceController::class, 'product_show'])->name('eco-shop');
     Route::get('/product/{id}', [EcommerceController::class, 'product_show'])->name('eco-show');
     Route::get('/checkout/{id}', [EcommerceController::class, 'checkout_show'])->name('eco_checkout_show-blank.');
-    Route::post('/checkout/{id}/client', [EcommerceController::class, 'checkout_client_post'])->name('eco_checkout_end-blank');
+    Route::post('/checkout/{id}/client', [EcommerceController::class, 'eco_login_create'])->name('eco_login_create');
     
     Route::get('/shop', [EcommerceController::class, 'shop'])->name('eco-shop');
     Route::get('/cademi/tag', [CademiController::class, 'cademi_tag'])->name('eco-cademi_tag');
@@ -1519,13 +1595,13 @@ Route::get('/test/pdf', function (){
         'dpi' => '120'
     ]);
     //return $pdf->download('invoice.pdf');
-    return $pdf->stream('invoice.pdf');
+    return $pdf->stream('pdf.lista');
     return view('pdf.lista');
       
-});
+})->name('resume-show');
 
 Route::get('/resume/pdf', function (){
-    /*$pdf = Pdf::loadView('pdf.resume')
+    $pdf = Pdf::loadView('pdf.resume')
     ->setPaper('a4', 'portrait')
     ->setOptions([
         //'tempDir' => public_path(),
@@ -1534,11 +1610,13 @@ Route::get('/resume/pdf', function (){
         'dpi' => '120'
     ]);
     //return $pdf->download('invoice.pdf');
-    return $pdf->stream('pdf.resume');*/
-    return view('pdf.resume');
+    return view('invoice.pdf');
+    //return $pdf->stream('pdf.resume');
+    //return view('pdf.resume');
       
 });
 
+Route::get('/cert/{code}', [CertificateController::class, 'pdf'])->name('cert-check');
 
 Route::get('/', function () {
     return Redirect::to(env('APP_HOME_URL'));
