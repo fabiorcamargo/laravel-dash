@@ -250,7 +250,7 @@
                     function Temporizador(initiate) {
                 if (initiate !== true) {
                     //alert("Olá mundo");
-                    response = httpGet('http://localhost:8991/api/pay/status/{{$pay_id}}');
+                    response = httpGet('/api/pay/status/{{$pay_id}}');
                     if(response === "RECEIVED" || response === "CONFIRMED"){
                             var pending = document.getElementById('pending');
                         if(pending) { pending.hidden = true };
@@ -260,7 +260,7 @@
                         if(received) { received.hidden = false };
                         console.log('passou');
                     }else{
-                        console.log(httpGet('http://localhost:8991/api/pay/status/{{$pay_id}}')+"não recebido");
+                        console.log(httpGet('/api/pay/status/{{$pay_id}}')+"não recebido");
                     }
                 }
                 setTimeout(Temporizador, 2000);
