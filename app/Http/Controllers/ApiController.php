@@ -288,6 +288,7 @@ class ApiController extends Controller
             //$pay_id = $request->payment['id'];
             
             if($request->event == "PAYMENT_RECEIVED" || $request->event == "PAYMENT_CONFIRMED"){
+              if(EcoSales::where('pay_id', $request->payment['id'])->first()){
               $payment = EcoSales::where('pay_id', $request->payment['id'])->first();
               $payment->status = $request->payment['status'];
               $payment->save();
@@ -349,6 +350,8 @@ class ApiController extends Controller
 
               return response("Payment: $payment->id", 200);
             }
+            return response("Cobranca não localizada", 200);
+          }
             
             
           }
