@@ -8,7 +8,6 @@
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
         <link rel="stylesheet" href="{{asset('plugins/apex/apexcharts.css')}}">
-        <script src="https://core.cademi.com.br/assets/js/remote.js"></script>
 
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/widgets/modules-widgets.scss'])
