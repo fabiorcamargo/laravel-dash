@@ -759,7 +759,13 @@ class UserController extends Controller
         }
         //dd("ok");
         //dd(UserController::getIp());
+        
+        if(!(User::find($id))){
+            $msg = "Não foi possível localiza usuário.";
+            return redirect('/modern-dark-menu/aluno/my')->withErrors(__($msg));
+        }
         $user = User::find($id);
+        
         
         $cademi = Cademi::where('user_id', $user->id)->first();
         //dd($cademi);
