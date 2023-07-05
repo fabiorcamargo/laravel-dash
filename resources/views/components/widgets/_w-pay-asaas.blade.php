@@ -10,7 +10,7 @@
 
 
 <div class="row widget-statistic">
-    <a href="{{getRouterValue();}}/aluno/pay/list/{{Auth()->user()->id}}" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <a id="pay_carrega" href="{{getRouterValue();}}/aluno/pay/list/{{Auth()->user()->id}}" onclick="aguarde()" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
         <div class="widget widget-one_hybrid widget-followers">
             <div class="widget-heading">
                 <div class="w-title">
@@ -25,6 +25,22 @@
             </div>
         </div>
     </a>
+    <div id="pay_aguarde" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+        <div class="widget widget-one_hybrid widget-followers">
+            <div class="widget-heading">
+                <div class="w-title">
+                    <div class="w-icon">
+                        <x-widgets._w-svg svg="cash"/> 
+                    </div>
+                    <div class="">
+                            
+                        <p class="w-value"><div class="spinner-border text-white me-2 align-self-center loader-sm "></div> Buscando...</p>
+                        <h5 class="">Aguarde o carregamento</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     {{--<div class="col-xl-4 col-lg-4 col-md-4 col-sm-4 col-12 layout-spacing">
         <div class="widget widget-one_hybrid widget-referral">
             <div class="widget-heading">
@@ -66,3 +82,19 @@
         </div>
     </div>--}}
 </div>
+<script>
+    function mostrar(){
+                    $('#pay_aguarde').show();
+                    $("#pay_carrega").hide();
+                }
+                $(document).ready(function() {
+                    $("#pay_aguarde").hide();
+                $('#pay_carrega').click(function(event) {
+                    // Sua função a ser executada quando o formulário for enviado
+                    $('#pay_carrega').hide();
+                    $("#pay_aguarde").show();
+                    
+                });
+                });
+
+</script>

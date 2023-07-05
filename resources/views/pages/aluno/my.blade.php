@@ -27,6 +27,8 @@
 
         @vite(['resources/scss/light/assets/elements/infobox.scss', 'resources/scss/dark/assets/elements/infobox.scss'])
 
+        @vite(['resources/scss/light/plugins/loaders/custom-loader.scss', 'resources/scss/dark/plugins/loaders/custom-loader.scss'])
+
         <!-- Basic stylesheet -->
         <link rel="stylesheet" href={{asset("plugins/owl-carousel/owl.carousel.css")}}>
         <!-- Default Theme -->
@@ -209,9 +211,7 @@
     </div>
 
     
-        
     
-   
     
     @if (str_contains(url()->previous(), 'form/end'))   
     <p> {{ Cookie::get('fbid1') }} </p>

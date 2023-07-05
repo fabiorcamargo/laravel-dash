@@ -11,10 +11,28 @@
 
             @vite(['resources/scss/light/assets/elements/alert.scss'])
             @vite(['resources/scss/dark/assets/elements/alert.scss'])
+            @vite(['resources/scss/light/plugins/loaders/custom-loader.scss', 'resources/scss/dark/plugins/loaders/custom-loader.scss'])
 
-
-
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+            <script>
+                function mostrar(){
+                    $('#continuar').show();
+                    $(".enviando").hide();
+                }
+                $(document).ready(function() {
+                    $(".enviando").hide();
+                $('#form').submit(function(event) {
+                    // Sua função a ser executada quando o formulário for enviado
+                    $('#continuar').hide();
+                    $(".enviando").show();
+                    
+                });
+                });
+
+            </script>
+
             <script>
                 function limpa_formulário_cep() {
                     //Limpa valores do formulário de cep.
@@ -49,6 +67,7 @@
                 }
             }
                 
+            
             function pesquisacep(valor) {
         
                 //Nova variável "cep" somente com dígitos.
@@ -352,6 +371,7 @@
                     <div class="row">
                         <form action="{{ getRouterValue(); }}/app/eco/checkout/{{ $product->id }}/client" method="post"
                             enctype="multipart/form-data" name="form" id="form" class="needs-validation m-0 p-0"
+                            onsubmit="enviando()"
                             novalidate>
                             @csrf
                             <div
@@ -376,7 +396,7 @@
                                                     <label class="form-label">Nome</label>
                                                     <input type="text" class="form-control add-billing-address-input"
                                                         placeholder="Nome completo" name="nome" id="nome"
-                                                        autocomplete="on" required>
+                                                        autocomplete="on" onblur="mostrar()" required>
                                                     <div class="valid-feedback feedback-pos">
                                                         Celular válido!
                                                     </div>
@@ -393,7 +413,9 @@
                                                         class="email white col-7 col-md-4 col-lg-7 ml-3 form-control"
                                                         id="email" name="email"
                                                         pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                                                        onchange="myFn('mail')" required>
+                                                        onchange="myFn('mail')" 
+                                                        onblur="mostrar()"
+                                                        required>
                                                     <div class="valid-feedback feedback-pos">
                                                         Email Válido!
                                                     </div>
@@ -407,7 +429,9 @@
                                                     <label class="form-label">Telefone</label>
                                                     <input type="text" class="ph-number form-control"
                                                         placeholder="Digite apenas os números" name="cellphone"
-                                                        id="cellphone" autocomplete="on" required>
+                                                        id="cellphone" autocomplete="on"
+                                                        onblur="mostrar()"
+                                                        required>
                                                     <div class="valid-feedback feedback-pos">
                                                         Celular válido!
                                                     </div>
@@ -422,7 +446,9 @@
                                                 <div class="mb-3">
                                                     <div class="form-check form-check-primary form-check-inline">
                                                         <input class="form-check-input  " type="checkbox"
-                                                            id="form-check-default" required>
+                                                            id="form-check-default" 
+                                                            onchange="mostrar()"
+                                                            required>
                                                         <label class="form-check-label" for="form-check-default">
                                                             Eu concordo com <a href="javascript:void(0);"
                                                                 class="text-primary">Termos e Política de
@@ -438,6 +464,9 @@
                                                     <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}"
                                                         readonly hidden>
                                                     @endforeach
+                                                    <button id="enviando" class="btn btn-secondary w-100 enviando" disabled>
+                                                        <div class="spinner-border text-white me-2 align-self-center loader-sm "></div> Enviando
+                                                    </button>
                                                     <button id="continuar" type="submit" class="btn btn-secondary w-100">Continuar</button>
                                                 </div>
                                             </div>
@@ -483,7 +512,7 @@
 
                                             <div class="col-12">
                                                 <div class="text-center">
-                                                    <p class="mb-0">Já possui uma conta? <a href="javascript:void(0);"
+                                                    <p class="mb-0">Já possui uma conta? <a href="/login"
                                                             class="text-warning">Clique aqui para entrar</a></p>
                                                 </div>
                                             </div>
@@ -571,19 +600,7 @@
                     <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
                    
 
-                    <script>
-                        $(document).ready(function() {
-                        $('#form').submit(function(event) {
-                            // Sua função a ser executada quando o formulário for enviado
-                            loading();
-                        });
-                        });
-                        function loading(){
-                        $("div.spanner").addClass("show");
-                        $("#overlay").modal("show");
-                        }
-
-                    </script>
+                    
 
                     <script>
                         window.addEventListener('load', function() {

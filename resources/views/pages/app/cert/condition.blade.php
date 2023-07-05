@@ -80,7 +80,7 @@
                                                 required>
                                         </div>
                                         <div class="col-xxl-12 col-md-12 mb-4">
-                                            <p for="combo_name">Carga horária</p>
+                                            <p for="combo_name">Conteúdo</p>
                                             <div class="col-sm-12">
                                                 <textarea class="form-control" name="conteudo" id="conteudo" rows="3"
                                                     required></textarea>

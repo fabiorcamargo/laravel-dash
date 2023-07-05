@@ -46,7 +46,9 @@ class OldAsaasController extends Controller
 //dd($dec);
 
     $body = new stdClass;
+    if(isset($dec->data[0]->name)){
     $body->name = "<p>Nome: ". $dec->data[0]->name ."</p>";
+    }
     if(isset($dec->data[0]->id)){
     $cobranca = new OldAsaasController;
     $cobranca = $cobranca->lista_cobranca($dec->data[0]->id, $token);
