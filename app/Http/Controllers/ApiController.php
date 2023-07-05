@@ -300,6 +300,14 @@ class ApiController extends Controller
               $flow->step = 4;
               $flow->save();
 
+              if($flow->type == "CREDIT_CARD"){
+                $product_id = $product->course_c;
+              }else if($flow->type == "PIX"){
+                $product_id = $product->course_c;
+              }else{
+                $product_id = $product->course_b;
+              }
+             
               if($product->type == "Cademi"){
                 $payload = [
                   "token" => env('CADEMI_TOKEN_GATEWAY'),
@@ -307,8 +315,8 @@ class ApiController extends Controller
                   "status"=> "aprovado",
                   "recorrencia_id" => "COD-INTERNET-$product->course_id-$user->username",
                   "recorrencia_status" => "ativo",
-                  "produto_id"=> $product->course_c,
-                  "produto_nome"=> $product->course_c,
+                  "produto_id"=> $product_id,
+                  "produto_nome"=> $product_id,
                   "cliente_email"=> $user->email2,
                   "cliente_nome"=> $user->name . " " . $user->lastname,
                   //"cliente_doc"=> $user->document,
