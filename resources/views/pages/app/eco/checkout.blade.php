@@ -7,8 +7,6 @@
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <x-slot:headerFiles>
             <!--  BEGIN CUSTOM STYLE FILE  -->
-            @vite(['resources/scss/light/assets/apps/invoice-preview.scss'])
-            @vite(['resources/scss/dark/assets/apps/invoice-preview.scss'])
 
 
             @vite(['resources/scss/light/assets/elements/alert.scss'])
@@ -133,7 +131,7 @@
                     text-align: center;
                 }
 
-                #overlay {
+                #overlay_cel {
                     position: fixed;
                     /* Sit on top of the page content */
                     display: none;
@@ -168,6 +166,130 @@
                 }
             </style>
 
+            <style>
+                body {
+                    font-family: Arial, Sans;
+                    margin: 0;
+                }
+
+                .wrapper {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 300px;
+                    text-align: center;
+                    transform: translateX(-50%);
+                }
+
+                .spanner {
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    background: #2a2a2a55;
+                    width: 100%;
+                    display: block;
+                    text-align: center;
+                    height: 300px;
+                    color: #FFF;
+                    transform: translateY(-50%);
+                    z-index: 1000;
+                    visibility: hidden;
+                }
+
+                .overlay {
+                    position: fixed;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0, 0, 0, 0.5);
+                    visibility: hidden;
+                }
+
+                .loader,
+                .loader:before,
+                .loader:after {
+                    border-radius: 50%;
+                    width: 2.5em;
+                    height: 2.5em;
+                    -webkit-animation-fill-mode: both;
+                    animation-fill-mode: both;
+                    -webkit-animation: load7 1.8s infinite ease-in-out;
+                    animation: load7 1.8s infinite ease-in-out;
+                }
+
+                .loader {
+                    color: #ffffff;
+                    font-size: 10px;
+                    margin: 80px auto;
+                    position: relative;
+                    text-indent: -9999em;
+                    -webkit-transform: translateZ(0);
+                    -ms-transform: translateZ(0);
+                    transform: translateZ(0);
+                    -webkit-animation-delay: -0.16s;
+                    animation-delay: -0.16s;
+                }
+
+                .loader:before,
+                .loader:after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                }
+
+                .loader:before {
+                    left: -3.5em;
+                    -webkit-animation-delay: -0.32s;
+                    animation-delay: -0.32s;
+                }
+
+                .loader:after {
+                    left: 3.5em;
+                }
+
+                @-webkit-keyframes load7 {
+
+                    0%,
+                    80%,
+                    100% {
+                        box-shadow: 0 2.5em 0 -1.3em;
+                    }
+
+                    40% {
+                        box-shadow: 0 2.5em 0 0;
+                    }
+                }
+
+                @keyframes load7 {
+
+                    0%,
+                    80%,
+                    100% {
+                        box-shadow: 0 2.5em 0 -1.3em;
+                    }
+
+                    40% {
+                        box-shadow: 0 2.5em 0 0;
+                    }
+                }
+
+                .show {
+                    visibility: visible;
+                }
+
+                .spanner,
+                .overlay {
+                    opacity: 0;
+                    -webkit-transition: all 0.3s;
+                    -moz-transition: all 0.3s;
+                    transition: all 0.3s;
+                }
+
+                .spanner.show,
+                .overlay.show {
+                    opacity: 1
+                }
+            </style>
+
             <!--  END CUSTOM STYLE FILE  -->
             </x-slot>
             <!-- END GLOBAL MANDATORY STYLES -->
@@ -183,6 +305,16 @@
             @else
             @php $cupom_discount = 1 - $product->percent @endphp
             @endif
+
+            <div class="modal fade" id="overlay" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="spanner">
+                        <div class="loader"></div>
+                        <p class="text-white">Aguarde</p>
+                    </div>
+                </div>
+            </div>
 
             <div class="auth-container d-flex">
 
@@ -306,7 +438,7 @@
                                                     <input type="text" id="{{$key}}" name="{{$key}}" value="{{$value}}"
                                                         readonly hidden>
                                                     @endforeach
-                                                    <button class="btn btn-secondary w-100">Continuar</button>
+                                                    <button id="continuar" type="submit" class="btn btn-secondary w-100">Continuar</button>
                                                 </div>
                                             </div>
 
@@ -380,7 +512,7 @@
                         request()->input('t'))->first()->discount}}</h4>
                 </span>
             </div>
-            <div id="overlay">
+            <div id="overlay_cel">
                 <div id="text" class="col-xxl-6 col-xl-8 col-lg-10 col-md-12 col-12">
                     <div class="card style-4 mx-4 mt-5">
                         <div class="card-body pt-3">
@@ -434,20 +566,23 @@
 
                 <!--  BEGIN CUSTOM SCRIPTS FILE  -->
                 <x-slot:footerFiles>
-                    <script src="{{asset('node_modules/card/lib/card.js')}}"></script>
-                    @vite(['resources/assets/js/apps/invoice-preview.js'])
-
                     <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-
-
                     <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
                     <script src="{{asset('plugins/input-mask/input-mask2.js')}}"></script>
-                    <script src="{{asset('plugins/card/dist/card.js')}}"></script>
+                   
+
                     <script>
-                        var c = new Card({
-                form: document.querySelector('#form'),
-                container: '.card-wrapper'
-            });
+                        $(document).ready(function() {
+                        $('#form').submit(function(event) {
+                            // Sua função a ser executada quando o formulário for enviado
+                            loading();
+                        });
+                        });
+                        function loading(){
+                        $("div.spanner").addClass("show");
+                        $("#overlay").modal("show");
+                        }
+
                     </script>
 
                     <script>
@@ -516,7 +651,7 @@
         if (distance < 0) {
             clearInterval(x);
             document.getElementById("demo").innerHTML = "EXPIRADO";
-            document.getElementById("button_finalizar").hidden = true;
+            
             on();
         }
         }, 1000);
@@ -526,11 +661,11 @@
 
                     <script>
                         function on() {
-            document.getElementById("overlay").style.display = "block";
+            document.getElementById("overlay_cel").style.display = "block";
             }
             
             function off() {
-            document.getElementById("overlay").style.display = "none";
+            document.getElementById("overlay_cel").style.display = "none";
             }
                     </script>
 

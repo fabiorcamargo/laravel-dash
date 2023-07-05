@@ -310,6 +310,9 @@ class OuroModerno extends Controller
     }
 
     public function check_user_token(){
+
+      $this->check_token();
+      
       $user = Auth::user();
       if(env('APP_DEBUG') == false){
         return "Debug";
