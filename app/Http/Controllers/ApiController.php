@@ -356,7 +356,7 @@ class ApiController extends Controller
 
               }
 
-              return response("Payment: $payment->id", 200);
+              return response("Payment: $payment->id | Cademi: " . json_encode($cademi), 200);
             }
             return response("Cobranca não localizada", 200);
           }
