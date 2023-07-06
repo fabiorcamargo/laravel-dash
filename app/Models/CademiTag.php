@@ -12,5 +12,7 @@ class CademiTag extends Model
     protected $fillable = [
         'tag_id',
         'name',
+        'img',
+        'title'
     ];
 }

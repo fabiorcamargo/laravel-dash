@@ -167,6 +167,22 @@
                         </ul>
                     </li>
                     @endif
+                    <li class="menu {{ Request::is('*/app/cademi/*') ? "active" : "" }}">
+                        <a href="#cademi" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/cademi/*') ? "true" : "false" }}" class="dropdown-toggle">
+                            <div class="">
+                                <img src="{{Vite::asset('resources/images/cademi.svg')}}" class="" style="width: 20px;" alt="logo">
+                                <span>Cademi</span>
+                            </div>
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </div>
+                        </a>
+                        <ul class="collapse submenu list-unstyled {{ Request::is('*/app/ouro/*') ? "show" : "" }}" id="cademi" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('cademi-list') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/app/cademi/list"> Lista </a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="menu {{ Request::is('*/app/ouro/*') ? "active" : "" }}">
                         <a href="#ouro" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/ouro/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">

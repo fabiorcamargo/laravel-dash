@@ -7,6 +7,7 @@ use App\Models\Avatar;
 use App\Models\Cademi;
 use App\Models\CademiCourse;
 use App\Models\CademiImport;
+use App\Models\CademiTag;
 use App\Models\ChatbotGroup;
 use App\Models\City;
 use App\Models\EcoSallerType;
@@ -27,9 +28,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
-
-
-
+use Nette\Utils\Arrays;
+use PhpParser\Node\Expr\Cast\Object_;
+use stdClass;
 
 class UserController extends Controller
 {
@@ -550,6 +551,7 @@ class UserController extends Controller
 
     public function my(){
 
+        //$cards = new stdClass;
         $data = $this->avatar->where('user_id', Auth::user()->id)->first();
         if ( $data != null ){
             $avatar =  $data->folder . "/" . $data->file;
@@ -557,19 +559,48 @@ class UserController extends Controller
             $avatar = "/default.jpeg";
         }
 
-        $card = "resources/images/em-breve.jpg";
+        $cards[0] = array(
+            'img' => "product/cademi/em-breve.jpg",
+            'title' => "Em Breve"
+            );
+        //$cards[0]->img = "resources/images/em-breve.jpg";
+        //$cards[0]->title = "Em Breve";
 
         if(Auth::user()->first == 3){
-            $card = "resources/images/Curso Bloqueado.jpg";
+            $cards[0] = array(
+            'img' => "resources/images/Curso Bloqueado.jpg",
+            'title' => "Seu curso está bloqueado"
+            );
         }else{
 
             if (Cademi::where('user_id', Auth::user()->id)->first()){
             if((Auth::user()->courses != "")){
-                $card = "resources/images/Curso Liberado.jpg";
+                $courses = explode(",", Auth::user()->courses);
+                
+                $i = 0;
+                foreach($courses as $course){
+                    if(CademiTag::where('name', $course)->first()){
+                        $cards[$i] = array(
+                        "id" => CademiTag::where('name', $course)->first()->tag_id,
+                        'tag' => CademiTag::where('name', $course)->first()->name,
+                        'img' => CademiTag::where('name', $course)->first()->img == null ? "product/cademi/Curso Liberado.jpg" : CademiTag::where('name', $course)->first()->img,
+                        'title' => CademiTag::where('name', $course)->first()->title == null ? "Seu curso está liberado" : CademiTag::where('name', $course)->first()->title
+                        );
+                    }else{
+                        $cards[$i] = array(
+                            'id' => ""
+                        );
+                    }
+                    $i++;
+                }
+                
             }
             
             }else{
-                $card = "resources/images/em-breve.jpg";
+                $cards[0] = array(
+                    'img' => "product/cademi/em-breve.jpg",
+                    'title' => "Em Breve"
+                    );
             }
         }
         if ( $data != null ){
@@ -614,23 +645,23 @@ class UserController extends Controller
         if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2){
             $card = "resources/images/GRATUITO-AUX.jpg";
             if($ouro_status == "false"){
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card])->withErrors(__($msg));
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'))->withErrors(__($msg));
             }else{
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'));
             }
             
         }else{  
             $ouro = "resources/images/Curso Liberado.jpg";
             if($ouro_status == "false"){
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card, 'ouro' => $ouro])->withErrors(__($msg));    
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'ouro' => $ouro], compact('cards'))->withErrors(__($msg));    
             }else{
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card, 'ouro' => $ouro]);    
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'ouro' => $ouro], compact('cards'));    
             }
         }
         if($ouro_status == "false"){
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card])->withErrors(__($msg));
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'))->withErrors(__($msg));
         }else{
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'card' => $card]);
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'));
         }
 
     }

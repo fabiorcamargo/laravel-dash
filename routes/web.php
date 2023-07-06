@@ -4,6 +4,7 @@ use App\Http\Controllers\{
     ApiController,
     ApiWhatsapp,
     CademiController,
+    CademiListController,
     CertificateController,
     ChatbotAsset,
     ChatbotController,
@@ -341,8 +342,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::post('/ouro/combo/create', [OuroModerno::class, 'combo_create'])->name('user-ouro-combo-create');
 
                 Route::get('/fail_list', function(){
-                    $msg = new UserMg_FailSend;
-                    dispatch($msg);
+                    //$msg = new UserMg_FailSend;
+                    //dispatch($msg);
                     $failed = (UserMessage::where('status', 'not like', 201)->get());
 
                     return view('pages.aluno.msg_fail_list', compact('failed'));
@@ -476,6 +477,17 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                 Route::get('/get/courses', [OuroModerno::class, 'get_courses_list'])->name('user-ouro-get-courses');
                 Route::get('/courses/correct-img', [OuroModerno::class, 'correct_img_course'])->name('user-ouro-courses-correct-img');
                 
+            });
+
+            Route::prefix('/cademi')->group(function () {
+                Route::get('/list', [CademiListController::class, 'list'])->name('cademi-list');
+                Route::any('/search', [OuroModerno::class, 'search'])->name('cademi-search');
+                Route::get('/show', [OuroModerno::class, 'show_list_courses'])->name('cademi-show');
+                Route::post('/create_name', [CademiListController::class, 'create_name'])->name('cademi-create-name');
+                Route::post('/img/up/{id}', [CademiListController::class, 'img_up'])->name('cademi-img-up');
+                Route::delete('/img/rm/{id}', [CademiListController::class, 'img_rm'])->name('cademi-img-rm');
+                Route::get('/get/courses', [CademiListController::class, 'get_courses_list'])->name('user-cademi-get-courses');
+                Route::get('/courses/correct-img', [OuroModerno::class, 'correct_img_course'])->name('user-cademi-courses-correct-img');
             });
 
             Route::prefix('/group')->group(function () {

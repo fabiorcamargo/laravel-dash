@@ -7,7 +7,9 @@
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <x-slot:headerFiles>
         <!--  BEGIN CUSTOM STYLE FILE  -->
-        <link rel="stylesheet" href="{{asset('plugins/apex/apexcharts.css')}}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+                integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js"></script>
 
         @vite(['resources/scss/light/assets/components/list-group.scss'])
         @vite(['resources/scss/light/assets/widgets/modules-widgets.scss'])
@@ -20,11 +22,6 @@
         @vite(['resources/scss/light/assets/elements/alert.scss'])
         @vite(['resources/scss/dark/assets/elements/alert.scss'])
 
-        @vite(['resources/scss/light/assets/authentication/auth-boxed.scss'])
-        @vite(['resources/scss/dark/assets/authentication/auth-boxed.scss'])
-        
-
-        @vite(['resources/scss/light/assets/elements/infobox.scss', 'resources/scss/dark/assets/elements/infobox.scss'])
 
         @vite(['resources/scss/light/plugins/loaders/custom-loader.scss', 'resources/scss/dark/plugins/loaders/custom-loader.scss'])
 
@@ -63,85 +60,7 @@
             
         </div>
 
-        @if(Auth::user()->active == 2)
-
-        <div id="CodeModal" class="modal animated fadeInDown" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="container mx-auto align-self-center">
-                        <form action="{{ getRouterValue(); }}/form/code/send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
-                            @csrf
-                                <div class="card mt-3 mb-3">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <h5>Para prosseguir com a liberação do seu curso insira as informações abaixo:</h5>
-                                                @if(Auth::user()->document == 99999999999)
-                                                    <p>Insira um CPF válido</p>
-                                                    <div class="input-group mb-3">
-                                                        <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Apenas os números" aria-label="Inserir CPF" aria-describedby="button-addon2" required>
-                                                    </div>
-                                                @endif
-                                                <p>Insira o código recebido para ativar o seu curso.</p>
-                                            </div>
-                                            <div class="col-sm-2 col-3 ms-auto">
-                                                <div class="mb-3">
-                                                    <input type="text" id="1" name="1" class="form-control opt-input">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2 col-3">
-                                                <div class="mb-3">
-                                                    <input type="email" id="2" name="2" class="form-control opt-input">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2 col-3">
-                                                <div class="mb-3">
-                                                    <input type="text" id="3" name="3" class="form-control opt-input">
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-2 col-3 me-auto">
-                                                <div class="mb-3">
-                                                    <input type="text" id="4" name="4" class="form-control opt-input">
-                                                </div>
-                                            </div>
-                                            
-                                            <div class="col-12 mt-4">
-                                                <div class="mb-4">
-                                                    <button type="send" class="btn btn-secondary w-100">ENVIAR</button>
-                                                </div>
-                                            </div> 
-                                        </div>
-                                    </div>
-                                </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-      
-            <div class="row">
-                
-                <div class="info-box-3">
-                   
-                        <div class="info-box-3-icon">
-                        <x-widgets._w-svg svg="qrcode-off"/>    
-                        </div>
-                        
-                        <div class="info-box-3-content-wrapper">
-                            <div class="mb-3"><h4>Código de Liberação Pendente</h4></div>
-                            <div class="info-box-3-content">O Código de liberação será fornecido pessoalmente por um consultor credenciado do Projeto. Você receberá uma mensagem informando o endereço, dia e horário para comparecer.<br><br>
-                                O prazo médio é de 5 dias úteis.<br><br>
-                            
-                            <a data-bs-toggle="modal" data-bs-target="#CodeModal"  class="btn btn-primary w-100" data-toggle="tooltip" data-placement="top" title="Bloquear"> Inserir Código </a>
-                            </div>
-                        </div>
-                    
-                </div>
-            </div>
-     
-        @endif
+        
 {{--}}
         @if(App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto'))
             @isset($ouro)
@@ -162,6 +81,7 @@
             </div>
         </div>
         @endif --}}
+        
         @if(Auth::user()->active == 1)
         <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
             <x-widgets._w-pay-asaas title="Pagamentos" chart-id="pay-asaas"/>
@@ -173,16 +93,19 @@
 
             @if(!(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto')) /*|| !(Auth::user()->client_ouro()->first()) && !(Auth::user()->client_ouro()->first()->matricula_ouro()->get())*/)
                 <div class="me-2">
-                    <x-widgets._w-card-cademi title="Acesse seu curso" card="resources/images/em-breve.jpg"/>
+                    <x-widgets._w-card-cademi title="Em Breve" card="product/cademi/em-breve.jpg"/>
                 </div>
             @endif
             @if(Auth::user()->first == 3 || Auth::user()->first == 5)
                 <x-widgets._w-card-bloqueado title="Cursos Premium" card="{{Vite::asset('resources/images/Curso_Bloqueado.jpg')}}"/>
             @else
                 @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') )
-                    <div class="me-2">
-                        <x-widgets._w-card-cademi title="Acesse seu curso" card={{$card}}/>
-                    </div>
+                @foreach ($cards as $card)
+                <div class="me-2">
+                    <x-widgets._w-card-cademi title="{{$card['title']}}" card="{{$card['img']}}"/>
+                </div>
+                @endforeach
+                
                 @endif
             @endif
             
@@ -222,8 +145,6 @@
         @vite(['resources/assets/js/authentication/2-Step-Verification.js'])
         {{-- <script src="{{asset('plugins/apex/custom-apexcharts.js')}}"></script> --}}
         @vite(['resources/assets/js/widgets/modules-widgets.js'])
-        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
-        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
 
         <script>
            $(document).ready(function() {

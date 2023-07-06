@@ -1,0 +1,79 @@
+@if(Auth::user()->active == 2)
+
+        <div id="CodeModal" class="modal animated fadeInDown" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="container mx-auto align-self-center">
+                        <form action="{{ getRouterValue(); }}/form/code/send"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
+                            @csrf
+                                <div class="card mt-3 mb-3">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12 mb-3">
+                                                <h5>Para prosseguir com a liberação do seu curso insira as informações abaixo:</h5>
+                                                @if(Auth::user()->document == 99999999999)
+                                                    <p>Insira um CPF válido</p>
+                                                    <div class="input-group mb-3">
+                                                        <input type="text" class="form-control cpf-number" name="cpf" id="cpf" placeholder="Apenas os números" aria-label="Inserir CPF" aria-describedby="button-addon2" required>
+                                                    </div>
+                                                @endif
+                                                <p>Insira o código recebido para ativar o seu curso.</p>
+                                            </div>
+                                            <div class="col-sm-2 col-3 ms-auto">
+                                                <div class="mb-3">
+                                                    <input type="text" id="1" name="1" class="form-control opt-input">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-3">
+                                                <div class="mb-3">
+                                                    <input type="email" id="2" name="2" class="form-control opt-input">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-3">
+                                                <div class="mb-3">
+                                                    <input type="text" id="3" name="3" class="form-control opt-input">
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 col-3 me-auto">
+                                                <div class="mb-3">
+                                                    <input type="text" id="4" name="4" class="form-control opt-input">
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-12 mt-4">
+                                                <div class="mb-4">
+                                                    <button type="send" class="btn btn-secondary w-100">ENVIAR</button>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+      
+            <div class="row">
+                
+                <div class="info-box-3">
+                   
+                        <div class="info-box-3-icon">
+                        <x-widgets._w-svg svg="qrcode-off"/>    
+                        </div>
+                        
+                        <div class="info-box-3-content-wrapper">
+                            <div class="mb-3"><h4>Código de Liberação Pendente</h4></div>
+                            <div class="info-box-3-content">O Código de liberação será fornecido pessoalmente por um consultor credenciado do Projeto. Você receberá uma mensagem informando o endereço, dia e horário para comparecer.<br><br>
+                                O prazo médio é de 5 dias úteis.<br><br>
+                            
+                            <a data-bs-toggle="modal" data-bs-target="#CodeModal"  class="btn btn-primary w-100" data-toggle="tooltip" data-placement="top" title="Bloquear"> Inserir Código </a>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+     
+        @endif
