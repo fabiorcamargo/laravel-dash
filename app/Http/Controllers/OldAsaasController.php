@@ -371,7 +371,9 @@ class OldAsaasController extends Controller
     $send->username = array_unique(array_filter($request->username));
     $de = array(',');
     $para = array('.');
-    $send->valor = str_replace($de, $para, $request->valor);
+    $send->valor = str_replace('.', '', $request->valor);
+    $send->valor = str_replace($de, $para, $send->valor);
+    
     $send->parcela = preg_replace('/[^0-9]/', '', $request->parcelas);
     $send->data2 = date('Y-m-d', strtotime($request->data));
     $send->cep = $request->cep;

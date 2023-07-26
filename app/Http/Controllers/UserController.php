@@ -575,11 +575,13 @@ class UserController extends Controller
 
             if (Cademi::where('user_id', Auth::user()->id)->first()){
             if((Auth::user()->courses != "")){
-                $courses = explode(",", Auth::user()->courses);
+                $courses = explode(",", str_replace(" ", "", Auth::user()->courses));
                 
                 $i = 0;
+                
                 foreach($courses as $course){
-                    if(CademiTag::where('name', $course)->first()){
+                    
+                    if(CademiTag::where('name', $course)->first() !== null){
                         $cards[$i] = array(
                         "id" => CademiTag::where('name', $course)->first()->tag_id,
                         'tag' => CademiTag::where('name', $course)->first()->name,
@@ -588,8 +590,9 @@ class UserController extends Controller
                         );
                     }else{
                         $cards[$i] = array(
-                            'id' => ""
-                        );
+                            'img' => "product/cademi/Curso Liberado.jpg",
+                            'title' => "Seu curso está liberado"
+                            );
                     }
                     $i++;
                 }
