@@ -40,7 +40,7 @@ class TesteCron extends Command
     {
         //Captura todos os usuários
         $users = User::all();
-
+            Storage::disk('local')->append('file6.txt', now() . ' iniciou');
             //Passa por todos os usuários
             foreach($users as $user){
                 $this->user = $user;
