@@ -127,6 +127,8 @@
                         <a href="#pay" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/pay/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
                                 <x-widgets._w-svg svg="cash-banknote"/> 
+                                
+                                
                                 <span>Pagamentos</span>
                             </div>
                             <div>
@@ -145,7 +147,7 @@
                     <li class="menu {{ Request::is('*/app/cert/*') ? "active" : "" }}">
                         <a href="#cert" data-bs-toggle="collapse" aria-expanded="{{ Request::is('*/app/cert/*') ? "true" : "false" }}" class="dropdown-toggle">
                             <div class="">
-                                <x-widgets._w-svg svg="cash-banknote"/> 
+                                <x-widgets._w-svg svg="certificate"/> 
                                 <span>Certificados</span>
                             </div>
                             <div>
@@ -153,6 +155,9 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled {{ Request::is('*/app/cert/*') ? "show" : "" }}" id="cert" data-bs-parent="#accordionExample">
+                            <li class="{{ Request::routeIs('cert-emit-list') ? 'active' : '' }}">
+                                <a href="{{route('cert-emit-list')}}"> Emitidos </a>
+                            </li>
                             <li class="{{ Request::routeIs('cert-list') ? 'active' : '' }}">
                                 <a href="{{route('cert-list')}}"> Modelos </a>
                             </li>

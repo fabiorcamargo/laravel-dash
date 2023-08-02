@@ -59,9 +59,16 @@ class OldAsaasController extends Controller
     }
     
     }
-
-    $body = 
-    $dec->data[0]->name."<br><br>Informações:<br>".$dec->data[0]->company."<br>".$dec->data[0]->observations;
+   
+    if(isset($dec->data[0]->name)){
+     // dd('vazio');
+      $body = $dec->data[0]->name."<br><br>Informações:<br>".$dec->data[0]->company."<br>".$dec->data[0]->observations;
+    }else{
+      //dd('cheito');
+      return;
+    }
+    
+    //dd($body);
     return (str_replace("\n", "<br>", $body));
   }
 

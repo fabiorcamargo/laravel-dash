@@ -58,11 +58,11 @@
             <div class="body row layout-spacing">
                 @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
                 <div class="ms-4 col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
-                        <h3 >Dados do Contrato</h3>
-                        <div class="">
-                            <p>{!!$user->observation!!}</p>
+                    <h3>Dados do Contrato</h3>
+                    <div class="">
+                        <p>{!!$user->observation!!}</p>
 
-                        </div>
+                    </div>
                 </div>
                 @endif
                 <div class="col-xl-5 col-md-5 col-sm-12 layout-top-spacing">
@@ -176,207 +176,182 @@
                                 @endif
                                 @endif
                             </div>
-                            <div class="user-info-list">
 
-                                <ul class="contacts-block list-unstyled">
-                                    {{-- <li class="contacts-block__item">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-coffee me-3">
-                                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                                            <line x1="6" y1="1" x2="6" y2="4"></line>
-                                            <line x1="10" y1="1" x2="10" y2="4"></line>
-                                            <line x1="14" y1="1" x2="14" y2="4"></line>
-                                        </svg> Web Developer
-                                    </li> --}}
-                                    <div class="card p-2" id="create">
-                                        <li class="contacts-block__item">
 
-                                            <label for="create">Data de Liberação:</label>
-                                            <p>{{ $user->created_at->format('d-m-Y H:i') }}</p>
+
+                            {{-- <li class="contacts-block__item">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-coffee me-3">
+                                    <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                                    <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                                    <line x1="6" y1="1" x2="6" y2="4"></line>
+                                    <line x1="10" y1="1" x2="10" y2="4"></line>
+                                    <line x1="14" y1="1" x2="14" y2="4"></line>
+                                </svg> Web Developer
+                            </li> --}}
+                            <div class="card p-2 mt-4" id="create">
+                                <p class="contacts-block__item">
+
+                                    <label for="create">Data de Liberação:</label>
+                                <p>{{ $user->created_at->format('d-m-Y H:i') }}</p>
+
+                                @if($user->contract_date != null)
+                                <label for="create">Data do Contrato:</label>
+                                <p>{{ $user->contract_date->format('d-m-Y') }}</p>
+                                @endif
+
+                                </p>
+                            </div>
+                            <div class="card p-2 mt-4" id="create">
+
+                                <label for="create">Responsável Financeiro:</label>
+                                <p class="contacts-block__item">
+                                    <a href="{{getRouterValue();}}/aluno/pay/list/{{$user->id}}" target="blank"
+                                        class="btn btn-secondary  _effect--ripple waves-effect waves-light">
+                                        <x-widgets._w-svg svg="cash" />
+                                        <span class="btn-text-inner">Ver Pagamentos</span>
+                                    </a>
+                                </p>
+                                @foreach ($user->accountable()->get() as $responsavel)
+                                <p class="contacts-block__item">
+                                <div class="media-body">
+                                    <p class="mb-0">Nome: {{ $responsavel->name }}</p>
+                                    <p class="mb-0">CPF: {{ $responsavel->document }}</p>
+                                    <p class="mb-0">Telefone: {{ $responsavel->cellphone }}</p>
+                                </div>
+                                </p>
+                                @endforeach
+                            </div>
+                            <div class="card p-2 mt-4" id="create">
+                                <label for="create">Informações Pessoais:</label>
+                                <p class="contacts-block__item">
+                                    <a href="mailto:{{ $user->email }}"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-mail me-3">
+                                            <path
+                                                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                            </path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>{{ $user->email }}</a>
+                                </p>
+                                <p class="contacts-block__item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-phone me-3">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                        </path>
+                                    </svg> {{ $user->cellphone }}
+                                </p>
+                                @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8 ||
+                                (Auth::user()->role) == 4)
+                                <p class="contacts-block__item">
+                                    <a href="mailto:{{ $user->email2 }}"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                            class="feather feather-mail me-3">
+                                            <path
+                                                d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                            </path>
+                                            <polyline points="22,6 12,13 2,6"></polyline>
+                                        </svg>{{ $user->email2 }}</a>
+                                </p>
+                                <p class="contacts-block__item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-phone me-3">
+                                        <path
+                                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                                        </path>
+                                    </svg> {{ $user->cellphone2 }}
+                                </p>
+                                @endif
+                                <p class="contacts-block__item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-map-pin me-3">
+                                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                        <circle cx="12" cy="10" r="3"></circle>
+                                    </svg>{{ $user->city }} - {{ $user->uf }}
+                                </p>
+                                <p class="contacts-block__item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-shopping-cart me-3">
+                                        <circle cx="9" cy="21" r="1"></circle>
+                                        <circle cx="20" cy="21" r="1"></circle>
+                                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
+                                        </path>
+                                    </svg> {{ $user->seller }}
+                                </p>
+                                <p class="contacts-block__item">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-users me-3">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg> {{ $user->secretary }}
+                                </p>
+
+                                @if ((Auth::user()->role) >= 4)
+                                <p class="contacts-block__item">
+                                    <a href="/login/{{ $user->id }}" target="blank"
+                                        class="btn btn-dark  _effect--ripple waves-effect waves-light">
+                                        <x-widgets._w-svg svg="login" />
+                                        <span class="btn-text-inner">Acessar como {{$user->name}}</span>
+                                    </a>
+                                </p>
+                                @endif
+
+                                @isset($cademi->login_auto)
+
+                                @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
+
+                                <div class="clipboard">
+                                    <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}"
+                                        target="blank" class="btn btn-danger  _effect--ripple waves-effect waves-light">
+                                        <x-widgets._w-svg svg="user-search" />
+                                        <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
+                                    </a>
+                                </div>
+                                @endif
+                                @endisset
+
+
+                            </div>
+                            <div class="card p-2 mt-4">
+                                <h5 class='p-2'>Certificados:</h5>
+                                <table class="m-2" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
                                             
-                                            @if($user->contract_date != null)
-                                            <label for="create">Data do Contrato:</label>
-                                            <p>{{ $user->contract_date->format('d-m-Y') }}</p>
-                                            @endif
-
-                                        </li>
-                                    </div>
-                                    <div class="card p-2 mt-4" id="create">
-
-                                        <label for="create">Responsável Financeiro:</label>
-                                        <li class="contacts-block__item">
-                                            <a href="{{getRouterValue();}}/aluno/pay/list/{{$user->id}}" target="blank"
-                                                class="btn btn-secondary  _effect--ripple waves-effect waves-light">
-                                                <x-widgets._w-svg svg="cash" />
-                                                <span class="btn-text-inner">Ver Pagamentos</span>
-                                            </a>
-                                        </li>
-                                        @foreach ($user->accountable()->get() as $responsavel)
-                                        <li class="contacts-block__item">
-                                            <div class="media-body align-self-center">
-                                                <p class="mb-0">{{ $responsavel->name }}</p>
-                                                <p class="mb-0">{{ $responsavel->document }}</p>
-                                                <p class="mb-0">{{ $responsavel->cellphone }}</p>
-                                            </div>
-                                        </li>
-                                        @endforeach
-                                    </div>
-                                    <div class="card p-2 mt-4" id="create">
-                                        <li class="contacts-block__item">
-                                            <a href="mailto:{{ $user->email }}"><svg xmlns="http://www.w3.org/2000/svg"
-                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" class="feather feather-mail me-3">
-                                                    <path
-                                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                                                    </path>
-                                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                                </svg>{{ $user->email }}</a>
-                                        </li>
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-phone me-3">
-                                                <path
-                                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                                                </path>
-                                            </svg> {{ $user->cellphone }}
-                                        </li>
-                                        @if ((Auth::user()->role) == 7 || (Auth::user()->role) == 8 ||
-                                        (Auth::user()->role) == 4)
-                                        <li class="contacts-block__item">
-                                            <a href="mailto:{{ $user->email2 }}"><svg xmlns="http://www.w3.org/2000/svg"
-                                                    width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                    stroke-linejoin="round" class="feather feather-mail me-3">
-                                                    <path
-                                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
-                                                    </path>
-                                                    <polyline points="22,6 12,13 2,6"></polyline>
-                                                </svg>{{ $user->email2 }}</a>
-                                        </li>
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-phone me-3">
-                                                <path
-                                                    d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
-                                                </path>
-                                            </svg> {{ $user->cellphone2 }}
-                                        </li>
-                                        @endif
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-map-pin me-3">
-                                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                                <circle cx="12" cy="10" r="3"></circle>
-                                            </svg>{{ $user->city }} - {{ $user->uf }}
-                                        </li>
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-shopping-cart me-3">
-                                                <circle cx="9" cy="21" r="1"></circle>
-                                                <circle cx="20" cy="21" r="1"></circle>
-                                                <path
-                                                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6">
-                                                </path>
-                                            </svg> {{ $user->seller }}
-                                        </li>
-                                        <li class="contacts-block__item">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-users me-3">
-                                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                                <circle cx="9" cy="7" r="4"></circle>
-                                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                            </svg> {{ $user->secretary }}
-                                        </li>
-                                        <li class="contacts-block__item">
-                                            <div class="form-group">
-                                                <input class="form-check-input me-1" id="ouro" name="ouro"
-                                                    type="checkbox" @if ($user->ouro == 1 ) checked @endif disabled>
-                                                Contratou 10 Cursos
-                                            </div>
-                                        </li>
-
-                                        @if ((Auth::user()->role) >= 4)
-                                        <li class="contacts-block__item">
-                                            <a href="/login/{{ $user->id }}" target="blank"
-                                                class="btn btn-dark  _effect--ripple waves-effect waves-light">
-                                                <x-widgets._w-svg svg="login" />
-                                                <span class="btn-text-inner">Acessar como {{$user->name}}</span>
-                                            </a>
-                                        </li>
-                                        @endif
-
-                                        @isset($cademi->login_auto)
-                                        {{--<li class="contacts-block__item">
-                                            <a href="{{ $cademi->login_auto }}" target="blank"
-                                                class="btn btn-secondary  _effect--ripple waves-effect waves-light">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-log-in">
-                                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                                                    <polyline points="10 17 15 12 10 7"></polyline>
-                                                    <line x1="15" y1="12" x2="3" y2="12"></line>
-                                                </svg>
-                                                <span class="btn-text-inner">Acesse seu Curso</span>
-                                            </a>
-                                        </li>--}}
-
-
-                                        @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 8)
-                                        <li class="contacts-block__item">
-                                            <div class="clipboard">
-
-                                                <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}"
-                                                    target="blank"
-                                                    class="btn btn-danger  _effect--ripple waves-effect waves-light">
-                                                    <x-widgets._w-svg svg="user-search" />
-                                                    <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
+                                            <th>Data</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($user->getCertificates()->get() as $cert)
+                                        <tr>
+                                            <td>{{ $cert->getCertModel()->name }}</td>
+                                            <td>{{$cert->created_at->format('d/m/Y')}}</td>
+                                            <td>
+                                                <a href="{{route('cert-check', ['code' => $cert->code])}}"
+                                                    target="_blank" type="button"
+                                                    class="badge badge-primary mb-2 bs-tooltip" title="Ver">
+                                                    <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
                                                 </a>
-                                        </li>
+                                            </td>
+                                        </tr>
+                                        @endforeach
 
 
-                                        {{--<li class="contacts-block__item">
-                                            <form class="form-horizontal">
-                                                <div class="clipboard-input">
-                                                    <input type="text" class="form-control inative"
-                                                        id="copy-basic-input" value="{{ $cademi->login_auto }}"
-                                                        readonly>
-                                                    <div class="copy-icon jsclipboard cbBasic" data-bs-trigger="click"
-                                                        title="Copied" data-clipboard-target="#copy-basic-input"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-copy">
-                                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2">
-                                                            </rect>
-                                                            <path
-                                                                d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1">
-                                                            </path>
-                                                        </svg></div>
-                                                </div>
-                                            </form>
-
-
-                                        </li>--}}
-                                        @endif
-
-                                        @endisset
-                                </ul>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -398,9 +373,10 @@
                                         <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z">
                                         </path>
                                     </svg></a>--}}
-                                    
+
                             </div>
-                            <label class="pt-2" for=""> Último Acesso Cademi:{{ $ultimo_acesso->format('d-m-Y H:i') }}</label>
+                            <label class="pt-2" for=""> Último Acesso Cademi:{{ $ultimo_acesso->format('d-m-Y
+                                H:i') }}</label>
                             <div id="toggleAccordion" class="accordion mt-4">
                                 @foreach ($courses as $course)
                                 <div class="card">
@@ -607,7 +583,8 @@
                                             <div class="modal-body">
                                                 <p class="modal-text">Você tem certeza que deseja prosseguir com
                                                     exclusão?</p>
-                                                <p class="text-danger">Essa ação é destrutiva não pode revertida, todos
+                                                <p class="text-danger">Essa ação é destrutiva não pode
+                                                    revertida, todos
                                                     os registros desse curso serão apagados.</p>
                                             </div>
                                             <div class="modal-footer">
@@ -635,78 +612,78 @@
             </div>
             @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
 
-                <div class="modal" style="height: 788px; overflow:auto;" id="modal-send" tabindex="-1" role="dialog"
-                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <form class="chat-form" method="POST" id="msg_send"
-                                action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
-                                @csrf
-                                <div class="card style-4">
-                                    <div class="card-body pt-3">
-                                        <div class="media mt-0 mb-3">
-                                            <div class="">
-                                                <div class="avatar avatar-md avatar-indicators avatar-online me-3">
-                                                    <img alt="avatar" src="{{Vite::asset('resources/images/logo.svg')}}"
-                                                        class="rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h4 class="media-heading mb-0">{{$user->name}}</h4>
-                                                <p class="media-text">Aluno</p>
+            <div class="modal" style="height: 788px; overflow:auto;" id="modal-send" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <form class="chat-form" method="POST" id="msg_send"
+                            action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
+                            @csrf
+                            <div class="card style-4">
+                                <div class="card-body pt-3">
+                                    <div class="media mt-0 mb-3">
+                                        <div class="">
+                                            <div class="avatar avatar-md avatar-indicators avatar-online me-3">
+                                                <img alt="avatar" src="{{Vite::asset('resources/images/logo.svg')}}"
+                                                    class="rounded-circle">
                                             </div>
                                         </div>
-                                        <div class="form-group row px-4">
-                                            <label for="cellphone"
-                                                class="col-sm-3 col-form-label col-form-label-sm">Telefone:</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control form-control-sm" id="cellphone"
-                                                    name="cellphone" required>
-                                                    <option value="">Escolha</option>
-                                                    <option value="{{$user->name}}, {{$user->cellphone}}">
-                                                        Aluno - {{$user->cellphone}}
-                                                    </option>
-                                                    <option value="{{$user->name}}, {{$user->cellphone2}}">
-                                                        Aluno - {{$user->cellphone2}}
-                                                    </option>
-                                                    @isset($user->accountable->name)
-                                                    <option
-                                                        value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
-                                                        Responsável -
-                                                        {{$user->accountable->cellphone}}
-                                                    </option>
-                                                    @endisset
-                                                </select>
-                                            </div>
+                                        <div class="media-body">
+                                            <h4 class="media-heading mb-0">{{$user->name}}</h4>
+                                            <p class="media-text">Aluno</p>
                                         </div>
-
-                                        <p class="card-text py-2">Selecione para qual telefone, escolha se deseja abrir
-                                            chamado no MKT e digite a mensagem que deseja enviar.</p>
                                     </div>
-                                    <div class="card-footer pt-0 border-0 text-center">
-                                        <div class="col-xxl-12 col-md-12">
-                                            <label for="users_list_tags">Mensagem:</label>
-                                            <textarea class="form-control" name="obs" id="obs" rows="3"
-                                                required></textarea>
+                                    <div class="form-group row px-4">
+                                        <label for="cellphone"
+                                            class="col-sm-3 col-form-label col-form-label-sm">Telefone:</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control form-control-sm" id="cellphone" name="cellphone"
+                                                required>
+                                                <option value="">Escolha</option>
+                                                <option value="{{$user->name}}, {{$user->cellphone}}">
+                                                    Aluno - {{$user->cellphone}}
+                                                </option>
+                                                <option value="{{$user->name}}, {{$user->cellphone2}}">
+                                                    Aluno - {{$user->cellphone2}}
+                                                </option>
+                                                @isset($user->accountable->name)
+                                                <option
+                                                    value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
+                                                    Responsável -
+                                                    {{$user->accountable->cellphone}}
+                                                </option>
+                                                @endisset
+                                            </select>
                                         </div>
-
-                                        <button type="send" class="btn btn-secondary w-100 mt-4">
-                                            <span class="btn-text-inner ms-3">Enviar</span></button>
-
                                     </div>
-                                    <div class="form-check ms-4">
-                                        <input class="form-check-input" type="checkbox" value="" name="chamadoativo"
-                                            id="customCheck1">
-                                        <label class="form-check-label bs-tooltip" for="customCheck1"
-                                            title="Nessa opção será aberto um chamado no MKT">Abrir
-                                            Protocolo</label>
-                                    </div>
+
+                                    <p class="card-text py-2">Selecione para qual telefone, escolha se deseja
+                                        abrir
+                                        chamado no MKT e digite a mensagem que deseja enviar.</p>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="card-footer pt-0 border-0 text-center">
+                                    <div class="col-xxl-12 col-md-12">
+                                        <label for="users_list_tags">Mensagem:</label>
+                                        <textarea class="form-control" name="obs" id="obs" rows="3" required></textarea>
+                                    </div>
+
+                                    <button type="send" class="btn btn-secondary w-100 mt-4">
+                                        <span class="btn-text-inner ms-3">Enviar</span></button>
+
+                                </div>
+                                <div class="form-check ms-4">
+                                    <input class="form-check-input" type="checkbox" value="" name="chamadoativo"
+                                        id="customCheck1">
+                                    <label class="form-check-label bs-tooltip" for="customCheck1"
+                                        title="Nessa opção será aberto um chamado no MKT">Abrir
+                                        Protocolo</label>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                
+            </div>
+
             @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
             <div class="modal" style="height: 788px; overflow:auto;" id="exampleModal{{$obs->id}}" tabindex="-1"
                 role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -721,11 +698,10 @@
 
                                     <div class="chat-not-selected" style="display: none;">
                                         <p> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
                                                 class="feather feather-message-square">
-                                                <path
-                                                    d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
+                                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z">
                                                 </path>
                                             </svg> Click User To Chat</p>
                                     </div>
@@ -747,9 +723,8 @@
                                                                 </span>
                                                                 <div class="d-flex justify-content-between">
                                                                     <div class="form-group">
-                                                                        <select class="form-select mt-2"
-                                                                            id="cellphone" name="cellphone"
-                                                                            required>
+                                                                        <select class="form-select mt-2" id="cellphone"
+                                                                            name="cellphone" required>
                                                                             <option value="">Escolha</option>
                                                                             <option
                                                                                 value="{{$user->name}}, {{$user->cellphone}}">
@@ -818,12 +793,10 @@
                                                 @else
                                                 <div class="btn-toolbar" role="toolbar"
                                                     aria-label="Toolbar with button groups">
-                                                    <div class="btn-group ms-2" role="group"
-                                                        aria-label="First group">
+                                                    <div class="btn-group ms-2" role="group" aria-label="First group">
                                                         <a type="button" class="btn btn-danger bs-tooltip"
                                                             title="Não Enviada">
-                                                            <x-widgets._w-svg class="text-white"
-                                                                svg="alert-triangle" />
+                                                            <x-widgets._w-svg class="text-white" svg="alert-triangle" />
                                                         </a>
                                                         @isset($obs->cellphone)
                                                         <a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
@@ -857,7 +830,7 @@
                 </div>
 
             </div>
-        @endforeach
+            @endforeach
             <div class="row layout-spacing ">
                 <div class="summary layout-spacing col-md-6">
                     <div class="widget-content widget-content-area">
@@ -886,7 +859,8 @@
                                     @foreach ($user->observation()->orderby('created_at','desc')->get() as $obs)
                                     <tr>
                                         <td>
-                                            <p class="contacts-block__item mb-0">{!!$obs->created_at->format('d/m/y
+                                            <p class="contacts-block__item mb-0">
+                                                {!!$obs->created_at->format('d/m/y
                                                 H:i:s')!!} </p>
                                             <small class="form-group">{!!str_ireplace("\r\n", "<br>",
                                                 $obs->obs)!!}</small>
@@ -898,107 +872,115 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="summary layout-spacing col-md-6">
                     <div class="widget-content widget-content-area">
-                            <form class="chat-form" method="POST" id="msg_send"
-                                action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
-                                @csrf
-                                    <div class="pt-3">
-                                        <div class="media mt-0 mb-3">
-                                            <div class="">
-                                                <div class="avatar avatar-md avatar-indicators avatar-online me-3">
-                                                    <img alt="avatar" src="{{Vite::asset('resources/images/logo.svg')}}"
-                                                        class="rounded-circle">
-                                                </div>
-                                            </div>
-                                            <div class="media-body">
-                                                <h3 class="mb-0">{{$user->name}}</h3>
-                                                <p class="media-text">Aluno</p>
-                                            </div>
+                        <form class="chat-form" method="POST" id="msg_send"
+                            action="{{ route('mkt-send_profile_msg', ['id' => $user->id]) }}">
+                            @csrf
+                            <div class="pt-3">
+                                <div class="media mt-0 mb-3">
+                                    <div class="">
+                                        <div class="avatar avatar-md avatar-indicators avatar-online me-3">
+                                            <img alt="avatar" src="{{Vite::asset('resources/images/logo.svg')}}"
+                                                class="rounded-circle">
                                         </div>
-                                        <div class="form-group row px-4">
-                                            <label for="cellphone"
-                                                class="col-sm-3 col-form-label col-form-label-sm">Telefone:</label>
-                                            <div class="col-sm-9">
-                                                <select class="form-control form-control-sm" id="cellphone"
-                                                    name="cellphone" required>
-                                                    <option value="">Escolha</option>
-                                                    <option value="{{$user->name}}, {{$user->cellphone}}">
-                                                        Aluno - {{$user->cellphone}}
-                                                    </option>
-                                                    <option value="{{$user->name}}, {{$user->cellphone2}}">
-                                                        Aluno - {{$user->cellphone2}}
-                                                    </option>
-                                                    @isset($user->accountable->name)
-                                                    <option
-                                                        value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
-                                                        Responsável -
-                                                        {{$user->accountable->cellphone}}
-                                                    </option>
-                                                    @endisset
-                                                </select>
-                                            </div>
-                                        </div>
+                                    </div>
+                                    <div class="media-body">
+                                        <h3 class="mb-0">{{$user->name}}</h3>
+                                        <p class="media-text">Aluno</p>
+                                    </div>
+                                </div>
+                                <div class="form-group row px-4">
+                                    <label for="cellphone"
+                                        class="col-sm-3 col-form-label col-form-label-sm">Telefone:</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control form-control-sm" id="cellphone" name="cellphone"
+                                            required>
+                                            <option value="">Escolha</option>
+                                            <option value="{{$user->name}}, {{$user->cellphone}}">
+                                                Aluno - {{$user->cellphone}}
+                                            </option>
+                                            <option value="{{$user->name}}, {{$user->cellphone2}}">
+                                                Aluno - {{$user->cellphone2}}
+                                            </option>
+                                            @isset($user->accountable->name)
+                                            <option
+                                                value="{{$user->accountable->name}}, {{$user->accountable->cellphone}}">
+                                                Responsável -
+                                                {{$user->accountable->cellphone}}
+                                            </option>
+                                            @endisset
+                                        </select>
+                                    </div>
+                                </div>
 
-                                        <p class="card-text py-2">Selecione para qual telefone, escolha se deseja abrir
-                                            chamado no MKT e digite a mensagem que deseja enviar.</p>
-                                            <div class=" rounded p-4 ps bg-light-dark" id="messages" style="height: 350px;
+                                <p class="card-text py-2">Selecione para qual telefone, escolha se deseja abrir
+                                    chamado no MKT e digite a mensagem que deseja enviar.</p>
+                                <div class=" rounded p-4 ps bg-light-dark" id="messages" style="height: 350px;
                                             overflow:auto;
                                         ">
-                                            <p class="py-2 text-center">Mensagens enviadas do sistema</p>
-                                            @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
-                                            
-                                                <div class="card my-3">
-                                                    <p class="text-muted p-2">{{$obs->cellphone}}</p><br>
-                                                    <div class="card-body">
-                                                        
-                                                        <p class="mb-0">{!! str_replace(['\r','\n'], [""," <br> "],
-                                                            $obs->msg) !!}</p><br>
-                                                    
-                                                    </div>
-                                                    <div> 
-                                                        @if($obs->status == 201)
-                                                            <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                                H:i:s')!!}<x-widgets._w-svg class="mx-2 text-success" svg="checks" /></p>
-                                                        @else
-                                                            @isset($obs->cellphone)
-                                                                <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                                    H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada<a href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
-                                                                type="button" class="btn btn-warning bs-tooltip"
-                                                                title="Reenviar">
-                                                                <x-widgets._w-svg class="text-white" svg="reload" />
-                                                                </a></small></p>
-                                                            @else
-                                                                <p class="d-flex justify-content-end p-2">{!!$obs->created_at->format('d/m/y
-                                                                    H:i:s')!!} <p class="text-danger d-flex justify-content-end ps-2">Não enviada</p></p>
-                                                            @endisset
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            @endforeach
+                                    <p class="py-2 text-center">Mensagens enviadas do sistema</p>
+                                    @foreach ($user->usermsg()->orderby('created_at','desc')->get() as $obs)
+
+                                    <div class="card my-3">
+                                        <p class="text-muted p-2">{{$obs->cellphone}}</p><br>
+                                        <div class="card-body">
+
+                                            <p class="mb-0">{!! str_replace(['\r','\n'], [""," <br> "],
+                                                $obs->msg) !!}</p><br>
+
+                                        </div>
+                                        <div>
+                                            @if($obs->status == 201)
+                                            <p class="d-flex justify-content-end p-2">
+                                                {!!$obs->created_at->format('d/m/y
+                                                H:i:s')!!}
+                                                <x-widgets._w-svg class="mx-2 text-success" svg="checks" />
+                                            </p>
+                                            @else
+                                            @isset($obs->cellphone)
+                                            <p class="d-flex justify-content-end p-2">
+                                                {!!$obs->created_at->format('d/m/y
+                                                H:i:s')!!}
+                                            <p class="text-danger d-flex justify-content-end ps-2">Não enviada<a
+                                                    href="{{getRouterValue();}}/app/mkt/resend_not_active/{{$obs->id}}"
+                                                    type="button" class="btn btn-warning bs-tooltip" title="Reenviar">
+                                                    <x-widgets._w-svg class="text-white" svg="reload" />
+                                                </a></small></p>
+                                            @else
+                                            <p class="d-flex justify-content-end p-2">
+                                                {!!$obs->created_at->format('d/m/y
+                                                H:i:s')!!}
+                                            <p class="text-danger d-flex justify-content-end ps-2">Não enviada
+                                            </p>
+                                            </p>
+                                            @endisset
+                                            @endif
                                         </div>
                                     </div>
-                                    <div class="card-footer pt-4 border-0 text-center">
-                                        
-                                        <div class="col-xxl-12 col-md-12">
-                                            <label for="users_list_tags">Mensagem:</label>
-                                            <textarea class="form-control" name="obs" id="obs" rows="3"
-                                                required></textarea>
-                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="card-footer pt-4 border-0 text-center">
 
-                                        <button type="send" class="btn btn-secondary w-100 mt-4">
-                                            <span class="btn-text-inner ms-3">Enviar</span></button>
+                                <div class="col-xxl-12 col-md-12">
+                                    <label for="users_list_tags">Mensagem:</label>
+                                    <textarea class="form-control" name="obs" id="obs" rows="3" required></textarea>
+                                </div>
 
-                                    </div>
-                                    <div class="form-check m-2">
-                                        <input class="form-check-input" type="checkbox" value="" name="chamadoativo"
-                                            id="chamadoativo">
-                                        <label class="form-check-label bs-tooltip" for="chamadoativo"
-                                            title="Nessa opção será aberto um chamado no MKT">Abrir
-                                            Protocolo</label>
-                                    </div>
-                            </form>
+                                <button type="send" class="btn btn-secondary w-100 mt-4">
+                                    <span class="btn-text-inner ms-3">Enviar</span></button>
+
+                            </div>
+                            <div class="form-check m-2">
+                                <input class="form-check-input" type="checkbox" value="" name="chamadoativo"
+                                    id="chamadoativo">
+                                <label class="form-check-label bs-tooltip" for="chamadoativo"
+                                    title="Nessa opção será aberto um chamado no MKT">Abrir
+                                    Protocolo</label>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -13,14 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_certificates_emits', function (Blueprint $table) {
+        Schema::create('user_cademi_progress', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('user_certificates_models_id')->constrained('user_certificates_models');
-            $table->string('percent');
-            $table->date('validity');
-            $table->json('body')->nullable();
+            $table->string('product');
+            $table->string('name');
+            $table->string('percent')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_certificates_emits');
+        Schema::dropIfExists('user_cademi_progress');
     }
 };

@@ -46,7 +46,7 @@ page[size="A4"][layout="landscape"] {
   width: 29.7cm;
   height: 791px;  
   display: flex;
-  
+ 
     align-items: center; //centraliza horizontalmente
     
     
@@ -147,7 +147,15 @@ page div.relative {
 
     </style>
 </head>
-  
+<div class="container">
+  <div class="py-5 text-center">
+    <img class="d-block mx-auto mb-4" src="{{Vite::asset('resources/images/Logo-Vetorial.png')}}" alt="" width="300" height="300">
+    <p class="lead pb-2"> <b>Sistema de Verificação de Certificados</b></p>
+    <p class="lead">Abaixo seguem as informações do certificado emitido.</p>
+    <a href="{{route('cert-down', ['code' => $cert->code])}}" class="btn btn-danger text-white mt-4">Baixar PDF</a>
+  </div>
+</div>
+
     <page size="A4" layout="landscape" n="1">
         <div class="relative">
             <h1 class="text-center name">{{$cert->getuser()->name}} {{$cert->getuser()->lastname}}</h1>

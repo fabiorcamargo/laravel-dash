@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Http\Controllers\ChatbotAsset;
+use App\Jobs\CademiProgress;
 use App\Jobs\ChatbotSend;
 use App\Jobs\UserMg_FailSend;
 use Illuminate\Console\Scheduling\Schedule;
@@ -19,17 +20,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {   
-        //$schedule->call(fn() => $chatbot->queue_send())
-        //->everyMinute();
-        //$schedule->call(new UserMg_FailSend)->everyMinute();
+
+        //Chama comando para verificação de 
+        $schedule->command('teste:cron')->dailyAt('01:00');
+        $schedule->command('ProductProgressCommand:cron')->dailyAt('02:00');
+        //$schedule->command('CertCheckCommand:cron')->dailyAt('03:00');
         
-        /*$schedule->call(function () {
-            $job = new UserMg_FailSend;
-            //dispatch($job);
-            // Código para agendar a tarefa Redis
-            //Storage::put('file5.txt', 'test');
-            
-        })->everyMinute(); // Agendamento a cada minuto (exemplo)*/
+        
 
     }
 

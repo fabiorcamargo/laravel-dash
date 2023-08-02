@@ -168,6 +168,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserNotification::class);
     }
+    public function getCertificates()
+    {
+        return $this->hasMany(UserCertificatesEmit::class);
+    }
+    public function CademiProgress()
+    {
+        return $this->hasMany(UserCademiProgress::class);
+    }
 
 
     

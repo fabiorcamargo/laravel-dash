@@ -12,6 +12,7 @@ class UserCertificatesEmit extends Model
     protected $fillable = [
         'code',
         'user_id',
+        'user_certificates_models_id',
         'percent',
         'validity',
         'body'

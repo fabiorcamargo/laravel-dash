@@ -550,7 +550,9 @@ class UserController extends Controller
 
 
     public function my(){
-
+        Auth::user()->access_date = Carbon::now()->toDateTimeString();
+        Auth::user()->save();
+        //dd(Auth::user());
         //$cards = new stdClass;
         $data = $this->avatar->where('user_id', Auth::user()->id)->first();
         if ( $data != null ){
@@ -634,6 +636,8 @@ class UserController extends Controller
         //$event->Lead();
 
         //dd(Auth::user()->courses);
+        
+
         
         if(Auth::user()->client_ouro->first()){
             //dd('s');
