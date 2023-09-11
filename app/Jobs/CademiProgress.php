@@ -22,7 +22,7 @@ use stdClass;
 class CademiProgress implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
-
+    protected $user;
     /**
      * Create a new job instance.
      *
@@ -68,7 +68,7 @@ class CademiProgress implements ShouldQueue
          
 
             //Avalia se o usuário possui perfil na cademi    
-            if (Cademi::where('user_id', $this->user->id)->first() !== null)
+            if (Cademi::where('user_id', $this->user->id)->exists())
             {
 
                 $cademi = Cademi::where('user_id', $this->user->id)->first();

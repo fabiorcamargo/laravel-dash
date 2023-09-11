@@ -35,8 +35,11 @@ class CademiProcess implements ShouldQueue
     {
         $this->users = User::where('courses', 'not like', 'NÃO')->get();
 
+        $i = 0;
         foreach ($this->users as $user) {
-            dispatch(new CademiProgress($user));
+            dispatch(new CademiProgress($user))
+            ->delay(now()->addSeconds($i));
+            $i++;
         }
 
         foreach ($this->users as $user) {
@@ -49,7 +52,9 @@ class CademiProcess implements ShouldQueue
                     $cademi = $user->cademis()->first();
                     //Passa por todos os produtos
                     foreach ($products as $product) {
-                        dispatch(new ProductProgress($user, $cademi->user, $product));
+                        dispatch(new ProductProgress($user, $cademi->user, $product))
+                        ->delay(now()->addSeconds($i));
+                        $i++;
                     }
                 }
             }
