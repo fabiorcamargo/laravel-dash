@@ -36,8 +36,8 @@ class ProductProgressCommand extends Command
 
         foreach($users as $user){
 
-            
             $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
+            
             $now = Carbon::now();
             $differenceInHours = $inputDate->diffInHours($now);
 
@@ -50,7 +50,7 @@ class ProductProgressCommand extends Command
 
                 //Passa por todos os produtos
                 foreach($products as $product){
-                    dispatch(new ProductProgress($user, $cademi->user, $product));
+                    (new ProductProgress($user, $cademi->user, $product));
                 }
             }
         }

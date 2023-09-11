@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Http\Controllers\ChatbotAsset;
+use App\Jobs\Cademi\CademiProcess;
 use App\Jobs\CademiProgress;
 use App\Jobs\ChatbotSend;
 use App\Jobs\UserMg_FailSend;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 class Kernel extends ConsoleKernel
 {
     use DispatchesJobs;
+    
     /**
      * Define the application's command schedule.
      *
@@ -27,8 +29,8 @@ class Kernel extends ConsoleKernel
         //$schedule->command('teste:cron')->dailyAt('08:30');
         
         $schedule->call(function () {
-            dispatch(new CademiProgress());
-        })->dailyAt('12:43');
+            dispatch(new CademiProcess());
+        })->dailyAt('17:34');
         
         //CademiProgress::dispatch();
         //$schedule->job(new CademiProgress())->everyMinute();

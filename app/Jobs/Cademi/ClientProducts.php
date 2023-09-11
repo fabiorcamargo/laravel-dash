@@ -23,9 +23,9 @@ class ClientProducts implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(User $users)
+    public function __construct()
     {
-        $this->users = $users;
+        
     }
 
     /**
@@ -35,7 +35,10 @@ class ClientProducts implements ShouldQueue
      */
     public function handle()
     {
-            foreach($this->users as $user){
+        
+        $users = User::where('courses', 'not like', 'NÃO')->get();
+
+            foreach($users as $user){
                 Storage::disk('local')->append('file6.txt', now() . " $user->id");
                 //Avalia se o usuário possui perfil na cademi    
                 if($cademi = Cademi::where('user_id', $this->user->id)->first()){
@@ -60,6 +63,7 @@ class ClientProducts implements ShouldQueue
                         }
                     }
                 }
+                sleep(1);
             }
             //Passa por todos os usuários
     }

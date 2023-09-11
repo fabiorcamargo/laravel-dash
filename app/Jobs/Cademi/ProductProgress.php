@@ -40,9 +40,12 @@ class ProductProgress implements ShouldQueue
      */
     public function handle()
     {
+
+        sleep(1);
+        
         $product_status = new stdClass;
         $product_status->id = $this->product->product;   
-        sleep(1);
+        
         $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $this->cademi_user . '/' . $this->product->product);
         
                     if ($response->status() == 200) {
