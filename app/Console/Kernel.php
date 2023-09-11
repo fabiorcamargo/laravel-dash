@@ -28,9 +28,8 @@ class Kernel extends ConsoleKernel
         //Chama comando para verificação de 
         //$schedule->command('teste:cron')->dailyAt('08:30');
         
-        $schedule->call(function () {
-            dispatch(new CademiProcess());
-        })->dailyAt('18:43');
+      
+            $schedule->job(new CademiProcess())->dailyAt('19:13');
         
         //CademiProgress::dispatch();
         //$schedule->job(new CademiProgress())->everyMinute();
