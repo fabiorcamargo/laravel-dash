@@ -28,7 +28,7 @@ class Kernel extends ConsoleKernel
         
         $schedule->call(function () {
             dispatch(new CademiProgress());
-        })->dailyAt('12:29');
+        })->dailyAt('12:43');
         
         //CademiProgress::dispatch();
         //$schedule->job(new CademiProgress())->everyMinute();

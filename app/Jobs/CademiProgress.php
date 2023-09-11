@@ -43,7 +43,7 @@ class CademiProgress implements ShouldQueue
         $users = User::where('courses', 'not like', 'NÃO')->get();
 
             foreach($users as $user){
-                Storage::disk('local')->append('file6.txt', now() . " $user->id");
+                Storage::disk('local')->append('file6.txt', now() . " $user->username");
             }
             //Passa por todos os usuários
             /*
