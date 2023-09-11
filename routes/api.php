@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiWhatsapp;
 use App\Http\Controllers\ChatbotAsset;
+use App\Http\Controllers\MailController;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Storage;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('batchupdate', [MailController::class, 'checkBatchProgress']);
 
 Route::post('users', [ApiController::class, 'getAllUsers'])->name('api.cademi.users'); 
 Route::post('users/store', [ApiController::class, 'store'])->name('api.cademi.store'); 

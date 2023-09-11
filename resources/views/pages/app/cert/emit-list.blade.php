@@ -14,6 +14,7 @@
 
         @vite(['resources/scss/dark/assets/components/modal.scss'])
         @vite(['resources/scss/light/assets/components/modal.scss'])
+        @livewireStyles
         <!--  END CUSTOM STYLE FILE  -->
     </x-slot:headerFiles>
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -46,9 +47,7 @@
                         </div>
 
                         <div class="modal-body">
-                            <div class="pt-2">
-                                <livewire:getuser i={{false}} n={{1}} />
-                            </div>
+                           
 
                             <div class="col-xxl-12 col-md-12 mb-4">
                                 <p for="combo_name">Certificado</p>
@@ -113,7 +112,7 @@
             <div class="user-profile">
                 <div class="widget-content widget-content-area">
                     <div class="d-flex justify-content-between">
-
+                       
                         <h3 class="">Lista de Certificados</h3>
                         <a data-bs-toggle="modal" href="" data-bs-target="#OuroComboCreateModal"
                             class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top"
@@ -303,7 +302,7 @@
         </div>
     </div>
 
-
+    @livewireScripts
     <!--  BEGIN CUSTOM SCRIPTS FILE  -->
     <x-slot:footerFiles>
         <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

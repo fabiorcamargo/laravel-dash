@@ -7,11 +7,13 @@ use App\Jobs\CademiProgress;
 use App\Jobs\ChatbotSend;
 use App\Jobs\UserMg_FailSend;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use Illuminate\Support\Facades\Storage;
 
 class Kernel extends ConsoleKernel
 {
+    use DispatchesJobs;
     /**
      * Define the application's command schedule.
      *
@@ -22,8 +24,15 @@ class Kernel extends ConsoleKernel
     {   
 
         //Chama comando para verificação de 
-        $schedule->command('teste:cron')->dailyAt('01:00');
-        $schedule->command('ProductProgressCommand:cron')->dailyAt('02:00');
+        //$schedule->command('teste:cron')->dailyAt('08:30');
+        
+        $schedule->call(function () {
+            dispatch(new CademiProgress());
+        })->dailyAt('12:29');
+        
+        //CademiProgress::dispatch();
+        //$schedule->job(new CademiProgress())->everyMinute();
+        //$schedule->command('ProductProgressCommand:cron')->dailyAt('02:00');
         //$schedule->command('CertCheckCommand:cron')->dailyAt('03:00');
         
         

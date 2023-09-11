@@ -39,13 +39,12 @@ class TesteCron extends Command
     public function handle()
     {
         //Captura todos os usuários
-        $users = User::all();
+        $users = User::where('courses', 'NÃO')->get();
             Storage::disk('local')->append('file6.txt', now() . ' iniciou');
             //Passa por todos os usuários
             foreach($users as $user){
                 $this->user = $user;
                     if($this->cademi = Cademi::where('user_id', $this->user->id)->first()){
-                        if($user->courses !== null && $user->courses !== 'NÃO'){
 
                                 $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
                                 $now = Carbon::now();
@@ -56,7 +55,6 @@ class TesteCron extends Command
                                     dispatch($job);
                                     sleep(1);
                             }       
-                        }
                     }
             }
 

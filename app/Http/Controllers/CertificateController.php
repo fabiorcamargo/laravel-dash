@@ -51,7 +51,7 @@ class CertificateController extends Controller
         $cert = (UserCertificatesEmit::where('code', $code)->first());
 
             $pdf = Pdf::loadView('pdf.cert-view', compact('cert'))
-                ->setPaper('a4', 'landscape')
+                ->setPaper('a4', 'portait')
                 ->setOptions([
                     'defaultFont' => "Roboto",
                     'tempDir' => public_path(),
