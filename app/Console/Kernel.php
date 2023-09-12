@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Http\Controllers\CademiProcessController;
 use App\Http\Controllers\ChatbotAsset;
 use App\Jobs\Cademi\CademiProcess;
 use App\Jobs\CademiProgress;
@@ -28,8 +29,10 @@ class Kernel extends ConsoleKernel
         //Chama comando para verificação de 
         //$schedule->command('teste:cron')->dailyAt('08:30');
         
-      
-            $schedule->job(new CademiProcess())->dailyAt('09:58');
+        $schedule->call(function () {
+            $exec = new CademiProcessController;
+            $exec->execute();
+        })->dailyAt('12:49');
         
         //CademiProgress::dispatch();
         //$schedule->job(new CademiProgress())->everyMinute();
