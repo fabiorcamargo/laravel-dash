@@ -41,8 +41,8 @@ class ProductProgress implements ShouldQueue
     public function handle()
     {
 
-        sleep(1);
-        
+        Storage::disk('local')->append('file6.txt', now() . " product " .  $this->user->id);
+
         $product_status = new stdClass;
         $product_status->id = $this->product->product;   
         

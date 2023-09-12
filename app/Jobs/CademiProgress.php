@@ -65,7 +65,7 @@ class CademiProgress implements ShouldQueue
 
        
 
-         
+        Storage::disk('local')->append('file6.txt', now() . " cademi " .  $this->user->id);
 
             //Avalia se o usuário possui perfil na cademi    
             if (Cademi::where('user_id', $this->user->id)->exists())

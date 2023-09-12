@@ -35,35 +35,42 @@ class CademiProcess implements ShouldQueue
     {
         $this->users = User::where('courses', 'not like', 'NÃO')->get();
 
+    
         $i = 0;
         
             foreach ($this->users as $user) {
-                if($i < 3){
-                dispatch(new CademiProgress($user))
-                ->delay(now()->addSeconds($i));
-                $i++;
-            }
+                $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
+                if ($user->CademiProgress()->first() !== null) {
+                    $products = $user->CademiProgress()->orderBy('updated_at', 'desc')->get();
+                    $update_date = Carbon::parse($products[0]->updated_at);
+                    //if ($inputDate > $update_date) {
+                        dispatch(new CademiProgress($user))->delay(now()->addSeconds($i));
+
+                    //}
+                    $i++;
+                }else{
+                    dispatch(new CademiProgress($user))->delay(now()->addSeconds($i));
+                    $i++;
+                }
             }
     
 
         
         foreach ($this->users as $user) {
-            if($i < 6){
             $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
             if ($user->CademiProgress()->first() !== null) {
                 $products = $user->CademiProgress()->orderBy('updated_at', 'desc')->get();
                 $update_date = Carbon::parse($products[0]->updated_at);
-                if ($inputDate > $update_date) {
+                //if ($inputDate > $update_date) {
                     $cademi = $user->cademis()->first();
                     //Passa por todos os produtos
                     foreach ($products as $product) {
-                        dispatch(new ProductProgress($user, $cademi->user, $product))
-                        ->delay(now()->addSeconds($i));
+                        dispatch(new ProductProgress($user, $cademi->user, $product))->delay(now()->addSeconds($i));
                         $i++;
                     }
-                }
+                    
+                //}
             }
-        }
         }
     
     }
