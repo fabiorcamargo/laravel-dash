@@ -36,14 +36,19 @@ class CademiProcess implements ShouldQueue
         $this->users = User::where('courses', 'not like', 'NÃO')->get();
 
         $i = 0;
-        foreach ($this->users as $user) {
-            dispatch(new CademiProgress($user))
-            ->delay(now()->addSeconds($i));
-            $i++;
-        }
+        
+            foreach ($this->users as $user) {
+                if($i < 3){
+                dispatch(new CademiProgress($user))
+                ->delay(now()->addSeconds($i));
+                $i++;
+            }
+            }
+    
 
+        
         foreach ($this->users as $user) {
-
+            if($i < 6){
             $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
             if ($user->CademiProgress()->first() !== null) {
                 $products = $user->CademiProgress()->orderBy('updated_at', 'desc')->get();
@@ -59,5 +64,7 @@ class CademiProcess implements ShouldQueue
                 }
             }
         }
+        }
+    
     }
 }
