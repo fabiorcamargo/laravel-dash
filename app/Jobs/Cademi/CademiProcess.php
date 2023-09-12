@@ -15,6 +15,7 @@ use Illuminate\Queue\SerializesModels;
 class CademiProcess implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    public $timeout = null;
 
     /**
      * Create a new job instance.
