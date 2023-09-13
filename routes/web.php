@@ -1604,6 +1604,18 @@ Route::get('/redir', [RedirCademiController::class, 'redir_get'])->name('aluno.r
 Route::post('/redir', [RedirCademiController::class, 'redir_post'])->name('aluno.redir.post');
 Route::get('/modern-dark-menu/redir_login', [RedirCademiController::class, 'redir_get_show'])->name('aluno.redir.login');
 
+Route::get('/test/fila', function () {
+    $users = User::where('courses', 'not like', 'NÃO')->get(); // Consulta todos os usuários
+    $batches = $users->chunk(1000);
+        foreach ($batches as $batch) {
+            foreach ($batch as $user) {
+                dd($user);
+                Storage::disk('local')->append('file6.txt', now() . " A " .  $user->id);
+            }
+        }
+    dd('fim');
+});
+
 Route::get('/test/pdf', function () {
     //dd('s');
     $pdf = Pdf::loadView('pdf.lista')

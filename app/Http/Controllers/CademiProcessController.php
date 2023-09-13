@@ -10,15 +10,9 @@ use Illuminate\Http\Request;
 
 class CademiProcessController extends Controller
 {
-    public function execute(){
+    public function execute($users, $i){
 
-
-        $this->users = User::where('courses', 'not like', 'NÃO')->get();
-
-    
-        $i = 0;
-        
-            foreach ($this->users as $user) {
+            foreach ($users as $user) {
                 $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
                 if ($user->CademiProgress()->first() !== null) {
                     $products = $user->CademiProgress()->orderBy('updated_at', 'desc')->get();
@@ -36,7 +30,7 @@ class CademiProcessController extends Controller
     
 
         
-        foreach ($this->users as $user) {
+        foreach ($users as $user) {
             $inputDate = Carbon::parse($user->access_date == null ? Carbon::now() : $user->access_date);
             if ($user->CademiProgress()->first() !== null) {
                 $products = $user->CademiProgress()->orderBy('updated_at', 'desc')->get();

@@ -8,6 +8,7 @@ use App\Jobs\Cademi\CademiProcess;
 use App\Jobs\CademiProgress;
 use App\Jobs\ChatbotSend;
 use App\Jobs\UserMg_FailSend;
+use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -30,8 +31,14 @@ class Kernel extends ConsoleKernel
         //$schedule->command('teste:cron')->dailyAt('08:30');
         
         $schedule->call(function () {
-            $exec = new CademiProcessController;
-            $exec->execute();
+            $users = User::where('courses', 'not like', 'NÃO')->get(); // Consulta todos os usuários
+            $batches = $users->chunk(1000);
+                foreach ($batches as $batch) {
+                    foreach ($batch as $user) {
+                        dd($user);
+                        Storage::disk('local')->append('file6.txt', now() . " A " .  $user->id);
+                    }
+                }
         })->dailyAt('12:49');
         
         //CademiProgress::dispatch();
