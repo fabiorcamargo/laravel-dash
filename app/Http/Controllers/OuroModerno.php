@@ -31,7 +31,7 @@ class OuroModerno extends Controller
       }else{
         $token = env('OURO_TOKEN') . ":"; 
         $curl = curl_init();
-        $url = env('OURO_URL_API') . "/ws/v2/unidades/token/" . env('OURO_UNIDADE');
+        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/token/" . env('OURO_UNIDADE');
         curl_setopt_array($curl, array(
           CURLOPT_URL => $url,
           CURLOPT_RETURNTRANSFER => true,
@@ -62,7 +62,7 @@ class OuroModerno extends Controller
       }
      /*
         $token = env('OURO_TOKEN') . ":"; 
-        $url = env('OURO_URL_API') . "/ws/v2/unidades/token/check/" . env('OURO_POST_TOKEN');
+        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/token/check/" . env('OURO_POST_TOKEN');
         $curl = curl_init();
                   curl_setopt_array($curl, array(
                     CURLOPT_URL => $url,
@@ -84,7 +84,7 @@ class OuroModerno extends Controller
         if(curl_getinfo($curl, CURLINFO_HTTP_CODE) == 200){
           return true;
         }else{
-          $url = env('OURO_URL_API') . "/ws/v2/unidades/token/" . env('OURO_UNIDADE');
+          $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/token/" . env('OURO_UNIDADE');
                   curl_setopt_array($curl, array(
                     CURLOPT_URL => $url,
                     CURLOPT_RETURNTRANSFER => true,
@@ -152,7 +152,7 @@ class OuroModerno extends Controller
           return back()->withErrors(__($msg));
         }*/
         
-        $url = env('OURO_URL_API') . '/ws/v2/alunos';
+        $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
         $type = "POST";
         $user = User::find(Auth::user()->id);
         //$user->client_ouro()->delete();
@@ -184,7 +184,7 @@ class OuroModerno extends Controller
           exit();
         }else{
           sleep(1);
-          $url = env('OURO_URL_API') . "/ws/v2/alunos/token/" . $request->data->id;
+          $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . $request->data->id;
           $payload = "";
           $type = "GET";
           $expiration = (Carbon::now()->addHour(6));
@@ -204,7 +204,7 @@ class OuroModerno extends Controller
     public function criar_aluno($id){
 
       
-      $url = env('OURO_URL_API') . '/ws/v2/alunos';
+      $url = 'https://ead.ouromoderno.com.br/ws/v2/alunos';
       $type = "POST";
       $user = User::find($id);
       $payload = [
@@ -236,7 +236,7 @@ class OuroModerno extends Controller
         exit();
       }else{
         sleep(1);
-        $url = env('OURO_URL_API') . "/ws/v2/alunos/token/" . $request->data->id;
+        $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . $request->data->id;
         $payload = "";
         $type = "GET";
         $expiration = (Carbon::now()->addHour(6));
@@ -257,7 +257,7 @@ class OuroModerno extends Controller
     public function criar_matricula($liberation, $ouro){
           //dd($liberation);
 
-          $url = env('OURO_URL_API') . "/ws/v2/alunos/matricula/$ouro->ouro_id";
+          $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/matricula/$ouro->ouro_id";
           $payload = [
             'token' => env('OURO_POST_TOKEN'),
             'cursos' => $liberation->course_code
@@ -310,31 +310,30 @@ class OuroModerno extends Controller
     }
 
     public function check_user_token(){
+
       $user = Auth::user();
       /*if(env('APP_DEBUG') == true){
         return "Debug";
       }*/
       if(Carbon::now() > OuroClient::where('user_id', (Auth::user()->id))->value('expiration')){
-        $url = env('OURO_URL_API') . "/ws/v2/alunos/token/" . OuroClient::where('user_id', (Auth::user()->id))->value('ouro_id');
+        $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/token/" . OuroClient::where('user_id', (Auth::user()->id))->value('ouro_id');
         $payload = "";
         $type = "GET";
         $expiration = (Carbon::now()->addHour(1));
         $reposta = OuroModerno::req($payload, $url, $type);
         //dd($reposta->status);
-        if($reposta->status == "false"){
+        /*if($reposta->status == "false"){
           
          return "false";
 
         }else{
-          
         $user->client_ouro()->update([
           'login_auto' => $reposta->data->token,
           'expiration' => $expiration
         ]);
         return "true";
+      }*/
       }
-      }
-      
       return "true";
     }
 
@@ -379,7 +378,7 @@ class OuroModerno extends Controller
       
       $payload = ['token' => env('OURO_POST_TOKEN'),];
       
-      $url = env('OURO_URL_API') . "/ws/v2/alunos/removercurso/$ouro->ouro_id/$ouro->ouro_course_id?token=".env('OURO_TOKEN');
+      $url = "https://ead.ouromoderno.com.br/ws/v2/alunos/removercurso/$ouro->ouro_id/$ouro->ouro_course_id?token=".env('OURO_TOKEN');
       //dd($url);
       $type = "POST";
 
@@ -406,7 +405,7 @@ class OuroModerno extends Controller
 
     public function get_courses_list(){
       
-      $url = env('OURO_URL_API') . "/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
+      $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
       $ouro = new OuroModerno;
       $payload ="";
       $data = "";
