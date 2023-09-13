@@ -321,18 +321,21 @@ class OuroModerno extends Controller
         $type = "GET";
         $expiration = (Carbon::now()->addHour(1));
         $reposta = OuroModerno::req($payload, $url, $type);
-        //dd($reposta->status);
-        /*if($reposta->status == "false"){
+        //dd($reposta);
+        if(isset($reposta->status)){
+        if($reposta->status == "false"){
           
          return "false";
 
         }else{
+
         $user->client_ouro()->update([
           'login_auto' => $reposta->data->token,
           'expiration' => $expiration
         ]);
         return "true";
-      }*/
+      }
+    }
       }
       return "true";
     }
