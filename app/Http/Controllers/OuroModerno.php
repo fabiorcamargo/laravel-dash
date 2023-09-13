@@ -310,7 +310,6 @@ class OuroModerno extends Controller
     }
 
     public function check_user_token(){
-
       $user = Auth::user();
       /*if(env('APP_DEBUG') == true){
         return "Debug";
@@ -327,6 +326,7 @@ class OuroModerno extends Controller
          return "false";
 
         }else{
+          
         $user->client_ouro()->update([
           'login_auto' => $reposta->data->token,
           'expiration' => $expiration
@@ -334,6 +334,7 @@ class OuroModerno extends Controller
         return "true";
       }
       }
+      
       return "true";
     }
 

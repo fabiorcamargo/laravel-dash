@@ -31,7 +31,7 @@ class FormController extends Controller
     public function add_show_course_create(){
         $campaign = FormCampain::all();
 
-        $url = "https://ead.ouromoderno.com.br/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
+        $url = env('OURO_URL_API') . "/ws/v2/unidades/cursos/" . env('OURO_UNIDADE');
         $ouro = new OuroModerno;
         $payload ="";
         $data = "";
