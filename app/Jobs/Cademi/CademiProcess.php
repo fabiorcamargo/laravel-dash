@@ -17,6 +17,7 @@ class CademiProcess implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $users;
+    protected $i;
 
     /**
      * Create a new job instance.

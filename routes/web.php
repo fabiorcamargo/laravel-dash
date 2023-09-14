@@ -86,7 +86,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/test_ouro', function () {
-      $url = "https://meuappdecursos.com.br/ws/v2/alunos/token/413851";
+      $url = "https://meuappdecursos.com.br/ws/v2/alunos/token/check/2ef38cb4-5322-11ee-a1b6-0e565d07d070";
         $token = base64_encode(env('OURO_TOKEN') . ":");  
        
         // Substitua 'SEU_TOKEN_AQUI' pelo seu token de autenticação

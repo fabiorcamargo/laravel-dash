@@ -30,16 +30,17 @@ class Kernel extends ConsoleKernel
         //Chama comando para verificação de 
         //$schedule->command('teste:cron')->dailyAt('08:30');
         
-        $schedule->call(function () {
+        /*$schedule->call(function () {
+            $chunk = 10;
             $users = User::where('courses', 'not like', 'NÃO')->get(); // Consulta todos os usuários
-            $batches = $users->chunk(1000);
+            $batches = $users->chunk($chunk);
+            //dd($batches);
+            $i = 1;
                 foreach ($batches as $batch) {
-                    foreach ($batch as $user) {
-                        dd($user);
-                        Storage::disk('local')->append('file6.txt', now() . " A " .  $user->id);
-                    }
+                    dispatch(new CademiProcess($batch, $i))->delay(now()->addSeconds($i));
+                    $i = $i + $chunk*10;
                 }
-        })->dailyAt('12:49');
+        })->dailyAt('17:34');*/
         
         //CademiProgress::dispatch();
         //$schedule->job(new CademiProgress())->everyMinute();
