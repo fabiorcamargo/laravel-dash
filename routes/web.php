@@ -82,52 +82,7 @@ use Illuminate\Support\Facades\Storage;
  *       @Router -  Aberta
  * ==============================
  */
-Route::middleware(['auth'])->group(function () {
-
-
-    Route::get('/test_ouro', function () {
-      $url = "https://meuappdecursos.com.br/ws/v2/alunos/token/check/2ef38cb4-5322-11ee-a1b6-0e565d07d070";
-        $token = base64_encode(env('OURO_TOKEN') . ":");  
-       
-        // Substitua 'SEU_TOKEN_AQUI' pelo seu token de autenticação
-
-// Crie uma instância do cliente Guzzle
-$client = new Client();
-
-// URL do endpoint que você deseja acessar
-
-try {
-    // Faça a solicitação GET com o cabeçalho de autenticação
-    $response = $client->request('GET', $url, [
-        'headers' => [
-            'Authorization' => 'Basic ' . $token,
-            // Outros cabeçalhos, se necessário
-        ],
-    ]);
-    
-
-    // Obtenha o corpo da resposta
-    $data = $response->getBody()->getContents();
-
-    // Faça algo com os dados da resposta, por exemplo, decodifique-os JSON
-    $responseData = json_decode($data);
-
-    dd($data);
-    // Agora, $responseData contém os dados da resposta
-    // Faça o que você precisa com os dados aqui
-} catch (\GuzzleHttp\Exception\RequestException $e) {
-
-dd($e);
-
-    // Lidar com erros de solicitação, se houver algum
-    // Por exemplo, você pode verificar $e->getResponse() para obter informações detalhadas sobre o erro.
-}
-
-
-
-    });
-
-        
+Route::middleware(['auth'])->group(function () {        
 
     Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
     Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
