@@ -82,6 +82,7 @@ class CademiController extends Controller
              //"cliente_endereco_estado"=> $user->uf2,
              "produto_nome" => $course
          ];
+         
 
          if (env('APP_DEBUG') == true){
             //dd('s');
@@ -140,7 +141,7 @@ class CademiController extends Controller
                 }
             }');
             
-            //dd($cademi);
+           //dd($cademi);
 
          } else {
             $data = Storage::get('file1.txt', "$user->username, $user->email2, $user->name, $user->document, $user->cellphone, $course, CODD-$course-$user->username" . PHP_EOL);
@@ -154,7 +155,7 @@ class CademiController extends Controller
          }
         //dd($cademi);
          
-            if (isset($cademi->data[0]->erro)){
+            if (isset($cademi->data->Carga->erro)){
                 //dd($cademi);
                 $import = new CademiImport();
                 $import->username = $user->username;
@@ -169,7 +170,7 @@ class CademiController extends Controller
                 $import->username = $user->username;
                 $import->status = "success";
                 $import->course = $course;
-                $import->code = $cademi->data[0]->engine_id;
+                $import->code = $payload['codigo'];
                 $import->msg = "success";
                 $import->body = json_encode($cademi);
                 $import->save();
