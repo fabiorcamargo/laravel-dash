@@ -41,7 +41,7 @@ class CademiProgress implements ShouldQueue
     public function handle()
     {
 
-        sleep(1);
+        //sleep(1);
 
 
         //Passa por todos os usuários
@@ -65,7 +65,7 @@ class CademiProgress implements ShouldQueue
 
        
 
-        Storage::disk('local')->append('file6.txt', now() . " cademi " .  $this->user->id);
+        Storage::disk('local')->append('file6.txt', now() . " cademi-progress " .  $this->user->id);
 
             //Avalia se o usuário possui perfil na cademi    
             if (Cademi::where('user_id', $this->user->id)->exists())
@@ -93,11 +93,5 @@ class CademiProgress implements ShouldQueue
                 }
             }
         }
-
-
-
-        
-
-
     }
 

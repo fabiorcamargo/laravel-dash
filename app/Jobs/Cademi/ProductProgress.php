@@ -3,6 +3,7 @@
 namespace App\Jobs\Cademi;
 
 use App\Models\User;
+use App\Models\UserCademiProgress;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -19,12 +20,13 @@ class ProductProgress implements ShouldQueue
     protected $user;
     protected $product;
     protected $cademi_user;
+    
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($user, $cademi_user, $product)
+    public function __construct(User $user, $cademi_user, UserCademiProgress $product)
     {
         $this->user = $user;
         $this->cademi_user = $cademi_user;

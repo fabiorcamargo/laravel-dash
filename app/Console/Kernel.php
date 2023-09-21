@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Storage;
 class Kernel extends ConsoleKernel
 {
     use DispatchesJobs;
-    
+
     /**
      * Define the application's command schedule.
      *
@@ -26,29 +26,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {   
-
-        //Chama comando para verificação de 
-        //$schedule->command('teste:cron')->dailyAt('08:30');
-        
-        /*$schedule->call(function () {
-            $chunk = 10;
-            $users = User::where('courses', 'not like', 'NÃO')->get(); // Consulta todos os usuários
-            $batches = $users->chunk($chunk);
-            //dd($batches);
-            $i = 1;
-                foreach ($batches as $batch) {
-                    dispatch(new CademiProcess($batch, $i))->delay(now()->addSeconds($i));
-                    $i = $i + $chunk*10;
-                }
-        })->dailyAt('17:34');*/
-        
-        //CademiProgress::dispatch();
-        //$schedule->job(new CademiProgress())->everyMinute();
-        //$schedule->command('ProductProgressCommand:cron')->dailyAt('02:00');
-        //$schedule->command('CertCheckCommand:cron')->dailyAt('03:00');
-        
-        
-
+        $schedule->call(function () {
+            $firstUser = User::first();
+            dispatch(new CademiProcess($firstUser));
+        })->dailyAt('19:10');
     }
 
     /**
