@@ -26,10 +26,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {   
-        $schedule->call(function () {
+        /*$schedule->call(function () {
             $firstUser = User::first();
             dispatch(new CademiProcess($firstUser));
-        })->dailyAt('19:10');
+        })->dailyAt('20:53');*/
+
+        $schedule->command('telescope:prune --hours=48')->daily();
     }
 
     /**

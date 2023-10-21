@@ -393,8 +393,30 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                     Route::prefix('/cert')->group(function () {
                         Route::get('/test', function () {
+                            //dd('s');
+                           /* $this->user = User::first();
+
+                            $nextUser = User::where('id', '>', $this->user->id)
+                            ->where('courses', 'not like', 'NÃO')
+                            ->where(function ($query) {
+                                $query->whereExists(function ($subQuery) {
+                                    $subQuery->from('cademis')
+                                        ->whereRaw('cademis.user_id = users.id');
+                                });
+                            })
+                            ->where(function ($query) {
+                                $query->whereNull('users.access_date')
+                                    ->orWhere(function ($subquery) {
+                                        $subquery->whereDoesntHave('CademiProgress')
+                                            ->orWhere(function ($innerquery) {
+                                                $innerquery->where('updated_at', '<', DB::raw('users.access_date'));
+                                            });
+                                    });
+                            })
+                            ->first();
+                        
                             
-                                               
+                            dd($nextUser);*/
                         
                            
                         

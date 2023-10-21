@@ -461,6 +461,7 @@
                                                 <option>AUXILIAR DE CRECHE</option>
                                                 <option>PREPARATÓRIO ENCCEJA</option>
                                                 <option>CURSOS PROFISSIONALIZANTES</option>
+                                                <option>JOVEM APRENDIZ</option>
                                             </select>
 
                                         </div>
