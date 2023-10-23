@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\UserCertificatesCondition;
 use App\Models\UserCertificatesEmit;
 use App\Models\UserCertificatesModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use stdClass;
 
 class CertificateController extends Controller
@@ -112,5 +114,19 @@ class CertificateController extends Controller
         $condition->delete();
 
         return back()->with('status', "Condição $condition->name excluída com sucesso");
+    }
+
+    public function emit(Request $request){
+        
+        $user = User::where('username', $request->user_id)->first();
+        $data = [
+            'code' => Str::uuid(),
+            'user_id' => $user->id,
+            'user_certificates_models_id' => $request->cert_id,
+            'percent' => '100',
+            ];
+
+            //dd($data);
+        $user->getCertificates()->create($data);
     }
 }

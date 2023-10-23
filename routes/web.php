@@ -393,33 +393,12 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                     Route::prefix('/cert')->group(function () {
                         Route::get('/test', function () {
-                            //dd('s');
-                           /* $this->user = User::first();
-
-                            $nextUser = User::where('id', '>', $this->user->id)
-                            ->where('courses', 'not like', 'NÃO')
-                            ->where(function ($query) {
-                                $query->whereExists(function ($subQuery) {
-                                    $subQuery->from('cademis')
-                                        ->whereRaw('cademis.user_id = users.id');
-                                });
-                            })
-                            ->where(function ($query) {
-                                $query->whereNull('users.access_date')
-                                    ->orWhere(function ($subquery) {
-                                        $subquery->whereDoesntHave('CademiProgress')
-                                            ->orWhere(function ($innerquery) {
-                                                $innerquery->where('updated_at', '<', DB::raw('users.access_date'));
-                                            });
-                                    });
-                            })
-                            ->first();
-                        
+                            $user = User::find(1);
                             
-                            dd($nextUser);*/
-                        
-                           
-                        
+                            //dd($user);
+                           //Busca as condições de Emissão de Certificado
+       
+
                         });
                         Route::get('/cademi/get_courses', [CademiController::class, 'get_courses_list'])->name('cademi_get_courses');
                         Route::get('/list', function () {
@@ -442,7 +421,10 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                             $cert_models = UserCertificatesModel::all();
                             return view('pages.app.cert.emit-list', compact('certificates', 'cert_models'));
                         })->name('cert-emit-list');
+                       
                         Route::post('/create', [CertificateController::class, 'create'])->name('post-cert-create');
+
+                        Route::post('/condition/emit', [CertificateController::class, 'emit'])->name('post-cert-emit');
 
                         Route::post(
                             '/cert-del/{id}',

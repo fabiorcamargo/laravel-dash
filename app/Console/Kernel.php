@@ -6,6 +6,7 @@ use App\Http\Controllers\CademiProcessController;
 use App\Http\Controllers\ChatbotAsset;
 use App\Jobs\Cademi\CademiProcess;
 use App\Jobs\CademiProgress;
+use App\Jobs\Certificates\CertCheck;
 use App\Jobs\ChatbotSend;
 use App\Jobs\UserMg_FailSend;
 use App\Models\User;
@@ -29,7 +30,12 @@ class Kernel extends ConsoleKernel
         /*$schedule->call(function () {
             $firstUser = User::first();
             dispatch(new CademiProcess($firstUser));
-        })->dailyAt('20:53');*/
+        })->dailyAt('20:53');
+
+        $schedule->call(function () {
+            $firstUser = User::first();
+            dispatch(new CertCheck($firstUser));
+        })->dailyAt('13:45');*/
 
         $schedule->command('telescope:prune --hours=48')->daily();
     }

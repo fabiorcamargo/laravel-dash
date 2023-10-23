@@ -32,7 +32,7 @@
                 <!-- Modal content-->
                 <div class="modal-content">
 
-                    <form action="{{ route('post-cert-create') }}" method="POST" id="combo_create" class="py-12">
+                    <form action="{{ route('post-cert-emit') }}" method="POST" id="combo_create" class="py-12">
                         @csrf
                         <div class="modal-header">
                             <h5 class="modal-title">Novo Certificado</h5>
@@ -47,39 +47,20 @@
                         </div>
 
                         <div class="modal-body">
-                           
+                            <div class="col-xxl-12 col-md-12 mb-4">
+                                <p for="combo_name">Aluno</p>
+                                <input type="text" name="user_id" id="user_id">
+                            </div>
 
                             <div class="col-xxl-12 col-md-12 mb-4">
                                 <p for="combo_name">Certificado</p>
-                                <select class="form-control form-control" id="type" name="type" required>
+                                <select class="form-control form-control" id="cert_id" name="cert_id" required>
                                     @foreach ($cert_models as $cert_m )
                                     <option value="{{$cert_m->id}}">{{$cert_m->name}}</option>
                                     @endforeach
-
-
-
-                                </select>
-                                <input type="text" class="form-control" id="name" name="name" value="" required>
-                            </div>
-                            <div class="col-xxl-12 col-md-12 mb-4">
-                                <p for="combo_name">Tipo</p>
-                                <select class="form-control form-control" id="type" name="type" required>
-                                    <option value="">Escolha</option>
-                                    <option value="cademi">Cademi</option>
-                                    <option value="cademi">Ouro Moderno</option>
                                 </select>
                             </div>
-                            <div class="col-xxl-12 col-md-12 mb-4">
-                                <p for="combo_name">Carga horária</p>
-                                <input type="number" class="form-control" id="hours" name="hours" value="" required>
-                            </div>
-                            <div class="col-xxl-12 col-md-12 mb-4">
-                                <p for="combo_name">Carga horária</p>
-                                <div class="col-sm-12">
-                                    <textarea class="form-control" name="conteudo" id="conteudo" rows="3"
-                                        required></textarea>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="modal-footer">

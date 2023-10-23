@@ -15,6 +15,7 @@ class CertCheck implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
     private $user;
+    protected $i;
     /**
      * Create a new job instance.
      *
@@ -23,6 +24,7 @@ class CertCheck implements ShouldQueue
     public function __construct(User $user)
     {
         $this->user = $user;
+        $this->i = $this->i + 3;
     }
 
     /**
@@ -61,6 +63,22 @@ class CertCheck implements ShouldQueue
                            dispatch($job);
                         }
                     }
+        }
+
+
+
+        $nextUser = User::where('id', '>', $this->user->id) //Verifica se o id é maior que o anterior
+        ->where('courses', 'not like', 'NÃO') //Verifica se tem cursos
+        ->where(function ($query) { //Cria uma nova pesquisa
+            $query->whereExists(function ($subQuery) { //Se a pesquisa existir
+                $subQuery->from('user_cademi_progress') //Na tabela cademis
+                    ->whereRaw('user_cademi_progress.user_id = users.id'); //verificar se o usuário existe
+            });
+        })->first(); //seleciona o que está nessa condição.
+
+
+        if ($nextUser) { //Se existir próximo usuário prosseguir
+            dispatch(new CertCheck($nextUser))->delay(now()->addSeconds($this->i)); //Dispachar novo job com adicional de tempo
         }
     }
 }
