@@ -184,6 +184,7 @@
                                                 <h5 class="card-title mb-2">{{$cert->getuser()->name}}
                                                     {{$cert->getuser()->lastname}}
                                                 </h5>
+                                                <h6 class="">ID: {{ $cert->getuser()->username }}</h6>
                                                 <h6 class="">Código: {{ $cert->code }}</h6>
                                                 <h6 class="">Aproveitamento: {{ $cert->percent }}%</h6>
                                                 <h6 class="">Certificado: {{ $cert->getCertModel()->name }}</h6>
