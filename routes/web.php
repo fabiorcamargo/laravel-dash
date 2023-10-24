@@ -139,6 +139,7 @@ Route::middleware(['auth'])->group(function () {
              * ==============================
              */
             Route::prefix('/aluno/pay/')->group(function () {
+                Route::get('/my', [OldAsaasController::class, 'my']);
                 Route::get('/list/{id}', [OldAsaasController::class, 'list']);
             });
 

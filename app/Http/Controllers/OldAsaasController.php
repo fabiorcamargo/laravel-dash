@@ -1001,6 +1001,76 @@ class OldAsaasController extends Controller
     ]);
   }*/
 
+  public function my(){
+
+    $user = Auth::user();
+    
+    if ($user->document == null || $user->document == 99999999999 || $user->document == 00000000000) {
+      $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
+      return back()->withErrors(__($msg));
+    }
+    //dd('1');
+    if ($user->secretary == "TB" || $user->secretary == "MGA") {
+      //dd('1');
+    } else {
+
+      $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
+      return back()->withErrors(__($msg));
+    }
+    //dd($user->document);
+    $client = new OldAsaasController;
+    $i = 1;
+    $a = 1;
+    //dd(env("ASAAS_TOKEN$i"));
+    $response = $client->lista_cliente($user->document, env("ASAAS_TOKEN$i"));
+    //dd($user->document);
+    if (!isset($response->data[0]->id)) {
+
+      while ($a <= 3) {
+
+        $a++;
+        if (!isset($response->data[0]->id)) {
+
+          $i++;
+          //dd($i);
+          //dd($a);
+          $response = $client->lista_cliente($user->document, env("ASAAS_TOKEN$i"));
+
+          //dd($response->data);
+        }
+      }
+    }
+    //dd($response);
+    if (!isset($response->data[0]->id)) {
+      $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
+      return back()->withErrors(__($msg));
+    }
+    //dd('s');
+    $customer = $response->data[0]->id;
+    //dd($customer);
+    $cobrancas = ($client->lista_cobranca($customer, env("ASAAS_TOKEN$i")))->data;
+    //dd($cobrancas);
+
+    if (isset($cobrancas[0]->billingType)) {
+      if ($cobrancas[0]->billingType == "CREDIT_CARD") {
+        $link = [
+          "status" => $cobrancas[0]->status,
+          "url" => $cobrancas[0]->invoiceUrl,
+          "date" => Carbon::parse($cobrancas[0]->dueDate)->format('d/m/Y')
+        ];
+        //dd($link['status']);
+
+        return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
+      }
+      if (!isset($cobrancas[0])) {
+        //dd('s');
+        $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
+        return back()->withErrors(__($msg));
+      }
+    }
+
+    return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
+  }
   public function list($id)
   {
     if (Auth::user()->role >= 4) {
