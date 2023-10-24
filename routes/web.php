@@ -180,6 +180,10 @@ Route::middleware(['auth'])->group(function () {
                     return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Checkout ', 'breadcrumb' => 'checkout end']);
                 })->name('eco_checkout_end-blank');
             });
+
+            Route::prefix('/app/cert')->group(function () {
+                Route::get('/my', [CertificateController::class, 'my'])->name('cert-my');
+            });
         });
     };
 });
@@ -392,14 +396,6 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                     });
 
                     Route::prefix('/cert')->group(function () {
-                        Route::get('/test', function () {
-                            $user = User::find(1);
-                            
-                            //dd($user);
-                           //Busca as condições de Emissão de Certificado
-       
-
-                        });
                         Route::get('/cademi/get_courses', [CademiController::class, 'get_courses_list'])->name('cademi_get_courses');
                         Route::get('/list', function () {
                             $certificates = UserCertificatesModel::all();

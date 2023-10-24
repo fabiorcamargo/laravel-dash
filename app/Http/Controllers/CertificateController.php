@@ -129,4 +129,11 @@ class CertificateController extends Controller
             //dd($data);
         $user->getCertificates()->create($data);
     }
+
+    public function my(Request $request){
+        $user = auth()->user();
+        $certificates = $user->getCertificates()->get();
+
+        return view('pages.app.cert.my', ['certificates' => $certificates]);
+    }
 }
