@@ -186,7 +186,7 @@
                                                 </h5>
                                                 <h6 class="">Código: {{ $cert->code }}</h6>
                                                 <h6 class="">Aproveitamento: {{ $cert->percent }}%</h6>
-                                                <h6 class="">Modelo: {{ $cert->getCertModel()->name }}</h6>
+                                                <h6 class="">Certificado: {{ $cert->getCertModel()->name }}</h6>
                                                 <p class="card-text">{!!
                                                     str_replace(['\r','\n'], [""," <br> "],
                                                     $cert->content) !!}</p>
