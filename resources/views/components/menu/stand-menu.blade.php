@@ -79,7 +79,7 @@
                                 <a href="{{route('cert-my')}}"> Meus Certificados </a>
                             </li>
 
-                            @can('admin')
+                            @can('secretary')
                             <li class="{{ Request::routeIs('cert-emit-list') ? 'active' : '' }}">
                                 <a href="{{route('cert-emit-list')}}"> Emitidos </a>
                             </li>
