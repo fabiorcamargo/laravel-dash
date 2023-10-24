@@ -137,13 +137,13 @@
                                                         {!!$cert->created_at->format('d/m/y
                                                         H:i:s')!!}</p>
 
-                                                    <a href="{{route('cert-view', ['code' => $cert->code])}}"
+                                                    <a href="{{route('cert-check', ['code' => $cert->code])}}"
                                                         target="_blank" type="button"
                                                         class="badge badge-primary mb-2 bs-tooltip" title="Ver">
                                                         <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
                                                     </a>
 
-                                                    <a href="{{route('cert-pdf', ['code' => $cert->code])}}"
+                                                    <a href="{{route('cert-down', ['code' => $cert->code])}}"
                                                         target="_blank" type="button"
                                                         class="badge badge-success mb-2 bs-tooltip" title="Baixar">
                                                         <x-widgets._w-svg class="text-white" svg="file-download" />
