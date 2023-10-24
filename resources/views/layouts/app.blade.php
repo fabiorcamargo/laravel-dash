@@ -1,8 +1,29 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+
+
+<html lang="pt-br" itemscope="/" itemtype="http://schema.org/WebPage"><head>
+    
+
+
+
 <head>
+
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="pragma" content="no-cache">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Profissionaliza EAD">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="msapplication-TileImage" content="https://cdn.areademembros.com/image?p=instancia_1543%2Fpng%2FIfxSq2k487p0HWMA3XepFwXllqzvL8mSSXBWQO7p.png&amp;w=192&amp;h=192&amp;t=crop&amp;d=default.png&amp;uptkn=9c99b1e6faf00591827b268778f90dcf">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#000000">
+
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title') - EspecializaTi</title>
 
