@@ -10,7 +10,7 @@
 
     <meta charset="utf-8">
     <meta name="robots" content="noindex, nofollow">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="pragma" content="no-cache">
     
     <meta name="apple-mobile-web-app-capable" content="yes">
