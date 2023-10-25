@@ -49,7 +49,7 @@
                         <div class="modal-body">
                             <div class="col-xxl-12 col-md-12 mb-4">
                                 <p for="combo_name">Aluno</p>
-                                <input type="text" name="user_id" id="user_id">
+                                <input type="text" class="form-control" name="user_id" id="user_id">
                             </div>
 
                             <div class="col-xxl-12 col-md-12 mb-4">
@@ -60,7 +60,7 @@
                                     @endforeach
                                 </select>
                             </div>
-
+                            
                         </div>
 
                         <div class="modal-footer">

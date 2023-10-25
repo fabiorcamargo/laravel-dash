@@ -414,7 +414,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                         Route::post('/condition/edit/{id}', [CertificateController::class, 'condition_edit'])->name('post-condition-edit');
                         Route::post('/condition/del/{id}', [CertificateController::class, 'condition_del'])->name('post-condition-del');
                         Route::get('/emit-list', function () {
-                            $certificates = UserCertificatesEmit::paginate(20)->fragment('certificates');
+                            $certificates = UserCertificatesEmit::orderBy('updated_at', 'desc')->paginate(20)->fragment('certificates');
                             $cert_models = UserCertificatesModel::all();
                             return view('pages.app.cert.emit-list', compact('certificates', 'cert_models'));
                         })->name('cert-emit-list');

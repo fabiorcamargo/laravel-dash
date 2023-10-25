@@ -340,13 +340,70 @@
                                             <td>{{ $cert->getCertModel()->name }}</td>
                                             <td>{{$cert->created_at->format('d/m/Y')}}</td>
                                             <td>
+                                                <form action="{{route('cert-del-emit', ['id' => $cert->id])}}"
+                                                    id="msg_del[{{$cert->id}}]" method="POST">
+                                                    @csrf
                                                 <a href="{{route('cert-check', ['code' => $cert->code])}}"
                                                     target="_blank" type="button"
                                                     class="badge badge-primary mb-2 bs-tooltip" title="Ver">
                                                     <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
                                                 </a>
+                                                @can('secretary')
+                                                <a data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal{{$cert->id}}" type="button"
+                                                        class="badge badge-danger mb-2 bs-tooltip" title="Excluir">
+                                                        <x-widgets._w-svg class="text-white" svg="trash" />
+                                                    </a>
+                                                </form>
+                                                @endcan
                                             </td>
+                                            
                                         </tr>
+
+                                        <!-- Modal content-->
+                                        <div class="modal fade" id="exampleModal{{$cert->id}}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalLabel"
+                                            aria-hidden="true">
+
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="exampleModalLabel">Você
+                                                            deseja
+                                                            excluir?</h5>
+                                                        <a type="button" class="btn-close"
+                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                            <svg> ... </svg>
+                                                        </a>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <p class="text-danger p-4">⚠ Essa ação
+                                                            não pode ser revertida, confira os
+                                                            dados!</p>
+
+                                                        <div class="card-body">
+                                                            {{--$cert->id--}}
+                                                            <h5 class="card-title mb-2">{{
+                                                                $cert->name }}
+                                                            </h5>
+                                                            <p class="card-text">{!!
+                                                                str_replace(['\r','\n'], ["","
+                                                                <br> "],
+                                                                $cert->msg) !!}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <a class="btn btn btn-success"
+                                                            data-bs-dismiss="modal"><i
+                                                                class="flaticon-cancel-12"></i>
+                                                            Não</a>
+                                                        <a type="button" class="btn btn-danger"
+                                                            onClick="document.getElementById('msg_del[{{$cert->id}}]').submit();">Sim</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         @endforeach
 
 
