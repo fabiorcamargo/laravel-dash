@@ -193,11 +193,11 @@
                                 <div class="d-flex justify-content-between">
                                     <h3 class="">Lista de Condições</h3>
                                     <div class=>
-                                        <a data-bs-toggle="modal" href="" data-bs-target="#OuroCreateModal"
+                                        {{--<a data-bs-toggle="modal" href="" data-bs-target="#OuroCreateModal"
                                             class="bg-dark rounded p-2" data-toggle="tooltip" data-placement="top"
                                             title="Criar Condição Ouro">
                                             <img src="{{Vite::asset('resources/images/ouro.svg')}}" width="20px">
-                                        </a>
+                                        </a>--}}
                                         <a data-bs-toggle="modal" href="" data-bs-target="#CademiCreateModal"
                                             class="mx-2 bg-dark rounded p-2" data-toggle="tooltip" data-placement="top"
                                             title="Criar Condição Cademi">

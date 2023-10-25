@@ -91,19 +91,35 @@ class CertificateController extends Controller
 
     public function condition_create(Request $request)
     {
-        //dd($request->all());
-        $percent = str_replace("%", "", $request->percent);
+  
+        
+       
+
+        $request['percent'] = str_replace("%", "", $request->percent);
         //dd($percent);
         $body = (json_decode($request->course_list));
-        $json = json_encode($body);
+        $request['body'] = json_encode($body);
+
+        
+        $rule = [
+            'model' => 'required|integer',
+            'name' => 'required|string',
+            'type' => 'required|string',
+            'percent' => 'required|string',
+            'body' => 'required|string',
+        ];
+        
+        $request->validate($rule);
+        //dd($request->all());
+        
 
         //dd($json);
         UserCertificatesCondition::create([
             'user_certificates_models_id' => $request->model,
             'name' => $request->name,
             'type' => $request->type,
-            'percent' => $percent,
-            'body' => $json
+            'percent' => $request->percent,
+            'body' => $request->body
         ]);
 
         return back()->with('status', "Condição $request->name criada com sucesso");
