@@ -37,6 +37,7 @@ use App\Jobs\Certificates\CertEmit;
 use App\Jobs\Mkt_resend_not_active;
 use App\Jobs\UserMg_FailSend;
 use App\Jobs\WhatsappBulkTemplate;
+use App\Mail\CertEmitMail;
 use App\Mail\SendMailUser;
 use App\Mail\UserInvoiceSend;
 use App\Mail\UserSign;
@@ -89,7 +90,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
     Route::get('/wp/templates/{id}', [ApiWhatsapp::class, 'wp_templates'])->name('wp-templates');
     Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
-    //Route::get('/test', [ChatbotAsset::class, 'queue_send']);
+    
+    Route::get('/test', function(){
+        $userCertificatesEmit = UserCertificatesEmit::find(21);
+        $user = $userCertificatesEmit->getuser();
+        $code = $userCertificatesEmit->code;
+
+        if (str_contains($user->email, 'profissionalizaead')) {
+            Mail::to('fabiorcamargo@gmail.com')
+            ->queue(new CertEmitMail($code));
+        } else {
+            Mail::to($user->email)
+            ->queue(new CertEmitMail($code));
+        }
+    });
+
     Route::get('/test_mail', function () {
         $user = Auth::user();
         $cobranca = "https://profissionalizaead.com.br";

@@ -27,15 +27,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {   
-        /*$schedule->call(function () {
+        $schedule->call(function () {
             $firstUser = User::first();
             dispatch(new CademiProcess($firstUser));
-        })->dailyAt('20:53');*/
+        })->dailyAt('16:50')->name('Cademi-Progress');
 
         $schedule->call(function () {
             $firstUser = User::first();
             dispatch(new CertCheck($firstUser));
-        })->dailyAt('08:35');
+        })->dailyAt('15:47')->name('Cert-Check');
 
         $schedule->command('telescope:prune --hours=48')->daily();
     }
