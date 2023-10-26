@@ -15,4 +15,9 @@ class UserCertificatesModel extends Model
             'content',
             'body'
     ];
+
+    public function getEmit()
+    {
+        return $this->hasMany(UserCertificatesEmit::class, 'user_certificates_models_id', 'id');
+    }
 }

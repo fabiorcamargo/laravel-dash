@@ -404,8 +404,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                         })->name('cert-list');
 
                         Route::get('/condition', function () {
-                            $courses = CademiListCourse::all();
-                            $conditions = UserCertificatesCondition::all();
+                            $courses = CademiListCourse::get();
+                            $conditions = UserCertificatesCondition::get();
                             $cademi_certificates = UserCertificatesModel::where('type', "cademi")->get();
                             $ouro_certificates = UserCertificatesModel::where('type', "ouro")->get();
                             return view('pages.app.cert.condition', compact('conditions', 'courses', 'cademi_certificates', 'ouro_certificates'));

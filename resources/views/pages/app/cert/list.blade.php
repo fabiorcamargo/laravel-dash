@@ -219,14 +219,15 @@
                                                                     <x-widgets._w-svg class="text-white" svg="edit" />
                                                                 </a>
 
-                                                                <a href="{{route('cert-pdf', ['code' => 123456])}}"
+                                                                {{--<a href="{{route('cert-pdf', ['code' => 123456])}}"
                                                                     target="_blank"
                                                                     type="button"
                                                                     class="badge badge-secondary mb-2 bs-tooltip"
                                                                     title="Ver">
                                                                     <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
-                                                                </a>
+                                                                </a>--}}
 
+                                                               @if(!$cert->getEmit()->get())
                                                                 <a data-bs-toggle="modal"
                                                                     data-bs-target="#exampleModal{{$cert->id}}"
                                                                     type="button"
@@ -234,6 +235,7 @@
                                                                     title="Excluir">
                                                                     <x-widgets._w-svg class="text-white" svg="trash" />
                                                                 </a>
+                                                                @endif
 
                                                                 <!-- Modal content-->
                                                                 <div class="modal fade" id="exampleModal{{$cert->id}}"
