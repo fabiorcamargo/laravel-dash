@@ -227,7 +227,7 @@
                                                                     <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
                                                                 </a>--}}
 
-                                                               @if(!$cert->getEmit()->get())
+                                                               @if(!$cert->getEmit()->first())
                                                                 <a data-bs-toggle="modal"
                                                                     data-bs-target="#exampleModal{{$cert->id}}"
                                                                     type="button"
