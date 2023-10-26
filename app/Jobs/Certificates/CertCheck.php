@@ -24,7 +24,7 @@ class CertCheck implements ShouldQueue
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->i = $this->i + 3;
+        $this->i = $this->i + 1;
     }
 
     /**

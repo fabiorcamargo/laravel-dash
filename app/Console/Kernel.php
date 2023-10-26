@@ -30,12 +30,12 @@ class Kernel extends ConsoleKernel
         /*$schedule->call(function () {
             $firstUser = User::first();
             dispatch(new CademiProcess($firstUser));
-        })->dailyAt('20:53');
+        })->dailyAt('20:53');*/
 
         $schedule->call(function () {
             $firstUser = User::first();
             dispatch(new CertCheck($firstUser));
-        })->dailyAt('13:45');*/
+        })->dailyAt('08:35');
 
         $schedule->command('telescope:prune --hours=48')->daily();
     }
