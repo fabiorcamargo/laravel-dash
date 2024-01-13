@@ -261,7 +261,7 @@ splidePagiantion.mount();</pre>
                                             </li>
                                       </ul>
                                 </div>
-                              </div>
+                            </div>
 
                             <div id="thumbnail-slider" class="splide">
                                 <div class="splide__track">

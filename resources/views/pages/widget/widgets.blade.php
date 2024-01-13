@@ -34,6 +34,10 @@
     <div class="row layout-top-spacing">
 
         <!-- Analytics -->
+
+        <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+            <x-widgets._w-support title="Figma Design"/>
+        </div>
     
         <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
             <x-widgets._w-six title="Statistics"/>

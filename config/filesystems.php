@@ -43,6 +43,20 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+        'avatar' => [
+            'driver' => 'local',
+            'root' => storage_path('app/avatar'),
+            'url' => env('APP_URL').'/avatar',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
+        'product' => [
+            'driver' => 'local',
+            'root' => storage_path('app/product'),
+            'url' => env('APP_URL').'/product',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
 
         's3' => [
             'driver' => 's3',
@@ -72,6 +86,9 @@ return [
     'links' => [
         public_path('storage') => storage_path('app/public'),
         public_path('tmp') => storage_path('app/tmp'),
+        public_path('avatar') => storage_path('app/avatar'),
+        public_path('product') => storage_path('app/product'),
+        public_path('paybook') => storage_path('app/paybook'),
     ],
 
 ];

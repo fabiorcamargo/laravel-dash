@@ -136,6 +136,7 @@ export default defineConfig({
                 'resources/scss/dark/assets/apps/mailbox.scss',
                 'resources/scss/dark/assets/apps/notes.scss',
                 'resources/scss/dark/assets/apps/scrumboard.scss',
+                'resources/scss/dark/assets/apps/scrumboard2.scss',
                 'resources/scss/dark/assets/apps/todolist.scss',
                 
                 // --- Authentication
@@ -216,6 +217,7 @@ export default defineConfig({
                 'resources/assets/js/apps/mailbox.js',
                 'resources/assets/js/apps/notes.js',
                 'resources/assets/js/apps/scrumboard.js',
+                'resources/assets/js/apps/scrumboard2.js',
                 'resources/assets/js/apps/todoList.js',
 
                 // Auth

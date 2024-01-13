@@ -4,27 +4,41 @@
     "description": "The Laravel Framework.",
     "keywords": ["framework", "laravel"],
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Fábio Camargo",
+            "email": "fabiorcamargo@gmail.com"
+        }
+    ],
     "require": {
         "php": "^8.0.2",
+        "barryvdh/laravel-dompdf": "^2.0.3",
+        "canducci/cep": "^3.1",
         "codephix/asaas-sdk": "^2.0.5",
+        "doctrine/dbal": "^3.6",
+        "facebook/php-business-sdk": "^15.0",
         "fruitcake/laravel-cors": "^2.0.5",
+        "geekcom/validator-docs": "^3.9",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/fortify": "^1.13",
         "laravel/framework": "^9.36",
         "laravel/sanctum": "^3.0",
+        "laravel/telescope": "^4.16",
         "laravel/tinker": "^2.7",
+        "livewire/livewire": "^2.12",
         "maatwebsite/excel": "^3.1",
         "phpoffice/phpspreadsheet": "^1.26",
-        "psr/simple-cache": "^2.0"
+        "psr/simple-cache": "^2.0",
+        "simplesoftwareio/simple-qrcode": "^4.2"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
-        "laravel/pint": "^1.0",
         "laravel/breeze": "^1.8",
+        "laravel/pint": "^1.0",
         "laravel/sail": "^1.0.1",
         "lucascudo/laravel-pt-br-localization": "^1.2",
         "mockery/mockery": "^1.4.4",
-        "nunomaduro/collision": "^6.1",
+        "nunomaduro/collision": "^6.4.0",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
@@ -46,7 +60,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan vendor:publish --force --tag=livewire:assets --ansi"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -56,7 +71,14 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+
+        "post-install-cmd": [
+            "php /var/www/vhosts/alunos.profissionalizaead.com.br/httpdocs/artisan storage:link",
+			"php /var/www/vhosts/alunos.profissionalizaead.com.br/httpdocs/artisan config:clear"
         ]
+        
+        
     },
     "extra": {
         "laravel": {
@@ -67,10 +89,13 @@
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,
+        "platform-check": false,
         "allow-plugins": {
             "pestphp/pest-plugin": true
         }
     },
     "minimum-stability": "dev",
     "prefer-stable": true
+    
+
 }

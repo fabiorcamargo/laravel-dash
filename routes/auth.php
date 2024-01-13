@@ -27,6 +27,9 @@ Route::middleware('guest')->group(function () {
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
                 ->name('password.email');
 
+    Route::post('forgot-password2', [PasswordResetLinkController::class, 'forgot'])
+    ->name('password.forgot');
+
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
                 ->name('password.reset');
 
@@ -51,6 +54,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+    Route::any('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
 });

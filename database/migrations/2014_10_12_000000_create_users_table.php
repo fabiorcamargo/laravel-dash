@@ -17,22 +17,30 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('email')->unique();
+            $table->string('email2')->nullable();
             $table->string('name');
+            $table->string('lastname');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('cellphone');
-            $table->string('city');
-            $table->string('uf');
-            $table->string('payment');
+            $table->string('cellphone')->nullable();
+            $table->string('cellphone2')->nullable();
+            $table->string('city')->nullable();
+            $table->string('city2')->nullable();
+            $table->string('uf')->nullable();
+            $table->string('uf2')->nullable();
+            $table->string('payment')->nullable();
             $table->integer('role');
-            $table->boolean('10courses');
+            $table->boolean('ouro')->nullable();
             $table->string('secretary');
-            $table->string('document',11);
-            $table->string('seller');
-            $table->string('courses');
-            $table->string('image')->nullable();
+            $table->string('document');
+            $table->string('seller')->nullable();
+            $table->string('courses')->nullable();
+            $table->boolean('active');
+            $table->boolean('first')->nullable();
+            $table->string('image')->default('avatar/default.jpeg');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -43,6 +51,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::table('users', function (Blueprint $table) {
+        $table->dropSoftDeletes();
+        });
     }
 };

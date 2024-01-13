@@ -1,9 +1,5 @@
-
-# Setup Docker Para Projetos Laravel 9 com PHP 8
-[Assine a Academy, e Seja VIP!](https://academy.especializati.com.br)
-
 ### Passo a passo
-Clone Repositório
+Clone Repositório 
 ```sh
 git clone https://github.com/fabiorcamargo/laravel-dash.git app
 ```
@@ -11,6 +7,7 @@ git clone https://github.com/fabiorcamargo/laravel-dash.git app
 ```sh
 cd app
 ```
+
 
 
 Alterne para a branch desejada
@@ -76,6 +73,17 @@ Gerar a key do projeto Laravel
 ```sh
 php artisan key:generate
 ```
+
+Observações:
+
+Pode ser necessário mudar o Grupo de Usuário e permissões do bootstrap/cache;
+"chgrp -R www-data storage bootstrap/cache"
+"chmod -R ug+rwx storage bootstrap/cache"
+
+Se o sitema não tiver o supervisor precisa instalar e carregar o laravel-worker.conf para processar as filas.
+
+
+
 
 
 Acesse o projeto

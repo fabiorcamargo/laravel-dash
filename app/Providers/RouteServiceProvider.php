@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/modern-dark-menu/dashboard/analytics';
+    public const HOME = '/modern-dark-menu/aluno/my';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.

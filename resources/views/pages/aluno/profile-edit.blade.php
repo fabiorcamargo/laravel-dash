@@ -1,0 +1,1011 @@
+<x-base-layout :scrollspy="false">
+
+    <x-slot:pageTitle>
+        {{$title}} 
+    </x-slot>
+
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <x-slot:headerFiles>
+        <!--  BEGIN CUSTOM STYLE FILE  -->
+        {{-- @vite(['resources/scss/light/assets/components/timeline.scss']) --}}
+
+        <link rel="stylesheet" href="{{asset('plugins/notification/snackbar/snackbar.min.css')}}">
+        <link rel="stylesheet" href="{{asset('plugins/sweetalerts2/sweetalerts2.css')}}">
+
+
+        @vite(['resources/scss/light/plugins/editors/quill/quill.snow.scss'])
+        @vite(['resources/scss/dark/plugins/editors/quill/quill.snow.scss'])
+
+        @vite(['resources/scss/light/assets/components/tabs.scss'])
+        @vite(['resources/scss/light/assets/elements/alert.scss'])        
+        @vite(['resources/scss/light/plugins/sweetalerts2/custom-sweetalert.scss'])
+        @vite(['resources/scss/light/plugins/notification/snackbar/custom-snackbar.scss'])
+        @vite(['resources/scss/light/assets/forms/switches.scss'])
+        @vite(['resources/scss/light/assets/components/list-group.scss'])
+        @vite(['resources/scss/light/assets/users/account-setting.scss'])
+
+        @vite(['resources/scss/light/assets/elements/alert.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])
+
+        @vite(['resources/scss/dark/assets/components/modal.scss'])
+        @vite(['resources/scss/light/assets/components/modal.scss'])
+
+        @vite(['resources/scss/dark/assets/components/tabs.scss'])
+        @vite(['resources/scss/dark/assets/elements/alert.scss'])        
+        @vite(['resources/scss/dark/plugins/sweetalerts2/custom-sweetalert.scss'])
+        @vite(['resources/scss/dark/plugins/notification/snackbar/custom-snackbar.scss'])
+        @vite(['resources/scss/dark/assets/forms/switches.scss'])
+        @vite(['resources/scss/dark/assets/components/list-group.scss'])
+        @vite(['resources/scss/dark/assets/users/account-setting.scss'])
+
+        <link rel="stylesheet" href="{{asset('plugins/sweetalerts2/sweetalerts2.css')}}">
+        @vite(['resources/scss/light/plugins/sweetalerts2/custom-sweetalert.scss'])
+        @vite(['resources/scss/dark/plugins/sweetalerts2/custom-sweetalert.scss'])
+        
+        
+        <!--  END CUSTOM STYLE FILE  -->
+    </x-slot>
+    <!-- END GLOBAL MANDATORY STYLES -->
+    
+    <!-- BREADCRUMB -->
+    <div class="page-meta">
+        <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Perfil</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edição do Perfil</li>
+            </ol>
+        </nav>
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
+
+    <!-- Validation Errors -->
+    <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+    
+    <div class="account-settings-container layout-top-spacing">
+
+        <div class="account-content">
+            <div class="row mb-3">
+                <div class="col-md-12">
+                    
+{{--
+                    <ul class="nav nav-pills" id="animateLine" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="animated-underline-home-tab" data-bs-toggle="tab" href="#animated-underline-home" role="tab" aria-controls="animated-underline-home" aria-selected="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg> Home</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="animated-underline-profile-tab" data-bs-toggle="tab" href="#animated-underline-profile" role="tab" aria-controls="animated-underline-profile" aria-selected="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg> Payment Details</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="animated-underline-preferences-tab" data-bs-toggle="tab" href="#animated-underline-preferences" role="tab" aria-controls="animated-underline-preferences" aria-selected="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Preferences</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="animated-underline-contact-tab" data-bs-toggle="tab" href="#animated-underline-contact" role="tab" aria-controls="animated-underline-contact" aria-selected="false" tabindex="-1"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Danger Zone</button>
+                        </li>
+                    </ul>
+                    --}}
+                </div>
+            </div>
+
+            <div class="tab-content" id="animateLineContent-4">
+                <div class="tab-pane fade show active" id="animated-underline-home" role="tabpanel" aria-labelledby="animated-underline-home-tab">
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form action="{{ getRouterValue(); }}/aluno/post"  method="post" enctype="multipart/form-data" name="form1" class="section general-info">
+                                
+                                @csrf
+                                <div class="info">
+                                    <h6 class="">Informações do Aluno</h6>
+                                  
+                                    <div class="row">
+                                        <div class="col-lg-11 mx-auto">
+                                            <div class="row">
+                                                <div class="col-xl-2 col-lg-12 col-md-4">
+                                                    <div class="profile-image  mt-4 pe-md-4">
+
+                                                        <!-- // The classic file input element we'll enhance
+                                                        // to a file pond, we moved the configuration
+                                                        // properties to JavaScript -->
+                                    
+                                                        <div class="img-uploader-content text-center">
+                                                            
+                                                            <img class="rounded-circle text-center" alt="avatar2" width="120" height="120" src="{{ asset($user->image) }}" />
+                                                            <div class="pt-4 text-center">
+                                                            <a href="{{ getRouterValue(); }}/aluno/second" class="btn btn-outline-dark btn-icon text-center" title="Trocar imagem do perfil">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-upload"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                            </a>
+                                                            </div>
+                                                          
+                                                            <h3 for="fullName" class="text-center pt-4">{{ $user->username }}</h3>
+                                                            <input for="form-control mb-3" class="text-center pt-4"  name="id" id="id" value="{{ $user->id }}" hidden>
+                                                           
+                                                        
+                                                        </div>
+                                                        @if(Auth::user()->role >= 4)
+                                                        
+                                                        <div class="form-group pt-4">
+                                                            
+                                                            
+                                                            <select name="role" id="role" class="form-control mb-4" aria-placeholder="Função" required>
+
+                                                                <option value="{{ $user->role }}">{{ $roles[$user->role-1]->name }}</option>
+                                                                @foreach ( $roles as $role )
+                                                                @if($role->id < Auth::user()->role)
+                                                                <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                                @endif
+
+                                                                @endforeach
+                                                                
+
+                                                            </select>
+                                                        </div>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-10 col-lg-12 col-md-8 mt-md-0 mt-4">
+                                                    <div class="form">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="fullName">Nome</label>
+                                                                    <input type="text" class="form-control mb-3" name="name" id="name" placeholder="Primeiro Nome" value="{{ $user->name }}">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="profession">Sobrenome</label>
+                                                                    <input type="text" class="form-control mb-3" name="lastname" id="lastname" placeholder="Sobrenome" value="{{ $user->lastname }}" required>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="profession">Email Aluno</label>
+                                                                    <input type="email" class="form-control mb-3" name="email" id="email" placeholder="Email Aluno" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email }}" required>
+                                                                </div>
+                                                            </div>
+                                                            @if(Auth::user()->role >= 4)
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="profession">Email Escola</label>
+                                                                    <input type="email" class="form-control mb-3" name="email2" id="email2" placeholder="Email Escola" class="email white col-7 col-md-4 col-lg-7 ml-3 form-control" id="email2" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="{{ $user->email2 }}" readonly>
+                                                                </div>
+                                                            </div>
+                                                            @endif
+
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="profession">Telefone (Whatsapp)</label>
+                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone" id="cellphone" autocomplete="off" value="{{ $user->cellphone }}">
+                                                                </div>
+                                                            </div>
+                                                            @if(Auth::user()->role >= 4)
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <label for="profession">Telefone 2 (Whatsapp)</label>
+                                                                    <input type="text" class="ph-number form-control mb-4" placeholder="Telefone com DDD" name="cellphone2" id="cellphone2" autocomplete="off" value="{{ $user->cellphone2 }}">
+                                                                </div>
+                                                            </div>
+                                                            @endif
+
+
+    
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Estado</label>
+                                                                            <select name="state" id="state" class="form-control mb-4">
+                                                                                <option value="{{ $user->uf }}">{{ $user->uf }}</option>
+                                                                                @foreach ($states as $key => $value)
+                                                                                    <option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Cidade</label>
+                                                                            
+                                                                            <select name="city" id="city" class="form-control mb-4" aria-placeholder="Cidade">
+                                                                                <option value="{{ $user->city }}">{{ $user->city }}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Estado 2</label>
+                                                                            <select name="state2" id="state2" class="form-control mb-4">
+                                                                                <option value="{{ $user->uf2 }}">{{ $user->uf2 }}</option>
+                                                                                @foreach ($states as $key => $value)
+                                                                                    <option value="{{ $value['id'] }}">{{ $value['name'] }}</option>
+                                                                                @endforeach
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Cidade 2</label>
+                                                                            
+                                                                            <select name="city2" id="city2" class="form-control mb-4" aria-placeholder="Cidade">
+                                                                                <option value="{{ $user->city2 }}">{{ $user->city2 }}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    @if(Auth::user()->role >= 4)
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Secretaria</label>
+                                                                            <select id="secretary" name="secretary" class="form-control mb-4">
+                                                                                <option value="{{ $user->secretary }}">{{ $user->secretary }}</option>
+                                                                                <option value="MGA">MGA</option>
+                                                                                <option value="TB">TB</option>
+                                                                                <option value="TB">UMU</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label for="title">CPF</label>
+                                                                            <input type="text" class="cpf-number form-control mb-4" name="document" id="document"  value="{{ $user->document }}"  autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    
+
+                                                                    <div class="col-md-6">
+                                                                        <div class="form-group">
+                                                                            <label for="title">Tipo de Pagamento</label>
+                                                                            <select id="payment" name="payment" class="form-control mb-4">
+                                                                                <option value="{{ $user->payment }}">{{ $user->payment }}</option>
+                                                                                <option value="BOLETO">BOLETO</option>
+                                                                                <option value="CARTÃO">CARTÃO</option>
+                                                                                <option value="LINK DE PAGAMENTO">LINK DE PAGAMENTO</option>
+                                                                                <option value="A VISTA">A VISTA</option>
+                                                        
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    @endif
+                                                                    
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label for="profession">Nova Senha</label>
+                                                                            <input type="text" class="form-control mb-4" name="password" id="password" autocomplete="off">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <label for="profession">Repita Senha</label>
+                                                                            <input type="text" class="form-control mb-4" name="password2" id="password2" autocomplete="off" oninput="myPw()">
+                                                                        
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    @if(Auth::user()->role >= 4)
+                                                                    <div class="col-md-6">
+                                                                        <label for="title"></label>
+                                                                        <div class="row">
+                                                                            <div class="form-group">
+                                                                                <input class="form-check-input me-1" id="ouro" name="ouro" type="checkbox" @if ($user->ouro == 1 ) checked @endif>
+                                                                                Contratou 10 Cursos
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row mt-2">
+                                                                            <div class="form-group">
+                                                                                <input class="form-check-input me-1" id="pw_change" name="pw_change" type="checkbox">
+                                                                                Solicitar Troca de Senha
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    @isset($user->cademis()->first()->login_auto)
+                                                                    <div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <label for="profession">Token Cademi</label>
+                                                                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" data-toggle="tooltip" data-placement="top" title="Trocar Token" class="badge badge-danger mb-2 me-4"><x-widgets._w-svg svg="lock"/> Trocar Token</span>
+                                                                            <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal" class="mt-2 edit-profile" data-toggle="tooltip" data-placement="top" title="Trocar Token">
+                                                                                
+                                                                            </a>
+                                                                            <input type="text" class="form-control mb-3" name="token_cademi" id="token_cademi" placeholder="Sobrenome" value="{{ $user->cademis()->first()->login_auto }}" readonly>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    @endisset
+                                                                    {{--<div class="col-md-12">
+                                                                        <div class="form-group">
+                                                                            <h4>Observações:</h4>
+                                                                            <div id="quillEditor"></div>
+                                                                            <input id="observation" name="observation"  hidden>
+                                                                            {{--<input type="text" name="observation" id="observation" class="form-control mb-8" value="{{$user->observation}}">
+                                                                        </div>
+                                                                    </div>--}}
+                                                                    
+                                                                    @endif
+
+                                                                    
+                                                                    
+                                                              
+                                                       
+                                                            
+                     
+                                                              
+                                                           
+                                                            
+                                                           
+                                                            <div class="col-md-12 mt-1">
+                                                                <div class="form-group text-end">
+                                                                    <div class="text-danger invisible" name="feed" id="feed" >As Senhas não são iguais</div>
+                                                                    <div class="text-danger invisible" name="feed1" id="feed1" >As Senhas não são iguais</div>
+                                                                    <a href="{{ getRouterValue(); }}/app/user/profile/{{$user->id}}" class="btn btn-primary">Voltar</a>
+                                                                    <button class="btn btn-secondary mx-2" type="submit">Salvar</button>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+{{--
+                        <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                            <form id="social" class="section social">
+                                <div class="info">
+                                    <h5 class="">Social</h5>
+                                    <div class="row">
+
+                                        <div class="col-md-11 mx-auto">
+                                            <div class="row">
+                                                <div class="col-md-6">        
+                                                    <div class="input-group social-linkedin mb-3">
+                                                        <span class="input-group-text me-3" id="linkedin"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-linkedin"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></span>
+                                                        <input type="text" class="form-control" placeholder="Linkedin Username" aria-label="Username" aria-describedby="linkedin" value="jimmy_turner">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">        
+                                                    <div class="input-group social-tweet mb-3">
+                                                        <span class="input-group-text me-3" id="tweet"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-twitter"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg></span>
+                                                        <input type="text" class="form-control" placeholder="Twitter Username" aria-label="Username" aria-describedby="tweet" value="@jTurner">
+                                                    </div>
+                                                </div>                                                        
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-11 mx-auto">
+                                            <div class="row">
+                                                <div class="col-md-6">        
+                                                    <div class="input-group social-fb mb-3">
+                                                        <span class="input-group-text me-3" id="fb"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-facebook"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></span>
+                                                        <input type="text" class="form-control" placeholder="Facebook Username" aria-label="Username" aria-describedby="fb" value="Jimmy Turner">
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">        
+                                                    <div class="input-group social-github mb-3">
+                                                        <span class="input-group-text me-3" id="github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></span>
+                                                        <input type="text" class="form-control" placeholder="Github Username" aria-label="Username" aria-describedby="github" value="@TurnerJimmy">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="animated-underline-profile" role="tabpanel" aria-labelledby="animated-underline-profile-tab">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info payment-info">
+                                <div class="info">
+                                    <h6 class="">Billing Address</h6>
+                                    <p>Changes to your <span class="text-success">Billing</span> information will take effect starting with scheduled payment and will be refelected on your next invoice.</p>
+
+                                    <div class="list-group mt-4">
+                                        <label class="list-group-item">
+                                            <div class="d-flex w-100">
+                                                <div class="billing-radio me-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress1" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="billing-content">
+                                                    <div class="fw-bold">Address #1</div>
+                                                    <p>2249 Caynor Circle, New Brunswick, New Jersey</p>
+                                                </div>
+                                                <div class="billing-edit align-self-center ms-auto">
+                                                    <button class="btn btn-dark">Edit</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                       
+                                        <label class="list-group-item">
+                                            <div class="d-flex w-100">
+                                                <div class="billing-radio me-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress2">
+                                                    </div>
+                                                </div>
+                                                <div class="billing-content">
+                                                    <div class="fw-bold">Address #2</div>
+                                                    <p>4262 Leverton Cove Road, Springfield, Massachusetts</p>
+                                                </div>
+                                                <div class="billing-edit align-self-center ms-auto">
+                                                    <button class="btn btn-dark">Edit</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="list-group-item">
+                                            <div class="d-flex w-100">
+                                                <div class="billing-radio me-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="billingAddress" id="billingAddress3">
+                                                    </div>
+                                                </div>
+                                                <div class="billing-content">
+                                                    <div class="fw-bold">Address #3</div>
+                                                    <p>2692 Berkshire Circle, Knoxville, Tennessee</p>
+                                                </div>
+                                                <div class="billing-edit align-self-center ms-auto">
+                                                    <button class="btn btn-dark">Edit</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <button class="btn btn-secondary mt-4 add-address">Add Address</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info payment-info">
+                                <div class="info">
+                                    <h6 class="">Payment Method</h6>
+                                    <p>Changes to your <span class="text-success">Payment Method</span> information will take effect starting with scheduled payment and will be refelected on your next invoice.</p>
+
+                                    <div class="list-group mt-4">
+                                        
+                                        <label class="list-group-item">
+                                            <div class="d-flex w-100">
+                                                <div class="billing-radio me-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod1">
+                                                    </div>
+                                                </div>
+                                                <div class="payment-card">
+                                                    <img src="{{Vite::asset('resources/images/card-mastercard.svg')}}" class="align-self-center me-3" alt="americanexpress">
+                                                </div>
+                                                <div class="billing-content">
+                                                    <div class="fw-bold">Mastercard</div>
+                                                    <p>XXXX XXXX XXXX 9704</p>
+                                                </div>
+                                                <div class="billing-edit align-self-center ms-auto">
+                                                    <button class="btn btn-dark">Edit</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="list-group-item">
+                                            <div class="d-flex w-100">
+                                                <div class="billing-radio me-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod2" checked>
+                                                    </div>
+                                                </div>
+                                                <div class="payment-card">
+                                                    <img src="{{Vite::asset('resources/images/card-americanexpress.svg')}}" class="align-self-center me-3" alt="americanexpress">
+                                                </div>
+                                                <div class="billing-content">
+                                                    <div class="fw-bold">American Express</div>
+                                                    <p>XXXX XXXX XXXX 310</p>
+                                                </div>
+                                                <div class="billing-edit align-self-center ms-auto">
+                                                    <button class="btn btn-dark">Edit</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                        <label class="list-group-item">
+                                            <div class="d-flex w-100">
+                                                <div class="billing-radio me-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paymentMethod3">
+                                                    </div>
+                                                </div>
+                                                <div class="payment-card">
+                                                    <img src="{{Vite::asset('resources/images/card-visa.svg')}}" class="align-self-center me-3" alt="americanexpress">
+                                                </div>
+                                                <div class="billing-content">
+                                                    <div class="fw-bold">Visa</div>
+                                                    <p>XXXX XXXX XXXX 5264</p>
+                                                </div>
+                                                <div class="billing-edit align-self-center ms-auto">
+                                                    <button class="btn btn-dark">Edit</button>
+                                                </div>
+                                            </div>
+                                        </label>
+                                    </div>
+
+                                    <button class="btn btn-secondary mt-4 add-payment">Add Payment Method</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info payment-info">
+                                <div class="info">
+                                    <h6 class="">Add Billing Address</h6>
+                                    <p>Changes your New <span class="text-success">Billing</span> Information.</p>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Name</label>
+                                                <input type="text" class="form-control add-billing-address-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Email</label>
+                                                <input type="email" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">Address</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">City</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">Country</label>
+                                                <select class="form-select">
+                                                    <option selected="">Choose...</option>
+                                                    <option value="united-states">United States</option>
+                                                    <option value="brazil">Brazil</option>
+                                                    <option value="indonesia">Indonesia</option>
+                                                    <option value="turkey">Turkey</option>
+                                                    <option value="russia">Russia</option>
+                                                    <option value="india">India</option>
+                                                    <option value="germany">Germany</option>
+                                                </select>                                                            
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label class="form-label">ZIP</label>
+                                                <input type="tel" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-primary mt-4">Add</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info payment-info">
+                                <div class="info">
+                                    <h6 class="">Add Payment Method</h6>
+                                    <p>Changes your New <span class="text-success">Payment Method</span> Information.</p>
+
+                                    <div class="row mt-4">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Card Brand</label>
+                                                <div class="invoice-action-currency">
+                                                    <div class="dropdown selectable-dropdown cardName-select">
+                                                        <a id="cardBrandDropdown" href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{Vite::asset('resources/images/card-mastercard.svg')}}" class="flag-width" alt="flag"> <span class="selectable-text">Mastercard</span> <span class="selectable-arrow"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg></span></a>
+                                                        <div class="dropdown-menu" aria-labelledby="cardBrandDropdown">
+                                                            <a class="dropdown-item" data-img-value="{{Vite::asset('resources/images/card-mastercard.svg')}}" data-value="GBP - British Pound" href="javascript:void(0);"><img src="{{Vite::asset('resources/images/card-mastercard.svg')}}" class="flag-width" alt="flag"> Mastercard</a>
+                                                            <a class="dropdown-item" data-img-value="{{Vite::asset('resources/images/card-americanexpress.svg')}}" data-value="IDR - Indonesian Rupiah" href="javascript:void(0);"><img src="{{Vite::asset('resources/images/card-americanexpress.svg')}}" class="flag-width" alt="flag"> American Express</a>
+                                                            <a class="dropdown-item" data-img-value="{{Vite::asset('resources/images/card-visa.svg')}}" data-value="USD - US Dollar" href="javascript:void(0);"><img src="{{Vite::asset('resources/images/card-visa.svg')}}" class="flag-width" alt="flag"> Visa</a>
+                                                            <a class="dropdown-item" data-img-value="{{Vite::asset('resources/images/card-discover.svg')}}" data-value="INR - Indian Rupee" href="javascript:void(0);"><img src="{{Vite::asset('resources/images/card-discover.svg')}}" class="flag-width" alt="flag"> Discover</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                         <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Card Number</label>
+                                                <input type="text" class="form-control add-payment-method-input">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Holder Name</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">CVV/CVV2</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label">Card Expiry</label>
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="btn btn-primary mt-4">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="animated-underline-preferences" role="tabpanel" aria-labelledby="animated-underline-preferences-tab">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Choose Theme</h6>
+                                    <div class="d-sm-flex justify-content-around">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                              <img class="ms-3" width="100" height="68" alt="settings-dark" src="{{Vite::asset('resources/images/settings-light.svg')}}">
+                                            </label>
+                                        </div>
+                                        
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                <img class="ms-3" width="100" height="68" alt="settings-light" src="{{Vite::asset('resources/images/settings-dark.svg')}}">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Activity data</h6>
+                                    <p>Download your Summary, Task and Payment History Data</p>
+                                    <div class="form-group mt-4">
+                                        <button class="btn btn-primary">Download Data</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Public Profile</h6>
+                                    <p>Your <span class="text-success">Profile</span> will be visible to anyone on the network.</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-secondary mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="publicProfile" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Show my email</h6>
+                                    <p>Your <span class="text-success">Email</span> will be visible to anyone on the network.</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-secondary mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="showMyEmail">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Enable keyboard shortcuts</h6>
+                                    <p>When enabled, press <code class="text-success">ctrl</code> for help</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-secondary mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="EnableKeyboardShortcut">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Hide left navigation</h6>
+                                    <p>Sidebar will be <span class="text-success">hidden</span> by default</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-secondary mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="hideLeftNavigation">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Advertisements</h6>
+                                    <p>Display <span class="text-success">Ads</span> on your dashboard</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-secondary mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="advertisements">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Social Profile</h6>
+                                    <p>Enable your <span class="text-success">social</span> profiles on this network</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-secondary mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="socialprofile" checked>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                    
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="animated-underline-contact" role="tabpanel" aria-labelledby="animated-underline-contact-tab">
+                    <div class="alert alert-arrow-right alert-icon-right alert-light-warning alert-dismissible fade show mb-4" role="alert">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12" y2="16"></line></svg>
+                        <strong>Warning!</strong> Please proceed with caution. For any assistance - <a href="javascript:void(0);">Contact Us</a>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Purge Cache</h6>
+                                    <p>Remove the active resource from the cache without waiting for the predetermined cache expiry time.</p>
+                                    <div class="form-group mt-4">
+                                        <button class="btn btn-secondary btn-clear-purge">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Deactivate Account</h6>
+                                    <p>You will not be able to receive messages, notifications for up to 24 hours.</p>
+                                    <div class="form-group mt-4">
+                                        <div class="switch form-switch-custom switch-inline form-switch-success mt-1">
+                                            <input class="switch-input" type="checkbox" role="switch" id="socialformprofile-custom-switch-success">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-xl-4 col-lg-12 col-md-12 layout-spacing">
+                            <div class="section general-info">
+                                <div class="info">
+                                    <h6 class="">Delete Account</h6>
+                                    <p>Once you delete the account, there is no going back. Please be certain.</p>
+                                    <div class="form-group mt-4">
+                                        <button class="btn btn-danger btn-delete-account">Delete my account</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                    </div>
+                </div>
+                --}}
+            </div>
+            
+        </div>
+        
+    </div>
+
+                    @if ((Auth::user()->role) >= 4)
+                    @isset($user->cademis()->first()->login_auto)
+                        <div id="OuroModal" class="modal animated fadeInDown modal-xl" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <form action="{{ route('user.cademi.change_token') }}" method="POST" id="liberation_form" class="py-12">
+                                        @csrf
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Alteração token do aluno</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                            </button>
+                                        </div>
+
+                                        
+                                        <div class="modal-body">
+                                            <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                                    <h5 class="text-warning">Atenção!!</h5>
+                                                    <p class="text-warning">Muito cuidado, a troca do token pode tirar o acesso do aluno, ou dar acesso a conta de outro usuário, só prossiga se tiver certeza.</p>
+                                                    <p class="text-warning">Ao abrir o perfil do usuário verifique se as informações são realmente do usuário desejado.</p>
+                                                    <p class="text-white pt-2">Copie o token do perfil do aluno na Cademi ele está localizado na opção <b>Link de login automático</b></p>
+                                                    <div class="col-12">
+                                                        <a href="https://profissionaliza.cademi.com.br/office/usuario/perfil/{{ $user->cademis->first()->user }}" target="blank" class="btn btn-danger  _effect--ripple waves-effect waves-light">
+                                                            <x-widgets._w-svg svg="user-search"/>
+                                                             <span class="btn-text-inner">Perfil do Aluno na Cademi</span>
+                                                        </a>    
+                                                    </div>
+                                                    <label class="text-white mt-4" for="users_list_tags mt-4">Novo Token</label>
+                                                    <input type="text" class="form-control mb-3" name="login_auto" id="login_auto" placeholder="login_auto" value="{{ $user->cademis()->first()->login_auto }}">
+                                                    <p class="text-white pt-2">Dados do Aluno</p>
+                                                    <li>{{ $user->username }}</li>
+                                                    <li>{{ $user->name }} {{ $user->lastname }}</li>
+                                                    <li>{{ $user->email }} | {{ $user->email2 }}</li>
+                                                    <input type="text" class="form-control mb-3" name="user_id" id="user_id" value="{{ $user->id }}" readonly hidden>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
+                                            <button type="button" href="javascript:void(0);" onClick="document.getElementById('liberation_form').submit();" class="btn btn-success">Liberar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        @endisset
+                    @endif
+
+    
+    <!--  BEGIN CUSTOM SCRIPTS FILE  -->
+    <x-slot:footerFiles>
+        <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
+        
+        <script src="{{asset('plugins/input-mask/jquery.inputmask.bundle.min.js')}}"></script>
+        <script src="{{asset('plugins/input-mask/input-mask.js')}}"></script>
+
+        <script src="{{asset('plugins/notification/snackbar/snackbar.min.js')}}"></script>
+        <script src="{{asset('plugins/sweetalerts2/sweetalerts2.min.js')}}"></script>
+
+        <script src="{{asset('plugins/editors/quill/quill.js')}}"></script>
+
+        @vite(['resources/assets/js/users/account-settings.js'])
+    <script>
+        $('[name=id]').focus();
+           var element = $('.alert')
+            if(element.is(':visible')){
+                document.querySelector('.widget-content .message')
+            
+            Swal.fire('Token atualizado com sucesso')
+            }
+            
+            
+    </script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('select[name="state"]').on('change', function() {
+            var stateID = $(this).val();
+            if(stateID) {
+                $.ajax({
+                    url: '/city/'+stateID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {   
+                        console.log("teste");   
+                        var city = "1";                
+                        $('select[name="city"]').empty();
+                        $.each(data, function(key, value) {
+                        $('select[name="city"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="city"]').empty();
+            }
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        
+        $('select[name="state2"]').on('change', function() {
+            var stateID = $(this).val();
+            if(stateID) {
+                $.ajax({
+                    url: '/city/'+stateID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {   
+                        console.log("teste");   
+                        var city = "1";                
+                        $('select[name="city2"]').empty();
+                        $.each(data, function(key, value) {
+                        $('select[name="city2"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="city"]').empty();
+            }
+        });
+    });
+</script>
+
+
+<script>
+    function myPw(){
+        let pw = document.getElementById('password').value;
+        let pw2 = document.getElementById('password2').value;
+        //let username = document.getElementById('username').value;
+
+        console.log(pw);
+        console.log(pw2);
+
+        if ( pw != pw2) {
+            document.getElementById('feed').classList.remove('invisible');
+
+        }else if ( pw == pw2){
+            document.getElementById('feed').classList.add('invisible');
+
+            
+        }
+
+    }</script>
+
+<script>
+            
+    var options = {
+        placeholder: 'Coloque a descrição do produto',
+        theme: 'snow'
+        };
+
+        var editor = new Quill('#quillEditor', options);
+        var justHtmlContent = document.getElementById('observation');
+
+        editor.clipboard.dangerouslyPasteHTML(0, <?php echo json_encode($user->observation); ?>);
+
+        editor.on('text-change', function() {
+        var delta = editor.getContents();
+        var text = editor.getText();
+        var justHtml = editor.root.innerHTML;
+        justHtmlContent.value = justHtml;
+        });
+
+        
+</script>
+        
+        
+        
+    </x-slot>
+    <!--  END CUSTOM SCRIPTS FILE  -->
+</x-base-layout>

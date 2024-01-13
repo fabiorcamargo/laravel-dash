@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('user');
             $table->string('nome');
             $table->string('email');
-            $table->string('celular')->nullable();;
+            $table->string('celular')->nullable();
             $table->string('login_auto');
             $table->boolean('gratis');
             $table->date('criado_em')->nullable();

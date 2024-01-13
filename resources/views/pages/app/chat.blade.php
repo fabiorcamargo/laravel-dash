@@ -27,6 +27,8 @@
                         </div>
                         <div class="people">
 
+                            
+
                             <div class="person" data-chat="person6">
                                 <div class="user-info">
                                     <div class="f-head">

@@ -16,13 +16,13 @@
                 <div class="navbar-nav theme-brand flex-row  text-center">
                     <div class="nav-logo">
                         <div class="nav-item theme-logo">
-                            <a href="{{getRouterValue();}}/aluno/analytics">
+                            <a href="{{getRouterValue();}}/aluno/my">
                                 <img src="{{Vite::asset('resources/images/logo.svg')}}" class="navbar-logo logo-dark" alt="logo">
                                 <img src="{{Vite::asset('resources/images/logo2.svg')}}" class="navbar-logo logo-light" alt="logo">
                             </a>
                         </div>
                         <div class="nav-item theme-text">
-                            <a href="{{getRouterValue();}}/aluno/inicio" class="nav-link"> Estudante </a>
+                            <a href="{{getRouterValue();}}/aluno/my" class="nav-link"> Estudante </a>
                         </div>
                     </div>
                     <div class="nav-item sidebar-toggle">
@@ -45,20 +45,16 @@
                             </div>
                         </a>
                         <ul class="collapse submenu list-unstyled {{ Request::is('*/aluno/*') ? "show" : "" }}" id="aluno" data-bs-parent="#accordionExample">
-                            <li class="{{ Request::routeIs('inicio') ? 'active' : '' }}">
-                                <a href="{{getRouterValue();}}/aluno/inicio"> Início </a>
-                            </li>
-                            <li class="{{ Request::routeIs('pagamento') ? 'active' : '' }}">
+                            <li class="{{ Request::routeIs('aluno.my') ? 'active' : '' }}">
+                                <a href="{{getRouterValue();}}/aluno/my"> Início </a>
+                             </li>{{--
+                            <li class="{{ Request::routeIs('aluno.pagamento') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/aluno/pagamento"> Pagamento </a>
                             </li>
                             <li class="{{ Request::routeIs('config') ? 'active' : '' }}">
                                 <a href="{{getRouterValue();}}/aluno/config"> Configurações </a>
-                            </li>
+                            </li> --}}
                         </ul>
-                    </li>
-
-                    <li class="menu menu-heading">
-                        <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>APPLICATIONS</span></div>
                     </li>
               
                 </ul>

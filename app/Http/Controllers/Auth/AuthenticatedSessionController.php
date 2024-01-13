@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -17,7 +18,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create()
     {
-        return view('auth.login');
+        return view('auth.login2', ['title' => 'Profissionaliza EAD - Seu melhor sistema de ensino', 'breadcrumb' => 'Login']);
     }
 
     /**
@@ -29,19 +30,24 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
         $request->authenticate();
-
+        //dd(Auth::user());
         $request->session()->regenerate();
 
-        if ((Auth::user()->role) == 7)
-        {
-        $home = '/modern-dark-menu/dashboard/sales';
-        }
-        else if ((Auth::user()->role) == 1)
-        {
-        $home = '/modern-dark-menu/dashboard/my';    
+        if(Auth::user()->first == ""){
+            //dd('f');
+        $home = '/modern-dark-menu/aluno/first';
+        return redirect()->intended($home);
+        }else if(Auth::user()->active == 4){
+            //dd('4');
+        $home = '/modern-dark-menu/aluno/pw_change';  
+        return redirect()->intended($home);
+        }else{ 
+        
+        $home = '/modern-dark-menu/aluno/my';   
+        return redirect()->intended($home); 
         }
         
-        return redirect()->intended($home);
+        //return redirect()->intended($home);
     }
 
     /**
@@ -58,6 +64,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return Redirect::to('https://alunos.profissionalizaead.com.br/login');;
     }
 }

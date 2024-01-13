@@ -3,6 +3,10 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
+
+use App\Models\UserCertificatesEmit;
+use App\Observers\UserCertificatesEmitObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Paginator::defaultView('view-name');
+ 
+        Paginator::defaultSimpleView('view-name');
+
+        UserCertificatesEmit::observe(UserCertificatesEmitObserver::class);
     }
 }
