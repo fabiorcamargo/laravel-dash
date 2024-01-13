@@ -467,7 +467,7 @@ class OldAsaasController extends Controller
           //Pesquisa se cliente existe no Asaas
           if ($send->valor !== "") {
             $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
-            $send->paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
+            $send->paybook = $this->getPayBook($dec->installmentNumber, str_replace("access_token: ","",$token));
             //$dec = new stdClass;
             //$dec->id = "1";
             //$send->paybook = "Teste";
