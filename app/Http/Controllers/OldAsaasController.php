@@ -468,7 +468,7 @@ class OldAsaasController extends Controller
           if ($send->valor !== "") {
             $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
             $send->paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
-            dd($send->paybook);
+            //dd($send->paybook);
             //$dec = new stdClass;
             //$dec->id = "1";
             //$send->paybook = "Teste";
