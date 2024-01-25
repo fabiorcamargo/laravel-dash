@@ -1,3 +1,4 @@
+1.0.2
 ### Passo a passo
 Clone Repositório 
 ```sh
