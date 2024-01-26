@@ -1825,7 +1825,7 @@
                 // Exibe a quantidade atualizada
                 console.log('Itens selecionados: ' + selectedItemsCount);
                 // Se quiser exibir a quantidade em algum elemento HTML, você pode fazer algo como:
-                // document.getElementById('seuElemento').innerText = 'Itens selecionados: ' + selectedItemsCount;
+                document.getElementById('cursos_selecionados').innerText = selectedItemsCount;
             });
 
                 </script>
