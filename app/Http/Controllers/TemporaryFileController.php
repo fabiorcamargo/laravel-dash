@@ -342,11 +342,15 @@ class TemporaryFileController extends Controller
  
         //dd($faileds);
         //dd(strstr($faileds[0]->exception,"\n",true));
+        if($faileds !== []){
         $i = 0;
         foreach($faileds as $failed){
             $fails[$i] = ["fail" => (strstr($failed->exception,"\n",true)), "date" => Carbon::createFromFormat('Y-m-d H:i:s', $failed->failed_at)->format('d/m/Y H:i:s')];
             $i++;
         }
+    }else{
+        $fails = [];
+    }
         //dd($fails);
         
    

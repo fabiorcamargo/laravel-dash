@@ -357,7 +357,7 @@
                                                 </form>
                                                 @endcan
                                             </td>
-                                            
+
                                         </tr>
 
                                         <!-- Modal content-->
@@ -1370,7 +1370,7 @@
                                 </div>
                                 <div class="col-xxl-12 col-md-12 mb-4 mt-4">
                                     <div class="col-xxl-12 col-md-12 mb-4 mt-4">
-                                        <label for="course_list mt-4">Liberação de Cursos</label>
+                                        <label for="course_list mt-4">Liberação de Cursos</label> <div id="cursos_selecionados" class="shadow-none badge badge-secondary">0</div>
                                         <input name='course_list'>
                                     </div>
                                 </div>
@@ -1803,6 +1803,31 @@
                 @endforeach
             ]
             });
+
+
+            // Variável para armazenar a contagem
+            var selectedItemsCount = 0;
+
+            usrList.on('add', function(e) {
+                // Incrementa a variável de contagem
+                selectedItemsCount++;
+                
+                // Exibe a quantidade atualizada
+                console.log('Itens selecionados: ' + selectedItemsCount);
+                // Se quiser exibir a quantidade em algum elemento HTML, você pode fazer algo como:
+                document.getElementById('cursos_selecionados').innerText = selectedItemsCount;
+            });
+
+            usrList.on('remove', function(e) {
+                // Decrementa a variável de contagem ao remover um item
+                selectedItemsCount--;
+
+                // Exibe a quantidade atualizada
+                console.log('Itens selecionados: ' + selectedItemsCount);
+                // Se quiser exibir a quantidade em algum elemento HTML, você pode fazer algo como:
+                // document.getElementById('seuElemento').innerText = 'Itens selecionados: ' + selectedItemsCount;
+            });
+
                 </script>
 
                 <script>

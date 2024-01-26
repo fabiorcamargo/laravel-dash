@@ -21,7 +21,7 @@ class UsersSeeder extends Seeder
             'name' => 'Fábio',
             'lastname' => 'Camargo',
             'email' => 'fabiorcamargo@gmail.com',
-            'password' => bcrypt('277888'),
+            'password' => bcrypt('Quem@ma764829'),
             'cellphone' => '42991622889',
             'city' => 'Telêmaco Borba',
             'uf' => 'PR',
@@ -34,7 +34,9 @@ class UsersSeeder extends Seeder
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
             'active' => true,
             'first' => true,
-            'image' => 'avatar/fabiotb/Fábio.jpg'
+            'image' => 'avatar/fabiotb/Fábio.jpg',
+            'contract_date' => '2024-01-26 10:29:35',
+            'created_at' => '2024-01-26 10:29:35'
         ],[
             'username' => '61001',
             'name' => 'Fábio',
@@ -53,7 +55,9 @@ class UsersSeeder extends Seeder
             'courses' => '02 - BANCÁRIO + 10 CURSOS',
             'active' => true,
             'first' => true,
-            'image' => 'avatar/default.jpeg'
+            'image' => 'avatar/default.jpeg',
+            'contract_date' => '2024-01-26 10:29:35',
+            'created_at' => '2024-01-26 10:29:35'
         ],
         ]
     

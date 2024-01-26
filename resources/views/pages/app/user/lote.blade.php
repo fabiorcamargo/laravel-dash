@@ -224,7 +224,9 @@
 
                             <div class="row">
                                 <div class="col-md-12">
+                                    @if($cademis !== [])
                                     {{ $cademis->appends($_POST)->links('pagination::bootstrap-5') }}
+                                    @endif
         
                                 </div>
                             </div>

@@ -420,7 +420,11 @@ class UserController extends Controller
 
     public function lote(Request $request)
     {
-        $cademis = CademiImport::first()->orderBy('updated_at', 'desc')->paginate(20);
+        if(CademiImport::first()){
+            $cademis = CademiImport::first()->orderBy('updated_at', 'desc')->paginate(20);
+        }else{
+            $cademis = [];
+        }
         
         return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('cademis'));
     }
