@@ -57,13 +57,31 @@
             <!-- Content -->
             <div class="body row layout-spacing">
                 @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
-                <div class="ms-4 col-xl-12 col-md-12 col-sm-12 layout-top-spacing">
-                    <h3>Dados do Contrato</h3>
-                    <div class="">
-                        <p>{!!$user->observation!!}</p>
-
+               <div class=" layout-top-spacing">
+                    <div class="widget-content widget-content-area">
+                        <div class="d-inline-block">
+                            <h3>Dados do Contrato</h3>
+                        </div>
+                        @if(Auth::user()->id == 3 || Auth::user()->id == 1)
+                        <div class="d-inline-block mx-2">
+                            <a data-bs-toggle="modal" href="" data-bs-target="#ObservationModal"
+                                class="badge badge-success" data-toggle="tooltip" data-placement="top"
+                                title="Adicionar Cursos">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-edit-3">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                        @endif
+                        <div class="">
+                            <p>{!!$user->observation!!}</p>
+                        </div>
                     </div>
                 </div>
+
                 @endif
                 <div class="col-xl-5 col-md-5 col-sm-12 layout-top-spacing">
                     <div class="user-profile">
@@ -329,7 +347,7 @@
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            
+
                                             <th>Data</th>
                                             <th></th>
                                         </tr>
@@ -343,13 +361,13 @@
                                                 <form action="{{route('cert-del-emit', ['id' => $cert->id])}}"
                                                     id="msg_del[{{$cert->id}}]" method="POST">
                                                     @csrf
-                                                <a href="{{route('cert-check', ['code' => $cert->code])}}"
-                                                    target="_blank" type="button"
-                                                    class="badge badge-primary mb-2 bs-tooltip" title="Ver">
-                                                    <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
-                                                </a>
-                                                @can('secretary')
-                                                <a data-bs-toggle="modal"
+                                                    <a href="{{route('cert-check', ['code' => $cert->code])}}"
+                                                        target="_blank" type="button"
+                                                        class="badge badge-primary mb-2 bs-tooltip" title="Ver">
+                                                        <x-widgets._w-svg class="text-white" svg="arrow-up-right" />
+                                                    </a>
+                                                    @can('secretary')
+                                                    <a data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal{{$cert->id}}" type="button"
                                                         class="badge badge-danger mb-2 bs-tooltip" title="Excluir">
                                                         <x-widgets._w-svg class="text-white" svg="trash" />
@@ -362,8 +380,7 @@
 
                                         <!-- Modal content-->
                                         <div class="modal fade" id="exampleModal{{$cert->id}}" tabindex="-1"
-                                            role="dialog" aria-labelledby="exampleModalLabel"
-                                            aria-hidden="true">
+                                            role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
@@ -371,8 +388,8 @@
                                                         <h5 class="modal-title" id="exampleModalLabel">Você
                                                             deseja
                                                             excluir?</h5>
-                                                        <a type="button" class="btn-close"
-                                                            data-bs-dismiss="modal" aria-label="Close">
+                                                        <a type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close">
                                                             <svg> ... </svg>
                                                         </a>
                                                     </div>
@@ -394,8 +411,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <a class="btn btn btn-success"
-                                                            data-bs-dismiss="modal"><i
+                                                        <a class="btn btn btn-success" data-bs-dismiss="modal"><i
                                                                 class="flaticon-cancel-12"></i>
                                                             Não</a>
                                                         <a type="button" class="btn btn-danger"
@@ -1341,6 +1357,47 @@
             </div> --}}
 
             @if ((Auth::user()->role) >= 4)
+
+            <div id="ObservationModal" class="modal animated fadeInDown" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <form action="{{ route('user.obs.update', $user->id) }}" method="POST"
+                            id="observationUpForm" class="py-12">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title">Atualizar Observações</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+
+
+                            <div class="modal-body">
+                                <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                    <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                        <label for="users_list_tags mt-4">Observações</label>
+                                        <textarea class="form-control" id="observation" name="observation"
+                                            rows="5">{{$user->observation}}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
+                                <button type="button" href="javascript:void(0);"
+                                    onClick="document.getElementById('observationUpForm').submit();"
+                                    class="btn btn-success">Atualizar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div id="OuroModal" class="modal animated fadeInDown" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -1370,7 +1427,8 @@
                                 </div>
                                 <div class="col-xxl-12 col-md-12 mb-4 mt-4">
                                     <div class="col-xxl-12 col-md-12 mb-4 mt-4">
-                                        <label for="course_list mt-4">Liberação de Cursos</label> <div id="cursos_selecionados" class="shadow-none badge badge-secondary">0</div>
+                                        <label for="course_list mt-4">Liberação de Cursos</label>
+                                        <div id="cursos_selecionados" class="shadow-none badge badge-secondary">0</div>
                                         <input name='course_list'>
                                     </div>
                                 </div>
@@ -1730,10 +1788,10 @@
 
                 <script>
                     /**
-            * 
+            *
             * Users List
-            *  
-            **/ 
+            *
+            **/
 
 
             // https://www.mockaroo.com/
@@ -1759,7 +1817,7 @@
             </tag>
             `
             }
-            
+
 
             function suggestionItemTemplate(tagData){
             return `
@@ -1811,7 +1869,7 @@
             usrList.on('add', function(e) {
                 // Incrementa a variável de contagem
                 selectedItemsCount++;
-                
+
                 // Exibe a quantidade atualizada
                 console.log('Itens selecionados: ' + selectedItemsCount);
                 // Se quiser exibir a quantidade em algum elemento HTML, você pode fazer algo como:
@@ -1832,10 +1890,10 @@
 
                 <script>
                     /**
-        * 
+        *
         * Users List
-        *  
-        **/ 
+        *
+        **/
 
 
         // https://www.mockaroo.com/

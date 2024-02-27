@@ -84,13 +84,13 @@ use Illuminate\Support\Facades\Storage;
  *       @Router -  Aberta
  * ==============================
  */
-Route::middleware(['auth'])->group(function () {        
+Route::middleware(['auth'])->group(function () {
 
     Route::get('/autocomplete', [UserController::class, 'autocomplete'])->name('autocomplete');
     Route::get('/city/{id}', [UserController::class, 'city'])->name('city');
     Route::get('/wp/templates/{id}', [ApiWhatsapp::class, 'wp_templates'])->name('wp-templates');
     Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
-    
+
     Route::get('/test', function(){
         $userCertificatesEmit = UserCertificatesEmit::find(21);
         $user = $userCertificatesEmit->getuser();
@@ -266,6 +266,15 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
             Route::get('/users/cademi/course_transf', [ApiController::class, 'course_transf'])->name('cademi.course_transf');
 
             Route::post('/users/cademi/change_token', [CademiController::class, 'change_token'])->name('user.cademi.change_token');
+
+            Route::post('/users/obs/update/{id}', function($id, Request $request){
+                $user = (object)User::find($id);
+                $user->observation = $request->observation;
+
+                $user->save();
+                
+                return back();
+            })->name('user.obs.update');
             Route::post('/user/obs/create/{id}', function ($id, Request $request) {
                 //dd($request->all());
                 $user = User::find($id);
@@ -433,7 +442,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                             $cert_models = UserCertificatesModel::all();
                             return view('pages.app.cert.emit-list', compact('certificates', 'cert_models'));
                         })->name('cert-emit-list');
-                       
+
                         Route::post('/create', [CertificateController::class, 'create'])->name('post-cert-create');
 
                         Route::post('/condition/emit', [CertificateController::class, 'emit'])->name('post-cert-emit');
