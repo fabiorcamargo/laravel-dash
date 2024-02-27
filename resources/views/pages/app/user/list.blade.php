@@ -352,6 +352,7 @@
                                                                             {{$user->secretary}}</div>
                                                                         @else
                                                                         <div class="badge badge-warning badge-dot">
+
                                                                             {{$user->secretary}}</div>
                                                                         @endif
                                                                         @if ($user->payment == "CARTÃO")
@@ -368,6 +369,7 @@
                                                                         <span class="badge badge-light-info mb-2">10
                                                                             Cursos</span>
                                                                         @endif
+
                                                                         @if($user->cademis()->first())
                                                                         @if($user->first < 3) <span
                                                                             class="badge badge-success mb-2">
@@ -397,6 +399,21 @@
                                                                                 <span class="badge badge-success mb-2">
                                                                                     <x-widgets._w-svg class="text-white"
                                                                                         svg="currency-real" />
+                                                                                </span>
+                                                                                @endif
+
+                                                                                @if(Str::contains($user->observation, 'ING'))
+                                                                                <span class="badge outline-badge-dark mb-2">
+                                                                                   <x-svg-gb-flag />
+                                                                                    @php
+                                                                                        $posicao = strpos($user->observation, 'ING');
+
+                                                                                        $regex = '/ING(\S+)/';
+                                                                                        $doisCaracteresDepois = preg_match($regex, $user->observation, $matches);
+
+                                                                                        echo('ING'.$matches[1]);
+                                                                                    @endphp
+
                                                                                 </span>
                                                                                 @endif
 
