@@ -81,7 +81,7 @@
                     <p class="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                         Profissionaliza EAD - Cursos para o seu futuro.</p>
                     <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                        <a href="https://ead2.profissionalizaead.com.br/login"
+                        <a href="https://ead.profissionalizaead.com.br/login/index.php"
                             class="inline-flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 border border-gray-200 rounded-lg sm:w-auto hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 ">
                             {{-- <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
@@ -130,7 +130,7 @@
                                     d="M200 150c0 27.6-22.4 50-50 50s-50-22.4-50-50 22.4-50 50-50 50 22.4 50 50z" />
                             </svg> Alunos 2023/2024
                         </a>
-                        <a href="https://ead2.profissionalizaead.com.br/login"
+                        <a href="https://ead.profissionalizaead.com.br/login/index.php"
                             class="inline-flex items-center justify-center w-full px-5 py-3 text-sm font-medium text-center text-gray-900 border border-gray-200 rounded-lg sm:w-auto hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800 " >
                             {{-- <svg class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400"
                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512">
