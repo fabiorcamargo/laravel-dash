@@ -1665,7 +1665,7 @@ Route::get('/resume/pdf', function () {
 Route::get('/cert/{code}', [CertificateController::class, 'view'])->name('cert-check');
 Route::get('/cert/{code}/pdf', [CertificateController::class, 'pdf'])->name('cert-down');
 
-Route::get('/', function () {
+Route::get('/home', function () {
     return view('welcome');
 });
 
