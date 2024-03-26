@@ -1666,7 +1666,7 @@ Route::get('/cert/{code}', [CertificateController::class, 'view'])->name('cert-c
 Route::get('/cert/{code}/pdf', [CertificateController::class, 'pdf'])->name('cert-down');
 
 Route::get('/', function () {
-    return Redirect::to(env('APP_HOME_URL'));
+    return view('welcome');
 });
 
 

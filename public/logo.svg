@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 278.77 274.18">
+  <defs>
+    <radialGradient id="Gradiente_sem_nome_3" data-name="Gradiente sem nome 3" cx="141.68" cy="139.09" fx="141.68" fy="139.09" r="137.09" gradientTransform="translate(0 276.18) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4eaecb"/>
+      <stop offset="1" stop-color="#0b4a7f"/>
+    </radialGradient>
+    <radialGradient id="Gradiente_sem_nome_6" data-name="Gradiente sem nome 6" cx="68.13" cy="158.1" fx="68.13" fy="158.1" r="26.52" gradientTransform="translate(0 276.18) scale(1 -1)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f19634"/>
+      <stop offset="1" stop-color="#fcda15"/>
+    </radialGradient>
+    <radialGradient id="Gradiente_sem_nome_6-2" data-name="Gradiente sem nome 6" cx="126.17" cy="217.64" fx="126.17" fy="217.64" r="22.02" gradientTransform="translate(-108.87 -31.14) rotate(80.78) scale(1 -1)" xlink:href="#Gradiente_sem_nome_6"/>
+    <radialGradient id="Gradiente_sem_nome_6-3" data-name="Gradiente sem nome 6" cx="200.44" cy="217.43" fx="200.44" fy="217.43" r="18.3" xlink:href="#Gradiente_sem_nome_6"/>
+    <radialGradient id="Gradiente_sem_nome_6-4" data-name="Gradiente sem nome 6" cx="78.8" cy="121.19" fx="78.8" fy="121.19" r="98.59" gradientTransform="translate(.29 276.04) scale(1 -1)" xlink:href="#Gradiente_sem_nome_6"/>
+  </defs>
+  <circle cx="141.68" cy="137.09" r="137.09" style="fill: url(#Gradiente_sem_nome_3);"/>
+  <circle cx="68.13" cy="118.08" r="26.52" style="fill: url(#Gradiente_sem_nome_6);"/>
+  <circle cx="126.17" cy="58.54" r="22.02" transform="translate(48.18 173.7) rotate(-80.78)" style="fill: url(#Gradiente_sem_nome_6-2);"/>
+  <circle cx="200.44" cy="58.75" r="18.3" style="fill: url(#Gradiente_sem_nome_6-3);"/>
+  <path d="M60.13,179.61s-17.62-10.02-30.52-55.54c-13.51-47.53-11.5-84.06-11.5-84.06,0,0-37.54,83.06-4.5,153.61,31.94,68.23,98.09,76.05,98.09,76.05l.7-13.13c2.14-38.03,13.6-74.96,33.37-107.52l12.42-20.44s-27.92-7.82-60.04,11.98c-23.5,14.52-38.01,39.04-38.01,39.04Z" style="fill: url(#Gradiente_sem_nome_6-4);"/>
+</svg>
