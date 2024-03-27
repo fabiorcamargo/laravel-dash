@@ -1669,6 +1669,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home-test', function () {
+    return view('welcome2');
+});
+
+
 
 
 require __DIR__ . '/auth.php';

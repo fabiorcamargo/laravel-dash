@@ -2,9 +2,6 @@
 
 
 <html lang="pt-br" itemscope="/" itemtype="http://schema.org/WebPage"><head>
-    
-
-
 
 <head>
 
@@ -18,14 +15,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="msapplication-TileImage" content="https://cdn.areademembros.com/image?p=instancia_1543%2Fpng%2FIfxSq2k487p0HWMA3XepFwXllqzvL8mSSXBWQO7p.png&amp;w=192&amp;h=192&amp;t=crop&amp;d=default.png&amp;uptkn=9c99b1e6faf00591827b268778f90dcf">
-    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileColor" content="#000">
     <meta name="theme-color" content="#000000">
 
 
     <meta charset="UTF-8">
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title') - EspecializaTi</title>
+    <title>@yield('title')</title>
 
     <link rel="shortcut icon" href="{{ url('images/favicon.ico') }}" type="image/png">
     <script
@@ -44,7 +41,7 @@
 
 
 
-<body class="bg-gray-50">
+<body class="bg-gray-900">
 
     <div class="container mx-auto px-4 py-8">
         <form action="{{ route('logout') }}" method="post">
