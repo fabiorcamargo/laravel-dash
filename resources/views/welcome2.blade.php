@@ -379,8 +379,8 @@
                             src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/michael-gouch.png"
                             alt="profile picture">
                         <div class="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">
-                            <div class="pr-3 font-medium text-gray-900 dark:text-white">Micheal Gough</div>
-                            <div class="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">CEO at Google</div>
+                            <div class="pr-3 font-medium text-gray-900 dark:text-white">Matheus Bernando</div>
+                            <div class="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">Aprendiz Setor Bancário</div>
                         </div>
                     </figcaption>
                 </figure>
