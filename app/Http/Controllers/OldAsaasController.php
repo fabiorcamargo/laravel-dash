@@ -27,7 +27,7 @@ class OldAsaasController extends Controller
       }
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/customers?cpfCnpj=$cpf");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -80,7 +80,7 @@ class OldAsaasController extends Controller
     str_contains($token, "access_token")? $token : $token = "access_token : $token";
     //dd($token);
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/customers?cpfCnpj=$cpf");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -102,7 +102,7 @@ class OldAsaasController extends Controller
   {
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/customers");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -148,7 +148,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/notifications/$customer");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/notifications/$customer");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -182,7 +182,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -226,7 +226,7 @@ class OldAsaasController extends Controller
 
       $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments/$id");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments/$id");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -261,7 +261,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments?billingType=CREDIT_CARD&customer=$customer&order=asc");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?billingType=CREDIT_CARD&customer=$customer&order=asc");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -285,7 +285,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments?customer=$customer&order=asc");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?customer=$customer&order=asc");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -304,7 +304,7 @@ class OldAsaasController extends Controller
   public function getpixqr($id, $token)
   {
 
-    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/payments/$id/pixQrCode" :  $url = "https://www.asaas.com/api/v3/payments/$id/pixQrCode";
+    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/payments/$id/pixQrCode" :  $url = "https://api.asaas.com/v3/payments/$id/pixQrCode";
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -327,7 +327,7 @@ class OldAsaasController extends Controller
   public function getPayBook($id, $token)
   {
 
-    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/installments/$id/paymentBook?sort=dueDate&order=asc" :  $url = "https://www.asaas.com/api/v3/installments/$id/paymentBook?sort=dueDate&order=asc";
+    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/installments/$id/paymentBook?sort=dueDate&order=asc" :  $url = "https://api.asaas.com/v3/installments/$id/paymentBook?sort=dueDate&order=asc";
 
     // URL do arquivo que você deseja baixar
     $publicPath = public_path("storage/paybook/$id"); // Pasta pública onde o arquivo será salvo

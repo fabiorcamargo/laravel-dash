@@ -26,7 +26,7 @@ class AsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments/$id");
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments/$id");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 

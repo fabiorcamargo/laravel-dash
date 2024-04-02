@@ -5,7 +5,7 @@ include_once ("token.php");
 function lista_cliente($cpf){
 global $token;
 $ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/customers?cpfCnpj=$cpf");
+curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -28,7 +28,7 @@ function cria_cliente($id, $nome, $cpf, $telefone, $cep, $descricao, $grupo, $to
 $ch = curl_init();
 
 
-curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/customers");
+curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -73,7 +73,7 @@ global $token;
 
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/notifications/$customer");
+curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/notifications/$customer");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -106,7 +106,7 @@ function cria_cobranca($customer, $curso, $data2, $valor, $parcela){
 global $token;
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments");
+curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -149,7 +149,7 @@ function lista_cobranca($customer){
 global $token;
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL, "https://www.asaas.com/api/v3/payments?customer=$customer&order=asc");
+curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?customer=$customer&order=asc");
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
 curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
