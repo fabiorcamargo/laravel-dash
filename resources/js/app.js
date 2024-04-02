@@ -2,4 +2,4 @@ import.meta.glob([
     '../images/**',
 ]);
 
-import 'flowbite';
+// import 'flowbite';
