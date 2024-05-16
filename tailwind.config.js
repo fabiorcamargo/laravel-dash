@@ -5,6 +5,7 @@ module.exports = {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
+        './node_modules/flowbite/**/*.js'
     ],
 
     theme: {
@@ -20,7 +21,7 @@ module.exports = {
         require('@tailwindcss/forms'),
         require('@tailwindcss/aspect-ratio'),
         require('@tailwindcss/container-queries'),
-        // require('flowbite/plugin'),
+        require('flowbite/plugin'),
         require('tailwindcss-animated')
     ],
 };

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiWhatsapp;
+use App\Models\WpGroup;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('groups', function(){
+    $wg = WpGroup::get();
+    return $wg;
+});
 
 Route::post('users', [ApiController::class, 'getAllUsers'])->name('api.cademi.users'); 
 Route::post('users/store', [ApiController::class, 'store'])->name('api.cademi.store'); 

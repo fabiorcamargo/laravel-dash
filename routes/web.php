@@ -53,6 +53,7 @@ use App\Models\UserMessage;
 use App\Models\UserNotification;
 use App\Models\WhatsappApi;
 use App\Models\WhatsappTemplate;
+use App\Models\WpGroup;
 use Barryvdh\DomPDF\Facade\Pdf;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
@@ -330,6 +331,10 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                 Route::middleware(['can:secretary'])->group(function () {
                     Route::prefix('/user')->group(function () {
+                        Route::get('grupos', function(){
+                            $groups = WpGroup::get();
+                            return view('pages.app.user.grupos', ['title' => 'Grupos do Whatsapp', 'breadcrumb' => 'Grupos do Whatsapp', 'groups' => $groups]);
+                        });
                         Route::any('/search', [UserController::class, 'search'])->name('user-search');
                         Route::get('/list', [UserController::class, 'list'])->name('user-list');
                         Route::get('/listschool', [UserController::class, 'listschool'])->name('user-listschool');
