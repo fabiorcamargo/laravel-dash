@@ -10,9 +10,11 @@ class WpGroup extends Model
     use HasFactory;
 
     protected $fillable = [
+        'cademi_code',
         'name',
         'description',
         'link',
-        'expire'
+        'inicio',
+        'fim',
     ];
 }

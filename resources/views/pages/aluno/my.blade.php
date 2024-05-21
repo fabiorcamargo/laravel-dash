@@ -45,31 +45,143 @@
 
 
 
-            <div class="row ms-1 mt-4">
-                @isset($groups[0])
-                @foreach ($groups as $group)
-                <a href="{{ $group->group_link }}" target="_blank"
-                    class="alert alert-light-warning alert-dismissible fade show border-0 mb-4" role="alert"> <button
-                        type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"> <svg
-                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-x close" data-bs-dismiss="alert">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg></button> <img src="{{Vite::asset('resources/images/whatsapp.svg')}}" alt="avatar"
-                        width="30" class="me-2"> Entre no grupo <b>{{ $group->group_name }}</b> para não perder as
-                    notificações. </a>
-                @endforeach
-                @endisset
-
-
+            <div class="row  mt-4">
+                
                 <div class="row">
                     <!-- Session Status -->
                     <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
-
                 </div>
+
+                @isset($groups[0])
+                
+                @foreach ($groups as $group)
+
+                @php
+                $imagePath = 'peoples';
+                $files = \Illuminate\Support\Facades\File::files($imagePath);
+                $images = array_filter($files, function ($file) {
+                return in_array($file->getExtension(), ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']);
+                });
+                shuffle($images);
+                @endphp
+
+                {{-- <div class="alert alert-warning alert-dismissible fade show mb-4" role="alert">
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"><svg> ...
+                        </svg></button>
+                    <strong>Primary!</strong> Lorem Ipsum is simply dummy text of the printing.
+                </div>
+                <a href="{{ $group->group_link }}" target="_blank"
+                    class="alert alert-warning alert-dismissible fade show mb-4 text-white" role="alert">
+                    <img src="{{Vite::asset('resources/images/whatsapp.svg')}}" alt="avatar" width="30" class="me-2">
+                    Entre no grupo {{ $group->group_name }} para não perder as
+                    notificações.
+                </a> --}}
+
+                
+
+                <div class="card style-4 mb-4 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 mx-0">
+                    <div class="card-body pt-3">
+                        
+
+                        <div class="m-o-dropdown-list">
+                            <div class="media mt-0 mb-3">
+                                <div class="badge--group me-3">
+                                    
+                                </div>
+                                <div class="media-body">
+                                    <h4 class="media-heading mb-0">
+                                        <span class="media-title">Entre no Grupo {{$group->name}}</span>
+                                        <div class="dropdown-list dropdown" role="group">
+                                            <a href="javascript:void(0);" class="dropdown-toggle"
+                                                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            </a>
+                                            <div class="dropdown-menu left">
+                                                <a class="dropdown-item" href="javascript:void(0);"><span>Start
+                                                        chat</span> <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round" class="feather feather-message-circle">
+                                                        <path
+                                                            d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z">
+                                                        </path>
+                                                    </svg></a>
+                                                <a class="dropdown-item" href="javascript:void(0);"><span>Todo</span>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit">
+                                                        <path
+                                                            d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7">
+                                                        </path>
+                                                        <path
+                                                            d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z">
+                                                        </path>
+                                                    </svg></a>
+                                                <a class="dropdown-item"
+                                                    href="javascript:void(0);"><span>Statistics</span> <svg
+                                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-bar-chart-2">
+                                                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                                                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                                                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                                                    </svg></a>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </h4>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <p class="card-text mt-4 mb-0">Grupo de informações e lembrete aulas, fique por dentro de tudo relacionado ao seu curso.</p>
+                        
+                    </div>
+                    <div class="card-footer pt-0 border-0">
+                        <div class="progress br-30 progress-sm">
+                            <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80"
+                                aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <div class="avatar--group">
+                                <div class="avatar avatar-sm ms-0">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[0]->getFilename())}}" class="rounded-circle">
+                                </div>
+                                <div class="avatar avatar-sm">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[1]->getFilename())}}" class="rounded-circle">
+                                </div>
+                                <div class="avatar avatar-sm">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[2]->getFilename())}}" class="rounded-circle">
+                                </div>
+                                <div class="avatar avatar-sm">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[3]->getFilename())}}" class="rounded-circle">
+                                </div>
+                            </div>
+                    
+                        </div>
+                    </div>
+                    
+
+                    <div class="card-footer pt-0 border-0 text-center">
+                        <a href="{{ $group->group_link }}" target="_blank" class="btn btn-success w-100 _effect--ripple waves-effect waves-light"><img src="{{Vite::asset('resources/images/whatsapp.svg')}}" alt="avatar" width="30" class="me-2"> <span class="btn-text-inner ms-3">Entrar no Grupo</span></a>
+                    </div>
+
+                    <small class="mb-0 py-2 ms-4">
+                        {{ Auth::user()->contract_date 
+                            ? 'Válido até ' . \Carbon\Carbon::parse(Auth::user()->contract_date)->addDays(7)->format('d/m/Y')
+                            : 'Data de contrato não disponível' }}
+                    </small>
+                </div>
+
+                @endforeach
+                @endisset
 
 
                 {{--}}
@@ -103,27 +215,28 @@
 
 
                 @if(Auth::user()->active == 1)
-                <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 mx-0 px-0">
                     <x-widgets._w-pay-asaas title="Pagamentos" chart-id="pay-asaas" />
                 </div>
 
                 @endif
 
-                <div id="owl-demo" class="mt-4">
+
+                <div id="owl-demo" class="mt-2 mx-0 px-0">
 
                     @if(!(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto')) /*||
                     !(Auth::user()->client_ouro()->first()) &&
                     !(Auth::user()->client_ouro()->first()->matricula_ouro()->get())*/)
-                    <div class="me-2">
+                    
                         <x-widgets._w-card-cademi title="Em Breve" card="{{'em-breve.jpg'}}" />
-                    </div>
+                    
                     @endif
                     @if(Auth::user()->first == 3 || Auth::user()->first == 5)
                     <x-widgets._w-card-bloqueado title="Cursos Premium" card="{{'Curso_Bloqueado.jpg'}}" />
                     @else
                     @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') )
                     @foreach ($cards as $card)
-                    <div class="me-2">
+                    <div class="mx-0">
                         <x-widgets._w-card-cademi title="{{$card['title']}}" card="{{$card['img']}}" />
                     </div>
                     @endforeach
@@ -148,7 +261,7 @@
                 </div>
 
                 @if(Auth::user()->active == 1)
-                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing mt-4">
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing mt-4 px-0">
                     <x-widgets._w-support title="Suporte" />
                 </div>
                 @endif

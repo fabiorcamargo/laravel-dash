@@ -10,13 +10,13 @@ class ChatbotGroup extends Model
     use HasFactory;
 
     protected $fillable = [
-    'group_id',
-    'group_code',
-    'periodo',
-    'group_name',
-    'responsavel',
-    'group_link',
-    'seller',
-    'city',
+        'group_id',
+        'group_code',
+        'periodo',
+        'group_name',
+        'responsavel',
+        'group_link',
+        'seller',
+        'city',
     ];
 }

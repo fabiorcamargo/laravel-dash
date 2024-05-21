@@ -8,6 +8,7 @@ use App\Models\City;
 use App\Models\EcoSeller;
 use App\Models\State;
 use App\Models\User;
+use App\Models\WpGroup;
 use Illuminate\Http\Request;
 
 class ChatbotController extends Controller
@@ -23,34 +24,32 @@ class ChatbotController extends Controller
 
     public function group_add_show(){
 
-        $users = User::where('role', 7)->get();
-        $sellers = EcoSeller::where('type', 2)->get();
+        // $users = User::where('role', 7)->get();
+        // $sellers = EcoSeller::where('type', 2)->get();
         $tags = CademiTag::all();
 
-        return view('pages.app.group.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('tags', 'users', 'sellers'));
+        return view('pages.app.group.add', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('tags'));
 
     }
 
     public function group_add_create(Request $request){
-        //dd($request->all());
 
-        $city = str_replace("-", "", (int) filter_var($request->city, FILTER_SANITIZE_NUMBER_INT));
-        //dd($city);  
-
-        if(ChatbotGroup::where('group_code', $request->course_id)->first()){
-            return back()->with('error', 'Já existe um grupo para esse Código de Curso');            
-        }else{
-            ChatbotGroup::create([
-                'group_id' => $request->group_id,
-                'group_code' => $request->course_id,
-                'periodo' => $request->inicio . " até " . $request->fim,
-                'group_name' => $request->course_name,
-                'responsavel' => $request->responsavel,
-                'seller' => $request->seller,
-                'city' => $city,
-                'group_link' => $request->group_link,
+            $request->validate([
+                'cademi_code' => 'required',
+                'name' => 'required|string',
+                'link' => 'required|url',
+                'inicio' => 'required|date|before_or_equal:fim',
+                'fim' => 'required|date|after_or_equal:inicio',
             ]);
-        }
+            
+            WpGroup::create([
+                'cademi_code' => $request->cademi_code,
+                'name' => $request->name,
+                'description' => $request->description,
+                'link' => $request->link,
+                'inicio' => $request->inicio,
+                'fim' => $request->fim,
+            ]);
 
         return back()->with('success', 'Grupo criado com sucesso');  
 

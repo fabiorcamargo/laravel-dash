@@ -17,7 +17,7 @@ class Getuser extends Component
     {
         
         return view('livewire.getuser', [
-            'users' => User::where('username', 'like', $this->search == "" ? "" : $this->search.'%')->get(),
+            'users' => User::where('username', $this->search)->get(),
         ]);
     }
 }

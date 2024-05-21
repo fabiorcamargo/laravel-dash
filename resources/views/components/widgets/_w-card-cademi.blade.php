@@ -1,6 +1,6 @@
 
 
-<a class="card mb-md-0 mb-4" href="{{ App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') }}" target="_self">
+<a class="card mb-4 mx-0 px-0" href="{{ App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') }}" target="_self">
     <img src="{{asset($card)}}" class="card-img-top" alt="Seu Curso">
     <div class="card-footer">
         <div class="row">

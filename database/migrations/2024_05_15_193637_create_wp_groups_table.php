@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('wp_groups', function (Blueprint $table) {
             $table->id();
+            $table->string('cademi_code');
             $table->string('name');
             $table->string('description')->nullable();
             $table->string('link');
-            $table->date('expire')->nullable();
+            $table->date('inicio');
+            $table->date('fim');
             $table->timestamps();
         });
     }

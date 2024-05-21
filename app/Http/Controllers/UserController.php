@@ -20,6 +20,7 @@ use App\Models\State;
 use App\Models\TemporaryFile;
 use App\Models\User;
 use App\Models\UserMessage;
+use App\Models\WpGroup;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Query\JoinClause;
@@ -43,18 +44,16 @@ class UserController extends Controller
         $this->cities = $cities;
         $this->file = $file;
         $this->avatar = $avatar;
-        
     }
 
     public function index(Request $request)
     {
         $users = $this->user
-                        ->getUsers(
-                            search: $request->search ?? ''
-                        );
+            ->getUsers(
+                search: $request->search ?? ''
+            );
 
         return view('users.index', compact('users'));
-        
     }
 
     public function show($id)
@@ -70,27 +69,27 @@ class UserController extends Controller
     {
         $data = $request->all();
         $user = auth()->user();
-        
+
         $data['password'] = bcrypt($request->password);
-        $de = array('.','-');
-        $para = array('','');
+        $de = array('.', '-');
+        $para = array('', '');
         $data['document'] = str_replace($de, $para, $request->document);
-        $de = array('(',')',' ','-');
-        $para = array('','','','');
+        $de = array('(', ')', ' ', '-');
+        $para = array('', '', '', '');
         $data['cellphone'] = str_replace($de, $para, $request->cellphone);
         if ($request->image) {
             $data['image'] = $request->image->store('users');
             // $extension = $request->image->getClientOriginalExtension();
             // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
         }
-        
+
         $response = json_decode(($this->model->create($data)), true);
 
         $id = ($response['id']);
         //return redirect()->route('users.show', $id);
-        
+
         return redirect()->route('cademi.create', $id);
-        
+
 
         //return redirect()->route("/users/$id/cademi/create")->$response;
 
@@ -131,73 +130,77 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    public function block_cademi($id, Request $request) {
+    public function block_cademi($id, Request $request)
+    {
         $user = $this->user->find($id);
-        if($user->first < 3){
-            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        if ($user->first < 3) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 3;
-        }elseif($user->first == 4){
-            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        } elseif ($user->first == 4) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 5;
         }
         $user->observation()->create([
             'obs' => $obs
         ]);
-        $user->save();        
+        $user->save();
         return back()->with([
             'status' => "Cursos Cademi bloqueados com sucesso!"
         ]);
     }
 
-    public function desblock_cademi($id, Request $request) {
+    public function desblock_cademi($id, Request $request)
+    {
         $user = $this->user->find($id);
-        if($user->first == 3){
-            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        if ($user->first == 3) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 2;
-        }elseif($user->first == 5){
-            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        } elseif ($user->first == 5) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Cademi\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 4;
         }
         $user->observation()->create([
             'obs' => $obs
         ]);
         //dd($user);
-        $user->save();        
+        $user->save();
         return back()->with([
             'status' => "Cursos Cademi desbloqueados com sucesso!"
         ]);
     }
-    public function desblock_ouro($id, Request $request) {
+    public function desblock_ouro($id, Request $request)
+    {
         $user = $this->user->find($id);
-        if($user->first == 4){
-            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        if ($user->first == 4) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 2;
-        }elseif($user->first == 5){
-            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        } elseif ($user->first == 5) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 3;
         }
         $user->observation()->create([
             'obs' => $obs
         ]);
-        $user->save();        
+        $user->save();
         return back()->with([
             'status' => "Cursos Ouro desbloqueados com sucesso!"
         ]);
     }
 
-    public function block_ouro($id, Request $request) {
+    public function block_ouro($id, Request $request)
+    {
         $user = $this->user->find($id);
-        if($user->first < 3){
-            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        if ($user->first < 3) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 4;
-        }elseif($user->first == 3){
-            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: ".Auth::user()->name;
+        } elseif ($user->first == 3) {
+            $obs = "Motivo: $request->motivo\r\nTipo: Ouro\r\nObs: $request->obs\r\nBloqueado por: " . Auth::user()->name;
             $user->first = 5;
         }
         $user->observation()->create([
             'obs' => $obs
         ]);
-        $user->save();        
+        $user->save();
         return back()->with([
             'status' => "Cursos Ouro bloqueados com sucesso!"
         ]);
@@ -268,14 +271,12 @@ class UserController extends Controller
             }
 
     }*/
-                
-        
-            
     }
 
-    public function active($id) {
-        
-        
+    public function active($id)
+    {
+
+
         $user = $this->user->find($id);
         $r = str_replace(" ", "", $user->courses);
         $courses = explode(",",  $r);
@@ -340,18 +341,17 @@ class UserController extends Controller
             }
 
     }*/
-                $user->first = 2;
-                $user->save();        
-        
-                return back();
-        
-            
+        $user->first = 2;
+        $user->save();
+
+        return back();
     }
 
-    public function getUsers() {
+    public function getUsers()
+    {
         $students = User::get()->toJson(JSON_PRETTY_PRINT);
         return response($students, 200);
-      }
+    }
 
     public function list(Request $request)
     {
@@ -379,19 +379,19 @@ class UserController extends Controller
             $query->where('username', 'LIKE', '%' . $request->search . '%');
         }
         if ($request->has('ouro')) {
-            if($request->input('ouro') == "Sim"){
-                    $query->join('ouro_clients', function (JoinClause $join) {
-                        $join->on('users.id', '=', 'ouro_clients.user_id');
-                    })
+            if ($request->input('ouro') == "Sim") {
+                $query->join('ouro_clients', function (JoinClause $join) {
+                    $join->on('users.id', '=', 'ouro_clients.user_id');
+                })
                     ->get();
-                }else if($request->input('ouro') == 10){
-                    $query->where('ouro', '=', 1);
+            } else if ($request->input('ouro') == 10) {
+                $query->where('ouro', '=', 1);
             }
         }
-        
+
         foreach ($request->input() as $nome => $valor) {
-            if($nome != "_token" && $nome != "page" && $nome != "ouro"){
-                if ($valor) { 
+            if ($nome != "_token" && $nome != "page" && $nome != "ouro") {
+                if ($valor) {
                     $query->where($nome, 'LIKE', '%' . $valor . '%');
                 }
             }
@@ -404,9 +404,9 @@ class UserController extends Controller
     public function resp(Request $request)
     {
         $users = $this->user
-                        ->getUsers(
-                            search: $request->search ?? ''
-                        );
+            ->getUsers(
+                search: $request->search ?? ''
+            );
 
         return view('pages.app.user.list', ['title' => 'Alunos | teste', 'breadcrumb' => 'This Breadcrumb'], compact('users'));
     }
@@ -414,26 +414,27 @@ class UserController extends Controller
     public function create(Request $request)
     {
 
-        
+
         return view('pages.app.user.create', ['title' => 'Profissionaliza EAD Admin - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
     }
 
     public function lote(Request $request)
     {
-        if(CademiImport::first()){
+        if (CademiImport::first()) {
             $cademis = CademiImport::first()->orderBy('updated_at', 'desc')->paginate(20);
-        }else{
+        } else {
             $cademis = [];
         }
-        
+
         return view('pages.app.user.lote', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('cademis'));
     }
 
     public function username()
     {
-        $field = [['name'=> Auth::user()->name],
-        ['email'=> Auth::user()->email]
-    ];
+        $field = [
+            ['name' => Auth::user()->name],
+            ['email' => Auth::user()->email]
+        ];
         return compact($field);
     }
 
@@ -441,29 +442,29 @@ class UserController extends Controller
     {
         //$observation = ($_POST['observation']);
         //dd($request->all());
-        if (str_contains(url()->previous(), "profile")){
+        if (str_contains(url()->previous(), "profile")) {
             $user = $this->user->find($request->id);
 
-            if($request->password == null){
+            if ($request->password == null) {
                 $user->password = $user->password;
             } else {
                 $user->password = bcrypt($request->password);
             }
-            if(Auth::user()->role == 4 || Auth::user()->role == 6 || Auth::user()->role == 7 || Auth::user()->role == 8){
-            $user->email2 = $request->email2;
-            $de = array('(',')',' ','-');
-            $para = array('','','','');
-            $user->cellphone2 = str_replace($de, $para, $request->cellphone2);
-            $user->payment = $request->payment;
-            $user->secretary = $request->secretary;
-            $de = array('.','-');
-            $para = array('','');
-            $user->document = str_replace($de, $para, $request->document);
-            //dd($user);
-            if( $request->ouro == "on"){
-                $user->ouro = 1;
-                }else{
-                $user->ouro = 0;   
+            if (Auth::user()->role == 4 || Auth::user()->role == 6 || Auth::user()->role == 7 || Auth::user()->role == 8) {
+                $user->email2 = $request->email2;
+                $de = array('(', ')', ' ', '-');
+                $para = array('', '', '', '');
+                $user->cellphone2 = str_replace($de, $para, $request->cellphone2);
+                $user->payment = $request->payment;
+                $user->secretary = $request->secretary;
+                $de = array('.', '-');
+                $para = array('', '');
+                $user->document = str_replace($de, $para, $request->document);
+                //dd($user);
+                if ($request->ouro == "on") {
+                    $user->ouro = 1;
+                } else {
+                    $user->ouro = 0;
                 }
                 /*
             if( $request->first == "on"){
@@ -471,26 +472,25 @@ class UserController extends Controller
                 } else {
                 $user->first = 1;   
                 }*/
-            
-        }
-           // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
-        }else{
+            }
+            // return redirect("/modern-dark-menu/app/user/profile/$user->id")->with('sucess', 'Verdade');
+        } else {
             //dd('n');
             $user = $this->user->find(Auth::user()->id);
             $user->first = 1;
         }
 
-        
+
         //$user->first = 1;
-        if($request->password == null){
+        if ($request->password == null) {
             $user->password = $user->password;
         } else {
             $user->password = bcrypt($request->password);
         }
-        
-        
-        $de = array('(',')',' ','-');
-        $para = array('','','','');
+
+
+        $de = array('(', ')', ' ', '-');
+        $para = array('', '', '', '');
         $user->cellphone = str_replace($de, $para, $request->cellphone);
         if ($request->image) {
             $user->image = $request->image->store('users');
@@ -500,13 +500,13 @@ class UserController extends Controller
         $user->name = $request->name;
         $user->lastname = $request->lastname;
         $user->email = $request->email;
-        if (is_numeric($request->city)){
+        if (is_numeric($request->city)) {
             //dd('s');
-        $city = City::where('id', $request->city)->first();
-        //]dd($city);
-        $user->city = $city->name;
-        $state = State::where('id', $city->state_id)->first();
-        $user->uf = $state->abbr;
+            $city = City::where('id', $request->city)->first();
+            //]dd($city);
+            $user->city = $city->name;
+            $state = State::where('id', $city->state_id)->first();
+            $user->uf = $state->abbr;
             //dd($user);
         } else {
             //dd('n');
@@ -514,19 +514,19 @@ class UserController extends Controller
             $request->state != "" ? $user->uf = $request->state : "";
         }
 
-        if (is_numeric($request->city2)){
+        if (is_numeric($request->city2)) {
             //dd('s');
-        $city2 = City::where('id', $request->city2)->first();
-        $user->city2 = $city2->name;
-        $state2 = State::where('id', $city2->state_id)->first();
-        $user->uf2 = $state2->abbr;
+            $city2 = City::where('id', $request->city2)->first();
+            $user->city2 = $city2->name;
+            $state2 = State::where('id', $city2->state_id)->first();
+            $user->uf2 = $state2->abbr;
         } else {
             $request->city2 != "" ? $user->city2 = $request->city2 : "";
             $request->state2 != "" ? $user->uf2 = $request->state2 : "";
         }
         //dd($user);
-        if (isset($request->role)){
-        $user->role = (integer)$request->role;
+        if (isset($request->role)) {
+            $user->role = (int)$request->role;
         }
         //dd($user);
         $request->pw_change == "on" ? $user->active = 4 : "";
@@ -535,31 +535,32 @@ class UserController extends Controller
         //$city = preg_replace('/[^0-9]/', '', $data['city']);
         //$city2 = City::where('id', $city)->first();
         //$uf = State::where('id', $city2->state_id)->first();
-        
 
-       // $user->city = $city2->name;
+
+        // $user->city = $city2->name;
         //$user->uf = $uf->abbr;
         $request->observation != null ? $user->observation = $request->observation : "";
         //dd($user);
         $user->update();
         $status = "Usuário atualizado com sucesso!";
-        
-        if (str_contains(url()->previous(), "profile")){
+
+        if (str_contains(url()->previous(), "profile")) {
             return redirect("/modern-dark-menu/aluno/profile/$user->id")->with('status', __($status));
         }
-        
-        
+
+
         return view('pages.aluno.second', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Ativação']);
     }
 
 
-    public function my(){
+    public function my()
+    {
         Auth::user()->access_date = Carbon::now()->toDateTimeString();
         Auth::user()->save();
         //dd(Auth::user());
         //$cards = new stdClass;
         $data = $this->avatar->where('user_id', Auth::user()->id)->first();
-        if ( $data != null ){
+        if ($data != null) {
             $avatar =  $data->folder . "/" . $data->file;
         } else {
             $avatar = "/default.jpeg";
@@ -568,156 +569,156 @@ class UserController extends Controller
         $cards[0] = array(
             'img' => "product/cademi/em-breve.jpg",
             'title' => "Em Breve"
-            );
+        );
         //$cards[0]->img = "resources/images/em-breve.jpg";
         //$cards[0]->title = "Em Breve";
 
-        if(Auth::user()->first == 3){
+        if (Auth::user()->first == 3) {
             $cards[0] = array(
-            'img' => "resources/images/Curso Bloqueado.jpg",
-            'title' => "Seu curso está bloqueado"
+                'img' => "resources/images/Curso Bloqueado.jpg",
+                'title' => "Seu curso está bloqueado"
             );
-        }else{
+        } else {
 
-            if (Cademi::where('user_id', Auth::user()->id)->first()){
-            if((Auth::user()->courses != "")){
-                $courses = explode(",", str_replace(" ", "", Auth::user()->courses));
-                
-                $i = 0;
-                
-                foreach($courses as $course){
-                    
-                    if(CademiTag::where('name', $course)->first() !== null){
-                        $cards[$i] = array(
-                        "id" => CademiTag::where('name', $course)->first()->tag_id,
-                        'tag' => CademiTag::where('name', $course)->first()->name,
-                        'img' => CademiTag::where('name', $course)->first()->img == null ? "product/cademi/Curso Liberado.jpg" : CademiTag::where('name', $course)->first()->img,
-                        'title' => CademiTag::where('name', $course)->first()->title == null ? "Seu curso está liberado" : CademiTag::where('name', $course)->first()->title
-                        );
-                    }else{
-                        $cards[$i] = array(
-                            'img' => "product/cademi/Curso Liberado.jpg",
-                            'title' => "Seu curso está liberado"
+            if (Cademi::where('user_id', Auth::user()->id)->first()) {
+                if ((Auth::user()->courses != "")) {
+                    $courses = explode(",", str_replace(" ", "", Auth::user()->courses));
+
+                    $i = 0;
+
+                    foreach ($courses as $course) {
+
+                        if (CademiTag::where('name', $course)->first() !== null) {
+                            $cards[$i] = array(
+                                "id" => CademiTag::where('name', $course)->first()->tag_id,
+                                'tag' => CademiTag::where('name', $course)->first()->name,
+                                'img' => CademiTag::where('name', $course)->first()->img == null ? "product/cademi/Curso Liberado.jpg" : CademiTag::where('name', $course)->first()->img,
+                                'title' => CademiTag::where('name', $course)->first()->title == null ? "Seu curso está liberado" : CademiTag::where('name', $course)->first()->title
                             );
+                        } else {
+                            $cards[$i] = array(
+                                'img' => "product/cademi/Curso Liberado.jpg",
+                                'title' => "Seu curso está liberado"
+                            );
+                        }
+                        $i++;
                     }
-                    $i++;
                 }
-                
-            }
-            
-            }else{
+            } else {
                 $cards[0] = array(
                     'img' => "product/cademi/em-breve.jpg",
                     'title' => "Em Breve"
-                    );
+                );
             }
         }
-        if ( $data != null ){
+        if ($data != null) {
             $avatar =  $data->folder . "/" . $data->file;
         } else {
             $avatar = "/default.jpeg";
         }
 
-//        dd(Auth::user()->client_ouro()->first()->login_auto);
-/*
-        $user = User::find(Auth::user()->id);
-        if ($user->uf2 != ""){
-        $state = State::where("abbr", $user->uf2)->first();
-        $city = City::where([["name", $user->city2],["state_id", $state->id]])->first();
+        //        dd(Auth::user()->client_ouro()->first()->login_auto);
 
-        $r = str_replace(" ", "", $user->courses);
-        $courses = explode(",",  $r);
-        $i=0;
-        foreach($courses as $course){
-            $groups[$i] = ChatbotGroup::where([["city", $city->id],["group_code", $course]])->first();
-            $i++;
-        }
-    }else{
-        $groups = null;
-    }*/
+        $user = User::find(Auth::user()->id);
+
+
+
+        // Supondo que $user seja a instância do usuário atual
+        $codesaleArray = explode(',', $user->codesale);
+
+        // Remover espaços em branco extras, se houver
+        $codesaleArray = array_map('trim', $codesaleArray);
+
+        // Converter a contract_date para uma instância de Carbon (se ainda não estiver)
+        $contractDate = Carbon::parse($user->contract_date);
+
+        // Buscar os grupos que possuem um cademi_code que está no array e fim <= contract_date
+        $groups = WpGroup::whereIn('cademi_code', $codesaleArray)
+            ->where('fim', '>=', $contractDate)
+            ->get();
+
+        //dd($groups);
 
         //$event = new ConversionApiFB;
         //$event->Lead();
 
         //dd(Auth::user()->courses);
-        
 
-        
-        if(Auth::user()->client_ouro->first()){
+
+
+        if (Auth::user()->client_ouro->first()) {
             //dd('s');
             $ouro = new OuroModerno;
             $ouro_status = $ouro->check_user_token();
             //dd($ouro_status);
             $msg = "Usuário inválido favor contatar suporte!!!";
-        }else{
+        } else {
             $ouro_status = "true";
         }
 
-        if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2){
+        if (Auth::user()->courses == "GRATUITO-AUX" && Auth::user()->active == 2) {
             $card = "resources/images/GRATUITO-AUX.jpg";
-            if($ouro_status == "false"){
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'))->withErrors(__($msg));
-            }else{
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'));
+            if ($ouro_status == "false") {
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards', 'groups'))->withErrors(__($msg));
+            } else {
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards', 'groups'));
             }
-            
-        }else{  
+        } else {
             $ouro = "resources/images/Curso Liberado.jpg";
-            if($ouro_status == "false"){
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'ouro' => $ouro], compact('cards'))->withErrors(__($msg));    
-            }else{
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'ouro' => $ouro], compact('cards'));    
+            if ($ouro_status == "false") {
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'ouro' => $ouro], compact('cards', 'groups'))->withErrors(__($msg));
+            } else {
+                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar, 'ouro' => $ouro], compact('cards', 'groups'));
             }
         }
-        if($ouro_status == "false"){
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'))->withErrors(__($msg));
-        }else{
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards'));
+        if ($ouro_status == "false") {
+            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards', 'groups'))->withErrors(__($msg));
+        } else {
+            return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => $avatar], compact('cards', 'groups'));
         }
-
     }
 
-    public function newids(Request $request){
+    public function newids(Request $request)
+    {
 
         $users = User::factory()
-                ->count(10)
-                ->state(new Sequence(
-                    ['admin' => 'Y'],
-                    ['admin' => 'N'],
-                ))
-                ->create();
-        
+            ->count(10)
+            ->state(new Sequence(
+                ['admin' => 'Y'],
+                ['admin' => 'N'],
+            ))
+            ->create();
+
         $data = $request->all();
         //dd($data);
         $data['password'] = bcrypt($request->password);
-        $de = array('.','-');
-        $para = array('','');
+        $de = array('.', '-');
+        $para = array('', '');
         $data['document'] = str_replace($de, $para, $request->document);
-        $de = array('(',')',' ','-');
-        $para = array('','','','');
+        $de = array('(', ')', ' ', '-');
+        $para = array('', '', '', '');
         $data['cellphone'] = str_replace($de, $para, $request->cellphone);
         if ($request->image) {
             $data['image'] = $request->image->store('users');
             // $extension = $request->image->getClientOriginalExtension();
             // $data['image'] = $request->image->storeAs('users', now() . ".{$extension}");
         }
-            
-        
+
+
         $response = json_decode(($this->model->create($data)), true);
 
         $id = ($response['id']);
-        
-               
-                
-                
-        
-        
-                return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início']);
-        
-            }
 
 
-        public function charge(Request $request)
+
+
+
+
+        return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início']);
+    }
+
+
+    public function charge(Request $request)
     {
         $user = $this->user->find(Auth::user()->id);
 
@@ -726,25 +727,25 @@ class UserController extends Controller
         $data['image'] = 'avatar/default.jpeg';
         //dd($data);
         $user->update($data);
-        
-        
+
+
         return view('pages.aluno.charge', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Charge']);
     }
 
     public function reset(Request $request)
     {
-        
+
         $data = $request->all();
         //dd($request->first);
         $user = $this->user->where('username', $data['username'])->first();
-        
+
         $data['password'] = bcrypt($request->password);
-        if($request->first = "on" ){
+        if ($request->first = "on") {
             $data['first'] = null;
-        } else if($request->first = "off" ){
+        } else if ($request->first = "off") {
             $data['first'] = "1";
         }
-   
+
         $user->password = $data['password'];
         $user->first = $data['first'];
         //dd($user);
@@ -752,110 +753,110 @@ class UserController extends Controller
         //dd(Cademi::where('user_id', Auth::user()->id)->first());
 
 
-        if (Cademi::where('user_id', Auth::user()->id)->first()){
-            if(str_contains(Auth::user()->courses, "PRE")){
-             $card = "resources/images/Militar.jpg";
-             //dd($card);
-            }else if(str_contains(Auth::user()->courses, "AG")){
-             $card = "resources/images/Bancario.jpg";
-            }else if(str_contains(Auth::user()->courses, "CPA")){
+        if (Cademi::where('user_id', Auth::user()->id)->first()) {
+            if (str_contains(Auth::user()->courses, "PRE")) {
+                $card = "resources/images/Militar.jpg";
+                //dd($card);
+            } else if (str_contains(Auth::user()->courses, "AG")) {
+                $card = "resources/images/Bancario.jpg";
+            } else if (str_contains(Auth::user()->courses, "CPA")) {
                 $card = "resources/images/cpa10.jpg";
-            }else{
+            } else {
                 $card = "resources/images/em-breve.jpg";
             }
-         
-         }else{
-             $card = "resources/images/em-breve.jpg";
-         }
+        } else {
+            $card = "resources/images/em-breve.jpg";
+        }
         //dd($card);
-        
+
         return view('pages.aluno.my', ['title' => 'Profissionaliza EAD | Início', 'breadcrumb' => 'Início', 'avatar' => "Auth::user()->id", 'card' => $card]);
     }
 
-    public function first(){
-    
-    
+    public function first()
+    {
+
+
         $states = State::all('name', 'id');
 
-    
-    return view('pages.aluno.first', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste', 'states' => $states]);
+
+        return view('pages.aluno.first', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início', 'file' => 'teste', 'states' => $states]);
     }
 
 
     public function city($id)
     {
-        $cities = City::where("state_id",$id)
-                    ->pluck('name','id');
-                   //dd($cities);
+        $cities = City::where("state_id", $id)
+            ->pluck('name', 'id');
+        //dd($cities);
         return json_encode($cities);
     }
 
 
     public function profile($id)
     {
-        if((Auth::user()->role) == 1 ){
+        if ((Auth::user()->role) == 1) {
             //dd("1");
-            if(Auth::user()->id != $id){
+            if (Auth::user()->id != $id) {
                 return back();
             }
         }
         //dd("ok");
         //dd(UserController::getIp());
-        
-        if(!(User::find($id))){
+
+        if (!(User::find($id))) {
             $msg = "Não foi possível localiza usuário.";
             return redirect('/modern-dark-menu/aluno/my')->withErrors(__($msg));
         }
         $user = User::find($id);
-        
-        
+
+
         $cademi = Cademi::where('user_id', $user->id)->first();
         //dd($cademi);
         $i = 0;
         $n = 0;
-        if(!empty($cademi)){
-        $cademicourses = CademiCourse::where('user_id', $user->id)->get();
-        //dd($cademi);
-        //dd($cademicourses);
-        //dd($user);
-        $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");    
-       //dd($response);
-       //dd($response->status()); 
-        $profiler = json_decode($response->body(), true);
+        if (!empty($cademi)) {
+            $cademicourses = CademiCourse::where('user_id', $user->id)->get();
+            //dd($cademi);
+            //dd($cademicourses);
+            //dd($user);
+            $response = Http::withToken(env('CADEMI_TOKEN_API'))->get("https://profissionaliza.cademi.com.br/api/v1/usuario/acesso/$cademi->user");
+            //dd($response);
+            //dd($response->status()); 
+            $profiler = json_decode($response->body(), true);
 
-        //dd($profiler);
+            //dd($profiler);
 
-        if ($response->status() !== 200){
-            $courses[$i] = ["name" => "Vazio", "perc" => "0%"];
-        }
-        //dd($profiler);
-        if ($response->status() == 200){
-        $produtos = ($profiler['data']['acesso']);
-
-        //dd($produtos);
-        
-        foreach ($produtos as $produto){
-            //dd($produto);
-            $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
-            $data = (json_decode($response->body(), true));
-
-            //dd($data);
-			
-			if($response->status() !== 200){
-				$courses[$i] = ["row" => "$i",  "name" => $produto['produto']['nome'], "perc" => "0%"];
-			}
-			//dd($courses);
-            
-            if (isset($data['data']['progresso'])){
-                $courses[$i] = ["row" => "$i", "name" => $produto['produto']['nome'], "perc" => $data['data']['progresso']['total']];
+            if ($response->status() !== 200) {
+                $courses[$i] = ["name" => "Vazio", "perc" => "0%"];
             }
-            
-            
-                if (isset($data['data']['progresso']['aulas'])){
-                    //dd('s');
+            //dd($profiler);
+            if ($response->status() == 200) {
+                $produtos = ($profiler['data']['acesso']);
+
+                //dd($produtos);
+
+                foreach ($produtos as $produto) {
+                    //dd($produto);
+                    $response = Http::withToken(env('CADEMI_TOKEN_API'))->get('https://profissionaliza.cademi.com.br/api/v1/usuario/progresso_por_produto/' . $cademi->user . '/' . $produto['produto']['id']);
+                    $data = (json_decode($response->body(), true));
+
+                    //dd($data);
+
+                    if ($response->status() !== 200) {
+                        $courses[$i] = ["row" => "$i",  "name" => $produto['produto']['nome'], "perc" => "0%"];
+                    }
+                    //dd($courses);
+
+                    if (isset($data['data']['progresso'])) {
+                        $courses[$i] = ["row" => "$i", "name" => $produto['produto']['nome'], "perc" => $data['data']['progresso']['total']];
+                    }
+
+
+                    if (isset($data['data']['progresso']['aulas'])) {
+                        //dd('s');
                         $aulas = $data['data']['progresso']['aulas'];
                         //dd($aulas);
-                        foreach($aulas as $aula){
+                        foreach ($aulas as $aula) {
                             $courses[$i]['aula'][$n] = ["nome" => $aula['aula']['nome'], "data" => date('d-m-Y H:i:s', strtotime($aula['acesso_em']))];
                             $n++;
                         }
@@ -863,39 +864,37 @@ class UserController extends Controller
                         //dd($courses);
                     }
                     //dd('n');
-        
-            
-            
 
-            
-        $i++;    
-    }
-    
-    }else{
-        $courses[0] = ["row" => "$i", "name" => "Vazio", "perc" => "0%"];
-        
-    }
-    }else{
-        $courses[0] = ["row" => "$i","name" => "Vazio", "perc" => "0%"];
 
-        //dd($courses);
-    }
 
-    if(  EcoSeller::where([['user_id', '=', $user->id],['type', '<>', 0]])->first() ){
-                            //dd("sim");
-        $seller = "sim";
-    }else{
-        $seller = "não";
-    }
+
+
+                    $i++;
+                }
+            } else {
+                $courses[0] = ["row" => "$i", "name" => "Vazio", "perc" => "0%"];
+            }
+        } else {
+            $courses[0] = ["row" => "$i", "name" => "Vazio", "perc" => "0%"];
+
+            //dd($courses);
+        }
+
+        if (EcoSeller::where([['user_id', '=', $user->id], ['type', '<>', 0]])->first()) {
+            //dd("sim");
+            $seller = "sim";
+        } else {
+            $seller = "não";
+        }
         $seller_types = EcoSallerType::all();
 
 
-        if($user->client_ouro()->first()){
+        if ($user->client_ouro()->first()) {
             $client_ouro = $user->client_ouro()->first();
             $course_ouro = ($client_ouro->matricula_ouro()->get());
 
             //dd($course_ouro);
-        }else{
+        } else {
             $client_ouro = "";
             $course_ouro = "";
         }
@@ -906,24 +905,21 @@ class UserController extends Controller
         $ultimo_acesso = Carbon::parse(isset($profiler['data']['usuario']['ultimo_acesso_em']) ? $profiler['data']['usuario']['ultimo_acesso_em'] : "");
         //dd($ultimo_acesso);
 
-           if(str_contains(url()->previous(), "aluno")){
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
+        if (str_contains(url()->previous(), "aluno")) {
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos', 'messages'));
         } else {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos','messages'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos', 'messages'));
         }
-           
-       
-        }
+    }
 
-        public function profile_edit($id)
+    public function profile_edit($id)
     {
 
-        if((Auth::user()->role) < 4 ){
+        if ((Auth::user()->role) < 4) {
             //dd("1");
-            if(Auth::user()->id != $id){
+            if (Auth::user()->id != $id) {
                 return back();
             }
-
         }
         //dd($id);
         $user = $this->user->find($id);
@@ -932,7 +928,7 @@ class UserController extends Controller
 
         $roles = Role::all('id', 'name');
         //dd($role);
-/*
+        /*
         if(!empty($cademi)){
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
         //dd($cademi);
@@ -976,34 +972,33 @@ class UserController extends Controller
         //dd($courses);
     }*/
 
-    $states = State::all('name', 'id');
-    
-    //dd($courses);
-        
-           //dd($response->body()); 
+        $states = State::all('name', 'id');
 
-           if(str_contains(url()->previous(), "aluno")){
+        //dd($courses);
+
+        //dd($response->body()); 
+
+        if (str_contains(url()->previous(), "aluno")) {
             return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'states', 'roles'));
-           }else{
+        } else {
             return view('pages.aluno.profile-edit', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'states', 'roles'));
-           }
-           
-       
         }
+    }
 
-        public function courses_profile($id){
+    public function courses_profile($id)
+    {
         $user = User::find($id);
         $cademi = Cademi::where('user_id', $user->id)->first();
         $cademicourses = CademiCourse::where('user_id', $user->id)->get();
-            $i=0;
-        foreach($cademicourses as $course){
-            
+        $i = 0;
+        foreach ($cademicourses as $course) {
+
             $courses[$i] = ["user" => $course->user, "course_id" => $course->course_id, "doc" => $course->doc, "created_at" => $course->created_at, "updated_at" => $course->updated_at];
             $i++;
         }
         //dd($courses);
 
-        
+
 
         //dd($user);
         //dd($cademi);
@@ -1012,82 +1007,80 @@ class UserController extends Controller
 
 
         return view('pages.app.user.listcourses', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb'], compact('user', 'cademi', 'courses'));
+    }
 
-       
-        }
+    public function usercademi(Request $request)
+    {
 
-        public function usercademi(Request $request)
-        {
-
-           $users = User::all();
-           foreach($users as $user){
-                if(Cademi::where('user_id', $user->id)->first()){
-                    $user->first = 2;
-                    $user->save();
-                    //dd($user);
-                }
-               // dd("n");
-           }
-           //dd($user[0]);
-           echo("Fim");
-        }
-        
-        public function corr_email(){
-            $users = User::all();
-            foreach($users as $user){
-                $user->email = strtolower($user->email);
-                $user->email2 = strtolower($user->email2);
+        $users = User::all();
+        foreach ($users as $user) {
+            if (Cademi::where('user_id', $user->id)->first()) {
+                $user->first = 2;
                 $user->save();
+                //dd($user);
             }
-
+            // dd("n");
         }
+        //dd($user[0]);
+        echo ("Fim");
+    }
 
-        public function cpf_send(Request $request){
-            
-            $de = array('.','-');
-            $para = array('','');
-            $cpf = str_replace($de, $para, $request->cpf);
-            
-            $this->validate($request, [
-                'cpf' => 'required|cpf',
-            ]);
-
-            $user = Auth::user();
-            $user->document = $cpf;
+    public function corr_email()
+    {
+        $users = User::all();
+        foreach ($users as $user) {
+            $user->email = strtolower($user->email);
+            $user->email2 = strtolower($user->email2);
             $user->save();
-
-            $status = "success";
-            $msg = "CPF atualizado com sucesso";
-
-            $status = "CPF atualizado com sucesso";
-            return back()->with('status', __($status));;
-
         }
-        public function pw_change(Request $request){
-            $user = Auth::user();
-            $user->password = bcrypt($request->password);
-            $user->active = 1;
-            $user->save();
+    }
 
-            //dd($user);
-            //dd('/modern-dark-menu/aluno/my');
-            $status = "Nova senha salva com sucesso";
-            return(redirect('/modern-dark-menu/aluno/my')->with('status', __($status)));
-            
-        }
+    public function cpf_send(Request $request)
+    {
 
-        public function getIp(){
-            foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
-                if (array_key_exists($key, $_SERVER) === true){
-                    foreach (explode(',', $_SERVER[$key]) as $ip){
-                        $ip = trim($ip); // just to be safe
-                        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
-                            return $ip;
-                        }
+        $de = array('.', '-');
+        $para = array('', '');
+        $cpf = str_replace($de, $para, $request->cpf);
+
+        $this->validate($request, [
+            'cpf' => 'required|cpf',
+        ]);
+
+        $user = Auth::user();
+        $user->document = $cpf;
+        $user->save();
+
+        $status = "success";
+        $msg = "CPF atualizado com sucesso";
+
+        $status = "CPF atualizado com sucesso";
+        return back()->with('status', __($status));;
+    }
+    public function pw_change(Request $request)
+    {
+        $user = Auth::user();
+        $user->password = bcrypt($request->password);
+        $user->active = 1;
+        $user->save();
+
+        //dd($user);
+        //dd('/modern-dark-menu/aluno/my');
+        $status = "Nova senha salva com sucesso";
+        return (redirect('/modern-dark-menu/aluno/my')->with('status', __($status)));
+    }
+
+    public function getIp()
+    {
+        foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
+            if (array_key_exists($key, $_SERVER) === true) {
+                foreach (explode(',', $_SERVER[$key]) as $ip) {
+                    $ip = trim($ip); // just to be safe
+                    if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                        return $ip;
                     }
                 }
             }
-            return request()->ip(); // it will return the server IP if the client IP is not found using this method.
         }
-       
+        return request()->ip(); // it will return the server IP if the client IP is not found using this method.
     }
+}

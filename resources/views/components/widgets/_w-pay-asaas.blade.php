@@ -10,7 +10,7 @@
 
 
 <div class="row widget-statistic">
-    <a id="pay_carrega" href="{{getRouterValue();}}/aluno/pay/list/{{Auth()->user()->id}}" onclick="aguarde()" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 layout-spacing">
+    <a id="pay_carrega" href="{{getRouterValue();}}/aluno/pay/list/{{Auth()->user()->id}}" onclick="aguarde()" class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
         <div class="widget widget-one_hybrid widget-followers">
             <div class="widget-heading">
                 <div class="w-title">
