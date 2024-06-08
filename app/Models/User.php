@@ -47,6 +47,8 @@ class User extends Authenticatable
         'codesale',
         'observation',
         'contract_date',
+        'access_date',
+        'ip',
         'user_accountable_id'
     ];
 

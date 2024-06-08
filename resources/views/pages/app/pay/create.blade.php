@@ -271,6 +271,9 @@
                                 é
                                 notificada
                                 automáticamente ao cliente via SMS</p>
+
+                            
+
                             <form class="form-horizontal" method="post" id="create_pay" action="{{route('pay-create-post')}}">
                                 @csrf
                                 <div class="container">

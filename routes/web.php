@@ -92,17 +92,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/wp/templates/{id}', [ApiWhatsapp::class, 'wp_templates'])->name('wp-templates');
     Route::get('/product/category/{id}', [EcommerceController::class, 'product_category'])->name('product-category');
 
-    Route::get('/test', function(){
+    Route::get('/test', function () {
         $userCertificatesEmit = UserCertificatesEmit::find(21);
         $user = $userCertificatesEmit->getuser();
         $code = $userCertificatesEmit->code;
 
         if (str_contains($user->email, 'profissionalizaead')) {
             Mail::to('fabiorcamargo@gmail.com')
-            ->queue(new CertEmitMail($code));
+                ->queue(new CertEmitMail($code));
         } else {
             Mail::to($user->email)
-            ->queue(new CertEmitMail($code));
+                ->queue(new CertEmitMail($code));
         }
     });
 
@@ -268,12 +268,12 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
             Route::post('/users/cademi/change_token', [CademiController::class, 'change_token'])->name('user.cademi.change_token');
 
-            Route::post('/users/obs/update/{id}', function($id, Request $request){
+            Route::post('/users/obs/update/{id}', function ($id, Request $request) {
                 $user = (object)User::find($id);
                 $user->observation = $request->observation;
 
                 $user->save();
-                
+
                 return back();
             })->name('user.obs.update');
             Route::post('/user/obs/create/{id}', function ($id, Request $request) {
@@ -331,7 +331,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                 Route::middleware(['can:secretary'])->group(function () {
                     Route::prefix('/user')->group(function () {
-                        Route::get('grupos', function(){
+                        Route::get('grupos', function () {
                             $groups = WpGroup::get();
                             return view('pages.app.user.grupos', ['title' => 'Grupos do Whatsapp', 'breadcrumb' => 'Grupos do Whatsapp', 'groups' => $groups]);
                         });
@@ -1664,7 +1664,6 @@ Route::get('/resume/pdf', function () {
     //return view('invoice.pdf');
     //return $pdf->stream('pdf.resume');
     return view('pdf.resume');
-
 });
 
 Route::get('/cert/{code}', [CertificateController::class, 'view'])->name('cert-check');
@@ -1674,9 +1673,50 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/home-test', function () {
-    return view('welcome2');
+Route::get('/do', function () {
+
+    $localPath = 'avatar/fabiotb/default.jpg';
+    $remotePath = 'default.jpg';
+
+    // Verifica se o arquivo existe
+    if (!file_exists($localPath)) {
+        return response()->json(['error' => 'Arquivo não encontrado'], 404);
+    }
+
+    // Lê o conteúdo do arquivo local
+    $fileContents = file_get_contents($localPath);
+
+    // Envia o arquivo para o Space
+    dd(Storage::disk('spaces')->put($remotePath, $fileContents));
+
+    // Retorna uma resposta de sucesso
+    return response()->json(['success' => 'Arquivo enviado com sucesso'], 200);
+
+    
 });
+
+Route::get('/dov', function () {
+    $files = Storage::disk('spaces')->files();
+    dd($files);
+});
+
+Route::get('/get_ip', function() {
+    //dd('s');
+
+    foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key){
+        if (array_key_exists($key, $_SERVER) === true){
+            foreach (explode(',', $_SERVER[$key]) as $ip){
+                $ip = trim($ip); // just to be safe
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false){
+                    return $ip;
+                }
+            }
+        }
+    }
+    return request()->ip(); // it will return the server IP if the client IP is not found using this method.
+
+});
+
 
 
 
