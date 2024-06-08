@@ -556,7 +556,7 @@ class UserController extends Controller
     public function my()
     {
         Auth::user()->access_date = Carbon::now()->toDateTimeString();
-        Auth::user()->ip = Carbon::now()->toDateTimeString();
+        //Auth::user()->ip = Carbon::now()->toDateTimeString();
         Auth::user()->save();
         //dd(Auth::user());
         //$cards = new stdClass;
