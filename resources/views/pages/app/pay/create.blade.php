@@ -465,6 +465,7 @@
                                                 <option>PREPARATÓRIO ENCCEJA</option>
                                                 <option>CURSOS PROFISSIONALIZANTES</option>
                                                 <option>JOVEM APRENDIZ</option>
+                                                <option>AGRONEGÓCIO</option>
                                             </select>
 
                                         </div>

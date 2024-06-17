@@ -69,7 +69,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'contract_date' => 'datetime'
+        'contract_date' => 'datetime',
+        'access_date' => 'datetime'
     ];
 
     public function getUsers(string|null $search = null)

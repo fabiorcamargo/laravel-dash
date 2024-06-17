@@ -211,8 +211,12 @@
                             <div class="card p-2 mt-4" id="create">
                                 <p class="contacts-block__item">
 
-                                    <label for="create">Data de Liberação:</label>
+                                <label for="create">Data de Liberação:</label>
                                 <p>{{ $user->created_at->format('d-m-Y H:i') }}</p>
+                                <label for="create">Último Acesso:</label>
+                                <p>{{ $user->access_date->format('d-m-Y H:i') }}</p>
+                                <label for="create">Ip do Usuário:</label>
+                                <p>{{ $user->ip }}</p>
 
                                 @if($user->contract_date != null)
                                 <label for="create">Data do Contrato:</label>
