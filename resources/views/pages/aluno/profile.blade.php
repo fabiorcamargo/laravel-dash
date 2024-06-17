@@ -57,7 +57,7 @@
             <!-- Content -->
             <div class="body row layout-spacing">
                 @if ((Auth::user()->role) == 4 || (Auth::user()->role) == 5 || (Auth::user()->role) == 8)
-               <div class=" layout-top-spacing">
+                <div class=" layout-top-spacing">
                     <div class="widget-content widget-content-area">
                         <div class="d-inline-block">
                             <h3>Dados do Contrato</h3>
@@ -211,17 +211,28 @@
                             <div class="card p-2 mt-4" id="create">
                                 <p class="contacts-block__item">
 
-                                <label for="create">Data de Liberação:</label>
-                                <p>{{ $user->created_at->format('d-m-Y H:i') }}</p>
-                                <label for="create">Último Acesso:</label>
-                                <p>{{ $user->access_date->format('d-m-Y H:i') }}</p>
-                                <label for="create">Ip do Usuário:</label>
-                                <p>{{ $user->ip }}</p>
-
-                                @if($user->contract_date != null)
-                                <label for="create">Data do Contrato:</label>
-                                <p>{{ $user->contract_date->format('d-m-Y') }}</p>
+                                    @if($user->contract_date != null)
+                                <div >
+                                    <h3 >Data do Contrato:</h3>
+                                    <label>{{ $user->contract_date->format('d-m-Y') }}</label>
+                                </div>
                                 @endif
+                                <div >
+                                    <h3 >Data de Liberação:</h3>
+                                    <label>{{ $user->created_at->format('d-m-Y H:i') }}</label>
+                                </div>
+                                <div>
+                                    <h3 >Último Acesso:</h3>
+                                    <label>{{ isset($user->access_date) ? $user->access_date->format('d-m-Y H:i') : "" }}
+                                    </label>
+                                </div>
+
+                                <div >
+                                    <h3 >Ip do Usuário:</h3>
+                                    <label>{{ isset($user->ip) ? $user->ip : "" }}</label>
+                                </div>
+
+
 
                                 </p>
                             </div>
@@ -1366,8 +1377,8 @@
                 <div class="modal-dialog">
                     <!-- Modal content-->
                     <div class="modal-content">
-                        <form action="{{ route('user.obs.update', $user->id) }}" method="POST"
-                            id="observationUpForm" class="py-12">
+                        <form action="{{ route('user.obs.update', $user->id) }}" method="POST" id="observationUpForm"
+                            class="py-12">
                             @csrf
                             <div class="modal-header">
                                 <h5 class="modal-title">Atualizar Observações</h5>
