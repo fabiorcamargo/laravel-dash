@@ -24,13 +24,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('groups', function(){
+Route::get('groups', function () {
     $wg = WpGroup::get();
-    
+
     if ($wg->isEmpty()) {
         return response()->json(['message' => 'No groups found'], Response::HTTP_NOT_FOUND);
     }
-    
+
     return response()->json($wg, Response::HTTP_OK);
 });
 
