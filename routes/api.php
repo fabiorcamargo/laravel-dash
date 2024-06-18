@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiWhatsapp;
 use App\Models\WpGroup;
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,7 +26,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::get('groups', function(){
     $wg = WpGroup::get();
-    return $wg;
+    
+    if ($wg->isEmpty()) {
+        return response()->json(['message' => 'No groups found'], Response::HTTP_NOT_FOUND);
+    }
+    
+    return response()->json($wg, Response::HTTP_OK);
 });
 
 Route::post('users', [ApiController::class, 'getAllUsers'])->name('api.cademi.users'); 
