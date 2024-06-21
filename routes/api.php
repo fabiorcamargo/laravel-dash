@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('groups', function () {
-    $wg = WpGroup::get();
+    $wg = WpGroup::with('wpGroupCategory')->get();
 
     if ($wg->isEmpty()) {
         return response()->json(['message' => 'No groups found'], Response::HTTP_NOT_FOUND);
