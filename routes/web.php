@@ -543,6 +543,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                         Route::post('/create_name', [CademiListController::class, 'create_name'])->name('cademi-create-name');
                         Route::post('/img/up/{id}', [CademiListController::class, 'img_up'])->name('cademi-img-up');
                         Route::delete('/img/rm/{id}', [CademiListController::class, 'img_rm'])->name('cademi-img-rm');
+                        
                         Route::get('/get/courses', [CademiListController::class, 'get_courses_list'])->name('user-cademi-get-courses');
                         Route::get('/courses/correct-img', [OuroModerno::class, 'correct_img_course'])->name('user-cademi-courses-correct-img');
                     });
@@ -550,6 +551,12 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                     Route::prefix('/group')->group(function () {
                         Route::get('/add', [ChatbotController::class, 'group_add_show'])->name('group-add-show');
                         Route::post('/add', [ChatbotController::class, 'group_add_create'])->name('group-add-create');
+                        Route::post('/update', [ChatbotController::class, 'group_update'])->name('group-update');
+                        Route::post('/delete/{id}', [ChatbotController::class, 'group_delete'])->name('group-delete');
+                        Route::get('/category', [ChatbotController::class, 'category'])->name('group-list');
+                        Route::post('/category', [ChatbotController::class, 'category_create'])->name('group-list');
+                        Route::post('/img/up/{id}', [ChatbotController::class, 'img_up'])->name('group-img-up');
+                        Route::delete('/img/rm/{id}', [ChatbotController::class, 'img_rm'])->name('group-img-rm');
                     });
                     Route::prefix('/form')->group(function () {
 
