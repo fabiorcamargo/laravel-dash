@@ -212,23 +212,24 @@
                                 <p class="contacts-block__item">
 
                                     @if($user->contract_date != null)
-                                <div >
-                                    <h3 >Data do Contrato:</h3>
+                                <div>
+                                    <h3>Data do Contrato:</h3>
                                     <label>{{ $user->contract_date->format('d-m-Y') }}</label>
                                 </div>
                                 @endif
-                                <div >
-                                    <h3 >Data de Liberação:</h3>
+                                <div>
+                                    <h3>Data de Liberação:</h3>
                                     <label>{{ $user->created_at->format('d-m-Y H:i') }}</label>
                                 </div>
                                 <div>
-                                    <h3 >Último Acesso:</h3>
-                                    <label>{{ isset($user->access_date) ? $user->access_date->format('d-m-Y H:i') : "" }}
+                                    <h3>Último Acesso:</h3>
+                                    <label>{{ isset($user->access_date) ? $user->access_date->format('d-m-Y H:i') : ""
+                                        }}
                                     </label>
                                 </div>
 
-                                <div >
-                                    <h3 >Ip do Usuário:</h3>
+                                <div>
+                                    <h3>Ip do Usuário:</h3>
                                     <label>{{ isset($user->ip) ? $user->ip : "" }}</label>
                                 </div>
 
@@ -451,16 +452,13 @@
                         <div class="widget-content widget-content-area">
 
                             <div class="d-flex justify-content-between">
-                                <h3 class="md-2">Cursos Liberados</h3>
-                                {{--<a href="{{getRouterValue();}}/app/user/profile/{{ $user->id }}/courses"
-                                    class="mt-2 edit-profile"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                        height="24" viewBox="0 0 24 24" fill="green" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                        class="feather feather-edit-3">
-                                        <path d="M12 20h9"></path>
-                                        <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z">
-                                        </path>
-                                    </svg></a>--}}
+                                <h3 class="md-2">Cursos Premium</h3>
+                                @if ((Auth::user()->role) >= 4)
+                                <a data-bs-toggle="modal" href="" data-bs-target="#CademiModal" class="mt-2 edit-profile"
+                                    data-toggle="tooltip" data-placement="top" title="Adicionar Cursos">
+                                    <x-widgets._w-svg svg="apps-filled" />
+                                </a>
+                                @endif
 
                             </div>
                             <label class="pt-2" for=""> Último Acesso Cademi:{{ $ultimo_acesso->format('d-m-Y
@@ -547,7 +545,7 @@
                         <div class="widget-content widget-content-area">
 
                             <div class="d-flex justify-content-between">
-                                <h3 class="md-2">Cursos Ouro Moderno</h3>
+                                <h3 class="md-2">Cursos Ouro</h3>
                                 @if ((Auth::user()->role) >= 4)
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     <a data-bs-toggle="modal" href="" data-bs-target="#OuroModal"
@@ -1459,6 +1457,45 @@
                 </div>
             </div>
 
+            <div id="CademiModal" class="modal animated fadeInDown" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <form action="{{ route('cademi.create.one', ['id' => $user->id]) }}" method="POST"
+                            id="liberation_form_cademi" class="py-12">
+                            @csrf
+                            <div class="modal-header">
+                                <h5 class="modal-title">Liberação Cademi</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
+                                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                                    </svg>
+                                </button>
+                            </div>
+
+
+                            <div class="modal-body">
+                                <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                    <div class="col-xxl-12 col-md-12 mb-4 mt-4">
+                                        <label for="users_list_tags_cademi mt-4">Secione o Curso</label>
+                                        <input name='users_list_tags_cademi'>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                {{--<button class="btn btn-light-dark" data-bs-dismiss="modal">Sair</button>--}}
+                                <button type="button" href="javascript:void(0);"
+                                    onClick="document.getElementById('liberation_form_cademi').submit();"
+                                    class="btn btn-success">Liberar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
             <div id="desbloquearOuroModal" class="modal animated fadeInDown" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->
@@ -1915,6 +1952,69 @@
 
 
         var inputElm = document.querySelector('input[name=users_list_tags]');
+        var inputElmCademi = document.querySelector('input[name=users_list_tags_cademi]');
+
+        // initialize Tagify on the above input node reference
+var usrList = new Tagify(inputElmCademi, {
+    tagTextProp: 'name', // very important since a custom template is used with this property as text
+    enforceWhitelist: true,
+    skipInvalid: true, // do not remporarily add invalid tags
+    dropdown: {
+        closeOnSelect: false,
+        enabled: 0,
+        classname: 'users-list',
+        searchKeys: ['name', 'courses']  // very important to set by which keys to search for suggesttions when typing
+    },
+    templates: {
+        tag: tagTemplateCademi,
+        dropdownItem: suggestionItemTemplateCademi
+    },
+    whitelist: [
+        @foreach($cademiTags as $cademiTag)
+        {
+            "value": "{{$cademiTag->tag_id}}",
+            "name": "{{$cademiTag->name}}",
+            "img": "{{$cademiTag->img}}"
+        },
+        @endforeach
+    ]
+});
+
+function tagTemplateCademi(tagData){
+    return `
+        <tag title="${tagData.title}"
+                contenteditable='false'
+                spellcheck='false'
+                tabIndex="-1"
+                class="tagify__tag ${tagData.class ? tagData.class : ""}"
+                ${this.getAttributes(tagData)}>
+            <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
+            <div>
+                <div class='tagify__tag__avatar-wrap'>
+                    <img onerror="this.style.visibility='hidden'" src="${tagData.img}">
+                </div>
+                <span class='tagify__tag-text'>${tagData.name}</span>
+            </div>
+        </tag>
+    `
+}
+
+function suggestionItemTemplateCademi(tagData){
+    return `
+        <div ${this.getAttributes(tagData)}
+            class='tagify__dropdown__item ${tagData.class ? tagData.class : ""}'
+            tabindex="0"
+            role="option">
+            ${ tagData.img ? `
+            <div class='tagify__dropdown__item__avatar-wrap'>
+                <img onerror="this.style.visibility='hidden'" src="${tagData.img}">
+            </div>` : ''
+            }
+            <strong>${tagData.name}</strong>
+
+        </div>
+    `
+}
 
 function tagTemplate(tagData){
     return `

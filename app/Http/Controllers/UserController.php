@@ -903,13 +903,14 @@ class UserController extends Controller
         $ouro_courses = OuroList::all();
         $ouro_combos = OuroCombo::all();
         $messages = UserMessage::all();
+        $cademiTags = CademiTag::all();
         $ultimo_acesso = Carbon::parse(isset($profiler['data']['usuario']['ultimo_acesso_em']) ? $profiler['data']['usuario']['ultimo_acesso_em'] : "");
         //dd($ultimo_acesso);
 
         if (str_contains(url()->previous(), "aluno")) {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos', 'messages'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos', 'messages', 'cademiTags'));
         } else {
-            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos', 'messages'));
+            return view('pages.aluno.profile', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'This Breadcrumb', 'ultimo_acesso' => $ultimo_acesso], compact('user', 'cademi', 'courses', 'seller_types', 'seller', 'client_ouro', 'course_ouro', 'ouro_courses', 'ouro_combos', 'messages', 'cademiTags'));
         }
     }
 

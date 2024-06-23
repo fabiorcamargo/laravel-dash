@@ -56,6 +56,66 @@ class CademiController extends Controller
         
        // return redirect()->route('users.index');
     }
+
+    public function createOne($id, Request $request)
+    {
+        
+        $user = User::find($id);
+
+        
+
+        if($user->cademis->first()){
+            $cademis = $user->cademis->first();
+        }else{
+            $url = "https://profissionaliza.cademi.com.br/api/v1/usuario/$user->email2";
+            $cademis = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->get("$url"));
+    
+            $user->cademis()->create([
+                'user' => $cademis->data->usuario->id,
+                'nome' => $cademis->data->usuario->nome,
+                'email' => $cademis->data->usuario->email,
+                'celular' => $cademis->data->usuario->celular,
+                'login_auto' => $cademis->data->usuario->login_auto,
+                'gratis' => $cademis->data->usuario->gratis,
+            ]);
+        }
+        
+        $courses =  (json_decode($request->users_list_tags_cademi));
+
+        foreach($courses as $course){
+            $payload = [
+                "token" => env('CADEMI_TOKEN_GATEWAY'),
+                "codigo"=> "CODD-" . $course->name . "-" . $user->username,
+                "status"=> "aprovado",
+                "recorrencia_id" => "CODD-" . $course->name . "-" . $user->username,
+                "recorrencia_status" => "ativo",
+                "produto_id"=> $course->name,
+                "produto_nome"=> $course->name,
+                "cliente_email"=> $user->email2,
+                "produto_nome" => $course->name
+            ];
+
+            $url = "https://profissionaliza.cademi.com.br/api/v1/entrega/enviar";
+            $cademi = json_decode(Http::withHeaders([
+                'Authorization' => env('CADEMI_TOKEN_API')
+            ])->post("$url", $payload));
+            
+
+          
+            $user->cademicourses()->create([
+                'user' => $cademi->data->Usuario->id,
+                'course_id' => $cademi->data->Carga->id,
+                'course_name' => $course->name,
+                'doc' => $cademi->data->Carga->id,
+            ]);
+        }
+
+        return back()->with([
+            'status' => "Cursos adicionado com Sucesso!"
+        ]);
+    }
     
 
 
