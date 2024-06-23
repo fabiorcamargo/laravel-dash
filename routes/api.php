@@ -32,6 +32,8 @@ Route::post('token', function (Request $request) {
 
     $user = User::where('username', $request->username)->first();
 
+    dd($user);
+
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
             'username' => ['The provided credentials are incorrect.'],
