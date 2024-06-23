@@ -4,13 +4,14 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiWhatsapp;
 use App\Models\User;
 use App\Models\WpGroup;
-use Dotenv\Exception\ValidationException;
+
 use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +32,6 @@ Route::post('token', function (Request $request) {
     ]);
 
     $user = User::where('username', $request->username)->first();
-
-    dd(Hash::check($request->password, $user->password));
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
