@@ -32,7 +32,7 @@ Route::post('token', function (Request $request) {
 
     $user = User::where('username', $request->username)->first();
 
-    dd($user);
+    dd(Hash::check($request->password, $user->password));
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
