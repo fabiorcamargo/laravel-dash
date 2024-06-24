@@ -17,15 +17,20 @@ class ApiGetCourses extends Controller
     public function getCademiCourses(Request $request)
     {
         $user = $request->user();
+
+        $cademi = $user->cademis;
         $courses = $user->cademicourses;
         $TagCourses = [];
 
-        foreach ($courses as $course) {
-            foreach ($course->cademiTag as $tag) {
-                $TagCourses[] = $tag;
+        if ($cademi) {
+            foreach ($courses as $course) {
+                foreach ($course->cademiTag as $tag) {
+                    $TagCourses[] = $tag;
+                }
             }
         }
 
-        return response()->json(['courses' => $TagCourses]);
+
+        return response()->json(['courses' => $TagCourses, 'cademis' => $cademi]);
     }
 }
