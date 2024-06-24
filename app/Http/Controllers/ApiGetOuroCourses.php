@@ -24,6 +24,6 @@ class ApiGetOuroCourses extends Controller
         }
 
 
-        return response()->json(['courses' => $OuroCourses, 'ouroClient' => $ouro]);
+        return response()->json(['ouroClient' => $ouro]);
     }
 }
