@@ -22,4 +22,9 @@ class CademiCourse extends Model
         return $this->hasOne(User::class);
     }
 
+    public function cademiTag()
+    {
+        return $this->hasMany(CademiTag::class, 'name', 'course_name');
+    }
+
 }

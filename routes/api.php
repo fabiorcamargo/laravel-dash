@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApiGetCourses;
 use App\Http\Controllers\ApiWhatsapp;
 use App\Models\User;
 use App\Models\WpGroup;
@@ -46,9 +47,13 @@ Route::post('token', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-});
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
+
+
 
 });
 
