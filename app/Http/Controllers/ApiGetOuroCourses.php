@@ -12,18 +12,6 @@ class ApiGetOuroCourses extends Controller
         $user = $request->user();
         $ouro = $user->client_ouro->first();
 
-        $OuroCourses = [];
-
-        if ($user->client_ouro->first()) {
-            $courses = $user->client_ouro->first()->matricula_ouro;
-            foreach ($courses as $course) {
-                if ($course->get_course) {
-                    $OuroCourses[] = $course->get_course;
-                }
-            }
-        }
-
-
-        return response()->json(['courses' => $OuroCourses, 'ouroClient' => $ouro]);
+        return response()->json(['ouroClient' => $ouro]);
     }
 }
