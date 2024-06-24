@@ -24,7 +24,7 @@ class ApiGetCourses extends Controller
            $TagCourses[] = ($course->cademiTag);
         }
 
-        return response()->json($TagCourses);
+        return response()->json(['courses' => $TagCourses]);
     
     }
 
