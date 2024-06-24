@@ -10,7 +10,7 @@ class ApiGetOuroCourses extends Controller
     public function getOuroCourses(Request $request)
     {
         $user = $request->user();
-        $ouro = OuroClient::find(1);
+        $ouro = $user->client_ouro->first();
 
         $OuroCourses = [];
 
@@ -24,6 +24,6 @@ class ApiGetOuroCourses extends Controller
         }
 
 
-        return response()->json(['courses' => $OuroCourses]);
+        return response()->json(['courses' => $OuroCourses, 'ouroClient' => $ouro]);
     }
 }
