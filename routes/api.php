@@ -49,6 +49,10 @@ Route::post('token', function (Request $request) {
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/user', function (Request $request) {
+        $user = $request->user();
+        $user->client_ouro;
+        $user->cademis;
+
         return $request->user();
     });
 
