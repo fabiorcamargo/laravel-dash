@@ -34,6 +34,8 @@ Route::post('token', function (Request $request) {
     ]);
 
     $user = User::where('username', $request->username)->first();
+    $user->client_ouro;
+    $user->cademis;
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         throw ValidationException::withMessages([
@@ -58,9 +60,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
-
-
-
 });
 
 
