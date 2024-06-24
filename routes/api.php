@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiGetCourses;
+use App\Http\Controllers\ApiGetOuroCourses;
 use App\Http\Controllers\ApiWhatsapp;
 use App\Models\User;
 use App\Models\WpGroup;
@@ -52,6 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
+    Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
 
 
 
