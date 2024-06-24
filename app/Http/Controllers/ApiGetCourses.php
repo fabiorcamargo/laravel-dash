@@ -20,12 +20,12 @@ class ApiGetCourses extends Controller
         $courses = $user->cademicourses;
         $TagCourses = [];
 
-        foreach($courses as $course){
-           $TagCourses[] = ($course->cademiTag);
+        foreach ($courses as $course) {
+            foreach ($course->cademiTag as $tag) {
+                $TagCourses[] = $tag;
+            }
         }
 
         return response()->json(['courses' => $TagCourses]);
-    
     }
-
 }
