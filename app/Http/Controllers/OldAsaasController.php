@@ -474,7 +474,7 @@ class OldAsaasController extends Controller
             //$send->paybook = "Teste";
             if($send->msgtaxa == null){
             //Cria e envia msg inicial
-            $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, aguarde as próximas informações!_*';
+            $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA!!!_*';
             //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
             $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
                                                           dispatch($job)->delay(now()->addMinutes(1));
@@ -483,7 +483,7 @@ class OldAsaasController extends Controller
 
             //Testa tipo de cobrança e envia msg relacionada
             if($send->msgtaxa !== null){
-                $msg_text ='\r\n'. $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text ='\r\n'. $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
                                                               dispatch($job)->delay(now()->addMinutes(2));
@@ -493,7 +493,7 @@ class OldAsaasController extends Controller
             }
 
             if ($send->cartao !== "") {
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
             } else if ($send->link !== "") {
                 $link = $this->lista_link($dec->id, $token);
                 if(isset($link->data[0]->invoiceUrl)){
@@ -502,9 +502,9 @@ class OldAsaasController extends Controller
                   $link = "";
                 }
 
-                $msg_text ='\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento e o seu carnê para pagamento basta clicar nos links abaixo:👇\r\n\r\n Link: ' . $link . '\r\n\r\n Boleto: ' . $send->paybook . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text ='\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento e o seu carnê para pagamento basta clicar nos links abaixo:👇\r\n\r\n Link: ' . $link . '\r\n\r\n Boleto: ' . $send->paybook . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
             } else {
-                $msg_text ='\r\n'. $send->nomeresp . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text ='\r\n'. $send->nomeresp . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
             }
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
@@ -515,7 +515,7 @@ class OldAsaasController extends Controller
                 return $send;
       }else{
 
-        $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, aguarde as próximas informações!_*';
+        $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, aguarde as próximas informações!_*';
 
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
@@ -528,10 +528,10 @@ class OldAsaasController extends Controller
                 $link = $this->lista_link($customer, $token);
                 isset($link->data[0]->invoiceUrl) ? $link = $link->data[0]->invoiceUrl : $link = "Solicite seu link na Central de Atendimento.";
                 //$link = $link->data[0]->invoiceUrl;
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade Link de Pagamento, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento, basta clicar no link abaixo:👇\r\n\r\nLink: ' . $link . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nCaso o link não esteja habilitado basta salvar nosso contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade Link de Pagamento, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento, basta clicar no link abaixo:👇\r\n\r\nLink: ' . $link . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nCaso o link não esteja habilitado basta salvar nosso contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
       } else {
         $send->paybook = "Cartão";
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
+                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
       }
                 //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
                 $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
