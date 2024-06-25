@@ -4,6 +4,8 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiGetCourses;
 use App\Http\Controllers\ApiGetOuroCourses;
 use App\Http\Controllers\ApiWhatsapp;
+use App\Models\City;
+use App\Models\State;
 use App\Models\User;
 use App\Models\WpGroup;
 
@@ -60,6 +62,26 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
+
+    Route::get('/uf', function(){
+        $uf = State::all();
+        return response()->json(['uf' => $uf], Response::HTTP_NOT_FOUND);
+    });
+    
+    Route::get('/uf/{id}', function($id){
+        $uf = State::find($id);
+        return response()->json(['uf' => $uf], Response::HTTP_NOT_FOUND);
+    });
+    
+    Route::get('/uf/{id}/city', function($id){
+        $uf = State::find($id);
+        return response()->json(['cities' => $uf->city], Response::HTTP_NOT_FOUND);
+    });
+    
+    Route::get('/city/{id}', function($id){
+        $uf = City::find($id);
+        return response()->json(['uf' => $uf], Response::HTTP_NOT_FOUND);
+    });
 });
 
 
