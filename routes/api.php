@@ -65,22 +65,22 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/uf', function(){
         $uf = State::all();
-        return response()->json(['uf' => $uf], Response::HTTP_NOT_FOUND);
+        return response()->json(['uf' => $uf], Response::HTTP_OK);
     });
     
     Route::get('/uf/{id}', function($id){
         $uf = State::find($id);
-        return response()->json(['uf' => $uf], Response::HTTP_NOT_FOUND);
+        return response()->json(['uf' => $uf], Response::HTTP_OK );
     });
     
     Route::get('/uf/{id}/city', function($id){
         $uf = State::find($id);
-        return response()->json(['cities' => $uf->city], Response::HTTP_NOT_FOUND);
+        return response()->json(['cities' => $uf->city], Response::HTTP_OK);
     });
     
     Route::get('/city/{id}', function($id){
         $uf = City::find($id);
-        return response()->json(['uf' => $uf], Response::HTTP_NOT_FOUND);
+        return response()->json(['uf' => $uf], Response::HTTP_OK);
     });
 });
 
