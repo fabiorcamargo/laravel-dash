@@ -73,8 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json(['uf' => $uf], Response::HTTP_OK );
     });
     
-    Route::get('/uf/{id}/city', function($id){
-        $uf = State::find($id);
+    Route::get('/uf/{abbr}/city', function($abbr){
+        $uf = State::where('abbr', $abbr)->first();
         return response()->json(['cities' => $uf->city], Response::HTTP_OK);
     });
     
