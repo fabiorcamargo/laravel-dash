@@ -60,6 +60,13 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+    Route::put('/user', function (Request $request) {
+        $user = $request->user();
+        dd($request->all());
+        
+        return $request->user();
+    });
+
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
 
