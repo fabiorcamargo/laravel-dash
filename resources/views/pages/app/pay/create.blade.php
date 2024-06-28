@@ -150,6 +150,16 @@
 
             </x-slot>
             </head>
+
+            <div id="modalCepSearch" class="modal animated fadeInDown" role="dialog">
+                <div class="modal-dialog modal-lg">
+                    <!-- Modal content-->
+                    <div class="modal-content ">
+                        @livewire('cep-search')
+                    </div>
+                </div>
+            </div>
+
             @if(request()->input('search'))
 
             <body onload="myFunction()">
@@ -272,9 +282,10 @@
                                 notificada
                                 automáticamente ao cliente via SMS</p>
 
-                            
 
-                            <form class="form-horizontal" method="post" id="create_pay" action="{{route('pay-create-post')}}">
+
+                            <form class="form-horizontal" method="post" id="create_pay"
+                                action="{{route('pay-create-post')}}">
                                 @csrf
                                 <div class="container">
                                     <div class="form-row">
@@ -375,26 +386,50 @@
                                         </a>
                                     </div>
 
+
+
                                     <div class="form-row pt-4">
                                         <div class="form-group col-md-3">
                                             <label>CEP</label>
-                                            <input type="text" id="cep" name="cep" value="" size="8" maxlength="8"
-                                                class="form-control" onkeypress="$(this).mask('00000-000')" required>
+                                            <input type="text" id="cep" name="cep" value="" class="form-control"
+                                                onkeypress="$(this).mask('00000000')" required>
+                                            <a href="javascript:void(0);" onclick="showModalCepSearch()" type="button"
+                                                id="" class="btn btn-primary mt-2">
+                                                Pesquisar CEP
+                                            </a>
                                         </div>
 
-                                        <div class="form-group col-md-3">
-                                            <fieldset disabled>
-                                                <label>Cidade:</label>
-                                                <input name="cidade" type="text" class="form-control" id="cidade"
-                                                    size="40" />
-                                            </fieldset>
-                                        </div>
-                                        <div class="form-group col-md-3">
-                                            <fieldset disabled>
-                                                <label>Estado:</label>
-                                                <input name="uf" type="text" class="form-control" id="uf" size="2" /></
-                                                    </fieldset>
-                                        </div>
+                                        
+
+                                    </div>
+
+                                    <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <fieldset disabled>
+                                            <label>Rua:</label>
+                                            <input name="rua" type="text" class="form-control" id="rua" />
+                                        </fieldset>
+                                    </div>
+
+                                    <div class="form-group col-md-3">
+                                        <fieldset disabled>
+                                            <label>Cidade:</label>
+                                            <input name="cidade" type="text" class="form-control" id="cidade"
+                                                size="40" />
+                                        </fieldset>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <fieldset disabled>
+                                            <label>Estado:</label>
+                                            <input name="uf" type="text" class="form-control" id="uf" size="2" />
+                                                </fieldset>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <fieldset>
+                                            <label>Número:</label>
+                                            <input name="number" type="number" class="form-control" id="number" />
+                                                </fieldset>
+                                    </div>
                                     </div>
 
                                     <div class="form-row">
@@ -402,12 +437,11 @@
                                             <label>Data</label>
                                             <input type="date" id="data" name="data" class="form-control" onkeypress="">
                                         </div>
-                                        
+
                                         <div class="form-group col-md-4">
                                             <label>Quantidade</label>
                                             <input type="text" id="parcelas" name="parcelas" class="form-control"
-                                                placeholder="#x parcelas"
-                                                oninput="$('#valor').prop('required',true);"
+                                                placeholder="#x parcelas" oninput="$('#valor').prop('required',true);"
                                                 onkeypress="$(this).mask('00x', {reverse: true});">
                                         </div>
 
@@ -481,7 +515,7 @@
                                                     for="inlineCheckbox5">Enviar mensagem somente taxa</label>
                                             </div><br>
                                             <div class="form-check-inline pt-2">
-                                                
+
                                                 <input class="form-check-input" type="checkbox" id="taxa" name="taxa"
                                                     value=" + Taxa" onclick="toggleInput(1)" style="scale:1.3">
                                                 <label class="form-check-label mt-2 bs-tooltip"
@@ -533,7 +567,7 @@
                                                         onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});">
                                                 </div>
                                             </div>
-                                            
+
                                             <br><br>
                                             {{--<div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" id="taxa-gerar"
@@ -560,7 +594,7 @@
                                                 rows="3"></textarea>
                                         </div>
                                         <!-- Button trigger modal -->
-                                        <button type="submit" {{--onclick="loading()"--}}
+                                        <button type="submit" {{--onclick="loading()" --}}
                                             class="btn btn-primary btn-lg">CRIAR</button>
                                     </div>
                                 </div>
@@ -578,8 +612,8 @@
                 </body>
                 <x-slot:footerFiles>
 
-               <script>
-                $(document).ready(function() {
+                    <script>
+                        $(document).ready(function() {
                 $('#create_pay').submit(function(event) {
                     // Sua função a ser executada quando o formulário for enviado
                     loading();
@@ -591,7 +625,7 @@
                 console.log('O formulário foi enviado!');
                 // Outras ações desejadas
                 }
-               </script>
+                    </script>
 
                     <script>
                         function adicionarRequired(elementId) {
@@ -667,6 +701,7 @@
 
                             if (!("erro" in dados)) {
                                 //Atualiza os campos com os valores da consulta.
+                                
                                 $("#rua").val(dados.logradouro);
                                 $("#bairro").val(dados.bairro);
                                 $("#cidade").val(dados.localidade);
@@ -778,6 +813,49 @@ function verificarCPF(d){
     function closeModal1(){
         $('#myModal1').modal('hide');
     }
+
+    function showModalCepSearch(){
+        $('#modalCepSearch').modal('show');
+    }
+
+    
+                    </script>
+
+
+                    <script>
+                        function myFn($data){
+        console.log($data);
+        if ( name.value != ""  && lastname.value != "" && cellphone.value != "" && city.value != "") {
+        let el = document.getElementById('step');
+        el.classList.remove('disabled');
+        }
+    }
+                    </script>
+
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+        
+        $('select[name="state"]').on('change', function() {
+            var stateID = $(this).val();
+            if(stateID) {
+                $.ajax({
+                    url: '/city/'+stateID,
+                    type: "GET",
+                    dataType: "json",
+                    success:function(data) {   
+                        console.log("teste");   
+                        var city = "1";                
+                        $('select[name="city"]').empty();
+                        $.each(data, function(key, value) {
+                        $('select[name="city"]').append('<option value="'+ key +'">'+ value +'</option>');
+                        });
+                    }
+                });
+            }else{
+                $('select[name="city"]').empty();
+            }
+        });
+    });
                     </script>
 
 

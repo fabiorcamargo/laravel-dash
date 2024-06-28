@@ -98,7 +98,7 @@ class OldAsaasController extends Controller
 
 
   // Cria o Cliente no Asaas
-  public function cria_cliente($id, $nome, $cpf, $telefone, $email, $cep, $descricao, $empresa, $grupo, $token)
+  public function cria_cliente($id, $nome, $cpf, $telefone, $email, $cep, $number, $descricao, $empresa, $grupo, $token)
   {
     $ch = curl_init();
 
@@ -119,6 +119,7 @@ class OldAsaasController extends Controller
     
       \"cpfCnpj\": \"$cpf\",
       \"postalCode\": \"$cep\",
+      \"addressNumber\": \"$number\",
       \"externalReference\": \"$id\",
       \"notificationDisabled\": false,
       \"whatsappEnabledForCustomer\": true,
@@ -384,6 +385,7 @@ class OldAsaasController extends Controller
     $send->parcela = preg_replace('/[^0-9]/', '', $request->parcelas);
     $send->data2 = date('Y-m-d', strtotime($request->data));
     $send->cep = $request->cep;
+    $send->number = $request->number;
     $send->taxa = isset($request->taxa) ? $request->taxa : "";
     $send->cartao = isset($request->cartaoi) ? $request->cartaoi : "";
     $send->link = isset($request->link) ? $request->link : "";
@@ -580,7 +582,7 @@ class OldAsaasController extends Controller
     }
 
     //Cria cliente e cobranças
-          $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->descricao, $send->empresa, $send->grupo, $token);
+          $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->number, $send->descricao, $send->empresa, $send->grupo, $token);
           $customer = $dec->id;
           $send = $client->cria_cobranca1($send, $customer, $token);
           //dd($send);
@@ -661,7 +663,7 @@ class OldAsaasController extends Controller
           $send->body = $client->show_end($send);
           return $send;
     }else{
-          $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->descricao, $send->empresa, $send->grupo, $token);
+          $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->number, $send->descricao, $send->empresa, $send->grupo, $token);
           $customer = $dec->id;
           $send = $client->cria_cobranca1($send, $customer, $token);
           //dd($send);

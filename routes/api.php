@@ -62,9 +62,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('/user', function (Request $request) {
         $user = $request->user();
-        dd($request->all());
         
-        return $request->user();
+        foreach($request->all() as $key => $param){
+            $user->$key = $param;
+        }
+        $user->save();
+        
+        return response()->json(['user' => $user], Response::HTTP_OK);
     });
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
@@ -81,8 +85,14 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     
     Route::get('/uf/{abbr}/city', function($abbr){
+        if($abbr){
         $uf = State::where('abbr', $abbr)->first();
         return response()->json(['cities' => $uf->city], Response::HTTP_OK);
+
+        }else{
+            return response()->json('', Response::HTTP_OK);
+
+        }
     });
     
     Route::get('/city/{id}', function($id){

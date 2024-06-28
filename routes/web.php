@@ -45,6 +45,7 @@ use App\Models\Cademi;
 use App\Models\CademiListCourse;
 use App\Models\EcoSeller;
 use App\Models\OuroClient;
+use App\Models\State;
 use App\Models\User;
 use App\Models\UserCertificatesCondition;
 use App\Models\UserCertificatesEmit;
@@ -418,7 +419,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                                 $sec = Auth::user()->secretary;
                                 $sellers = (EcoSeller::where(['secretary' => "$sec", 'type' => '2'])
                                     ->get());
-                                return view('pages.app.pay.create')->with('sellers', $sellers);
+                                
+                                return view('pages.app.pay.create', compact('sellers'));
                             }
                         )->name('pay-create');
                         Route::get('/asaas/{cpf}', [OldAsaasController::class, 'lista_cliente_stoken'])->name('asaas-get-client');
