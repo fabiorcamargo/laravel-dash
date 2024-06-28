@@ -62,40 +62,43 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('/user', function (Request $request) {
         $user = $request->user();
-        
-        foreach($request->all() as $key => $param){
+
+        foreach ($request->all() as $key => $param) {
             $user->$key = $param;
         }
         $user->save();
-        
+
         return response()->json(['user' => $user], Response::HTTP_OK);
     });
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
 
-    Route::get('/uf', function(){
+    Route::get('/uf', function () {
         $uf = State::all();
         return response()->json(['uf' => $uf], Response::HTTP_OK);
     });
-    
-    Route::get('/uf/{id}', function($id){
+
+    Route::get('/uf/{id}', function ($id) {
         $uf = State::find($id);
-        return response()->json(['uf' => $uf], Response::HTTP_OK );
+        return response()->json(['uf' => $uf], Response::HTTP_OK);
     });
+
+    Route::get('/uf/{abbr?}/city', function ($abbr = null) {
+        if (is_null($abbr)) {
+            return response()->json(['error' => 'State abbreviation is required'], Response::HTTP_BAD_REQUEST);
+        }
     
-    Route::get('/uf/{abbr}/city', function($abbr){
-        if($abbr){
         $uf = State::where('abbr', $abbr)->first();
-        return response()->json(['cities' => $uf->city], Response::HTTP_OK);
-
-        }else{
-            return response()->json('', Response::HTTP_OK);
-
+    
+        if ($uf) {
+            return response()->json(['cities' => $uf->city], Response::HTTP_OK);
+        } else {
+            return response()->json(['error' => 'State not found'], Response::HTTP_NOT_FOUND);
         }
     });
-    
-    Route::get('/city/{id}', function($id){
+
+    Route::get('/city/{id}', function ($id) {
         $uf = City::find($id);
         return response()->json(['uf' => $uf], Response::HTTP_OK);
     });
