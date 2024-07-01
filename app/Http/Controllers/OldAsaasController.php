@@ -17,14 +17,14 @@ class OldAsaasController extends Controller
 
   public function lista_cliente_stoken($cpf)
   {
-      if (Auth::user()->secretary == "TB") {
-            $token = env('ASAAS_TOKEN1');
-      } else if (Auth::user()->secretary == "MGA") {
-            $token = env('ASAAS_TOKEN2');
-      } else {
-            $msg = "Token inválido";
-            return back()->withErrors(__($msg));
-      }
+    if (Auth::user()->secretary == "TB") {
+      $token = env('ASAAS_TOKEN1');
+    } else if (Auth::user()->secretary == "MGA") {
+      $token = env('ASAAS_TOKEN2');
+    } else {
+      $msg = "Token inválido";
+      return back()->withErrors(__($msg));
+    }
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
@@ -42,32 +42,31 @@ class OldAsaasController extends Controller
     $dec = json_decode($response);
 
 
-    
-//dd($dec);
+
+    //dd($dec);
 
     $body = new stdClass;
-    if(isset($dec->data[0]->name)){
-    $body->name = "<p>Nome: ". $dec->data[0]->name ."</p>";
+    if (isset($dec->data[0]->name)) {
+      $body->name = "<p>Nome: " . $dec->data[0]->name . "</p>";
     }
-    if(isset($dec->data[0]->id)){
-    $cobranca = new OldAsaasController;
-    $cobranca = $cobranca->lista_cobranca($dec->data[0]->id, $token);
+    if (isset($dec->data[0]->id)) {
+      $cobranca = new OldAsaasController;
+      $cobranca = $cobranca->lista_cobranca($dec->data[0]->id, $token);
 
-    
-    foreach($cobranca->data as $cobra){
-      //dd($cobranca);
+
+      foreach ($cobranca->data as $cobra) {
+        //dd($cobranca);
+      }
     }
-    
-    }
-   
-    if(isset($dec->data[0]->name)){
-     // dd('vazio');
-      $body = $dec->data[0]->name."<br><br>Informações:<br>".$dec->data[0]->company."<br>".$dec->data[0]->observations;
-    }else{
+
+    if (isset($dec->data[0]->name)) {
+      // dd('vazio');
+      $body = $dec->data[0]->name . "<br><br>Informações:<br>" . $dec->data[0]->company . "<br>" . $dec->data[0]->observations;
+    } else {
       //dd('cheito');
       return;
     }
-    
+
     //dd($body);
     return (str_replace("\n", "<br>", $body));
   }
@@ -77,7 +76,7 @@ class OldAsaasController extends Controller
   // Busca se o cliente existe no Asaas
   public function lista_cliente($cpf, $token)
   {
-    str_contains($token, "access_token")? $token : $token = "access_token : $token";
+    str_contains($token, "access_token") ? $token : $token = "access_token : $token";
     //dd($token);
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
@@ -220,32 +219,32 @@ class OldAsaasController extends Controller
 
 
 
-    if ($taxavalor !== ""){
+    if ($taxavalor !== "") {
       //dd($dec->id);
       $value = $dec->value + $taxavalor;
       $id = $dec->id;
 
       $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments/$id");
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+      curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments/$id");
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+      curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
-    curl_setopt($ch, CURLOPT_POST, TRUE);
+      curl_setopt($ch, CURLOPT_POST, TRUE);
 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, "{
+      curl_setopt($ch, CURLOPT_POSTFIELDS, "{
       \"value\": $value
                         }");
 
-    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-      "Content-Type: application/json",
-      $token
-    ));
+      curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        "Content-Type: application/json",
+        $token
+      ));
 
-    $response = curl_exec($ch);
-    $dec = json_decode($response);
+      $response = curl_exec($ch);
+      $dec = json_decode($response);
 
-    //dd($dec);
+      //dd($dec);
 
     }
 
@@ -381,7 +380,7 @@ class OldAsaasController extends Controller
     $para = array('.');
     $send->valor = str_replace('.', '', $request->valor);
     $send->valor = str_replace($de, $para, $send->valor);
-    
+
     $send->parcela = preg_replace('/[^0-9]/', '', $request->parcelas);
     $send->data2 = date('Y-m-d', strtotime($request->data));
     $send->cep = $request->cep;
@@ -398,32 +397,32 @@ class OldAsaasController extends Controller
     $send->link = $send->link !== "" ? "LINK: $request->link_valor\\n" : "";
     $send->boleto = "BOLETO: $request->parcelas $request->valor\\n";
     $send->taxavalor = $request->gerartaxa !== "" ? str_replace($de, $para, $request->gerartaxa) : "";
-    
+
     $send->msgtaxa = $request->msgtaxa;
-    
+
     $send->gerartaxa = $request->gerartaxa !== null ? "TAXA GERADA (Junto 1ª Parcela: R$ $request->gerartaxa\\n" : "";
 
-    if($send->msgtaxa !== null){
+    if ($send->msgtaxa !== null) {
       //dd($send->msgtaxa );
       //dd('s');
-    $send->pagamento = is_null($send->msgtaxa) ? '' : "Gerado taxa $request->parcelas R$$request->valor para " .  Carbon::parse($send->data2)->format('d/m/Y');
-    }else{
+      $send->pagamento = is_null($send->msgtaxa) ? '' : "Gerado taxa $request->parcelas R$$request->valor para " .  Carbon::parse($send->data2)->format('d/m/Y');
+    } else {
 
       //dd('n');
-    $send->pagamento = is_null($send->taxa) ? '' : $send->taxa;
-    $send->pagamento .= is_null($send->cartao) ? '' : $send->cartao;
-    $send->pagamento .= is_null($send->link) ? '' : $send->link;
-    $send->pagamento .= is_null($send->boleto) ? '' : $send->boleto;
-    $send->pagamento .= is_null($send->gerartaxa) ? '' : $send->gerartaxa;
+      $send->pagamento = is_null($send->taxa) ? '' : $send->taxa;
+      $send->pagamento .= is_null($send->cartao) ? '' : $send->cartao;
+      $send->pagamento .= is_null($send->link) ? '' : $send->link;
+      $send->pagamento .= is_null($send->boleto) ? '' : $send->boleto;
+      $send->pagamento .= is_null($send->gerartaxa) ? '' : $send->gerartaxa;
     }
-    
+
     $send->criado_por = Auth::user()->name;
     $send->desc = str_ireplace("\r\n", "\\n", $send->desc);
     $send->contratos = (count($send->username) > 1 ? implode("/", (array)$send->username) : implode("", (array)$send->username));
-    $send->names = (count($send->nomealuno) > 1 ? implode(", ", $send->nomealuno) : implode("",$send->nomealuno));
+    $send->names = (count($send->nomealuno) > 1 ? implode(", ", $send->nomealuno) : implode("", $send->nomealuno));
     $send->nome = "$send->contratos $send->nomeresp ($send->names)";
-    if($send->msgtaxa !== ""){
-    $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCONTRATOS: $send->contratos \\nCRIADO POR: $send->criado_por\\n$send->desc";  
+    if ($send->msgtaxa !== "") {
+      $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCONTRATOS: $send->contratos \\nCRIADO POR: $send->criado_por\\n$send->desc";
     }
     $send->descricao = "DIV: $send->grupo\\n$send->curso\\n$send->pagamento\\nCONTRATOS: $send->contratos \\nCRIADO POR: $send->criado_por\\n$send->desc";
 
@@ -457,92 +456,93 @@ class OldAsaasController extends Controller
     return $send;
   }
 
-  public function show_end($send){
-          $send->body =
-              "CRIADO COM SUCESSO!\n\r$send->nomeresp, $send->curso em $send->parcela parcelas de R$ $send->valor";
-              return $send->body;
+  public function show_end($send)
+  {
+    $send->body =
+      "CRIADO COM SUCESSO!\n\r$send->nomeresp, $send->curso em $send->parcela parcelas de R$ $send->valor";
+    return $send->body;
   }
 
-  public function cria_cobranca1($send, $customer, $token){
-          
-          $sendmsg = new MktController;
-          //Pesquisa se cliente existe no Asaas
-          if ($send->valor !== "") {
-            $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
-            $send->paybook = $this->getPayBook($dec->installment, str_replace("access_token: ","",$token));
-            //dd($send->paybook);
-            //$dec = new stdClass;
-            //$dec->id = "1";
-            //$send->paybook = "Teste";
-            if($send->msgtaxa == null){
-            //Cria e envia msg inicial
-            $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA!!!_*';
-            //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
-            $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
-                                                          dispatch($job)->delay(now()->addMinutes(1));
-                                                          //dd(dispatch($job));
-            }
+  public function cria_cobranca1($send, $customer, $token)
+  {
 
-            //Testa tipo de cobrança e envia msg relacionada
-            if($send->msgtaxa !== null){
-                $msg_text ='\r\n'. $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
-                //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
-                $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
-                                                              dispatch($job)->delay(now()->addMinutes(2));
-                                                              //dd(dispatch($job));
-                
-                return $send;
-            }
+    $sendmsg = new MktController;
+    //Pesquisa se cliente existe no Asaas
+    if ($send->valor !== "") {
+      $dec = $this->cria_cobranca($customer, $send->curso, $send->data2, $send->valor, $send->parcela, $send->taxavalor, $token);
+      $send->paybook = $this->getPayBook($dec->installment, str_replace("access_token: ", "", $token));
+      //dd($send->paybook);
+      //$dec = new stdClass;
+      //$dec->id = "1";
+      //$send->paybook = "Teste";
+      if ($send->msgtaxa == null) {
+        //Cria e envia msg inicial
+        $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA!!!_*';
+        //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
+        $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
+        dispatch($job)->delay(now()->addMinutes(1));
+        //dd(dispatch($job));
+      }
 
-            if ($send->cartao !== "") {
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
-            } else if ($send->link !== "") {
-                $link = $this->lista_link($dec->id, $token);
-                if(isset($link->data[0]->invoiceUrl)){
-                $link = $link->data[0]->invoiceUrl;
-                }else{
-                  $link = "";
-                }
+      //Testa tipo de cobrança e envia msg relacionada
+      if ($send->msgtaxa !== null) {
+        $msg_text = '\r\n' . $send->nomeresp . ', referente a ao pagamento da taxa, para ficar mais fácil estou te enviando separado, para efetuar o pagamento da taxa basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
+        //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
+        $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
+        dispatch($job)->delay(now()->addMinutes(2));
+        //dd(dispatch($job));
 
-                $msg_text ='\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento e o seu carnê para pagamento basta clicar nos links abaixo:👇\r\n\r\n Link: ' . $link . '\r\n\r\n Boleto: ' . $send->paybook . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
-            } else {
-                $msg_text ='\r\n'. $send->nomeresp . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
-            }
-                //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
-                $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
-                                                              dispatch($job)->delay(now()->addMinutes(2));
-                                                              //dd(dispatch($job));
-                
-                
-                return $send;
-      }else{
+        return $send;
+      }
 
-        $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, aguarde as próximas informações!_*';
+      if ($send->cartao !== "") {
+        $msg_text = '\r\n' . $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Cartão e Boleto, para sua comodidade estou enviando o seu carnê para pagamento basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
+      } else if ($send->link !== "") {
+        $link = $this->lista_link($dec->id, $token);
+        if (isset($link->data[0]->invoiceUrl)) {
+          $link = $link->data[0]->invoiceUrl;
+        } else {
+          $link = "";
+        }
 
-                //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
-                $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
-                                                              dispatch($job)->delay(now()->addMinutes(1));
-                                                              //dd(dispatch($job));
+        $msg_text = '\r\n' . $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade parcial Link e Boleto, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento e o seu carnê para pagamento basta clicar nos links abaixo:👇\r\n\r\n Link: ' . $link . '\r\n\r\n Boleto: ' . $send->paybook . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
+      } else {
+        $msg_text = '\r\n' . $send->nomeresp . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $send->paybook . '\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
+      }
+      //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
+      $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
+      dispatch($job)->delay(now()->addMinutes(2));
+      //dd(dispatch($job));
+
+
+      return $send;
+    } else {
+
+      $msg_text = '*PROFISSIONALIZA CURSOS*\r\n\r\n😊 Olá *' . $send->nomeresp . '* estamos felizes por você fazer parte de uma das maiores Plataformas Profissionalizantes do Brasil.\r\n\r\nNossa equipe está realizando os últimos ajustes referente aos cursos de ' . implode(", ", $send->nomealuno) . '.\r\n\r\nNa sequência vou te mandar algumas informações peço que salve o nosso contato e sempre que precisar de algo esse é o nosso canal Oficial de Suporte.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, aguarde as próximas informações!_*';
+
+      //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
+      $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
+      dispatch($job)->delay(now()->addMinutes(1));
+      //dd(dispatch($job));
 
       //Testa se a cobrança é link
       if ($send->link !== "") {
-        $send->paybook = "link";        
-                $link = $this->lista_link($customer, $token);
-                isset($link->data[0]->invoiceUrl) ? $link = $link->data[0]->invoiceUrl : $link = "Solicite seu link na Central de Atendimento.";
-                //$link = $link->data[0]->invoiceUrl;
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade Link de Pagamento, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento, basta clicar no link abaixo:👇\r\n\r\nLink: ' . $link . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nCaso o link não esteja habilitado basta salvar nosso contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
+        $send->paybook = "link";
+        $link = $this->lista_link($customer, $token);
+        isset($link->data[0]->invoiceUrl) ? $link = $link->data[0]->invoiceUrl : $link = "Solicite seu link na Central de Atendimento.";
+        //$link = $link->data[0]->invoiceUrl;
+        $msg_text = '\r\n' . $send->nomeresp . ', nossa equipe do financeiro fez o lançamento dos seus dados, o seu pagamento foi na modalidade Link de Pagamento, para sua comodidade estou enviando o seu link caso ainda não tenha efetuado pagamento, basta clicar no link abaixo:👇\r\n\r\nLink: ' . $link . '\r\n\r\nQualquer dificuldade, podemos tratar aqui mesmo nesse contato.\r\n\r\nCaso o link não esteja habilitado basta salvar nosso contato.\r\n\r\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
       } else {
         $send->paybook = "Cartão";
-                $msg_text = '\r\n'. $send->nomeresp . ', nossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
+        $msg_text = '\r\n' . $send->nomeresp . ', nossa equipe está fazendo os últimos ajustes relacionado ao seu curso, as principais etapas são:👇\r\n\r\n- Entrega de Login e Senha;\n- Liberação dos Cursos na Plataforma;\n- Acompanhamento do Aluno;\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\nEsse número é o nosso canal oficial de Suporte salve nos seus contatos e fale conosco sempre que precisar.\n*_SÓ RESPONDA ESSA MENSAGEM SE PRECISAR DE AJUDA, bons estudos!_*';
       }
-                //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
-                $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
-                dispatch($job)->delay(now()->addMinutes(1));
-                //dispatch($job);
+      //dd($sendmsg->send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id));
+      $job = new Mkt_send_not_active($send->nome, $send->telefone, "text", $msg_text, $send->id);
+      dispatch($job)->delay(now()->addMinutes(1));
+      //dispatch($job);
 
-                //dd('s');
-                return $send;
-
+      //dd('s');
+      return $send;
     }
   }
 
@@ -557,66 +557,76 @@ class OldAsaasController extends Controller
     //dd($send->id[1]);
 
     //dd($send);
-   
-    if($send->resp_exist == "2"){
-        $this->cria_existe((object)$send);
-        return redirect('/collapsible-menu/app/pay/create')->with([
-          'status' => $send->body
-        ]);
-    }else if($send->resp_exist == "3"){
-        $this->cria_existe((object)$send);
-        return redirect('/collapsible-menu/app/pay/create')->with([
-          'status' => $send->body
-        ]);
+
+    if ($send->resp_exist == "2") {
+      $this->cria_existe((object)$send);
+      return redirect('/collapsible-menu/app/pay/create')->with([
+        'status' => $send->body
+      ]);
+    } else if ($send->resp_exist == "3") {
+      $this->cria_existe((object)$send);
+      return redirect('/collapsible-menu/app/pay/create')->with([
+        'status' => $send->body
+      ]);
     }
     //Seleciona qual token usar
     if (Auth::user()->secretary == "TB") {
-          $token = env('ASAAS_TOKEN1');
-          $send->secretary = "TB";
+      $token = env('ASAAS_TOKEN1');
+      $send->secretary = "TB";
     } else if (Auth::user()->secretary == "MGA") {
-          $token = env('ASAAS_TOKEN2');
-          $send->secretary = "MGA";
+      $token = env('ASAAS_TOKEN2');
+      $send->secretary = "MGA";
     } else {
-          $msg = "Token inválido";
-          return back()->withErrors(__($msg));
+      $msg = "Token inválido";
+      return back()->withErrors(__($msg));
     }
 
     //Cria cliente e cobranças
-          $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->number, $send->descricao, $send->empresa, $send->grupo, $token);
-          $customer = $dec->id;
-          $send = $client->cria_cobranca1($send, $customer, $token);
-          //dd($send);
-          $send->responsavel = UserAccountable::create([
-            'user_id' => $send->id[1],
-            'name' => $send->nomeresp,
-            'cellphone' => $send->telefone,
-            'document' => $send->cpf,
-            'secretary' => $send->secretary,
-            'active' => 1,
-            'body' => '{
+    $dec = $this->cria_cliente(implode(",", $send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->number, $send->descricao, $send->empresa, $send->grupo, $token);
+
+    if ($dec->id) {
+      // O usuário foi encontrado, você pode acessar suas propriedades
+      $customer = $dec->id;
+      // Outras operações com o usuário
+    } else {
+      // O usuário não foi encontrado, trate o caso aqui
+      // Por exemplo, lance uma exceção ou retorne uma resposta de erro
+      abort(404, 'Usuário não retornado pelo Asaas');
+    }
+
+    
+    $send = $client->cria_cobranca1($send, $customer, $token);
+    //dd($send);
+    $send->responsavel = UserAccountable::create([
+      'user_id' => $send->id[1],
+      'name' => $send->nomeresp,
+      'cellphone' => $send->telefone,
+      'document' => $send->cpf,
+      'secretary' => $send->secretary,
+      'active' => 1,
+      'body' => '{
               "payload": "' . $send->paybook . '",
               "customer": "' . $customer . '"
             }'
-          ]);
+    ]);
 
-          foreach($send->id as $id){
-            $user = User::find($id);
-            $user->document = $send->cpf;
-            $user->user_accountable_id = $send->responsavel->id;
-            $user->save();
-            $user->observation()->create([
-              'obs' => str_ireplace("\\n", "\r\n", $send->descricao)
-            ]);
-          }
+    foreach ($send->id as $id) {
+      $user = User::find($id);
+      $user->document = $send->cpf;
+      $user->user_accountable_id = $send->responsavel->id;
+      $user->save();
+      $user->observation()->create([
+        'obs' => str_ireplace("\\n", "\r\n", $send->descricao)
+      ]);
+    }
 
-          
-          
-          $send->body = $client->show_end($send);
-            //dd($send->body);
-          return back()->with([
-            'status' => $send->body
-          ]);
 
+
+    $send->body = $client->show_end($send);
+    //dd($send->body);
+    return back()->with([
+      'status' => $send->body
+    ]);
   }
 
   public function cria_existe($send)
@@ -639,62 +649,62 @@ class OldAsaasController extends Controller
       return back()->withErrors(__($msg));
     }
 
-    if($send->resp_exist !== "3"){
-        //Localiza o cliente no Asaas
-        $dec = $this->lista_cliente($send->cpf, $token);
+    if ($send->resp_exist !== "3") {
+      //Localiza o cliente no Asaas
+      $dec = $this->lista_cliente($send->cpf, $token);
     }
 
-    
+
 
     //Avalia se cliente existe
-    if(isset($dec->data[0]->id)){
+    if (isset($dec->data[0]->id)) {
 
       $send = $client->cria_cobranca1($send, $dec->data[0]->id, $token);
       //dd($send);
-          foreach($send->id as $id){
-            $user = User::find($id);
-            $user->document = $send->cpf;
-            $user->user_accountable_id = $send->responsavel->id;
-            $user->observation()->create([
-              'obs' => str_ireplace("\\n", "\r\n", $send->descricao)
-            ]);
-          }
+      foreach ($send->id as $id) {
+        $user = User::find($id);
+        $user->document = $send->cpf;
+        $user->user_accountable_id = $send->responsavel->id;
+        $user->observation()->create([
+          'obs' => str_ireplace("\\n", "\r\n", $send->descricao)
+        ]);
+      }
 
-          $send->body = $client->show_end($send);
-          return $send;
-    }else{
-          $dec = $this->cria_cliente(implode(",",$send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->number, $send->descricao, $send->empresa, $send->grupo, $token);
-          $customer = $dec->id;
-          $send = $client->cria_cobranca1($send, $customer, $token);
-          //dd($send);
-          $send->responsavel = UserAccountable::create([
-            'user_id' => $send->id[1],
-            'name' => $send->nomeresp,
-            'cellphone' => $send->telefone,
-            'document' => $send->cpf,
-            'secretary' => $send->secretary,
-            'active' => 1,
-            'body' => '{
+      $send->body = $client->show_end($send);
+      return $send;
+    } else {
+      $dec = $this->cria_cliente(implode(",", $send->username), $send->nome, $send->cpf, $send->telefone, $send->email, $send->cep, $send->number, $send->descricao, $send->empresa, $send->grupo, $token);
+      $customer = $dec->id;
+      $send = $client->cria_cobranca1($send, $customer, $token);
+      //dd($send);
+      $send->responsavel = UserAccountable::create([
+        'user_id' => $send->id[1],
+        'name' => $send->nomeresp,
+        'cellphone' => $send->telefone,
+        'document' => $send->cpf,
+        'secretary' => $send->secretary,
+        'active' => 1,
+        'body' => '{
               "payload": "' . $send->paybook . '",
               "customer": "' . $customer . '"
             }'
-          ]);
+      ]);
 
-          foreach($send->id as $id){
-            $user = User::find($id);
-            $user->document = $send->cpf;
-            $user->user_accountable_id = $send->responsavel->id;
-            $user->save();
-            $user->observation()->create([
-              'obs' => str_ireplace("\\n", "\r\n", $send->descricao)
-            ]);
-          }
+      foreach ($send->id as $id) {
+        $user = User::find($id);
+        $user->document = $send->cpf;
+        $user->user_accountable_id = $send->responsavel->id;
+        $user->save();
+        $user->observation()->create([
+          'obs' => str_ireplace("\\n", "\r\n", $send->descricao)
+        ]);
+      }
 
-          $send->body = $client->show_end($send);
+      $send->body = $client->show_end($send);
 
-          return back()->with([
-            'status' => $send->body
-          ]);
+      return back()->with([
+        'status' => $send->body
+      ]);
     }
   }
 
@@ -1004,10 +1014,11 @@ class OldAsaasController extends Controller
     ]);
   }*/
 
-  public function my(){
+  public function my()
+  {
 
     $user = Auth::user();
-    
+
     if ($user->document == null || $user->document == 99999999999 || $user->document == 00000000000) {
       $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
       return back()->withErrors(__($msg));
@@ -1158,10 +1169,10 @@ class OldAsaasController extends Controller
     return ($response);
   }
 
-  public function resend_mkt($cellphone, $msg, $user_id, $msg_id){
+  public function resend_mkt($cellphone, $msg, $user_id, $msg_id)
+  {
 
     $job = new Mkt_send_not_active('', $cellphone, "text", $msg, $user_id, $msg_id);
-                dispatch($job)->delay(now()->addMinutes(5));
-
+    dispatch($job)->delay(now()->addMinutes(5));
   }
 }
