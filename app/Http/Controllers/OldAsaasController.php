@@ -1162,11 +1162,10 @@ class OldAsaasController extends Controller
 
   public function list_pay($cpf)
   {
-    if (Auth::user()->role >= 4) {
-      $user = User::where('document', $cpf);
-    } else {
-      $user = Auth::user();
-    }
+
+      $user = User::where('document', $cpf)->first();
+
+      dd($user);
 
     if ($user->document == null || $user->document == 99999999999 || $user->document == 00000000000) {
       $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
@@ -1231,6 +1230,8 @@ class OldAsaasController extends Controller
         return back()->withErrors(__($msg));
       }
     }
+
+    dd($cobrancas);
 
     return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
   }
