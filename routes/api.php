@@ -106,7 +106,7 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
 
-    Route::get('/asaas/{cpf}', [OldAsaasController::class, 'lista_cliente_stoken']);
+    Route::get('/asaas/{cpf}', [OldAsaasController::class, 'list_pay']);
 });
 
 
