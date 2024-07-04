@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use stdClass;
 
@@ -1165,7 +1166,7 @@ class OldAsaasController extends Controller
 
       $user = User::where('document', $cpf)->first();
 
-      dd($user);
+      //dd($user);
 
     if ($user->document == null || $user->document == 99999999999 || $user->document == 00000000000) {
       $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
@@ -1231,9 +1232,12 @@ class OldAsaasController extends Controller
       }
     }
 
-    dd($cobrancas);
+    //dd($cobrancas);
 
-    return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
+
+    return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
+
+    //return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
   }
 
 
