@@ -1212,6 +1212,29 @@ class OldAsaasController extends Controller
     $customer = $response->data[0]->id;
     //dd($customer);
     $cobrancas = ($client->lista_cobranca_api($customer, env("ASAAS_TOKEN$i")))->data;
+    //dd($cobrancas);
+
+    if (isset($cobrancas[0]->billingType)) {
+      if ($cobrancas[0]->billingType == "CREDIT_CARD") {
+        $link = [
+          "bankSlipUrl" => $cobrancas[0]->invoiceUrl,
+          "dueDate" => Carbon::parse($cobrancas[0]->dueDate)->format('d/m/Y')
+        ];
+        //dd($link['status']);
+
+        //return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
+        return response()->json(["cliente" => $response->data[0], "cobrancas" => $link], Response::HTTP_OK);
+      }
+      if (!isset($cobrancas[0])) {
+        //dd('s');
+        $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
+        //return back()->withErrors(__($msg));
+        return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
+      }
+    }
+
+    //dd($cobrancas);
+
 
     return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
 
