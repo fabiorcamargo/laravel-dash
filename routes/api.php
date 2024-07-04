@@ -4,6 +4,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiGetCourses;
 use App\Http\Controllers\ApiGetOuroCourses;
 use App\Http\Controllers\ApiWhatsapp;
+use App\Http\Controllers\OldAsaasController;
 use App\Models\City;
 use App\Models\State;
 use App\Models\User;
@@ -67,8 +68,9 @@ Route::middleware('auth:sanctum')->group(function () {
             $user->$key = $param;
         }
         $user->save();
+        
 
-        return response()->json(['user' => $user], Response::HTTP_OK);
+        return response()->json(['user' => $request->user()], Response::HTTP_OK);
     });
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
@@ -102,6 +104,9 @@ Route::middleware('auth:sanctum')->group(function () {
         $uf = City::find($id);
         return response()->json(['uf' => $uf], Response::HTTP_OK);
     });
+
+
+    Route::get('/asaas/{cpf}', [OldAsaasController::class, 'lista_cliente_stoken']);
 });
 
 
