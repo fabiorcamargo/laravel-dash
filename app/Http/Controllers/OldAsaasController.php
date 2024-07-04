@@ -1209,10 +1209,24 @@ class OldAsaasController extends Controller
       return back()->withErrors(__($msg));
     }
     //dd('s');
+	  
+	  foreach($response->data as $key => $cliente){
+		  
+		  $cobrancas = ($client->lista_cobranca_api($cliente->id, env("ASAAS_TOKEN$i")))->data;
+		  
+		  if (isset($cobrancas[0]->billingType)) {
+			  dd($cobrancas);
+		  }
+      
+
+      $customer = $response->data[0]->id;
+
+    }
+	  
     $customer = $response->data[0]->id;
     //dd($customer);
     $cobrancas = ($client->lista_cobranca_api($customer, env("ASAAS_TOKEN$i")))->data;
-    //dd($cobrancas);
+    dd($cobrancas);
 
     if (isset($cobrancas[0]->billingType)) {
       if ($cobrancas[0]->billingType == "CREDIT_CARD") {
@@ -1225,13 +1239,9 @@ class OldAsaasController extends Controller
         //return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
         return response()->json(["cliente" => $response->data[0], "cobrancas" => $link], Response::HTTP_OK);
       }
-      if (!isset($cobrancas[0])) {
-        //dd('s');
-        $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
-        //return back()->withErrors(__($msg));
-        return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
-      }
-    }
+    }else{
+		return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
+	}
 
     //dd($cobrancas);
 
