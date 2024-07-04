@@ -1226,7 +1226,7 @@ class OldAsaasController extends Controller
     $customer = $response->data[0]->id;
     //dd($customer);
     $cobrancas = ($client->lista_cobranca_api($customer, env("ASAAS_TOKEN$i")))->data;
-    dd($cobrancas);
+    //dd($cobrancas);
 
     if (isset($cobrancas[0]->billingType)) {
       if ($cobrancas[0]->billingType == "CREDIT_CARD") {
