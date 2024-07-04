@@ -1164,9 +1164,9 @@ class OldAsaasController extends Controller
   public function list_pay($cpf)
   {
 
-      $user = User::where('document', $cpf)->first();
+    $user = User::where('document', $cpf)->first();
 
-      //dd($user);
+    //dd($user);
 
     if ($user->document == null || $user->document == 99999999999 || $user->document == 00000000000) {
       $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
@@ -1209,11 +1209,11 @@ class OldAsaasController extends Controller
       return back()->withErrors(__($msg));
     }
     //dd('s');
-	  
-	  foreach($response->data as $key => $cliente){
-		  
-		  $cobrancas = ($client->lista_cobranca_api($cliente->id, env("ASAAS_TOKEN$i")))->data;
-		  
+
+    foreach ($response->data as $key => $cliente) {
+
+      $cobrancas = ($client->lista_cobranca_api($cliente->id, env("ASAAS_TOKEN$i")))->data;
+
       if (isset($cobrancas[0]->billingType)) {
         if ($cobrancas[0]->billingType == "CREDIT_CARD") {
           $link = [
@@ -1221,32 +1221,19 @@ class OldAsaasController extends Controller
             "dueDate" => Carbon::parse($cobrancas[0]->dueDate)->format('d/m/Y')
           ];
           //dd($link['status']);
-  
+
           //return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
           return response()->json(["cliente" => $response->data[0], "cobrancas" => $link], Response::HTTP_OK);
+        } else {
+          return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
         }
-      }else{
-      return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
-    }
-      
+      } else {
+        return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
+      }
 
-      $customer = $response->data[0]->id;
 
     }
-	  
-    $customer = $response->data[0]->id;
-    //dd($customer);
-    $cobrancas = ($client->lista_cobranca_api($customer, env("ASAAS_TOKEN$i")))->data;
-    //dd($cobrancas);
 
-   
-
-    //dd($cobrancas);
-
-
-    return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
-
-    //return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
   }
 
   public function lista_cobranca_api($customer, $token)
