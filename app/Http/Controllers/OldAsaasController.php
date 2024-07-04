@@ -1224,11 +1224,9 @@ class OldAsaasController extends Controller
         } else {
           return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
         }
-      }
-      
-      
-        return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
+      }  
     }
+    return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
 
   }
 
