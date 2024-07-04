@@ -1214,9 +1214,20 @@ class OldAsaasController extends Controller
 		  
 		  $cobrancas = ($client->lista_cobranca_api($cliente->id, env("ASAAS_TOKEN$i")))->data;
 		  
-		  if (isset($cobrancas[0]->billingType)) {
-			  dd($cobrancas);
-		  }
+      if (isset($cobrancas[0]->billingType)) {
+        if ($cobrancas[0]->billingType == "CREDIT_CARD") {
+          $link = [
+            "bankSlipUrl" => $cobrancas[0]->invoiceUrl,
+            "dueDate" => Carbon::parse($cobrancas[0]->dueDate)->format('d/m/Y')
+          ];
+          //dd($link['status']);
+  
+          //return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
+          return response()->json(["cliente" => $response->data[0], "cobrancas" => $link], Response::HTTP_OK);
+        }
+      }else{
+      return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
+    }
       
 
       $customer = $response->data[0]->id;
@@ -1228,20 +1239,7 @@ class OldAsaasController extends Controller
     $cobrancas = ($client->lista_cobranca_api($customer, env("ASAAS_TOKEN$i")))->data;
     //dd($cobrancas);
 
-    if (isset($cobrancas[0]->billingType)) {
-      if ($cobrancas[0]->billingType == "CREDIT_CARD") {
-        $link = [
-          "bankSlipUrl" => $cobrancas[0]->invoiceUrl,
-          "dueDate" => Carbon::parse($cobrancas[0]->dueDate)->format('d/m/Y')
-        ];
-        //dd($link['status']);
-
-        //return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
-        return response()->json(["cliente" => $response->data[0], "cobrancas" => $link], Response::HTTP_OK);
-      }
-    }else{
-		return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
-	}
+   
 
     //dd($cobrancas);
 
