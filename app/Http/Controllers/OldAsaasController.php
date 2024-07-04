@@ -1211,7 +1211,7 @@ class OldAsaasController extends Controller
     //dd('s');
     $customer = $response->data[0]->id;
     //dd($customer);
-    $cobrancas = ($client->lista_cobranca($customer, env("ASAAS_TOKEN$i")))->data;
+    $cobrancas = ($client->lista_cobranca_api($customer, env("ASAAS_TOKEN$i")))->data;
     //dd($cobrancas);
 
     if (isset($cobrancas[0]->billingType)) {
@@ -1223,12 +1223,14 @@ class OldAsaasController extends Controller
         ];
         //dd($link['status']);
 
-        return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
+        //return view('pages.app.pay.list')->with(['link' => $link, 'title' => 'Lista de Pagamentos']);
+        return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
       }
       if (!isset($cobrancas[0])) {
         //dd('s');
         $msg = "Não foi possível localizar sua fatura, por favor contate o suporte!";
-        return back()->withErrors(__($msg));
+        //return back()->withErrors(__($msg));
+        return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
       }
     }
 
@@ -1238,6 +1240,27 @@ class OldAsaasController extends Controller
     return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
 
     //return view('pages.app.pay.list')->with(['cobrancas' => $cobrancas, 'title' => 'Lista de Pagamentos', 'i' => $i]);
+  }
+
+  public function lista_cobranca_api($customer, $token)
+  {
+
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?customer=$customer&order=asc&status=PENDING&status=OVERDUE");
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      $token
+    ));
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $dec = json_decode($response);
+
+    return $dec;
   }
 
 
