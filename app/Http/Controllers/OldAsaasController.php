@@ -1218,7 +1218,9 @@ class OldAsaasController extends Controller
         if ($cobrancas[0]->billingType == "CREDIT_CARD") {
           $link = [[
             "bankSlipUrl" => $cobrancas[0]->invoiceUrl,
-            "dueDate" => Carbon::parse($cobrancas[0]->dueDate)->format('d/m/Y')
+            "dueDate" => $cobrancas[0]->dueDate,
+            "description" => $cobrancas[0]->description,
+            "value" => $cobrancas[0]->value
           ]];
           return response()->json(["cliente" => $response->data[0], "cobrancas" => $link], Response::HTTP_OK);
         } else {
