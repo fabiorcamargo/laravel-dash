@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use stdClass;
 
 class OldAsaasController extends Controller
@@ -1260,6 +1261,25 @@ class OldAsaasController extends Controller
     $body = (explode(",", $body));
 
     $userExists = User::where('username', $body[0])->exists();
+
+    // Validar o CPF
+    $validator = Validator::make([
+      'cpf' => $body[2]
+    ], [
+      'cpf' => 'required|cpf'
+    ], [
+      'cpf.cpf' => 'O CPF fornecido não é válido.'
+    ]);
+
+    // Se a validação falhar, retornar erro
+    if ($validator->fails()) {
+      return response()->json([
+          'status' => 'error',
+          'response' => $validator->errors()->first('cpf')
+      ], Response::HTTP_OK);
+  }
+
+    
 
     $msg = "Verifique os dados: \n" .
       "Contrato: $body[0] \n" .
