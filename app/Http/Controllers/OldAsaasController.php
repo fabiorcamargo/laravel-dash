@@ -19,19 +19,32 @@ use stdClass;
 class OldAsaasController extends Controller
 {
 
+  public function __construct() {
+
+    if(env('ASAAS_TIPO') == "producao"){
+      $this->url = "https://api.asaas.com/";
+      $this->token = ['MGA' => env('ASAAS_TOKEN2'), 'TB' => env('ASAAS_TOKEN1')];
+    }else if (env('ASAAS_TIPO') == "homologacao"){
+      $this->url = "https://sandbox.asaas.com/api/";
+      $this->token = ['MGA' => env('ASAAS_TOKEN'), 'TB' => env('ASAAS_TOKEN')];
+    }
+
+
+    
+  }
   public function lista_cliente_stoken($cpf)
   {
     if (Auth::user()->secretary == "TB") {
-      $token = env('ASAAS_TOKEN1');
+      $token = $this->token['TB'];
     } else if (Auth::user()->secretary == "MGA") {
-      $token = env('ASAAS_TOKEN2');
+      $token = $this->token['MGA'];
     } else {
       $msg = "Token inválido";
       return back()->withErrors(__($msg));
     }
 
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/customers?cpfCnpj=$cpf");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -80,10 +93,11 @@ class OldAsaasController extends Controller
   // Busca se o cliente existe no Asaas
   public function lista_cliente($cpf, $token)
   {
+    $cpf = str_replace(" ", "", $cpf);
     str_contains($token, "access_token") ? $token : $token = "access_token : $token";
     //dd($token);
     $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers?cpfCnpj=$cpf");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/customers?cpfCnpj=$cpf");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -105,7 +119,7 @@ class OldAsaasController extends Controller
   {
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/customers");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/customers");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -152,7 +166,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/notifications/$customer");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/notifications/$customer");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -186,7 +200,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/payments");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -230,7 +244,7 @@ class OldAsaasController extends Controller
 
       $ch = curl_init();
 
-      curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments/$id");
+      curl_setopt($ch, CURLOPT_URL, $this->url . "v3/payments/$id");
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
       curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -265,7 +279,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?billingType=CREDIT_CARD&customer=$customer&order=asc");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/payments?billingType=CREDIT_CARD&customer=$customer&order=asc");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -289,7 +303,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?customer=$customer&order=asc");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/payments?customer=$customer&order=asc");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -308,7 +322,7 @@ class OldAsaasController extends Controller
   public function getpixqr($id, $token)
   {
 
-    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/payments/$id/pixQrCode" :  $url = "https://api.asaas.com/v3/payments/$id/pixQrCode";
+    $url = $this->url . "v3/payments/$id/pixQrCode";
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -331,7 +345,7 @@ class OldAsaasController extends Controller
   public function getPayBook($id, $token)
   {
 
-    env('ASAAS_TIPO') == 'homologacao' ? $url = "https://sandbox.asaas.com/api/v3/installments/$id/paymentBook?sort=dueDate&order=asc" :  $url = "https://api.asaas.com/v3/installments/$id/paymentBook?sort=dueDate&order=asc";
+    $url = $this->url . "v3/installments/$id/paymentBook?sort=dueDate&order=asc";
 
     // URL do arquivo que você deseja baixar
     $publicPath = public_path("storage/paybook/$id"); // Pasta pública onde o arquivo será salvo
@@ -575,10 +589,10 @@ class OldAsaasController extends Controller
     }
     //Seleciona qual token usar
     if (Auth::user()->secretary == "TB") {
-      $token = env('ASAAS_TOKEN1');
+      $token = $this->token['TB'];
       $send->secretary = "TB";
     } else if (Auth::user()->secretary == "MGA") {
-      $token = env('ASAAS_TOKEN2');
+      $token = $this->token['MGA'];
       $send->secretary = "MGA";
     } else {
       $msg = "Token inválido";
@@ -643,10 +657,10 @@ class OldAsaasController extends Controller
     //dd($send);
     //Escolhe o token da secretaria
     if ($send->responsavel['secretary'] == "TB") {
-      $token = env('ASAAS_TOKEN1');
+      $token = $this->token['TB'];
       $send->secretary = "TB";
     } else if ($send->responsavel['secretary'] == "MGA") {
-      $token = env('ASAAS_TOKEN2');
+      $token = $this->token['MGA'];
       $send->secretary = "MGA";
     } else {
       $msg = "Token inválido";
@@ -1239,7 +1253,7 @@ class OldAsaasController extends Controller
 
     $ch = curl_init();
 
-    curl_setopt($ch, CURLOPT_URL, "https://api.asaas.com/v3/payments?customer=$customer&order=asc&status=PENDING&status=OVERDUE");
+    curl_setopt($ch, CURLOPT_URL, $this->url . "v3/payments?customer=$customer&order=asc&status=PENDING&status=OVERDUE");
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
     curl_setopt($ch, CURLOPT_HEADER, FALSE);
 
@@ -1255,13 +1269,35 @@ class OldAsaasController extends Controller
     return $dec;
   }
 
+  public function check_seller($id){
+
+    $seller = EcoSeller::find($id);
+    if ($seller->secretary == "TB") {
+      $token = $this->token['TB'];
+      return $token;
+    } else if ($seller->secretary == "MGA") {
+      $token = $this->token['MGA'];
+      return $token;
+    } else {
+      $msg = "Token inválido";
+      return back()->withErrors(__($msg));
+    }
+
+  }
+
   public function check_client_data(Request $request)
   {
 
     $body = $request->body;
     $body = (explode(",", $body));
+    $seller = $request->seller;
 
-    $userExists = User::where('username', $body[0])->exists();
+    $token = $this->check_seller($seller);
+
+    if(User::where('username', $body[0])->exists()){
+      $status = "contrato";
+      $msg = "Contrato não existe";
+    }
 
     // Validar o CPF
     $validator = Validator::make(
@@ -1273,29 +1309,54 @@ class OldAsaasController extends Controller
     // Se a validação falhar, retornar erro
     if ($validator->fails()) {
       return response()->json([
-        'status' => 'error',
+        'status' => 'cpf',
         'response' => $validator->errors()->first('cpf')
       ], Response::HTTP_OK);
     }
 
-    $msg = "Verifique os dados: \n" .
+    
+    $cliente = $this->lista_cliente($body[2], $token);
+    //dd($cliente);
+    if (isset($cliente->data[0]->id)) {
+      $client = $cliente->data[0];
+      $msg = "Cliente já existe: \n" .
+      "Contrato: " . $client->externalReference . "\n" .
+      "Nome: " . $client->name . "\n" .
+      "CPF: " . $client->cpfCnpj . "\n" .
+      "Telefone: " . $client->phone;
+      $status = "existe";
+      $clientId = $client->id;
+
+      return response()->json([
+        "status" => $status,
+        "response" => $msg,
+        "id" => $clientId
+      ], Response::HTTP_OK);
+
+    }else{
+      $msg = "Verifique os dados: \n" .
       "Contrato: $body[0] \n" .
       "Nome: $body[1] \n" .
       "CPF: $body[2] \n" .
       "Telefone: $body[3]";
+      $status = "novo";
 
-    $status = $userExists ? 'success' : 'forbidden';
+      return response()->json([
+        "status" => $status,
+        "response" => $msg
+      ], Response::HTTP_OK);
+    }
 
-    return response()->json([
-      "status" => $status,
-      "response" => $msg
-    ], Response::HTTP_OK);
+    
   }
 
   public function client_create(Request $request)
   {
 
     $body = $request->body;
+    $seller = $request->seller;
+    $token = $this->check_seller($seller);
+
     $seller = EcoSeller::find($request->seller);
     $body = (explode(",", $body));
 
@@ -1309,16 +1370,9 @@ class OldAsaasController extends Controller
       "groupName" => "$seller->name"
     ];
 
-    if ($seller->secretary == "TB") {
-      $token = env('ASAAS_TOKEN');
-    } else if ($seller->secretary == "MGA") {
-      $token = env('ASAAS_TOKEN');
-    } else {
-      $msg = "Token inválido";
-      return back()->withErrors(__($msg));
-    }
+    
 
-    $url = "https://sandbox.asaas.com/api/v3/customers";
+    $url = $this->url . "v3/customers";
 
     $ch = curl_init();
 
