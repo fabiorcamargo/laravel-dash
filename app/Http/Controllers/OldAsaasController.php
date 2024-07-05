@@ -1252,14 +1252,31 @@ class OldAsaasController extends Controller
     return $dec;
   }
 
-  public function create_link(Request $request)
+  public function check_client_data(Request $request)
   {
     
     $body = $request->body;
     $body = (str_replace(" ", "", $body));
     $body = (explode(",", $body));
 
-    //dd($body);
+    if(User::where('username', $body[0])->first()){
+      $msg = "Verifique os dados: \n" . "Contrato: $body[0] \n" . "Nome: $body[1] \n" . "CPF: $body[2] \n" . "Telefone: $body[3]";
+
+      return response()->json(["response" => $msg], Response::HTTP_OK);
+    } else {
+      $msg = "Contrato $body[0] não localizado, verifique o número e tente novamente";
+
+      return response()->json(["response" => $msg], Response::HTTP_FORBIDDEN);
+    } 
+    
+  }
+
+  public function client_create(Request $request)
+  {
+    
+    $body = $request->body;
+    $body = (str_replace(" ", "", $body));
+    $body = (explode(",", $body));
     
     $msg = "Verifique os dados: \n" . "Contrato: $body[0] \n" . "Nome: $body[1] \n" . "CPF: $body[2] \n" . "Telefone: $body[3]";
 
