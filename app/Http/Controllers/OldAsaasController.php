@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use stdClass;
 
@@ -1263,23 +1264,19 @@ class OldAsaasController extends Controller
     $userExists = User::where('username', $body[0])->exists();
 
     // Validar o CPF
-    $validator = Validator::make([
-      'cpf' => $body[2]
-    ], [
-      'cpf' => 'required|cpf'
-    ], [
-      'cpf.cpf' => 'O CPF fornecido não é válido.'
-    ]);
+    $validator = Validator::make(
+      ['cpf' => $body[2]],
+      ['cpf' => 'required|cpf'],
+      ['cpf.cpf' => 'O CPF fornecido não é válido.']
+    );
 
     // Se a validação falhar, retornar erro
     if ($validator->fails()) {
       return response()->json([
-          'status' => 'error',
-          'response' => $validator->errors()->first('cpf')
+        'status' => 'error',
+        'response' => $validator->errors()->first('cpf')
       ], Response::HTTP_OK);
-  }
-
-    
+    }
 
     $msg = "Verifique os dados: \n" .
       "Contrato: $body[0] \n" .
@@ -1301,6 +1298,21 @@ class OldAsaasController extends Controller
     $body = $request->body;
     $body = (str_replace(" ", "", $body));
     $body = (explode(",", $body));
+
+    $data = [
+      "name" => $body[0] . " " . $body[1],
+      "externalReference" => $body[0],
+      "cpfCnpj" => $body[2],
+      "phone" => $body[3],
+      "mobilePhone" => $body[3],
+      "observations" => "CRIADO POR @nome_divulgador "
+    ];
+
+    $response = Http::withHeaders([
+      'Authorization' => env('ASAAS_TOKEN')
+    ])->post("https://sandbox.asaas.com/api/v3/customers", $data);
+
+    dd($response);
 
     $msg = "Verifique os dados: \n" . "Contrato: $body[0] \n" . "Nome: $body[1] \n" . "CPF: $body[2] \n" . "Telefone: $body[3]";
 
