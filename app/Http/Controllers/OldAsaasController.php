@@ -1297,6 +1297,7 @@ class OldAsaasController extends Controller
   {
 
     $body = $request->body;
+    $seller = EcoSeller::find($request->seller);
     $body = (str_replace(" ", "", $body));
     $body = (explode(",", $body));
 
@@ -1306,8 +1307,8 @@ class OldAsaasController extends Controller
       "cpfCnpj" => $body[2],
       "phone" => $body[3],
       "mobilePhone" => $body[3],
-      "observations" => "CRIADO POR @nome_divulgador ",
-      "groupName" => ""
+      "observations" => "CRIADO POR $seller->name",
+      "groupName" => "$seller->name"
     ];
 
 
