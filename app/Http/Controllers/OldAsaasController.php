@@ -1312,9 +1312,9 @@ class OldAsaasController extends Controller
       'Authorization' => env('ASAAS_TOKEN')
     ])->post("https://sandbox.asaas.com/api/v3/customers", $data);
 
-    dd($response);
+    
 
-    $msg = "Verifique os dados: \n" . "Contrato: $body[0] \n" . "Nome: $body[1] \n" . "CPF: $body[2] \n" . "Telefone: $body[3]";
+    $msg = $response->status();
 
     return response()->json(["response" => $msg], Response::HTTP_OK);
   }
