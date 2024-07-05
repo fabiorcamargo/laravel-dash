@@ -1226,10 +1226,9 @@ class OldAsaasController extends Controller
         } else {
           return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_OK);
         }
-      }  
+      }
     }
     return response()->json(["cliente" => $response->data[0], "cobrancas" => $cobrancas], Response::HTTP_FORBIDDEN);
-
   }
 
   public function lista_cobranca_api($customer, $token)
@@ -1251,6 +1250,18 @@ class OldAsaasController extends Controller
     $dec = json_decode($response);
 
     return $dec;
+  }
+
+  public function create_link(Request $request)
+  {
+    
+    $body = $request->body;
+    $body = (str_replace(" ", "", $body));
+    $body = (explode(",", $body));
+
+    //dd($body);
+    
+    return "Verifique os dados: \\n" . "Contrato: $body[0] \\n" . "Nome: $body[1] \\n" . "CPF: $body[2] \\n" . "Telefone: $body[3]";
   }
 
 

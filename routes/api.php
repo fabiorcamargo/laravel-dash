@@ -107,6 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::get('/asaas/{cpf}', [OldAsaasController::class, 'list_pay']);
+    Route::post('/asaas/link', [OldAsaasController::class, 'create_link']);
 });
 
 
