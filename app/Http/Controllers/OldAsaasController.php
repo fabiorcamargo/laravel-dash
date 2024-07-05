@@ -1298,7 +1298,6 @@ class OldAsaasController extends Controller
 
     $body = $request->body;
     $seller = EcoSeller::find($request->seller);
-    $body = (str_replace(" ", "", $body));
     $body = (explode(",", $body));
 
     $data = [
