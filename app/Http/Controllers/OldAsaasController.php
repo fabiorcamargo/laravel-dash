@@ -1338,7 +1338,8 @@ class OldAsaasController extends Controller
   }
 
   public function getSellers(){
-    return EcoSeller::all('name');
+    
+    return response()->json(["response" => EcoSeller::all('name')], Response::HTTP_OK);
   }
 
   public static function getqrcode($id, $i)
