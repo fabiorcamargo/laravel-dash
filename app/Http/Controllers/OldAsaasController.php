@@ -1259,7 +1259,6 @@ class OldAsaasController extends Controller
   {
 
     $body = $request->body;
-    $body = (str_replace(" ", "", $body));
     $body = (explode(",", $body));
 
     $userExists = User::where('username', $body[0])->exists();
