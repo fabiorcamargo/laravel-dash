@@ -73,6 +73,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return response()->json(['user' => $request->user()], Response::HTTP_OK);
     });
 
+    Route::get('/sellers', [OldAsaasController::class, 'getSellers']);
+
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
 

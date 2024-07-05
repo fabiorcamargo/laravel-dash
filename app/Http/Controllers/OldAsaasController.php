@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\Mkt_send_not_active;
+use App\Models\EcoSeller;
 use App\Models\User;
 use App\Models\UserAccountable;
 use Carbon\Carbon;
@@ -1305,20 +1306,40 @@ class OldAsaasController extends Controller
       "cpfCnpj" => $body[2],
       "phone" => $body[3],
       "mobilePhone" => $body[3],
-      "observations" => "CRIADO POR @nome_divulgador "
+      "observations" => "CRIADO POR @nome_divulgador ",
+      "groupName" => ""
     ];
 
-    $response = Http::withHeaders([
-      'Authorization' => env('ASAAS_TOKEN')
-    ])->post("https://sandbox.asaas.com/api/v3/customers", $data);
 
-    
+    $url = "https://sandbox.asaas.com/api/v3/customers";
 
-    $msg = $response->status();
+    $ch = curl_init();
 
-    return response()->json(["response" => $msg], Response::HTTP_OK);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      "Content-Type: application/json",
+      "access_token: " . env('ASAAS_TOKEN')
+    ));
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+
+    $dec = json_decode($response);
+
+    return response()->json(["response" => $response], Response::HTTP_OK);
   }
 
+  public function getSellers(){
+    return EcoSeller::all('name');
+  }
 
   public static function getqrcode($id, $i)
   {
