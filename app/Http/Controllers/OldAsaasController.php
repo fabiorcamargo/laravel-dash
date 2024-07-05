@@ -1259,23 +1259,20 @@ class OldAsaasController extends Controller
     $body = (str_replace(" ", "", $body));
     $body = (explode(",", $body));
 
-    if (User::where('username', $body[0])->exists()) {
-      $msg = "Verifique os dados: \n" .
-        "Contrato: $body[0] \n" .
-        "Nome: $body[1] \n" .
-        "CPF: $body[2] \n" .
-        "Telefone: $body[3]";
+    $userExists = User::where('username', $body[0])->exists();
 
-      return response()->json(["response" => $msg], Response::HTTP_OK);
-    } else {
-      $msg = "Verifique os dados: \n" .
-        "Contrato: $body[0] \n" .
-        "Nome: $body[1] \n" .
-        "CPF: $body[2] \n" .
-        "Telefone: $body[3]";
+    $msg = "Verifique os dados: \n" .
+      "Contrato: $body[0] \n" .
+      "Nome: $body[1] \n" .
+      "CPF: $body[2] \n" .
+      "Telefone: $body[3]";
 
-      return response()->json(["response" => $msg], Response::HTTP_FORBIDDEN);
-    }
+    $status = $userExists ? 'success' : 'forbidden';
+
+    return response()->json([
+      "status" => $status,
+      "response" => $msg
+    ], Response::HTTP_OK);
   }
 
   public function client_create(Request $request)
