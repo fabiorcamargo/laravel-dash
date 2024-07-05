@@ -1311,6 +1311,14 @@ class OldAsaasController extends Controller
       "groupName" => "$seller->name"
     ];
 
+    if ($seller->secretary == "TB") {
+      $token = env('ASAAS_TOKEN');
+    } else if ($seller->secretary == "MGA") {
+      $token = env('ASAAS_TOKEN');
+    } else {
+      $msg = "Token inválido";
+      return back()->withErrors(__($msg));
+    }
 
     $url = "https://sandbox.asaas.com/api/v3/customers";
 
@@ -1326,7 +1334,7 @@ class OldAsaasController extends Controller
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
       "Content-Type: application/json",
-      "access_token: " . env('ASAAS_TOKEN')
+      $token
     ));
 
     $response = curl_exec($ch);
