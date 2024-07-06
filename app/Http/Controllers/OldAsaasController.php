@@ -1294,7 +1294,7 @@ class OldAsaasController extends Controller
 
     $token = $this->check_seller($seller);
 
-    if(User::where('username', $body[0])->exists()){
+    if(!User::where('username', $body[0])->exists()){
       $status = "contrato";
       $msg = "Contrato não existe";
 
