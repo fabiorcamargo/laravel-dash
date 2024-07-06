@@ -1334,7 +1334,7 @@ class OldAsaasController extends Controller
       return response()->json([
         "status" => $status,
         "response" => $msg,
-        "id" => $clientId
+        "customer" => $clientId
       ], Response::HTTP_OK);
     } else {
       $msg = "Verifique os dados: \n" .
