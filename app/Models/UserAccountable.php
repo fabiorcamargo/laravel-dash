@@ -17,7 +17,8 @@ class UserAccountable extends Model
         'document',
         'active',
         'secretary',
-        'body'
+        'body',
+        'customer'
     ];
 
     public function getuser(): HasMany

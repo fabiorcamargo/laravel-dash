@@ -7,6 +7,7 @@ use App\Models\EcoSeller;
 use App\Models\User;
 use App\Models\UserAccountable;
 use Carbon\Carbon;
+use DateTime;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
@@ -19,18 +20,16 @@ use stdClass;
 class OldAsaasController extends Controller
 {
 
-  public function __construct() {
+  public function __construct()
+  {
 
-    if(env('ASAAS_TIPO') == "producao"){
+    if (env('ASAAS_TIPO') == "producao") {
       $this->url = "https://api.asaas.com/";
       $this->token = ['MGA' => env('ASAAS_TOKEN2'), 'TB' => env('ASAAS_TOKEN1')];
-    }else if (env('ASAAS_TIPO') == "homologacao"){
+    } else if (env('ASAAS_TIPO') == "homologacao") {
       $this->url = "https://sandbox.asaas.com/api/";
       $this->token = ['MGA' => env('ASAAS_TOKEN'), 'TB' => env('ASAAS_TOKEN')];
     }
-
-
-    
   }
   public function lista_cliente_stoken($cpf)
   {
@@ -1269,7 +1268,8 @@ class OldAsaasController extends Controller
     return $dec;
   }
 
-  public function check_seller($id){
+  public function check_seller($id)
+  {
 
     $seller = EcoSeller::find($id);
     if ($seller->secretary == "TB") {
@@ -1282,7 +1282,6 @@ class OldAsaasController extends Controller
       $msg = "Token inválido";
       return back()->withErrors(__($msg));
     }
-
   }
 
   public function check_client_data(Request $request)
@@ -1294,7 +1293,7 @@ class OldAsaasController extends Controller
 
     $token = $this->check_seller($seller);
 
-    if(!User::where('username', $body[0])->exists()){
+    if (!User::where('username', $body[0])->exists()) {
       $status = "contrato";
       $msg = "Contrato não existe";
 
@@ -1319,16 +1318,16 @@ class OldAsaasController extends Controller
       ], Response::HTTP_OK);
     }
 
-    
+
     $cliente = $this->lista_cliente($body[2], $token);
     //dd($cliente);
     if (isset($cliente->data[0]->id)) {
       $client = $cliente->data[0];
       $msg = "Cliente já existe: \n" .
-      "Contrato: " . $client->externalReference . "\n" .
-      "Nome: " . $client->name . "\n" .
-      "CPF: " . $client->cpfCnpj . "\n" .
-      "Telefone: " . $client->phone;
+        "Contrato: " . $client->externalReference . "\n" .
+        "Nome: " . $client->name . "\n" .
+        "CPF: " . $client->cpfCnpj . "\n" .
+        "Telefone: " . $client->phone;
       $status = "existe";
       $clientId = $client->id;
 
@@ -1337,13 +1336,12 @@ class OldAsaasController extends Controller
         "response" => $msg,
         "id" => $clientId
       ], Response::HTTP_OK);
-
-    }else{
+    } else {
       $msg = "Verifique os dados: \n" .
-      "Contrato: $body[0] \n" .
-      "Nome: $body[1] \n" .
-      "CPF: $body[2] \n" .
-      "Telefone: $body[3]";
+        "Contrato: $body[0] \n" .
+        "Nome: $body[1] \n" .
+        "CPF: $body[2] \n" .
+        "Telefone: $body[3]";
       $status = "novo";
 
       return response()->json([
@@ -1351,8 +1349,6 @@ class OldAsaasController extends Controller
         "response" => $msg
       ], Response::HTTP_OK);
     }
-
-    
   }
 
   public function client_create(Request $request)
@@ -1375,10 +1371,9 @@ class OldAsaasController extends Controller
       "groupName" => "$seller->name"
     ];
 
-    
+    $user = User::where('username', $body[0])->first();
 
     $url = $this->url . "v3/customers";
-
     $ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -1397,14 +1392,32 @@ class OldAsaasController extends Controller
     $response = curl_exec($ch);
     curl_close($ch);
 
-
     $dec = json_decode($response);
 
-    return response()->json(["response" => $response], Response::HTTP_OK);
+    //dd($dec->id);
+
+    $this->client_notification_api($dec->id, $token);
+
+    UserAccountable::create([
+      'user_id' => $user->id,
+      'name' => $body[1],
+      'cellphone' => str_replace(" ", "", $body[3]),
+      'document' => str_replace(" ", "", $body[2]),
+      'secretary' => $seller->secretary,
+      'active' => 1,
+      "customer"=> $dec->id,
+      'body' => '{
+              "payload": "",
+              "customer": "' . $dec->id . '"
+            }'
+    ]);
+
+    return response()->json(["response" => $dec], Response::HTTP_OK);
   }
 
-  public function getSellers(){
-    
+  public function getSellers()
+  {
+
     return response()->json(["sellers" => EcoSeller::all('id', 'name')], Response::HTTP_OK);
   }
 
@@ -1421,5 +1434,144 @@ class OldAsaasController extends Controller
 
     $job = new Mkt_send_not_active('', $cellphone, "text", $msg, $user_id, $msg_id);
     dispatch($job)->delay(now()->addMinutes(5));
+  }
+
+  public function client_notification_api($customer, $token)
+  {
+
+    
+    $url = $this->url . "v3/customers/" . $customer . "/notifications";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      "Content-Type: application/json",
+      $token
+    ));
+    $response = curl_exec($ch);
+    curl_close($ch);
+    $dec = json_decode($response);
+
+    //dd($dec);
+
+    $notifications = $dec->data;
+
+    foreach ($notifications as &$notification) {
+      if ($notification->event == 'PAYMENT_CREATED' || $notification->event == 'PAYMENT_DUEDATE_WARNING' || $notification->event == 'PAYMENT_OVERDUE') {
+        if (isset($notification->whatsappEnabledForCustomer)) {
+          $notification->whatsappEnabledForCustomer = true;
+        } else {
+          //$notification->whatsappEnabledForCustomer = true;
+        }
+      }
+    }
+
+    $data = ['customer' => $customer, 'notifications' => $notifications];
+
+
+
+    $url = $this->url . "v3/notifications/batch";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      "Content-Type: application/json",
+      $token
+    ));
+    $response = curl_exec($ch);
+    curl_close($ch);
+    $dec = json_decode($response);
+
+    //dd($dec);
+
+    //return $dec->data;
+  }
+
+  public function client_pay_create(Request $request)
+  {
+
+    $seller = $request->seller;
+    $token = $this->check_seller($seller);
+
+    $seller = EcoSeller::find($seller);
+    //dd($token);
+
+    $cobranca = str_replace(" ", "", $request->cobranca);
+    $cobranca = (explode(",", $cobranca));
+
+    if (count($cobranca) !== 3) {
+      return "Verifique as informações";
+    }
+
+
+    $dateTime = DateTime::createFromFormat('d-m-Y', $cobranca[2]);
+    if ($dateTime !== false) {
+      $date = $dateTime->format('Y-m-d');
+    } else {
+      $date = "Formato de data inválido"; // Ou qualquer outra forma de tratar datas inválidas
+    }
+
+    $customer = $request->customer;
+    $customerData = UserAccountable::where('customer', $customer)->first();
+
+    //dd($customerData);
+
+    $valor = $cobranca[0];
+    $parcelas  = $cobranca[1];
+
+    $data = [
+      "customer" => $customer,
+      "billingType" => "CREDIT_CARD",
+      "dueDate" => $date,
+      "installmentCount" => $parcelas,
+      "installmentValue" => $valor,
+
+      "discount" => [
+        "value" => 0,
+        "dueDateLimitDays" => 0
+      ],
+      "fine" => [
+        "value" => 0.00
+      ],
+      "interest" => [
+        "value" => 0.00
+      ],
+      "postalService" => false
+    ];
+
+    //dd($data)
+
+
+    $url = $this->url . "v3/payments";
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+    curl_setopt($ch, CURLOPT_HEADER, FALSE);
+    curl_setopt($ch, CURLOPT_POST, TRUE);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+      "Content-Type: application/json",
+      $token
+    ));
+    $response = curl_exec($ch);
+    curl_close($ch);
+    $dec = json_decode($response);
+
+
+
+    //dd($dec);
+   
+
+    $msg = urlencode("Olá $customerData->name tudo bem?\n \n$seller->name da Profissionaliza EAD aqui, estou enviando o link de pagamento via Cartão de Crédito que você solicitou, caso o link não esteja ativo basta salvar o meu contato.\n \n$dec->invoiceUrl");
+
+    dd("https://api.whatsapp.com/send?phone=55" . $customerData->cellphone . "&text=" . $msg);
   }
 }

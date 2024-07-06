@@ -111,6 +111,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/asaas/{cpf}', [OldAsaasController::class, 'list_pay']);
     Route::post('/asaas/link', [OldAsaasController::class, 'check_client_data']);
     Route::post('/asaas/link/client/create', [OldAsaasController::class, 'client_create']);
+    Route::post('/asaas/link/pay/create', [OldAsaasController::class, 'client_pay_create']);
+
+    //Route::get('/asaas/link/client/{id}/notification', [OldAsaasController::class, 'client_notification_api']);
 });
 
 
