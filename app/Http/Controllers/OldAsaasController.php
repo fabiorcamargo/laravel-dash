@@ -1572,6 +1572,6 @@ class OldAsaasController extends Controller
 
     $msg = urlencode("Olá $customerData->name tudo bem?\n \n$seller->name da Profissionaliza EAD aqui, estou enviando o link de pagamento via Cartão de Crédito que você solicitou, caso o link não esteja ativo basta salvar o meu contato.\n \n$dec->invoiceUrl");
 
-    dd("https://api.whatsapp.com/send?phone=55" . $customerData->cellphone . "&text=" . $msg);
+    return response()->json(["msg" => "https://api.whatsapp.com/send?phone=55" . $customerData->cellphone . "&text=" . $msg], Response::HTTP_OK);
   }
 }
