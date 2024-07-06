@@ -1334,12 +1334,12 @@ class OldAsaasController extends Controller
       $clientId = $cliente->data[0]->id;
 
       if(UserAccountable::where('customer', $clientId)->exists()){
-      return response()->json([
-        "status" => $status,
-        "response" => $msg,
-        "customer" => $clientId
-      ], Response::HTTP_OK);
-    }
+          return response()->json([
+            "status" => $status,
+            "response" => $msg,
+            "customer" => $clientId
+          ], Response::HTTP_OK);
+      }
     } else {
       $msg = "Verifique os dados: \n" .
         "Contrato: $body[0] \n" .
