@@ -1293,6 +1293,7 @@ class OldAsaasController extends Controller
 
     $token = $this->check_seller($seller);
 
+    //Verifica se contrato existe
     if (!User::where('username', $body[0])->exists()) {
       $status = "contrato";
       $msg = "Contrato não existe";
@@ -1310,7 +1311,7 @@ class OldAsaasController extends Controller
       ['cpf.cpf' => 'O CPF fornecido não é válido.']
     );
 
-    // Se a validação falhar, retornar erro
+    // Cpf Errado
     if ($validator->fails()) {
       return response()->json([
         'status' => 'cpf',
@@ -1319,8 +1320,8 @@ class OldAsaasController extends Controller
     }
 
 
+    //Verifica se existe no Asaas
     $cliente = $this->lista_cliente($body[2], $token);
-    //dd($cliente);
     if (isset($cliente->data[0]->id)) {
       $client = $cliente->data[0];
       $msg = "Cliente já existe: \n" .
@@ -1329,7 +1330,7 @@ class OldAsaasController extends Controller
         "CPF: " . $client->cpfCnpj . "\n" .
         "Telefone: " . $client->phone;
       $status = "existe";
-      $clientId = $cliente->data[0];
+      $clientId = $cliente->data[0]->id;
 
       return response()->json([
         "status" => $status,
