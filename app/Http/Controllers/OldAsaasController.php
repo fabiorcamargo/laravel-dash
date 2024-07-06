@@ -1329,7 +1329,7 @@ class OldAsaasController extends Controller
         "CPF: " . $client->cpfCnpj . "\n" .
         "Telefone: " . $client->phone;
       $status = "existe";
-      $clientId = $client->id;
+      $clientId = $cliente->data[0];
 
       return response()->json([
         "status" => $status,
