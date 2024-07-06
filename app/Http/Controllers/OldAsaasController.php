@@ -1297,6 +1297,11 @@ class OldAsaasController extends Controller
     if(User::where('username', $body[0])->exists()){
       $status = "contrato";
       $msg = "Contrato não existe";
+
+      return response()->json([
+        "status" => $status,
+        "response" => $msg
+      ], Response::HTTP_OK);
     }
 
     // Validar o CPF
