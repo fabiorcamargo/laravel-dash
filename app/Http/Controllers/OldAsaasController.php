@@ -1322,6 +1322,7 @@ class OldAsaasController extends Controller
 
     //Verifica se existe no Asaas
     $cliente = $this->lista_cliente($body[2], $token);
+
     if (isset($cliente->data[0]->id)) {
       $client = $cliente->data[0];
       $msg = "Cliente já existe: \n" .
@@ -1332,11 +1333,13 @@ class OldAsaasController extends Controller
       $status = "existe";
       $clientId = $cliente->data[0]->id;
 
+      if(UserAccountable::where('customer', $clientId)->exists()){
       return response()->json([
         "status" => $status,
         "response" => $msg,
         "customer" => $clientId
       ], Response::HTTP_OK);
+    }
     } else {
       $msg = "Verifique os dados: \n" .
         "Contrato: $body[0] \n" .
@@ -1521,7 +1524,7 @@ class OldAsaasController extends Controller
     $customer = $request->customer;
     $customerData = UserAccountable::where('customer', $customer)->first();
 
-    //dd($customerData);
+    //dd($customerData->name);
 
     $valor = $cobranca[0];
     $parcelas  = $cobranca[1];
