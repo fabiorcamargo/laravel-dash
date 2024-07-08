@@ -67,19 +67,19 @@ Route::middleware('auth:sanctum')->group(function () {
 
         foreach ($request->all() as $key => $param) {
 
-            if (strpos($param, '55') === 0) {
-                // Remove o prefixo apenas se estiver presente no início da string
-                $param = substr($param, 2);
-
+            if ($key == 'cellphone') {
+                $param = preg_replace('/[^0-9]/', '', $param);
+                
+                if (strpos($param, '55') === 0) {
+                    // Remove o prefixo apenas se estiver presente no início da string
+                    $param = substr($param, 2);
+                }
                 //dd($param);
-            } else if(strpos($param, '+55') === 0){
-            // Remove o prefixo apenas se estiver presente no início da string
-            $param = substr($param, 2);
-        }
+            }
             $user->$key = $param;
         }
         $user->save();
-        
+
 
         return response()->json(['user' => $request->user()], Response::HTTP_OK);
     });
@@ -103,9 +103,9 @@ Route::middleware('auth:sanctum')->group(function () {
         if (is_null($abbr)) {
             return response()->json(['error' => 'State abbreviation is required'], Response::HTTP_BAD_REQUEST);
         }
-    
+
         $uf = State::where('abbr', $abbr)->first();
-    
+
         if ($uf) {
             return response()->json(['cities' => $uf->city], Response::HTTP_OK);
         } else {
