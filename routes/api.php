@@ -62,9 +62,20 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::put('/user', function (Request $request) {
+
         $user = $request->user();
 
         foreach ($request->all() as $key => $param) {
+
+            if (strpos($param, '55') === 0) {
+                // Remove o prefixo apenas se estiver presente no início da string
+                $param = substr($param, 2);
+
+                //dd($param);
+            } else if(strpos($param, '+55') === 0){
+            // Remove o prefixo apenas se estiver presente no início da string
+            $param = substr($param, 2);
+        }
             $user->$key = $param;
         }
         $user->save();
