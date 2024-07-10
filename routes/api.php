@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiGetCourses;
 use App\Http\Controllers\ApiGetOuroCourses;
 use App\Http\Controllers\ApiWhatsapp;
 use App\Http\Controllers\OldAsaasController;
+use App\Http\Controllers\TemporaryFileController;
 use App\Models\City;
 use App\Models\State;
 use App\Models\User;
@@ -61,9 +62,20 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
+    Route::post('/avatar',  [TemporaryFileController::class, 'AvatarUpload']);
+
     Route::put('/user', function (Request $request) {
 
         $user = $request->user();
+
+     
+        //  // Validação do arquivo de imagem
+        //  $request->validate([
+        //     'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        // ]);
+
+        // Debug do arquivo enviado
+        dd($request->file('image'));
 
         foreach ($request->all() as $key => $param) {
 
@@ -74,7 +86,10 @@ Route::middleware('auth:sanctum')->group(function () {
                     // Remove o prefixo apenas se estiver presente no início da string
                     $param = substr($param, 2);
                 }
-                //dd($param);
+            }
+
+            if ($key == 'img') {
+                dd($param);
             }
             $user->$key = $param;
         }
