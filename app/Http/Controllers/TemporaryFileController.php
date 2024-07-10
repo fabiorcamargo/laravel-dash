@@ -215,27 +215,69 @@ class TemporaryFileController extends Controller
             ]);
             return $folder;
         }
-    } else if($request->hasFile('image')){
-        //dd("image");
-    $image = $request->file('image');
-    $file_name = $image->getClientOriginalName();
-    $folder = Auth::user()->username;
-    $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
+            } else if($request->hasFile('image')){
+                //dd("image");
+            $image = $request->file('image');
+            $file_name = $image->getClientOriginalName();
+            $folder = Auth::user()->username;
+            $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
 
-    Avatar::create([
-        'folder' => 'avatar/' . $folder,
-        'file' => $file_name,
-        'user_id' => Auth::user()->id
-    ]);
-    //dd($user);
-    $user->update([
-        'image' => "avatar/$folder/$file_name",
-    ]);
-    return $folder;
-}
+            Avatar::create([
+                'folder' => 'avatar/' . $folder,
+                'file' => $file_name,
+                'user_id' => Auth::user()->id
+            ]);
+            //dd($user);
+            $user->update([
+                'image' => "avatar/$folder/$file_name",
+            ]);
+            return $folder;
+        }
         //dd("fim");
         
         return "";
+
+    }
+
+    public function AvatarUploadApi(Request $request)
+    {
+        $user = $request->user();
+        
+
+        
+        
+        if ($user->avatar) {
+            //dd($user->username);
+            Storage::deleteDirectory('avatar/' . $user->username);
+            $user->update([
+                'image' => 'avatar/default.jpeg',
+            ]);
+
+            $user->avatar()->delete();
+
+        }
+            
+            if($request->hasFile('filepond')){
+                $image = $request->file('filepond');
+                $file_name = $image->getClientOriginalName();
+                $folder = Auth::user()->username;
+
+                $image->storePubliclyAs('/' . $folder, $file_name, ['visibility'=>'public', 'disk'=>'avatar']);
+
+                $user->avatar()->create([
+                    'folder' => 'avatar/' . $folder,
+                    'file' => $file_name,
+                ]);
+
+                $user->update([
+                    'image' => "avatar/$folder/$file_name",
+                ]);
+             
+                return $user->image;
+            } 
+
+
+        
 
     }
 

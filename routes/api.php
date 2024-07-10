@@ -62,7 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::post('/avatar',  [TemporaryFileController::class, 'AvatarUpload']);
+    Route::post('/avatar',  [TemporaryFileController::class, 'AvatarUploadApi']);
 
     Route::put('/user', function (Request $request) {
 
