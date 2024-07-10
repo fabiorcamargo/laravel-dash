@@ -273,9 +273,10 @@ class TemporaryFileController extends Controller
                     'image' => "avatar/$folder/$file_name",
                 ]);
              
-                return $user->image;
+                
             } 
 
+        return $user;
 
         
 
