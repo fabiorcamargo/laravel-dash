@@ -60,6 +60,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redirect;
@@ -419,7 +420,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                                 $sec = Auth::user()->secretary;
                                 $sellers = (EcoSeller::where(['secretary' => "$sec", 'type' => '2'])
                                     ->get());
-                                
+
                                 return view('pages.app.pay.create', compact('sellers'));
                             }
                         )->name('pay-create');
@@ -546,7 +547,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                         Route::post('/create_name', [CademiListController::class, 'create_name'])->name('cademi-create-name');
                         Route::post('/img/up/{id}', [CademiListController::class, 'img_up'])->name('cademi-img-up');
                         Route::delete('/img/rm/{id}', [CademiListController::class, 'img_rm'])->name('cademi-img-rm');
-                        
+
                         Route::get('/get/courses', [CademiListController::class, 'get_courses_list'])->name('user-cademi-get-courses');
                         Route::get('/courses/correct-img', [OuroModerno::class, 'correct_img_course'])->name('user-cademi-courses-correct-img');
                     });
@@ -633,6 +634,38 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
 
                 Route::middleware(['can:api'])->group(function () {
+
+                    Route::get('/pass_change', function () {
+
+                        $users = (User::where('document', 00000000000)->get());
+                        dd($users);
+
+                        // Recupere os usuários com o documento específico
+                        
+
+                        // Caminho do arquivo de log
+                        $filePath = storage_path('password_changes.txt');
+
+                        // Conteúdo do relatório
+                        $report = "Relatório de Troca de Senha - " . now() . "\n";
+                        $report .= "Senha: Futuro" . "\n\n";
+                        $report .= "Usuários:\n";
+
+                        // Itere sobre cada usuário, altere a senha e registre no relatório
+                        foreach ($users as $user) {
+                            $user->password = Hash::make('futuro');
+                            $user->save();
+
+                            // Adicione informações do usuário ao relatório
+                            $report .= "ID: " . $user->id . ", Username: " . $user->username . "\n";
+                        }
+
+                        // Salve o relatório em um arquivo TXT
+                        file_put_contents($filePath, $report, FILE_APPEND);
+
+                        return response()->json(['message' => 'Senhas alteradas com sucesso e relatório gerado!']);
+                    });
+
                     Route::get('/calendar', function () {
                         return view('pages.app.calendar', ['title' => 'Javascript Calendar | CORK - Multipurpose Bootstrap Dashboard Template', 'breadcrumb' => 'This Breadcrumb']);
                     })->name('calendar');
@@ -1701,8 +1734,6 @@ Route::get('/do', function () {
 
     // Retorna uma resposta de sucesso
     return response()->json(['success' => 'Arquivo enviado com sucesso'], 200);
-
-    
 });
 
 Route::get('/dov', function () {
@@ -1710,13 +1741,12 @@ Route::get('/dov', function () {
     dd($files);
 });
 
-Route::get('/get_ip', function() {
+Route::get('/get_ip', function () {
     //dd('s');
 
     $ipAddress = request()->ip();
 
     dd($ipAddress);
-
 });
 
 
