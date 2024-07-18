@@ -637,7 +637,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                     Route::get('/pass_change', function () {
 
-                        $users = (User::where('document', 00000000000)->get());
+                        $users = User::where('document', '00000000000')->where('seller', 'IZA')->get();
+
                         dd($users);
 
                         // Recupere os usuários com o documento específico
