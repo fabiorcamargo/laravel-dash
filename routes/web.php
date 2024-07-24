@@ -639,7 +639,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
 
                         $users = User::where('document', '00000000000')->where('seller', 'IZA')->get();
 
-                        dd($users);
+                        //dd($users);
 
                         // Recupere os usuários com o documento específico
                         
