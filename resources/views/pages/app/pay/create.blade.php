@@ -500,6 +500,9 @@
                                                 <option>CURSOS PROFISSIONALIZANTES</option>
                                                 <option>JOVEM APRENDIZ</option>
                                                 <option>AGRONEGÓCIO</option>
+                                                <option>AGRONEGÓCIO + 10 CURSOS</option>
+                                                <option>AGRONEGÓCIO + INGLÊS</option>
+                                                <option>AGRONEGÓCIO + 10 CURSOS + INGLÊS</option>
                                             </select>
 
                                         </div>
