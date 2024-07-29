@@ -1341,6 +1341,18 @@ class OldAsaasController extends Controller
             "response" => $msg,
             "customer" => $clientId
           ], Response::HTTP_OK);
+      }else{
+        $msg = "Verifique os dados: \n" .
+        "Contrato: $body[0] \n" .
+        "Nome: $body[1] \n" .
+        "CPF: $body[2] \n" .
+        "Telefone: $body[3]";
+      $status = "novo";
+
+      return response()->json([
+        "status" => $status,
+        "response" => $msg
+      ], Response::HTTP_OK);
       }
     } else {
       $msg = "Verifique os dados: \n" .
