@@ -1280,7 +1280,7 @@ class OldAsaasController extends Controller
       return $token;
     } else {
       $msg = "Token inválido";
-      return back()->withErrors(__($msg));
+      return "Token inválido";
     }
   }
 
@@ -1290,6 +1290,8 @@ class OldAsaasController extends Controller
     $body = $request->body;
     $body = (explode(",", $body));
     $seller = $request->seller;
+
+    $body[2] = str_replace(' ', '', $body[2]);
 
     $token = $this->check_seller($seller);
 
