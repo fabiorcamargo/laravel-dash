@@ -30,7 +30,7 @@ class ChangePasswordCommand extends Command
      */
     public function handle()
     {
-        $users = User::where('document', '00000000000')->where('seller', 'IZA')->get();
+        $users = User::where('document', '99999999999')->where('seller', 'IZA')->get();
 
         // Caminho do arquivo de log
         $filePath = storage_path('password_changes.txt');
@@ -42,7 +42,17 @@ class ChangePasswordCommand extends Command
 
         // Itere sobre cada usuário, altere a senha e registre no relatório
         foreach ($users as $user) {
+            $user->name = $user->username;
+            $user->lastname = $user->username;
+            $user->email = $user->username . "@profissionalizaead.com.br";
+            $user->cellphone = $user->username;
+            $user->city = 'Cidade';
+            $user->uf = "UF";
+            $user->first = null;
+            $user->image = 'avatar/default.jpeg';
             $user->password = Hash::make('futuro');
+            $user->access_date = null;
+            $user->ip = null;
             $user->save();
 
             // Adicione informações do usuário ao relatório
