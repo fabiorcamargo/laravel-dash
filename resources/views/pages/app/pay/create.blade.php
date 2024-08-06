@@ -503,6 +503,9 @@
                                                 <option>AGRONEGÓCIO + 10 CURSOS</option>
                                                 <option>AGRONEGÓCIO + INGLÊS</option>
                                                 <option>AGRONEGÓCIO + 10 CURSOS + INGLÊS</option>
+                                                <option>JOVEM APRENDIZ + AVIAÇÃO</option>
+                                                <option>AVIAÇÃO CIVIL</option>
+                                                <option>AVIAÇÃO + 10 CURSOS</option>
                                             </select>
 
                                         </div>
