@@ -42,7 +42,7 @@ class ApiGetCourses extends Controller
 
         if($user->role == 4){
 
-            $cademiCourses = CademiListCourse::pluck('nome');
+            $cademiCourses = CademiListCourse::all('nome');
 
         }
 
