@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CademiCourse;
 use App\Models\CademiListCourse;
+use App\Models\CademiTag;
 use Illuminate\Http\Request;
 
 class ApiGetCourses extends Controller
@@ -42,7 +43,7 @@ class ApiGetCourses extends Controller
 
         if($user->role == 4){
 
-            $cademiCourses = CademiListCourse::get();
+            $cademiCourses = CademiTag::get();
 
         }
 
