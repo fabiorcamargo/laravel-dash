@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CademiCourse;
+use App\Models\CademiListCourse;
 use Illuminate\Http\Request;
 
 class ApiGetCourses extends Controller
@@ -32,5 +33,18 @@ class ApiGetCourses extends Controller
 
 
         return response()->json(['courses' => $TagCourses, 'cademis' => $cademi]);
+    }
+
+    public function getCademiCoursesList(Request $request)
+    {
+        $user = $request->user();
+
+        if($user->role == 4){
+
+            $cademiCourses = CademiListCourse::get()->pluck('name');
+
+        }
+
+        return response()->json(['courses' => $cademiCourses]);
     }
 }
