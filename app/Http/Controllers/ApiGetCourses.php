@@ -40,8 +40,10 @@ class ApiGetCourses extends Controller
         $user = $request->user();
         $cademiCourses = [];
 
-        if ($user->role == 4) {
-            $cademiCourses = CademiListCourse::pluck('name');
+        if($user->role == 4){
+
+            $cademiCourses = CademiListCourse::get()->pluck('name');
+
         }
 
         return response()->json(['courses' => $cademiCourses]);

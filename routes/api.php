@@ -102,7 +102,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/sellers', [OldAsaasController::class, 'getSellers']);
 
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
-    Route::get('/get_cademi_courseslist', [ApiGetCourses::class, 'getCademiCoursesList']);
+    Route::get('/get_cademi_courses', [ApiGetCourses::class, 'getCademiCoursesList']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
 
     Route::get('/uf', function () {
