@@ -38,10 +38,11 @@ class ApiGetCourses extends Controller
     public function getCademiCoursesList(Request $request)
     {
         $user = $request->user();
+        $cademiCourses = [];
 
         if($user->role == 4){
 
-            $cademiCourses = CademiListCourse::all('name');
+            $cademiCourses = CademiListCourse::pluck('nome');
 
         }
 
