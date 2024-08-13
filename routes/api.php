@@ -5,6 +5,7 @@ use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiGetCourses;
 use App\Http\Controllers\ApiGetOuroCourses;
 use App\Http\Controllers\ApiWhatsapp;
+use App\Http\Controllers\FirebaseMessagingController;
 use App\Http\Controllers\OldAsaasController;
 use App\Http\Controllers\TemporaryFileController;
 use App\Models\City;
@@ -75,9 +76,6 @@ Route::middleware('auth:sanctum')->group(function () {
         //     'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         // ]);
 
-        // Debug do arquivo enviado
-        dd($request->file('image'));
-
         foreach ($request->all() as $key => $param) {
 
             if ($key == 'cellphone') {
@@ -89,9 +87,11 @@ Route::middleware('auth:sanctum')->group(function () {
                 }
             }
 
-            if ($key == 'img') {
-                dd($param);
+            if ($key == 'password') {
+                $user->$key = bcrypt($param);
             }
+
+            
             $user->$key = $param;
         }
         $user->save();
@@ -108,6 +108,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::resource('/appPost', ApiAppController::class);
     Route::get('/getByCourse/{course}', [ApiAppController::class, 'getByCourse']);
+
+    Route::post('/send-message', [FirebaseMessagingController::class, 'sendMessage']);
+    Route::post('/send-messages', [FirebaseMessagingController::class, 'sendMessages']);
 
     Route::get('/uf', function () {
         $uf = State::all();
