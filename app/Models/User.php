@@ -180,6 +180,16 @@ class User extends Authenticatable
         return $this->hasMany(UserCademiProgress::class);
     }
 
+    /**
+     * Get all of the comments for the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function UserApp(): HasMany
+    {
+        return $this->hasMany(UserApp::class);
+    }
+
 
     
 }

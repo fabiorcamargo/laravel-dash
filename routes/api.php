@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ApiAppController;
 use App\Http\Controllers\ApiController;
 use App\Http\Controllers\ApiGetCourses;
 use App\Http\Controllers\ApiGetOuroCourses;
@@ -104,6 +105,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get_cademi_course', [ApiGetCourses::class, 'getCademiCourses']);
     Route::get('/get_cademi_courseslist', [ApiGetCourses::class, 'getCademiCoursesList']);
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
+
+    Route::resource('/appPost', ApiAppController::class);
 
     Route::get('/uf', function () {
         $uf = State::all();
