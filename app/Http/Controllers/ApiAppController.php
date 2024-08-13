@@ -25,11 +25,23 @@ class ApiAppController extends Controller
      */
     public function store(Request $request)
     {
-        $user = ($request->user());
-        $user->UserApp()->create([
-            'uid' => $request->uid,
-            'fcm_token' => $request->fcm_token
-        ]);
+        $user = $request->user();
+
+        // Verifica se já existe um UserApp com o mesmo fcm_token
+        $userApp = $user->UserApp()->where('fcm_token', $request->fcm_token)->first();
+
+        if ($userApp) {
+            // Atualiza o registro existente
+            $userApp->update([
+                'uid' => $request->uid,
+            ]);
+        } else {
+            // Cria um novo registro
+            $user->UserApp()->create([
+                'uid' => $request->uid,
+                'fcm_token' => $request->fcm_token
+            ]);
+        }
 
         return response()->json([], 200);
     }
