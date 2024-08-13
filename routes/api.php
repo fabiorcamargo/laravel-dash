@@ -107,6 +107,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/get_ouro_course', [ApiGetOuroCourses::class, 'getOuroCourses']);
 
     Route::resource('/appPost', ApiAppController::class);
+    Route::get('/getByCourse/{course}', [ApiAppController::class, 'getByCourse']);
 
     Route::get('/uf', function () {
         $uf = State::all();

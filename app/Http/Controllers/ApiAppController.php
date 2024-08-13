@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CademiCourse;
 use App\Models\UserApp;
 use Illuminate\Http\Request;
 
@@ -78,5 +79,25 @@ class ApiAppController extends Controller
     public function destroy(UserApp $userApp)
     {
         //
+    }
+
+    public function getByCourse($course)
+    {
+        // Carrega os cursos com o nome especificado
+        $courses = CademiCourse::where('course_name', $course)->get();
+
+        $fcmTokens = collect(); // Inicializa uma coleção para armazenar os tokens
+
+        // Itera sobre cada curso para coletar os tokens FCM
+        foreach ($courses as $course) {
+            // Verifica se há um usuário associado ao curso
+            if ($course->getUser && $course->getUser->userApp) {
+                // Adiciona os tokens FCM à coleção
+                $fcmTokens = $fcmTokens->merge($course->getUser->userApp->pluck('uid'));
+            }
+        }
+
+        // Retorna todos os tokens FCM encontrados como um array JSON
+        return response()->json($fcmTokens->all(), 200);
     }
 }
