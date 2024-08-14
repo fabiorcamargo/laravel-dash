@@ -49,7 +49,8 @@ class User extends Authenticatable
         'contract_date',
         'access_date',
         'ip',
-        'user_accountable_id'
+        'user_accountable_id',
+        'first'
     ];
 
     /**

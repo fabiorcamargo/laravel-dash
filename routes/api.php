@@ -69,12 +69,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/user', function (Request $request) {
 
         $user = $request->user();
-
-     
         //  // Validação do arquivo de imagem
         //  $request->validate([
         //     'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         // ]);
+        $data = [];
+        $data['ip'] = $request->ip();
+        $data['access_date'] = now();
 
         foreach ($request->all() as $key => $param) {
 
@@ -89,7 +90,6 @@ Route::middleware('auth:sanctum')->group(function () {
             } else if ($key == 'password') {
                 $data['password'] = bcrypt($param);
             } else {
-
                 $data["$key"] = $param;
             } 
         }
