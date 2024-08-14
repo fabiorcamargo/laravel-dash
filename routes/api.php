@@ -84,18 +84,17 @@ Route::middleware('auth:sanctum')->group(function () {
                 if (strpos($param, '55') === 0) {
                     // Remove o prefixo apenas se estiver presente no início da string
                     $param = substr($param, 2);
+                    $data["$key"] = $param;
                 }
-            }
+            } else if ($key == 'password') {
+                $data['password'] = bcrypt($param);
+            } else {
 
-            if ($key == 'password') {
-                $user->$key = bcrypt($param);
-            }
-
-            
-            $user->$key = $param;
+                $data["$key"] = $param;
+            } 
         }
-        $user->save();
-
+        
+        $user->update($data);
 
         return response()->json(['user' => $request->user()], Response::HTTP_OK);
     });
