@@ -86,24 +86,21 @@ class ApiAppController extends Controller
         // Carrega os cursos com o nome especificado
         $courses = CademiCourse::where('course_name', $course)->get();
 
-        $fcmTokens = []; // Inicializa um array para armazenar os tokens
+        $users = []; // Inicializa um array para armazenar os usernames
 
-        // Itera sobre cada curso para coletar os tokens FCM
+        // Itera sobre cada curso para coletar os usernames
         foreach ($courses as $course) {
             // Verifica se há um usuário associado ao curso
-            if ($course->getUser && $course->getUser->userApp) {
-                // Itera sobre cada UserApp relacionado ao usuário
-                foreach ($course->getUser->userApp as $userApp) {
-                    // Adiciona cada par de uid e fcm_token ao array como um objeto
-                    $fcmTokens[] = [
-                        'uid' => $userApp->uid,
-                        'fcm_token' => $userApp->fcm_token,
-                    ];
-                }
+            if ($course->getUser) {
+                // Adiciona o username ao array de usuários
+                $users[] = $course->getUser->username;
             }
         }
 
-        // Retorna todos os pares uid e fcm_token encontrados como um array JSON
-        return response()->json($fcmTokens, 200);
+        // Converte o array de usernames em uma string separada por vírgulas
+        $users = implode(',', $users);
+
+        // Retorna todos os usernames encontrados como um array JSON
+        return response()->json($users, 200);
     }
 }
