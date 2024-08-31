@@ -39,7 +39,8 @@ class FirebaseMessagingController extends Controller
             $notification = Notification::create($title, $body);
 
             $message = CloudMessage::withTarget('token', $token)
-                ->withNotification($notification);
+                ->withNotification($notification)
+                ->withDefaultSounds();
 
             $this->messaging->send($message);
 
@@ -86,7 +87,7 @@ class FirebaseMessagingController extends Controller
             $notification = Notification::create($title, $body);
 
             $message = CloudMessage::new()
-                ->withNotification($notification);
+                ->withNotification($notification)->withDefaultSounds();
 
             $report = $this->messaging->sendMulticast($message, $fcmTokens);
 
