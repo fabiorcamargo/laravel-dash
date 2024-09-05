@@ -8,6 +8,7 @@ use Kreait\Firebase\Factory;
 use Kreait\Firebase\Messaging\CloudMessage;
 use Kreait\Firebase\Messaging\Notification;
 use Illuminate\Support\Facades\Validator;
+use Kreait\Firebase\Messaging\ApnsConfig;
 
 class FirebaseMessagingController extends Controller
 {
@@ -83,11 +84,25 @@ class FirebaseMessagingController extends Controller
 
             $title = $request->input('title');
             $body = $request->input('body');
+            $image = $request->input('image');
 
-            $notification = Notification::create($title, $body);
+            // Incluindo a página inicial nos dados da notificação
+            $data = [
+                'click_action' => 'FLUTTER_NOTIFICATION_CLICK', // para apps Flutter
+                'initialPage' => 'auth3Profile', // Nome da página ou rota que deseja abrir
+            ];
+
+            $notification = Notification::create($title, $body, $image);
 
             $message = CloudMessage::new()
-                ->withNotification($notification)->withDefaultSounds();
+                ->withNotification($notification)
+                ->withData($data)  // Adicionando os dados personalizados aqui
+                ->withDefaultSounds()
+                ->withApnsConfig(
+                    ApnsConfig::new()
+                        ->withBadge(1)
+                )
+                ;
 
             $report = $this->messaging->sendMulticast($message, $fcmTokens);
 
