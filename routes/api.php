@@ -147,6 +147,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/asaas/link/pay/create', [OldAsaasController::class, 'client_pay_create']);
 
     //Route::get('/asaas/link/client/{id}/notification', [OldAsaasController::class, 'client_notification_api']);
+
+    Route::get('/token_check' , function(Request $request){
+        //dd($request->all());
+        return response('success', 200);
+    });
+
+    return response()->json();
 });
 
 

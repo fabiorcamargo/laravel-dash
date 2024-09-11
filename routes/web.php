@@ -59,6 +59,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -144,7 +145,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     $prefixRouters = [
-        'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+        'modern-light-menu',
+        'modern-dark-menu',
+        'collapsible-menu'
     ];
 
 
@@ -225,7 +228,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
      */
 
     $prefixRouters = [
-        'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+        'modern-light-menu',
+        'modern-dark-menu',
+        'collapsible-menu'
     ];
 
 
@@ -642,7 +647,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                         //dd($users);
 
                         // Recupere os usuários com o documento específico
-                        
+
 
                         // Caminho do arquivo de log
                         $filePath = storage_path('password_changes.txt');
@@ -1113,7 +1118,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
     Route::prefix('rtl')->group(function () {
 
         $rtlPrefixRouters = [
-            'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+            'modern-light-menu',
+            'modern-dark-menu',
+            'collapsible-menu'
         ];
 
         foreach ($rtlPrefixRouters as $rtlPrefixRouter) {
@@ -1598,7 +1605,9 @@ Route::middleware(['auth', 'can:admin', 'can:e-commerce'])->group(function () {
      */
 
     $prefixRouters = [
-        'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+        'modern-light-menu',
+        'modern-dark-menu',
+        'collapsible-menu'
     ];
 
 
@@ -1638,7 +1647,9 @@ Route::middleware(['auth', 'can:admin', 'can:e-commerce'])->group(function () {
 
 
 $prefixRouters = [
-    'modern-light-menu', 'modern-dark-menu', 'collapsible-menu'
+    'modern-light-menu',
+    'modern-dark-menu',
+    'collapsible-menu'
 ];
 
 
