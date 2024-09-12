@@ -247,19 +247,20 @@
 
                     @foreach ($cards as $card)
 
-                    @if($card['tag'] == "PLATAFORMAANTIGA")
+                    
+                    {{--@if($card['tag'] == "PLATAFORMAANTIGA")
 
                     <div class="mx-0">
                         @livewire('get-old-system-token', ['title' => $card['title'], 'card' => $card['img']])
                     </div>
 
-                    @else
+                    @else--}}
 
                     <div class="mx-0">
                         <x-widgets._w-card-cademi title="{{$card['title']}}" card="{{$card['img']}}" />
                     </div>
 
-                    @endif
+                    {{--@endif--}}
                     @endforeach
 
                     @endif
