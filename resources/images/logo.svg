@@ -1,21 +1,102 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg id="Camada_1" data-name="Camada 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 278.77 274.18">
-  <defs>
-    <radialGradient id="Gradiente_sem_nome_3" data-name="Gradiente sem nome 3" cx="141.68" cy="139.09" fx="141.68" fy="139.09" r="137.09" gradientTransform="translate(0 276.18) scale(1 -1)" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#4eaecb"/>
-      <stop offset="1" stop-color="#0b4a7f"/>
-    </radialGradient>
-    <radialGradient id="Gradiente_sem_nome_6" data-name="Gradiente sem nome 6" cx="68.13" cy="158.1" fx="68.13" fy="158.1" r="26.52" gradientTransform="translate(0 276.18) scale(1 -1)" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#f19634"/>
-      <stop offset="1" stop-color="#fcda15"/>
-    </radialGradient>
-    <radialGradient id="Gradiente_sem_nome_6-2" data-name="Gradiente sem nome 6" cx="126.17" cy="217.64" fx="126.17" fy="217.64" r="22.02" gradientTransform="translate(-108.87 -31.14) rotate(80.78) scale(1 -1)" xlink:href="#Gradiente_sem_nome_6"/>
-    <radialGradient id="Gradiente_sem_nome_6-3" data-name="Gradiente sem nome 6" cx="200.44" cy="217.43" fx="200.44" fy="217.43" r="18.3" xlink:href="#Gradiente_sem_nome_6"/>
-    <radialGradient id="Gradiente_sem_nome_6-4" data-name="Gradiente sem nome 6" cx="78.8" cy="121.19" fx="78.8" fy="121.19" r="98.59" gradientTransform="translate(.29 276.04) scale(1 -1)" xlink:href="#Gradiente_sem_nome_6"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="500"
+   height="500"
+   viewBox="0 0 132.29166 132.29167"
+   version="1.1"
+   id="svg1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   sodipodi:docname="Logo 1x1.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     inkscape:zoom="0.69219276"
+     inkscape:cx="396.56583"
+     inkscape:cy="561.25984"
+     inkscape:window-width="1920"
+     inkscape:window-height="991"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1">
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient29"
+       id="linearGradient30"
+       x1="2.2000008"
+       y1="34"
+       x2="66.200005"
+       y2="34"
+       gradientUnits="userSpaceOnUse"
+       spreadMethod="reflect"
+       gradientTransform="matrix(1.7141866,0,0,1.7141866,8.2986199,7.4473728)" />
+    <linearGradient
+       id="linearGradient29"
+       inkscape:collect="always">
+      <stop
+         style="stop-color:#425cf4;stop-opacity:1;"
+         offset="0"
+         id="stop29" />
+      <stop
+         style="stop-color:#ffd500;stop-opacity:1;"
+         offset="1"
+         id="stop30" />
+    </linearGradient>
   </defs>
-  <circle cx="141.68" cy="137.09" r="137.09" style="fill: url(#Gradiente_sem_nome_3);"/>
-  <circle cx="68.13" cy="118.08" r="26.52" style="fill: url(#Gradiente_sem_nome_6);"/>
-  <circle cx="126.17" cy="58.54" r="22.02" transform="translate(48.18 173.7) rotate(-80.78)" style="fill: url(#Gradiente_sem_nome_6-2);"/>
-  <circle cx="200.44" cy="58.75" r="18.3" style="fill: url(#Gradiente_sem_nome_6-3);"/>
-  <path d="M60.13,179.61s-17.62-10.02-30.52-55.54c-13.51-47.53-11.5-84.06-11.5-84.06,0,0-37.54,83.06-4.5,153.61,31.94,68.23,98.09,76.05,98.09,76.05l.7-13.13c2.14-38.03,13.6-74.96,33.37-107.52l12.42-20.44s-27.92-7.82-60.04,11.98c-23.5,14.52-38.01,39.04-38.01,39.04Z" style="fill: url(#Gradiente_sem_nome_6-4);"/>
+  <g
+     inkscape:label="Camada 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g1"
+       transform="translate(-0.19044708,0.41611989)">
+      <circle
+         fill="#1F71B6"
+         cx="66.923859"
+         cy="65.729713"
+         r="54.85397"
+         id="circle18"
+         style="fill:#425cf4;fill-opacity:1;stroke:url(#linearGradient30);stroke-width:3.54164;stroke-dasharray:none" />
+      <path
+         fill="#F9CB1A"
+         d="m 24.929712,64.769073 c 2.423482,4.05788 5.303016,11.35714 9.789541,11.8341 10.40068,-14.21031 24.300775,-24.57619 42.731493,-23.94661 C 45.718584,71.431033 39.711548,95.810313 54.027108,119.45035 10.493407,109.33906 -7.0845266,53.963923 27.189834,22.952698 29.6596,23.261467 15.680674,41.120736 24.929712,64.769073 Z"
+         id="path20"
+         style="fill:#fbbc05;fill-opacity:1;stroke-width:2.0651"
+         sodipodi:nodetypes="cccccc" />
+      <circle
+         style="fill:#ffd500;fill-opacity:1;stroke:none;stroke-width:5.23265;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path36"
+         cx="39.494316"
+         cy="44.68837"
+         r="12.26152" />
+      <circle
+         style="fill:#fbbc05;fill-opacity:1;stroke:none;stroke-width:3.91072;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path36-1"
+         cx="67.71228"
+         cy="27.849968"
+         r="9.1638727" />
+      <circle
+         style="fill:#fbbc05;fill-opacity:1;stroke:none;stroke-width:2.86419;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path36-1-1"
+         cx="93.279266"
+         cy="35.316948"
+         r="6.7115693" />
+    </g>
+  </g>
 </svg>

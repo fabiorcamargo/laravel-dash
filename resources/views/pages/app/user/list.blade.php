@@ -402,16 +402,21 @@
                                                                                 </span>
                                                                                 @endif
 
-                                                                                @if(Str::contains($user->observation, 'ING'))
-                                                                                <span class="badge outline-badge-dark mb-2">
-                                                                                   <x-svg-gb-flag />
+                                                                                @if(Str::contains($user->observation,
+                                                                                'ING'))
+                                                                                <span
+                                                                                    class="badge outline-badge-dark mb-2">
+                                                                                    <x-svg-gb-flag />
                                                                                     @php
-                                                                                        $posicao = strpos($user->observation, 'ING');
+                                                                                    $posicao =
+                                                                                    strpos($user->observation, 'ING');
 
-                                                                                        $regex = '/ING(\S+)/';
-                                                                                        $doisCaracteresDepois = preg_match($regex, $user->observation, $matches);
+                                                                                    $regex = '/ING(\S+)/';
+                                                                                    $doisCaracteresDepois =
+                                                                                    preg_match($regex,
+                                                                                    $user->observation, $matches);
 
-                                                                                        echo('ING'.$matches[1]);
+                                                                                    echo('ING'.$matches[1]);
                                                                                     @endphp
 
                                                                                 </span>
@@ -490,13 +495,57 @@
                                                                         </path>
                                                                     </svg>
                                                                 </a>
-                                                                {{--<a
-                                                                    href="{{ getRouterValue(); }}/app/user/profile/{{ $user->id }}/edit"
-                                                                    class="action-btn btn-edit bs-tooltip me-2"
-                                                                    data-toggle="tooltip" data-placement="top"
-                                                                    title="Pagamentos">
-                                                                    <x-widgets._w-svg svg="cash-banknote" />
-                                                                </a>--}}
+                                                                <a href='' data-bs-toggle="modal"
+                                                                    data-bs-target="#passwordModal{{ $user->id }}"
+                                                                    class="bs-tooltip me-2" data-toggle="tooltip"
+                                                                    data-placement="top" title="Resetar Senha">
+                                                                    <x-widgets._w-svg svg="key"
+                                                                        class="stroke-red-500" />
+                                                                </a>
+                                                                <!-- Modal -->
+                                                                {{-- <div class="modal fade" id="passwordModal{{ $user->id }}" tabindex="-1"
+                                                                    role="dialog" aria-labelledby="passwordModalLabel"
+                                                                    aria-hidden="true">
+                                                                    <div class="modal-dialog" role="document">
+                                                                        <div class="modal-content">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title"
+                                                                                    id="passwordModalLabel">Resetar a
+                                                                                    Senha?</h5>
+                                                                                <button type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close">
+                                                                                    <svg> ... </svg>
+                                                                                </button>
+                                                                            </div>
+                                                                            <div class="modal-body flex items-center">
+                                                                                
+                                                                                <h6 class="mb-0">Você realmente
+                                                                                    deseja resetar a senha do aluno:
+                                                                                </h6>
+                                                                                
+                                                                                <div class="flex items-center">
+                                                                                    <div class="avatar me-2">
+                                                                                        <img alt="avatar"
+                                                                                             src="{{ asset($user->image) }}"
+                                                                                             class="rounded-circle w-12 h-12">
+                                                                                    </div>
+                                                                                    <div class="">
+                                                                                        <h6 class="mb-0">{{ $user->name }} {{ $user->lastname }}</h6>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn btn-light-dark"
+                                                                                    data-bs-dismiss="modal"><i
+                                                                                        class="flaticon-cancel-12"></i>
+                                                                                    Discard</button>
+                                                                                <button type="button"
+                                                                                    class="btn btn-primary">Save</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div> --}}
                                                             </div>
                                                         </td>
                                                     </tr>
@@ -519,6 +568,9 @@
                                 </div>
                             </div>
                         </div>
+
+
+
 
 
                         <!--  BEGIN CUSTOM SCRIPTS FILE  -->
