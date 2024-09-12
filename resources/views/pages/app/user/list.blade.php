@@ -31,7 +31,18 @@
 
             <div class="row layout-spacing">
                 <!-- Content -->
-                <div class="col-xl-12 col-lg-12 col-sm-12  layout-top-spacing">
+
+                <div class="row mx-0 w-full mt-4 flex justify-center">
+                   
+                        <!-- Session Status -->
+                        <x-auth-session-status class="text-success" :status="session('status')" />
+                        <!-- Validation Errors -->
+                        <x-auth-validation-errors class="text-danger" :errors="$errors" />
+                   
+                </div>
+                
+
+                <div class="col-xl-12 col-lg-12 col-sm-12">
                     <div class="user-profile">
                         <div class="widget-content widget-content-area">
                             <div class="d-flex justify-content-between">
@@ -503,7 +514,7 @@
                                                                         class="stroke-red-500" />
                                                                 </a>
                                                                 <!-- Modal -->
-                                                                {{-- <div class="modal fade" id="passwordModal{{ $user->id }}" tabindex="-1"
+                                                                <div class="modal fade" id="passwordModal{{ $user->id }}" tabindex="-1"
                                                                     role="dialog" aria-labelledby="passwordModalLabel"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
@@ -535,16 +546,21 @@
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
+                                                                            <form action="/modern-dark-menu/aluno/pw_change_list" method="post">
+                                                                                @csrf
+                                                                                <input type="text" id="password" name="password" value="123456">
+                                                                                <input type="text" id="user_id" name="user_id" value="{{$user->id}}">
                                                                             <div class="modal-footer">
                                                                                 <button class="btn btn btn-light-dark"
                                                                                     data-bs-dismiss="modal"><i
                                                                                         class="flaticon-cancel-12"></i>
                                                                                     Discard</button>
-                                                                                <a href="/pw_change" type="button"
-                                                                                    class="btn btn-primary">Save</a>
+                                                                                <button type="send"
+                                                                                    class="btn btn-primary">Save</button>
                                                                             </div>
+                                                                        </form>
                                                                         </div>
-                                                                    </div> --}}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </td>

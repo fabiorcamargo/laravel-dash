@@ -175,6 +175,7 @@ Route::middleware(['auth'])->group(function () {
                     return view('pages.aluno.pw_change', ['title' => 'Profissionaliza EAD', 'breadcrumb' => 'Início']);
                 })->name('aluno.pw_change');
                 Route::post('/pw_change', [UserController::class, 'pw_change'])->name('user.pw_change-save');
+                Route::post('/pw_change_list', [UserController::class, 'pw_change_list']);
                 Route::post('/cpf_send', [UserController::class, 'cpf_send'])->name('user.cpf-send');
 
                 Route::get('/second', function () {
@@ -1683,7 +1684,7 @@ Route::get('/fb/ViewContent', [ConversionApiFB::class, 'ViewContent'])->name('fb
 Route::get('/form/{id}', [FormController::class, 'redir'])->name('form-redirect');
 
 Route::get('/politica-de-privacidade', function () {
-    return Redirect::to('https://ead.profissionalizaead.com.br/mod/page/view.php?id=18448');;
+    return Redirect::to('https://ead.profissionalizaead.com.br/mod/page/view.php?id=18448');
 });
 
 Route::get('/redir', [RedirCademiController::class, 'redir_get'])->name('aluno.redir');
@@ -1725,7 +1726,8 @@ Route::get('/cert/{code}', [CertificateController::class, 'view'])->name('cert-c
 Route::get('/cert/{code}/pdf', [CertificateController::class, 'pdf'])->name('cert-down');
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return Redirect::to('https://home.profissionalizaead.com.br/');
 });
 
 Route::get('/do', function () {

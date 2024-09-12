@@ -1073,6 +1073,17 @@ class UserController extends Controller
         return (redirect('/modern-dark-menu/aluno/my')->with('status', __($status)));
     }
 
+    public function pw_change_list(Request $request)
+    {
+            $user = User::find($request->user_id);
+            $user->password = bcrypt($request->password);
+            $user->active = 1;
+            $user->save();
+
+        $status = "Nova senha salva com sucesso";
+        return back()->with('status', __($status));
+    }
+
     public function getIp()
     {
         foreach (array('HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR') as $key) {
