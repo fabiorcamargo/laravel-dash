@@ -1,6 +1,4 @@
-
-
-<a class="card mb-4 mx-0 px-0" href="{{env('OURO_LINK_AUTO')}}{{ App\Models\OuroClient::where('user_id', (Auth::user()->id))->value('login_auto') }}" target="_self">
+<a class="card mb-4 mx-0 px-0" href="{{$link}}" target="_self">
     <img src="{{asset($card)}}" class="card-img-top" alt="Seu Curso">
     <div class="card-footer">
         <div class="row">

@@ -46,7 +46,7 @@
 
 
             <div class="row  mt-4">
-                
+
                 <div class="row">
                     <!-- Session Status -->
                     <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
@@ -55,7 +55,7 @@
                 </div>
 
                 @isset($groups[0])
-                
+
                 @foreach ($groups as $group)
 
                 @php
@@ -79,16 +79,16 @@
                     notificações.
                 </a> --}}
 
-                
+
 
                 <div class="card style-4 mb-4 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 mx-0">
                     <div class="card-body pt-3">
-                        
+
 
                         <div class="m-o-dropdown-list">
                             <div class="media mt-0 mb-3">
                                 <div class="badge--group me-3">
-                                    
+
                                 </div>
                                 <div class="media-body">
                                     <h4 class="media-heading mb-0">
@@ -130,17 +130,18 @@
                                                         <line x1="6" y1="20" x2="6" y2="14"></line>
                                                     </svg></a>
                                             </div>
-                                            
+
                                         </div>
-                                        
+
                                     </h4>
                                 </div>
                             </div>
 
                         </div>
 
-                        <p class="card-text mt-4 mb-0">Grupo de informações e lembrete aulas, fique por dentro de tudo relacionado ao seu curso.</p>
-                        
+                        <p class="card-text mt-4 mb-0">Grupo de informações e lembrete aulas, fique por dentro de tudo
+                            relacionado ao seu curso.</p>
+
                     </div>
                     <div class="card-footer pt-0 border-0">
                         <div class="progress br-30 progress-sm">
@@ -152,31 +153,39 @@
 
                             <div class="avatar--group">
                                 <div class="avatar avatar-sm ms-0">
-                                    <img alt="avatar" src="{{asset('peoples/' . $images[0]->getFilename())}}" class="rounded-circle">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[0]->getFilename())}}"
+                                        class="rounded-circle">
                                 </div>
                                 <div class="avatar avatar-sm">
-                                    <img alt="avatar" src="{{asset('peoples/' . $images[1]->getFilename())}}" class="rounded-circle">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[1]->getFilename())}}"
+                                        class="rounded-circle">
                                 </div>
                                 <div class="avatar avatar-sm">
-                                    <img alt="avatar" src="{{asset('peoples/' . $images[2]->getFilename())}}" class="rounded-circle">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[2]->getFilename())}}"
+                                        class="rounded-circle">
                                 </div>
                                 <div class="avatar avatar-sm">
-                                    <img alt="avatar" src="{{asset('peoples/' . $images[3]->getFilename())}}" class="rounded-circle">
+                                    <img alt="avatar" src="{{asset('peoples/' . $images[3]->getFilename())}}"
+                                        class="rounded-circle">
                                 </div>
                             </div>
-                    
+
                         </div>
                     </div>
-                    
+
 
                     <div class="card-footer pt-0 border-0 text-center">
-                        <a href="{{ $group->group_link }}" target="_blank" class="btn btn-success w-100 _effect--ripple waves-effect waves-light"><img src="{{Vite::asset('resources/images/whatsapp.svg')}}" alt="avatar" width="30" class="me-2"> <span class="btn-text-inner ms-3">Entrar no Grupo</span></a>
+                        <a href="{{ $group->group_link }}" target="_blank"
+                            class="btn btn-success w-100 _effect--ripple waves-effect waves-light"><img
+                                src="{{Vite::asset('resources/images/whatsapp.svg')}}" alt="avatar" width="30"
+                                class="me-2"> <span class="btn-text-inner ms-3">Entrar no Grupo</span></a>
                     </div>
 
                     <small class="mb-0 py-2 ms-4">
-                        {{ Auth::user()->contract_date 
-                            ? 'Válido até ' . \Carbon\Carbon::parse(Auth::user()->contract_date)->addDays(7)->format('d/m/Y')
-                            : 'Data de contrato não disponível' }}
+                        {{ Auth::user()->contract_date
+                        ? 'Válido até ' .
+                        \Carbon\Carbon::parse(Auth::user()->contract_date)->addDays(7)->format('d/m/Y')
+                        : 'Data de contrato não disponível' }}
                     </small>
                 </div>
 
@@ -227,30 +236,46 @@
                     @if(!(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto')) /*||
                     !(Auth::user()->client_ouro()->first()) &&
                     !(Auth::user()->client_ouro()->first()->matricula_ouro()->get())*/)
-                    
-                        <x-widgets._w-card-cademi title="Em Breve" card="{{'em-breve.jpg'}}" />
-                    
+
+                    <x-widgets._w-card-cademi title="Em Breve" card="{{'em-breve.jpg'}}" />
+
                     @endif
                     @if(Auth::user()->first == 3 || Auth::user()->first == 5)
                     <x-widgets._w-card-bloqueado title="Cursos Premium" card="{{'Curso_Bloqueado.jpg'}}" />
                     @else
                     @if(App\Models\Cademi::where('user_id', (Auth::user()->id))->value('login_auto') )
+
                     @foreach ($cards as $card)
+
+                    @if($card['tag'] == "PLATAFORMAANTIGA")
+
+                    <div class="mx-0">
+                        @livewire('get-old-system-token', ['title' => $card['title'], 'card' => $card['img']])
+                    </div>
+
+                    @else
+
                     <div class="mx-0">
                         <x-widgets._w-card-cademi title="{{$card['title']}}" card="{{$card['img']}}" />
                     </div>
+
+                    @endif
                     @endforeach
 
                     @endif
                     @endif
 
+                </div>
+                <div id="owl-demo-1" class="mt-2 mx-0 px-0">
                     @if(Auth::user()->first == 4 || Auth::user()->first == 5)
-                    <x-widgets._w-card-bloqueado title="Cursos Ouro" card="{{'Curso_Bloqueado.jpg'}}" />
+                    <div class="mx-0">
+                        <x-widgets._w-card-bloqueado title="Cursos Ouro" card="{{'Curso_Bloqueado.jpg'}}" />
+                    </div>
                     @else
                     @if(Auth::user()->client_ouro()->first() && $courses =
                     Auth::user()->client_ouro()->first()->matricula_ouro()->get())
                     @foreach ($courses as $course)
-                    <div class="me-2">
+                    <div class="mx-0">
                         <x-widgets._w-card-ouro title="{{$course->name}}"
                             card="{{$course->get_course()->first()->img}}" />
                     </div>
@@ -286,19 +311,35 @@
                 <script>
                     $(document).ready(function() {
 
-            $("#owl-demo").owlCarousel({
+                        $("#owl-demo").owlCarousel({
 
-                autoPlay: 2000, //Set AutoPlay to 3 seconds
+                            autoPlay: 3000, //Set AutoPlay to 3 seconds
 
-                items : 3,
-                itemsDesktop : [2000,3],
-                itemsDesktopSmall : [1500,3]
+                            items : 3,
+                            itemsDesktop : [2000,3],
+                            itemsDesktopSmall : [1500,3]
 
-            });
+                        });
 
-            });
-
+                    });
                 </script>
+
+                <script>
+                    $(document).ready(function() {
+
+                        $("#owl-demo-1").owlCarousel({
+
+                            autoPlay: 2500, //Set AutoPlay to 3 seconds
+
+                            items : 3,
+                            itemsDesktop : [2000,3],
+                            itemsDesktopSmall : [1500,3]
+
+                        });
+
+                    });
+                </script>
+
                 @if (str_contains(url()->previous(), 'form/end'))
                 <script>
                     fbq("track", "Lead", {

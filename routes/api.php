@@ -148,7 +148,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Route::get('/asaas/link/client/{id}/notification', [OldAsaasController::class, 'client_notification_api']);
 
-    Route::get('/token_check' , function(Request $request){
+    Route::get('/token_check' , function(){
         //dd($request->all());
         return response('success', 200);
     });
