@@ -1061,6 +1061,7 @@ class UserController extends Controller
     }
     public function pw_change(Request $request)
     {
+        dd($request->all());
         $user = Auth::user();
         $user->password = bcrypt($request->password);
         $user->active = 1;

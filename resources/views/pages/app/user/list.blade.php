@@ -540,12 +540,12 @@
                                                                                     data-bs-dismiss="modal"><i
                                                                                         class="flaticon-cancel-12"></i>
                                                                                     Discard</button>
-                                                                                <button type="button"
-                                                                                    class="btn btn-primary">Save</button>
+                                                                                <a href="/pw_change" type="button"
+                                                                                    class="btn btn-primary">Save</a>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
-                                                                </div> --}}
+                                                                    </div> --}}
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>

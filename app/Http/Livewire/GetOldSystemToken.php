@@ -30,7 +30,7 @@ class GetOldSystemToken extends Component
             'wsfunction' => 'core_user_get_users_by_field',
             'moodlewsrestformat' => 'json',
             'field' => 'username',
-            'values[0]' => $this->user->username
+            'values[0]' => strtolower($this->user->username)
         ]);
 
         //Decodifica os dados
