@@ -598,6 +598,7 @@ class UserController extends Controller
                             );
                         } else {
                             $cards[$i] = array(
+                                'tag' => 'cursoliberado',
                                 'img' => "product/cademi/Curso Liberado.jpg",
                                 'title' => "Seu curso está liberado"
                             );
