@@ -68,7 +68,6 @@ class FirebaseMessagingController extends Controller
             $usernames = $request->input('usernames');
             $users = explode(',', $usernames);
 
-            dd($users);
             $fcmTokens = [];
 
             foreach ($users as $username) {
