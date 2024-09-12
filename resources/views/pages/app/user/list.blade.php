@@ -33,14 +33,14 @@
                 <!-- Content -->
 
                 <div class="row mx-0 w-full mt-4 flex justify-center">
-                   
-                        <!-- Session Status -->
-                        <x-auth-session-status class="text-success" :status="session('status')" />
-                        <!-- Validation Errors -->
-                        <x-auth-validation-errors class="text-danger" :errors="$errors" />
-                   
+
+                    <!-- Session Status -->
+                    <x-auth-session-status class="text-success" :status="session('status')" />
+                    <!-- Validation Errors -->
+                    <x-auth-validation-errors class="text-danger" :errors="$errors" />
+
                 </div>
-                
+
 
                 <div class="col-xl-12 col-lg-12 col-sm-12">
                     <div class="user-profile">
@@ -514,89 +514,107 @@
                                                                         class="stroke-red-500" />
                                                                 </a>
                                                                 <!-- Modal -->
-                                                                <div class="modal fade" id="passwordModal{{ $user->id }}" tabindex="-1"
+                                                                <div class="modal fade"
+                                                                    id="passwordModal{{ $user->id }}" tabindex="-1"
                                                                     role="dialog" aria-labelledby="passwordModalLabel"
                                                                     aria-hidden="true">
                                                                     <div class="modal-dialog" role="document">
-                                                                        <div class="modal-content">
-                                                                            <div class="modal-header">
-                                                                                <h5 class="modal-title"
-                                                                                    id="passwordModalLabel">Resetar a
-                                                                                    Senha?</h5>
-                                                                                <button type="button" class="btn-close"
-                                                                                    data-bs-dismiss="modal"
-                                                                                    aria-label="Close">
-                                                                                    <svg> ... </svg>
-                                                                                </button>
-                                                                            </div>
-                                                                            <div class="modal-body flex items-center">
-                                                                                
-                                                                                <h6 class="mb-0">Você realmente
-                                                                                    deseja resetar a senha do aluno:
-                                                                                </h6>
-                                                                                
-                                                                                <div class="flex items-center">
-                                                                                    <div class="avatar me-2">
-                                                                                        <img alt="avatar"
-                                                                                             src="{{ asset($user->image) }}"
-                                                                                             class="rounded-circle w-12 h-12">
-                                                                                    </div>
-                                                                                    <div class="">
-                                                                                        <h6 class="mb-0">{{ $user->name }} {{ $user->lastname }}</h6>
+                                                                        <form
+                                                                            action="/modern-dark-menu/aluno/pw_change_list"
+                                                                            method="post">
+                                                                            @csrf
+                                                                            <div class="modal-content">
+                                                                                <div class="modal-header">
+                                                                                    <h5 class="modal-title"
+                                                                                        id="passwordModalLabel">Resetar
+                                                                                        a
+                                                                                        Senha?</h5>
+                                                                                    <button type="button"
+                                                                                        class="btn-close"
+                                                                                        data-bs-dismiss="modal"
+                                                                                        aria-label="Close">
+                                                                                        <svg> ... </svg>
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div
+                                                                                    class="modal-body flex items-center">
+
+                                                                                    <h6 class="mb-0">Você realmente
+                                                                                        deseja resetar a senha do aluno:
+                                                                                    </h6>
+
+                                                                                    <div class="flex items-center">
+                                                                                        <div class="avatar me-2">
+                                                                                            <img alt="avatar"
+                                                                                                src="{{ asset($user->image) }}"
+                                                                                                class="rounded-circle w-12 h-12">
+                                                                                        </div>
+                                                                                        <div class="">
+                                                                                            <h6 class="mb-0">{{
+                                                                                                $user->name
+                                                                                                }} {{ $user->lastname }}
+                                                                                            </h6>
+                                                                                        </div>
                                                                                     </div>
                                                                                 </div>
-                                                                            </div>
-                                                                            <form action="/modern-dark-menu/aluno/pw_change_list" method="post">
-                                                                                @csrf
-                                                                                <input type="text" id="password" name="password" value="123456">
-                                                                                <input type="text" id="user_id" name="user_id" value="{{$user->id}}">
-                                                                            <div class="modal-footer">
-                                                                                <button class="btn btn btn-light-dark"
-                                                                                    data-bs-dismiss="modal"><i
-                                                                                        class="flaticon-cancel-12"></i>
-                                                                                    Discard</button>
-                                                                                <button type="send"
-                                                                                    class="btn btn-primary">Save</button>
-                                                                            </div>
+
+
+                                                                                <div class="form-group px-4 mb-2">
+                                                                                    <input class="form-control"
+                                                                                        type="text" id="password"
+                                                                                        name="password" value="123456">
+                                                                                    <input type="text" id="user_id"
+                                                                                        name="user_id"
+                                                                                        value="{{$user->id}}" hidden>
+                                                                                </div>
+                                                                                <div class="modal-footer">
+                                                                                    <button
+                                                                                        class="btn btn btn-light-dark"
+                                                                                        data-bs-dismiss="modal"><i
+                                                                                            class="flaticon-cancel-12"></i>
+                                                                                        Discard</button>
+                                                                                    <button type="send"
+                                                                                        class="btn btn-primary">Save</button>
+                                                                                </div>
                                                                         </form>
-                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </td>
-                                                    </tr>
-                                                    @endforeach
-
-                                                </tbody>
-                                            </table>
-
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    {{ $users->appends($_GET)->links('pagination::bootstrap-5') }}
-
-                                                </div>
-                                            </div>
-
-
-
                                         </div>
+                                        </td>
+                                        </tr>
+                                        @endforeach
+
+                                        </tbody>
+                                        </table>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {{ $users->appends($_GET)->links('pagination::bootstrap-5') }}
+
+                                            </div>
+                                        </div>
+
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
 
 
 
 
-                        <!--  BEGIN CUSTOM SCRIPTS FILE  -->
-                        <x-slot:footerFiles>
-                            <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
-                            <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
+                    <!--  BEGIN CUSTOM SCRIPTS FILE  -->
+                    <x-slot:footerFiles>
+                        <script src="{{asset('plugins/global/vendors.min.js')}}"></script>
+                        <script src="{{asset('plugins/table/datatable/datatables.js')}}"></script>
 
-                            </x-slot>
-                            <script>
+                        </x-slot>
+                        <script>
 
-                            </script>
-                            <!--  END CUSTOM SCRIPTS FILE  -->
+                        </script>
+                        <!--  END CUSTOM SCRIPTS FILE  -->
 </x-base-layout>
