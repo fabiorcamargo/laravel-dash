@@ -23,7 +23,8 @@ class UserNotify extends Controller
         //dd($request->all());
         $ApiPush = new ApiAppController;
         $users = $ApiPush->getByCourse($request->cademi_code);
-        $users = $users->content();
+        $users = json_decode($users->content());
+        //dd($users);
         $request->merge(['usernames' => $users]);
 
         
