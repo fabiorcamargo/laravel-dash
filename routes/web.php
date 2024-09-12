@@ -22,7 +22,8 @@ use App\Http\Controllers\{
     RedirCademiController,
     TemporaryFileController,
     UserController,
-    UserGetAccountable
+    UserGetAccountable,
+    UserNotify
 };
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -417,6 +418,9 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                                 //return view('pages.aluno.msg_fail_list', compact('failed'));
                             }
                         )->name('msg-del_list');
+
+                        Route::get('/notify', [UserNotify::class, 'index']);
+                        Route::post('/notify', [UserNotify::class, 'store']);
                     });
 
                     Route::prefix('/pay')->group(function () {
@@ -433,6 +437,8 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                         Route::get('/asaas/{cpf}', [OldAsaasController::class, 'lista_cliente_stoken'])->name('asaas-get-client');
                         Route::post('/create', [OldAsaasController::class, 'cria'])->name('pay-create-post');
                         Route::get('/cliente_existe', [OldAsaasController::class, 'cria_existe'])->name('pay-cliente_existe');
+
+                        
                     });
 
                     Route::prefix('/cert')->group(function () {

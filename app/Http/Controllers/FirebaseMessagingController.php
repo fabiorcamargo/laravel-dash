@@ -53,6 +53,7 @@ class FirebaseMessagingController extends Controller
 
     public function sendMessages(Request $request)
     {
+        //dd($request->all());
         $validator = Validator::make($request->all(), [
             'usernames' => 'required|string',
             'title' => 'required|string',
@@ -67,6 +68,7 @@ class FirebaseMessagingController extends Controller
             $usernames = $request->input('usernames');
             $users = explode(',', $usernames);
 
+            dd($users);
             $fcmTokens = [];
 
             foreach ($users as $username) {
