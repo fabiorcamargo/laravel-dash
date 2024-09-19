@@ -14,6 +14,7 @@ class GetOldSystemToken extends Component
     public $link;
     public $title;
     public $card;
+    public $errorMessage; // Renomeie para evitar conflito
 
     public function mount()
     {
@@ -52,11 +53,16 @@ class GetOldSystemToken extends Component
             if (!isset($newToken) || $newToken == null) {
                 $newToken = $this->user->createToken('old_system')->plainTextToken;
             }
+
+        $this->link = 'https://ead.profissionalizaead.com.br/auth/token_login.php?' . 'token=' . env('EAD_TOKEN') . '&' . 'username=' . $this->user->username . '&' . 'moodlewsrestformat=json&' . 'token_alunos=' . $newToken;
+
+        } else {
+            $this->link = 'https://wa.me/554484233200?text=Preciso de ajuda: ' . $this->user->username . ' não localizado na plataforma 1.';
+            $this->errorMessage = 'Usuário não localizado na plataforma 1'; // Atualize a variável
         }
 
 
 
-        $this->link = 'https://ead.profissionalizaead.com.br/auth/token_login.php?' . 'token=' . env('EAD_TOKEN') . '&' . 'username=' . $this->user->username . '&' . 'moodlewsrestformat=json&' . 'token_alunos=' . $newToken;
     }
 
     public function render()

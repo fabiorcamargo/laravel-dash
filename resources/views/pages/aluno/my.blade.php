@@ -52,6 +52,8 @@
                     <x-auth-session-status class="mb-4 text-success" :status="session('status')" />
                     <!-- Validation Errors -->
                     <x-auth-validation-errors class="mb-4 text-danger" :errors="$errors" />
+
+                    
                 </div>
 
                 @isset($groups[0])
@@ -247,7 +249,7 @@
 
                     @foreach ($cards as $card)
 
-                    
+
                     @if($card['tag'] == "PLATAFORMAANTIGA")
 
                     <div class="mx-0">

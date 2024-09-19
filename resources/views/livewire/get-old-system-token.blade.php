@@ -1,11 +1,13 @@
 <div>
+    <!-- Exibir mensagem de erro -->
+    
     <a class="card mb-4 mx-0 px-0" href="{{$link}}" target="_self">
         
         <img src="{{asset($card)}}" class="card-img-top" alt="Seu Curso">
         <div class="card-footer">
             <div class="row">
                 <div class="col-6">
-                    <b>{{ $title }}</b>
+                    <b @if($errorMessage) class="text-danger" @endif>{{ $title }}</b>
                 </div>
                 {{--<p class="card-text">{{ $description }}</p>--}}
                 {{--}}
