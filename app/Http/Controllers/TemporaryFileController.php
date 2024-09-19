@@ -71,11 +71,13 @@ class TemporaryFileController extends Controller
                 $courses = explode(',', $user['courses']);
 
                 $newCourses = '';
-                foreach ($courses as $key => $course) {
-                    str_contains($course, $u->courses) ? '' : $newCourses = $newCourses . ',' . $course;
+                foreach ($courses as $key => $course) { 
+                    //dd(str_contains($u->courses, $course));
+                    str_contains($u->courses, $course) ? '' : $newCourses = $newCourses . ',' . $course;
                 }
                 
                 $u->courses = $u->courses . $newCourses;
+                //dd($u);
                 $u->save();
 
             }
