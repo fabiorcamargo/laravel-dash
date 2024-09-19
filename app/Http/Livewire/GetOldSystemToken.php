@@ -57,8 +57,9 @@ class GetOldSystemToken extends Component
         $this->link = 'https://ead.profissionalizaead.com.br/auth/token_login.php?' . 'token=' . env('EAD_TOKEN') . '&' . 'username=' . $this->user->username . '&' . 'moodlewsrestformat=json&' . 'token_alunos=' . $newToken;
 
         } else {
-            $this->link = 'https://wa.me/554484233200?text=Preciso de ajuda: ' . $this->user->username . ' não localizado na plataforma 1.';
             $this->errorMessage = 'Usuário não localizado na plataforma 1'; // Atualize a variável
+            $this->link = 'https://wa.me/554484233200?text=Preciso de ajuda: ' . $this->user->username . ' ' . $this->errorMessage;
+            $this->title = 'Não localizado, clique para pedir ajuda.'; // Atualize a variável
         }
 
 
