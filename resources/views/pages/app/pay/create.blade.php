@@ -506,6 +506,11 @@
                                                 <option>JOVEM APRENDIZ + AVIAÇÃO</option>
                                                 <option>AVIAÇÃO CIVIL</option>
                                                 <option>AVIAÇÃO + 10 CURSOS</option>
+                                                <option>JURÍDICO</option>
+                                                <option>BANCÁRIO + JURÍDICO</option>
+                                                <option>JURÍDICO + 10 CURSOS</option>
+                                                <option>BANCÁRIO + JURÍDICO + 10 CURSOS</option>
+
                                             </select>
 
                                         </div>
