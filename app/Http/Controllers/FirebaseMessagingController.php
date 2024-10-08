@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PushNotificationCampaign;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Kreait\Firebase\Factory;
@@ -68,13 +69,13 @@ class FirebaseMessagingController extends Controller
             $usernames = $request->input('usernames');
             $users = explode(',', $usernames);
 
-            
+
             $fcmTokens = [];
 
             foreach ($users as $username) {
                 $user = User::where('username', $username)->first();
                 //dd($user);
-                
+
                 if ($user && $user->UserApp) {
                     $tokens = $user->UserApp->pluck('fcm_token')->toArray();
                     $fcmTokens = array_merge($fcmTokens, $tokens);
@@ -104,26 +105,29 @@ class FirebaseMessagingController extends Controller
                 ->withApnsConfig(
                     ApnsConfig::new()
                         ->withBadge(1)
-                )
-                ;
+                );
 
             $report = $this->messaging->sendMulticast($message, $fcmTokens);
 
             $successes = $report->successes()->count();
             $failures = $report->failures()->count();
 
-            dd(response()->json([
-                'message' => 'Notificações enviadas.',
+            $push = PushNotificationCampaign::create([
+                'title' => $title,
+                'body' => $body,
+                'image' => $image,
+                'send' => count($fcmTokens),
                 'successes' => $successes,
                 'failures' => $failures,
-            ]));
+            ]);
+
             return response()->json([
                 'message' => 'Notificações enviadas.',
                 'successes' => $successes,
                 'failures' => $failures,
             ]);
         } catch (\Exception $e) {
-            
+
             return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }

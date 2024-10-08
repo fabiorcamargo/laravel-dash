@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CademiTag;
+use App\Models\PushNotificationCampaign;
 use Illuminate\Http\Request;
 
 class UserNotify extends Controller
@@ -14,9 +15,11 @@ class UserNotify extends Controller
      */
     public function index()
     {
+        $pushNotifications = PushNotificationCampaign::orderBy('created_at', 'desc')->get();
         
         $tags = CademiTag::all();
-        return view('pages.app.user.addnotify', ['title' => "Enviar Notificação", 'tags' => $tags]);
+        
+        return view('pages.app.user.addnotify', ['title' => "Enviar Notificação", 'tags' => $tags, 'pushNotifications' => $pushNotifications]);
     }
 
     public function store(Request $request){
@@ -31,6 +34,8 @@ class UserNotify extends Controller
 
         $fire = new FirebaseMessagingController;
         $fire->sendMessages($request);
+
+        return back()->with('status', 'Notificações enviadas com sucesso');
 
     }
 }

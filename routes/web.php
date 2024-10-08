@@ -419,7 +419,7 @@ Route::middleware(['auth', 'can:edit'])->group(function () {
                             }
                         )->name('msg-del_list');
 
-                        Route::get('/notify', [UserNotify::class, 'index']);
+                        Route::get('/notify', [UserNotify::class, 'index'])->name('pushNotify');
                         Route::post('/notify', [UserNotify::class, 'store']);
                     });
 
