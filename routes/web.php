@@ -123,36 +123,23 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-
-    Route::get('/login/{id}', function ($id) {
-        $currentUser = Auth::user();
-    
-        // Verifica se o usuário atual tem a permissão necessária
-        if ($currentUser->role < 4) {
-            $msg = "Ação não permitida para esse usuário";
-            return redirect()->back()->withErrors(__($msg));
-        }
-    
-        // Tenta encontrar o usuário pelo ID
-        $user = User::find($id);
-    
-        // Verifica se o usuário existe
-        if (!$user) {
-            $msg = "Usuário não encontrado!";
-            return redirect()->back()->withErrors(__($msg));
-        }
-    
-        // Verifica se o usuário tem a role permitida
-        if ($user->role != 1) {
-            $msg = "Só é permitido logar em um perfil de aluno!!!";
-            return redirect()->back()->withErrors(__($msg));
-        }
-    
-        // Loga o usuário e redireciona
-        Auth::login($user);
-        $msg = "Logado como $user->name $user->lastname. Cuidado: todas as ações serão registradas no perfil do usuário.";
-        return redirect()->route('aluno.my')->withErrors(__($msg)); // Use o nome da rota
-    })->name('aluno.redir');
+    // Route::get('/login/{id}', function ($id) {
+    //     if (Auth::user()->role >= 4) {
+    //         $user = User::find($id);
+    //         if ($user->role != 1) {
+    //             $msg = "Só é permitido logar em um perfil de aluno!!!";
+    //             return back()->withErrors(__($msg));
+    //         } else {
+    //             Auth::login($user);
+    //             $redir = new OldAsaasController;
+    //             $msg = "Logado como $user->name $user->lastname cuidado todas as ações serão registradas no perfil do usuário";
+    //             return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));
+    //         }
+    //     } else {
+    //         $msg = "Ação não permitida para esse usuário";
+    //         return back()->withErrors(__($msg));;
+    //     }
+    // })->name('aluno.redir');
 
 
 
@@ -206,6 +193,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                 Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
+
+                Route::get('/login/{id}', [UserController::class, 'my'])->name('aluno.redir');
+
             });
 
 

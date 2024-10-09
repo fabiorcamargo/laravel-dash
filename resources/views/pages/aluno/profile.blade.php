@@ -333,7 +333,7 @@
 
                                 @if ((Auth::user()->role) >= 4)
                                 <p class="contacts-block__item">
-                                    <a href="/login/{{ $user->id }}" target="blank"
+                                    <a href="/modern-dark-menu/aluno/login/{{ $user->id }}" target="blank"
                                         class="btn btn-dark  _effect--ripple waves-effect waves-light">
                                         <x-widgets._w-svg svg="login" />
                                         <span class="btn-text-inner">Acessar como {{$user->name}}</span>
