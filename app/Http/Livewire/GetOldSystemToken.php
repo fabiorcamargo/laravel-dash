@@ -26,7 +26,7 @@ class GetOldSystemToken extends Component
     {
 
         //Busca o usuário na plataforma antiga
-        $response = Http::get('https://ead.profissionalizaead.com.br/webservice/rest/server.php/token_login.php', [
+        $response = Http::get('https://ead.profissionalizaead.com.br/webservice/rest/server.php', [
             'wstoken' => env('TOKEN_PMOODLE'),
             'wsfunction' => 'core_user_get_users_by_field',
             'moodlewsrestformat' => 'json',
