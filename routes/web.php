@@ -123,23 +123,23 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-    // Route::get('/login/{id}', function ($id) {
-    //     if (Auth::user()->role >= 4) {
-    //         $user = User::find($id);
-    //         if ($user->role != 1) {
-    //             $msg = "Só é permitido logar em um perfil de aluno!!!";
-    //             return back()->withErrors(__($msg));
-    //         } else {
-    //             Auth::login($user);
-    //             $redir = new OldAsaasController;
-    //             $msg = "Logado como $user->name $user->lastname cuidado todas as ações serão registradas no perfil do usuário";
-    //             return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));
-    //         }
-    //     } else {
-    //         $msg = "Ação não permitida para esse usuário";
-    //         return back()->withErrors(__($msg));;
-    //     }
-    // })->name('aluno.redir');
+
+    Route::get('/login/{id}', function ($id) {
+        if (Auth::user()->role >= 4) {
+            $user = User::find($id);
+            if ($user->role != 1) {
+                $msg = "Só é permitido logar em um perfil de aluno!!!";
+                return back()->withErrors(__($msg));
+            } else {
+                Auth::login($user);
+                $msg = "Logado como $user->name $user->lastname cuidado todas as ações serão registradas no perfil do usuário";
+                return Redirect::to('modern-dark-menu/aluno/my')->withErrors(__($msg));
+            }
+        } else {
+            $msg = "Ação não permitida para esse usuário";
+            return back()->withErrors(__($msg));;
+        }
+    })->name('aluno.redir');
 
 
 
@@ -193,9 +193,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/payment/{id}', [AsaasConectController::class, 'Asaas_Create_id'])->name('aluno-payment');
                 Route::get('/profile/{id}', [UserController::class, 'profile'])->name('aluno-profile');
                 Route::get('/profile/{id}/edit', [UserController::class, 'profile_edit'])->name('aluno-profile-edit');
-
-                Route::get('/login/{id}', [UserController::class, 'my'])->name('aluno.redir');
-
             });
 
 

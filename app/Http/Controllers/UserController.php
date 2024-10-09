@@ -553,23 +553,8 @@ class UserController extends Controller
     }
 
 
-    public function my(Request $request)
+    public function my()
     {
-        //dd($request->route('id'));
-        if ($request->route('id')) {
-            if (Auth::user()->role >= 4) {
-                $user = User::find($request->route('id'));
-                if ($user->role != 1) {
-                    $msg = "Só é permitido logar em um perfil de aluno!!!";
-                    return back()->withErrors(__($msg));
-                } else {
-                    Auth::login($user);
-                }
-            } else {
-                $msg = "Ação não permitida para esse usuário";
-                return back()->withErrors(__($msg));;
-            }
-        }
         Auth::user()->access_date = Carbon::now()->toDateTimeString();
         Auth::user()->ip = request()->ip();
         Auth::user()->save();
@@ -1090,10 +1075,10 @@ class UserController extends Controller
 
     public function pw_change_list(Request $request)
     {
-        $user = User::find($request->user_id);
-        $user->password = bcrypt($request->password);
-        $user->active = 1;
-        $user->save();
+            $user = User::find($request->user_id);
+            $user->password = bcrypt($request->password);
+            $user->active = 1;
+            $user->save();
 
         $status = "Nova senha salva com sucesso";
         return back()->with('status', __($status));
