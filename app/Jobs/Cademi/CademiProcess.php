@@ -30,7 +30,7 @@ class CademiProcess implements ShouldQueue
     public function __construct(User $user)
     {
         $this->user = $user;
-        $this->i = $this->i + 6;
+        $this->i += 1;
     }
 
     /**
@@ -68,7 +68,7 @@ class CademiProcess implements ShouldQueue
                         }else{
                             dispatch(new ProductProgress($this->user, $cademi->user, $this->user->CademiProgress()->where('product', $produto['produto']['id'])->first()))->delay(now()->addSeconds($this->i));
                         }
-                        $this->i = $this->i + 3;
+                        $this->i += 1;
                     }
                 }
             }
