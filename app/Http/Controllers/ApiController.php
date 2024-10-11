@@ -212,18 +212,6 @@ class ApiController extends Controller
   public function course_store(Request $request)
   { {
 
-      // Obtém o conteúdo da requisição
-      $content = $request->getContent();
-
-      // Gera um timestamp
-      $timestamp = now()->format('Y-m-d H:i:s');
-
-      // Prepara a linha a ser salva com timestamp e conteúdo
-      $contentWithTimestamp = "[$timestamp] $content";
-
-      // Salva a linha no arquivo 'requests_log.txt', adicionando uma nova linha no final
-      Storage::append('requests_log.txt', $contentWithTimestamp);
-
       $data = json_decode($request->getContent(), true);
       //dd($data);
       $arr = (object)$data['event']['usuario'];
@@ -538,5 +526,22 @@ class ApiController extends Controller
     } else {
       return 'Token Inválido';
     }
+  }
+
+
+  public function progress(Request $request)
+  {
+
+    // Obtém o conteúdo da requisição
+    $content = $request->getContent();
+
+    // Gera um timestamp
+    $timestamp = now()->format('Y-m-d H:i:s');
+
+    // Prepara a linha a ser salva com timestamp e conteúdo
+    $contentWithTimestamp = "[$timestamp] $content";
+
+    // Salva a linha no arquivo 'requests_log.txt', adicionando uma nova linha no final
+    Storage::append('requests_log.txt', $contentWithTimestamp);
   }
 }

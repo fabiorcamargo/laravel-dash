@@ -171,6 +171,9 @@ Route::get('groups', function () {
 Route::post('users', [ApiController::class, 'getAllUsers'])->name('api.cademi.users');
 Route::post('users/store', [ApiController::class, 'store'])->name('api.cademi.store');
 Route::post('course/store', [ApiController::class, 'course_store'])->name('api.cademi.course.store');
+
+Route::post('course/progress', [ApiController::class, 'progress'])->name('api.cademi.course.store');
+
 Route::post('gateway/pay', [ApiController::class, 'gateway_pay_post'])->name('api.gateway.pay.post');
 
 Route::post('chatbot/pre_hen', [ApiController::class, 'chatbot_pre_hen'])->name('api.chatbot.pre_hen');
