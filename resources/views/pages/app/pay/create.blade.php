@@ -399,7 +399,7 @@
                                             </a>
                                         </div>
 
-                                        
+
 
                                     </div>
 
@@ -427,7 +427,7 @@
                                     <div class="form-group col-md-3">
                                         <fieldset>
                                             <label>Número:</label>
-                                            <input name="number" type="number" class="form-control" id="number" />
+                                            <input name="number" type="text" class="form-control" id="number" />
                                                 </fieldset>
                                     </div>
                                     </div>
@@ -657,17 +657,17 @@
                             document.getElementById("link").disabled == true ? document.getElementById("link").disabled = false : document.getElementById("link").disabled = true;
                             document.getElementById("cartaoi").disabled == true ? document.getElementById("cartaoi").disabled = false : document.getElementById("cartaoi").disabled = true;
                             document.getElementById("taxa").disabled == true ? document.getElementById("taxa").disabled = false : document.getElementById("taxa ").disabled = true;
-                            
+
                         }
                     </script>
 
                     <script>
                         function showadd(i) {
-            
+
             //document.getElementById("container"+i).classList.add('active');
             document.getElementById("container"+i).style.display = 'block';
             document.getElementById("btnshow"+i).style.display = 'none';
-            
+
         }
                     </script>
 
@@ -684,7 +684,7 @@
                 $("#uf").val("");
                 $("#ibge").val("");
             }
-            
+
             //Quando o campo cep perde o foco.
             $("#cep").blur(function() {
 
@@ -712,7 +712,7 @@
 
                             if (!("erro" in dados)) {
                                 //Atualiza os campos com os valores da consulta.
-                                
+
                                 $("#rua").val(dados.logradouro);
                                 $("#bairro").val(dados.bairro);
                                 $("#cidade").val(dados.localidade);
@@ -756,13 +756,13 @@ function loading(){
   $("#overlay").modal("show");
 
 }
-    
+
 function ClientExist(n)    {
     document.getElementById("resp_exist").value = n;
 
     $('#myModal').modal('hide');
 }
-    
+
 function verificarCPF(d){
     c = d.replace(/[^0-9]/g,'');
     var i;
@@ -771,7 +771,7 @@ function verificarCPF(d){
     var dv = s.substr(9,2);
     var d1 = 0;
     var v = false;
- 
+
     for (i = 0; i < 9; i++){
         d1 += c.charAt(i)*(10-i);
     }
@@ -787,7 +787,7 @@ function verificarCPF(d){
         v = true;
         return false;
     }
- 
+
     d1 *= 2;
     for (i = 0; i < 9; i++){
         d1 += c.charAt(i)*(11-i);
@@ -800,7 +800,7 @@ function verificarCPF(d){
         return false;
     }
     if (!v) {
-        
+
                 var settings = {
                 "url": "/collapsible-menu/app/pay/asaas/"+d,
                 "method": "GET",
@@ -817,8 +817,8 @@ function verificarCPF(d){
                     $('#myModal1').modal('show');
                 //alert(response);
                 });
-    }	
-	
+    }
+
 }
 
     function closeModal1(){
@@ -829,7 +829,7 @@ function verificarCPF(d){
         $('#modalCepSearch').modal('show');
     }
 
-    
+
                     </script>
 
 
@@ -845,7 +845,7 @@ function verificarCPF(d){
 
                     <script type="text/javascript">
                         $(document).ready(function() {
-        
+
         $('select[name="state"]').on('change', function() {
             var stateID = $(this).val();
             if(stateID) {
@@ -853,9 +853,9 @@ function verificarCPF(d){
                     url: '/city/'+stateID,
                     type: "GET",
                     dataType: "json",
-                    success:function(data) {   
-                        console.log("teste");   
-                        var city = "1";                
+                    success:function(data) {
+                        console.log("teste");
+                        var city = "1";
                         $('select[name="city"]').empty();
                         $.each(data, function(key, value) {
                         $('select[name="city"]').append('<option value="'+ key +'">'+ value +'</option>');

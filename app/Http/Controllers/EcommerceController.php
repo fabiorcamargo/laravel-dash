@@ -123,7 +123,7 @@ class EcommerceController extends Controller
             } else {
                 $comment->img = $img;
             }
-            
+
             $contents = file_get_contents($comment->img);
             Storage::makeDirectory('directory', 0775);
             Storage::put("product/$request->name/avatar/$comment->name.jpg", $contents, ['visibility' => 'public', 'directory_visibility' => 'public']);
@@ -385,10 +385,10 @@ class EcommerceController extends Controller
 
     public function checkout_pay_end_post($product_id, $client, Request $request)
     {
-        
+
         //Captura dados do pagamento
         $pay = (object)$request->all();
-        
+
         $cep = str_replace("-", "", $request->cep);
         $expiry = explode("/", str_replace(array(' ', "\t", "\n"), '', $pay->expiry));
 
@@ -404,7 +404,7 @@ class EcommerceController extends Controller
         $user = User::find($client);
         $user->seller == "" ? $user->seller = 2 : $user->seller;
 
-        
+
 
         $codesale = "COD-INTERNET-" . $product->course_id . "-" . $user->id;
         $user->city = $request->cidade;
@@ -433,7 +433,7 @@ class EcommerceController extends Controller
         //dd(str_replace("access_token: ","",$token));
         $cobranca = $asaas->create_payment($user, $product, $pay, $codesale);
         $invoice_url = (json_decode($cobranca->body)->invoiceUrl);
-        
+
         //dd($invoice_url);
         //dd($invoice_url);
         //$invoice = $cobranca
@@ -463,16 +463,16 @@ class EcommerceController extends Controller
                 $msg_text ='\r\n'. $user->name . ', para sua comodidade estamos enviando o seu carnê referente ao curso contratado, para acessá-lo basta clicar no link abaixo:👇\r\n\r\n' . $paybook . '\r\n\r\nLembrando que a liberação do seu acesso depende da compensação do seu pagamento.\r\n\r\nCaso esteja com alguma dificuldade, por favor informe aqui nesse contato.\r\n\r\n*_Agora só responda essa mensagem se precisar de ajuda, bons estudos!_*';
                 $job = new Mkt_send_not_active($request->nome, $user->cellphone, "text", $msg_text, $user->id);
                                                               dispatch($job);
-    
+
             Mail::to($user->email)->send(new UserInvoiceSend($user, $invoice_url));
 
             $flow = ($user->flow_entry()->where('product_id', $product->id)->first());
             $flow->step = 1;
             $flow->save();
         }
-        
-       
-        
+
+
+
 
 
         return redirect("modern-light-menu/app/eco/checkout/$cobranca->id/status");
@@ -485,11 +485,11 @@ class EcommerceController extends Controller
         $cobranca = EcoSales::where('id', $id)->first();
         //dd($cobranca);
         $invoice = json_decode($cobranca->body)->invoiceUrl;
-        
+
         $status = $cobranca->status;
         $pay_id = $cobranca->pay_id;
 
-        
+
         if(json_decode($cobranca->body)->billingType !== "CREDIT_CARD"){
         $token = "access_token: " . env('ASAAS_TOKEN');
         $pix = new OldAsaasController;
@@ -502,7 +502,7 @@ class EcommerceController extends Controller
             return view('pages.app.eco.checkout_end', ['title' => 'Profissionaliza EAD | Finalização Pagamento ', 'breadcrumb' => 'checkout end', 'status' => "$status", 'invoice' => $invoice, 'pix' => $pix, 'copy' => $copy, 'pay_id' => $pay_id, 'type' => $cobranca->type]);
         }
         }else{
-            
+
         }
 
         //dd($cobranca->status);
