@@ -573,7 +573,7 @@ class OldAsaasController extends Controller
     //dd($send);
     //dd($send->id[1]);
 
-    dd($send);
+    //dd($send);
 
     if ($send->resp_exist == "2") {
       $this->cria_existe((object)$send);
