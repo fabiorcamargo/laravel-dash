@@ -535,7 +535,7 @@
                                                 <div id="input-wrapper1" class="input-wrapper" hidden>
                                                     <input type="text" id="taxa_valor" name="taxa_valor"
                                                         placeholder="R$ Valor Total" class="mx-2  form-control"
-                                                        onkeypress="$(this).mask('R$ #######', {reverse: false});">
+                                                        onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});">
                                                 </div>
                                             </div>
 
@@ -549,7 +549,7 @@
                                                 <div id="input-wrapper3" class="input-wrapper" hidden>
                                                     <input type="text" id="cartaoi_valor" name="cartaoi_valor"
                                                         placeholder="R$ Valor Total" class="mx-2 form-control"
-                                                        onkeypress="$(this).mask('R$ #######', {reverse: false});">
+                                                        onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});">
                                                 </div>
                                             </div>
                                             <div class="form-check-inline">
@@ -562,7 +562,7 @@
                                                 <div id="input-wrapper4" class="input-wrapper" hidden>
                                                     <input type="text" id="link_valor" name="link_valor"
                                                         placeholder="R$ Valor Total" class="mx-2 form-control"
-                                                        onkeypress="$(this).mask('R$ #######', {reverse: false});">
+                                                        onkeypress="$(this).mask('000.000.000.000.000,00', {reverse: true});">
                                                 </div>
                                             </div><br>
                                             <div class="form-check-inline pt-2">

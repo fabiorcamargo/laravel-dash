@@ -132,14 +132,14 @@ class OldAsaasController extends Controller
       \"observations\": \"$descricao\",
       \"company\": \"$empresa\",
       \"groupName\": \"$grupo\",
-    
+
       \"cpfCnpj\": \"$cpf\",
       \"postalCode\": \"$cep\",
       \"addressNumber\": \"$number\",
       \"externalReference\": \"$id\",
       \"notificationDisabled\": false,
       \"whatsappEnabledForCustomer\": true,
-      
+
     }");
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -211,7 +211,7 @@ class OldAsaasController extends Controller
       \"dueDate\": \"$data2\",
       \"description\": \"$curso\",
       \"installmentValue\": $valor,
-      \"installmentCount\": $parcela,    
+      \"installmentCount\": $parcela,
       \"discount\": {
         \"value\": 0,
         \"dueDateLimitDays\": 0
@@ -465,7 +465,7 @@ class OldAsaasController extends Controller
               CPF: $send->cpf</p>
               ";
     $send->footer =
-      "<p>O que você deseja fazer?</p> 
+      "<p>O que você deseja fazer?</p>
               <a href='/collapsible-menu/app/pay/cliente_existe?send=" . urlencode(json_encode($send)) . "' class='btn btn-primary col-12' role='button' aria-disabled='true'>Criar cobrança no Responsável Existente</a>
               <a href='/collapsible-menu/app/pay/create' class='btn btn-primary col-12 mt-2' role='button' aria-disabled='true'>Atualizar o Responsável e gerar cobranças</a>
               <a href='ação2' class='btn btn-secondary col-12 mt-2' role='button' aria-disabled='true'>Sair</a>";
@@ -573,7 +573,7 @@ class OldAsaasController extends Controller
     //dd($send);
     //dd($send->id[1]);
 
-    //dd($send);
+    dd($send);
 
     if ($send->resp_exist == "2") {
       $this->cria_existe((object)$send);
@@ -1445,7 +1445,7 @@ class OldAsaasController extends Controller
   public function client_notification_api($customer, $token)
   {
 
-    
+
     $url = $this->url . "v3/customers/" . $customer . "/notifications";
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -1574,7 +1574,7 @@ class OldAsaasController extends Controller
 
 
     //dd($dec);
-   
+
 
     $msg = urlencode("Olá $customerData->name tudo bem?\n \n$seller->name da Profissionaliza EAD aqui, estou enviando o link de pagamento via Cartão de Crédito que você solicitou, caso o link não esteja ativo basta salvar o meu contato.\n \n$dec->invoiceUrl");
 
